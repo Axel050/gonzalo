@@ -8,5 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class EstadosAdquirente extends Model
 {
     use HasFactory;
+ 
+        protected $fillable = [
+        'nombre', 'descripcion'
+    ];
     
 }

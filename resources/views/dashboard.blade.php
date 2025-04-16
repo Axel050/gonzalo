@@ -1,12 +1,12 @@
 <x-layouts.app :title="__('Dashboard')">
-  <x-slot name="headerT">
-    Dashboard
-  </x-slot>      
-    <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl ">
+    <x-slot name="headerT">
+        Dashboard
+    </x-slot>
+    <div class="flex h-full w-full flex-1 flex-col gap-4 rounded-xl fullscreen py-5">
         <div class="grid auto-rows-min gap-4 md:grid-cols-3">
             <div class="relative aspect-video overflow-hidden rounded-xl border border-cyan-600 ">
-                <x-placeholder-pattern class="absolute inset-0 size-full stroke-cyan-900/70 " />                
-                
+                <x-placeholder-pattern class="absolute inset-0 size-full stroke-cyan-900/70 " />
+
             </div>
             <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 ">
                 <x-placeholder-pattern class="absolute inset-0 size-full stroke-cyan-900/70 " />

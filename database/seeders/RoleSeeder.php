@@ -11,46 +11,50 @@ use Spatie\Permission\Models\Role;
 
 class RoleSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
-    {
-           // Reset cached roles and permissions
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+  /**
+   * Run the database seeds.
+   */
+  public function run(): void
+  {
+    // Reset cached roles and permissions
+    app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        // create permissions
-        Permission::create(['name' => 'edit lotes']);
-        Permission::create(['name' => 'delete lotes']);
-        Permission::create(['name' => 'publish lotes']);
-        Permission::create(['name' => 'unpublish lotes']);
+    // create permissions    
 
-        // update cache to know about the newly created permissions (required if using WithoutModelEvents in seeders)
-        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+    Permission::create(['name' => 'dashboard-ver']);
+    Permission::create(['name' => 'usuarios-ver']);
+    Permission::create(['name' => 'personal-ver']);
+    Permission::create(['name' => 'roles-ver']);
+    Permission::create(['name' => 'subastas-ver']);
+    Permission::create(['name' => 'comitentes-ver']);
+    Permission::create(['name' => 'adquirentes-ver']);
+    Permission::create(['name' => 'auxiliares-ver']);
 
-        $role1 = Role::create(['name' => 'super-admin']);
-        $role1->givePermissionTo(Permission::all());
+    // update cache to know about the newly created permissions (required if using WithoutModelEvents in seeders)
+    app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
-        $role2 = Role::create(['name' => 'admin']);
-        $role2->givePermissionTo('edit lotes');
+    $role1 = Role::create(['name' => 'super-admin', "description" => "descripcion test"]);
+    $role1->givePermissionTo(Permission::all());
 
-        // or may be done by chaining
-        $role3 = Role::create(['name' => 'adq guest'])
-            ->givePermissionTo(['publish lotes', 'unpublish lotes']);
+    $role2 = Role::create(['name' => 'admin', "description" => "descripcion test"]);
+    $role2->givePermissionTo('dashboard-ver');
 
-        $role4 = Role::create(['name' => 'adquirente'])
-            ->givePermissionTo(['publish lotes', 'unpublish lotes']);
+    // or may be done by chaining
+    $role3 = Role::create(['name' => 'adq guest', "description" => "descripcion test gue"])
+      ->givePermissionTo(['dashboard-ver', 'personal-ver']);
 
-
-        // create roles and assign created permissions
-
-        // this can be done as separate statements
-
+    $role4 = Role::create(['name' => 'adquirente', "description" => "descripcion test adq"]);
 
 
-        
+    // create roles and assign created permissions
+
+    // this can be done as separate statements
 
 
-        
-    }
+
+
+
+
+
+  }
 }

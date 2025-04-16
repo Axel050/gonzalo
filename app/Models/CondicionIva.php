@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class CondicionIva extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'nombre', 
+    ];
 }

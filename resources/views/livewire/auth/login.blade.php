@@ -35,7 +35,9 @@
         </div>
 
         <!-- Remember Me -->
-        <flux:checkbox wire:model="remember" :label="__('Recordarme')" />
+        <div class=" z-10">
+          <flux:checkbox wire:model="remember" :label="__('Recordarme')" />
+        </div>
 
         <div class="flex items-center justify-end">
             <flux:button variant="primary" type="submit" class="w-full">{{ __('Ingresar') }}</flux:button>
@@ -43,9 +45,9 @@
     </form>
 
     @if (Route::has('register'))
-        <div class="space-x-1 text-center text-sm text-zinc-600 dark:text-zinc-400">
+        <div class="space-x-1 text-center text-sm text-zinc-600 dark:text-zinc-400 ">
             {{ __('No tienes cuenta?') }}
-            <flux:link :href="route('register')" wire:navigate>{{ __('Regsitrarme') }}</flux:link>
+            <flux:link :href="route('register')" wire:navigate>{{ __('Registrarme') }}</flux:link>
         </div>
     @endif
 </div>
