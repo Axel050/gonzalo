@@ -123,7 +123,7 @@
                                         <td class="py-2">{{ $comitente->telefono }}</td>
                                         <td class="py-2">{{ $comitente->CUIT }}</td>
                                         <td class="py-2">{{ $comitente->mail }}</td>
-                                        <td class="py-2">{{ $comitente->alias }}</td>
+                                        <td class="py-2">{{ $comitente->alias?->nombre }}</td>
 
                                         {{-- <td class="py-2">{{\Carbon\Carbon::parse($comitente->fecha_fin)->format('Y-m-d H:i') }}</td> --}}
                                         {{-- <td class="py-2 font-semibold {{$comitente->estado ? "text-green-600" : "text-red-600"}}">{{$comitente->estado ? "On" : "Off"}}</td> --}}

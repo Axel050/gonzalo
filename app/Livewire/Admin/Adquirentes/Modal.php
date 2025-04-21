@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Adquirentes;
 
 use App\Models\Adquirente;
+use App\Models\AdquirentesAlias;
 use App\Models\Alias;
 use App\Models\CondicionIva;
 use App\Models\EstadosAdquirente;
@@ -18,6 +19,9 @@ class Modal extends Component
 
   use WithFileUploads;
 
+  public $owner = false;
+  public $email_alias;
+  public $telefono_alias;
   public $existe = false;
   public $aliases;
 
@@ -28,9 +32,11 @@ class Modal extends Component
   public $btnText;
 
   public $adquirente;
+  public $alias_id;
 
   public $nombre, $apellido, $alias, $CUIT, $domicilio, $telefono, $mail, $banco, $numero_cuenta, $CBU, $alias_bancario, $foto, $estado_id;
-  public $password, $password_confirmation;
+  public $password = "12345678";
+  public  $password_confirmation = "12345678";
   public $comision = 20;
   public $condicion_iva_id;
   public $estados = [];
@@ -40,6 +46,15 @@ class Modal extends Component
 
   public $autorizados;
 
+
+  public function updatedAliasId($value)
+  {
+    $ad = AdquirentesAlias::find($value);
+    if ($ad) {
+      $this->telefono_alias = $ad->adquirente?->telefono;
+      $this->email_alias = $ad->adquirente?->user?->email;
+    }
+  }
 
   public function updatedVer()
   {
@@ -58,11 +73,13 @@ class Modal extends Component
       'comision' => 'required|numeric|min:0',
       'condicion_iva_id' => 'required',
       'estado_id' => 'required',
-
       // 'foto' => 'required',                              
     ];
     if ($this->method == "update") {
-      $rules["alias"] = 'required|unique:adquirentes,alias,' . $this->adquirente->id;
+      if (!$this->existe && $this->owner) {
+        $rules["alias_id"] = 'unique:adquirentes_aliases,nombre,' . $this->adquirente->alias_id;
+      }
+
       $rules['mail'] = 'required|email|unique:users,email,' . $this->adquirente->user->id;
 
       if ($this->password || $this->password_confirmation) {
@@ -70,9 +87,12 @@ class Modal extends Component
       }
     } else {
       $rules["CUIT"] = 'required|unique:adquirentes,CUIT';
-      $rules["alias"] = 'required|unique:adquirentes,alias';
       $rules['password'] = 'required|string|confirmed|min:8';
       $rules['mail'] = 'required|email|unique:users,email';
+    }
+
+    if (!$this->existe && !$this->owner) {
+      $rules["alias_id"] = 'unique:adquirentes_aliases,nombre,';
     }
 
     return $rules;
@@ -86,8 +106,7 @@ class Modal extends Component
       "telefono.required" => "Ingrese  telefono.",
       "CUIT.required" => "Ingrese  CUIT.",
       "CUIT.unique" => "CUIT existente.",
-      "alias.required" => "Ingrese alias .",
-      "alias.unique" => "Alias existente.",
+      "alias_id.unique" => "Alias existente.",
       "comision.required" => "Ingrese comision.",
       "comision.numeric" => "Comision invalida.",
       "comision.min" => "Comision invalida.",
@@ -108,7 +127,7 @@ class Modal extends Component
   public function mount()
   {
 
-    $this->aliases = Alias::all();
+    $this->aliases = AdquirentesAlias::all();
 
     $this->condiciones = CondicionIva::all();
     $this->estados = EstadosAdquirente::all();
@@ -134,7 +153,6 @@ class Modal extends Component
 
       $this->nombre =  $this->adquirente->nombre;
       $this->apellido =  $this->adquirente->apellido;
-      $this->alias =  $this->adquirente->alias;
       $this->mail =  $this->adquirente->user->email;
       $this->telefono =  $this->adquirente->telefono;
       $this->CUIT =  $this->adquirente->CUIT;
@@ -143,12 +161,34 @@ class Modal extends Component
       $this->estado_id =  $this->adquirente->estado_id;
       $this->foto =  $this->adquirente->foto;
 
+
       if ($this->adquirente->comision !== null) {
         $comision = floatval($this->adquirente->comision);
         $comision = ($comision == floor($comision)) ? (int)$comision : $comision;
         $this->comision =  $comision;
       }
 
+
+
+      if ($this->adquirente->id == $this->adquirente->alias?->adquirente_id) {
+        $this->owner = true;
+      }
+
+      if ($this->adquirente->alias_id && !$this->owner) {
+        $this->existe = true;
+        $this->alias_id =  $this->adquirente->alias_id;
+        $this->email_alias =  $this->adquirente->alias?->adquirente?->user?->email;
+        $this->telefono_alias =  $this->adquirente->alias?->adquirente?->telefono;
+      }
+
+      if ($this->adquirente->alias_id && $this->owner) {
+        $this->alias_id = $this->adquirente->alias->nombre;
+      }
+
+      $this->CBU =  $this->adquirente->CBU;
+      $this->numero_cuenta =  $this->adquirente->numero_cuenta;
+      $this->banco =  $this->adquirente->banco;
+      $this->alias_bancario =  $this->adquirente->alias_bancario;
 
 
       if ($this->method == "update") {
@@ -167,6 +207,7 @@ class Modal extends Component
 
   public function save()
   {
+
     // VER ESTADO_ID PARA AGREGAR ROLE LUEGO
     $this->validate();
 
@@ -195,7 +236,6 @@ class Modal extends Component
       $adq = Adquirente::create([
         "nombre" => $this->nombre,
         "apellido" => $this->apellido,
-        "alias" => $this->alias,
         "telefono" => $this->telefono,
         "CUIT" => $this->CUIT,
         "domicilio" => $this->domicilio,
@@ -203,8 +243,31 @@ class Modal extends Component
         "estado_id" => $this->estado_id,
         "foto" => $filename,
         "condicion_iva_id" => $this->condicion_iva_id,
-        "user_id" => $user->id
+        "user_id" => $user->id,
+        "CBU" => $this->CBU,
+        "numero_cuenta" => $this->numero_cuenta,
+        "alias_bancario" => $this->alias_bancario,
+        "banco" => $this->banco,
       ]);
+
+      if ($this->existe && isset($this->alias_id)) {
+        $adq->alias_id =  $this->alias_id;
+        $adq->save();
+      }
+
+      if (!$this->existe && isset($this->alias_id)) {
+
+
+        $adAl = AdquirentesAlias::create([
+          "nombre" => $this->alias_id,
+          "adquirente_id" => $adq->id
+        ]);
+
+        if ($adAl) {
+          $adq->alias_id =  $adAl->id;
+          $adq->save();
+        }
+      }
 
 
       if ($this->autorizados) {
@@ -229,6 +292,19 @@ class Modal extends Component
     } else {
       $this->validate();
 
+      if ($this->owner && $this->adquirente->alias->adquirentes() > 1) {
+        if ($this->existe) {
+          if ($this->adquirente->alias_id   != $this->alias_id) {
+            return  $this->addError('alias_id', 'Su alias esta vinculado con otro adquirentes.');
+          }
+        }
+
+        if (!$this->alias_id) {
+          return  $this->addError('alias_id', 'Ingrese alias.');
+        }
+      }
+
+      // dd("ae5daed");
       $filename = '';
 
       if ($this->foto instanceof UploadedFile) {
@@ -252,13 +328,35 @@ class Modal extends Component
 
       $this->adquirente->nombre = $this->nombre;
       $this->adquirente->apellido = $this->apellido;
-      $this->adquirente->alias = $this->alias;
       $this->adquirente->telefono = $this->telefono;
       $this->adquirente->CUIT = $this->CUIT;
       $this->adquirente->domicilio = $this->domicilio;
       $this->adquirente->comision = $this->comision;
       $this->adquirente->estado_id = $this->estado_id;
       $this->adquirente->condicion_iva_id = $this->condicion_iva_id;
+
+      $this->adquirente->CBU = $this->CBU;
+      $this->adquirente->banco = $this->banco;
+      $this->adquirente->alias_bancario = $this->alias_bancario;
+      $this->adquirente->numero_cuenta = $this->numero_cuenta;
+
+
+      if (!$this->existe && isset($this->alias_id)) {
+
+        if (!$this->owner) {
+          $adAl = AdquirentesAlias::create([
+            "nombre" => $this->alias_id,
+            "adquirente_id" => $this->adquirente->id,
+          ]);
+          $this->adquirente->alias_id = $adAl->id;
+        } elseif ($this->owner) {
+          $this->adquirente->alias->nombre = $this->alias_id;
+          $this->adquirente->alias->save();
+        }
+      } else {
+        $this->adquirente->alias_id = $this->alias_id;
+      }
+
 
       $this->adquirente->save();
 

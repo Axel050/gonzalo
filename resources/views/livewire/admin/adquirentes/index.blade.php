@@ -111,25 +111,25 @@
 
                             <tbody class="divide-y divide-gray-400 text-gray-600  text-sm bg-gray-300">
 
-                                @foreach ($adquirentes as $comitente)
+                                @foreach ($adquirentes as $adquirente)
                                     <tr
                                         class="divide-x-2 divide-y-2 divide-gray-400 [&>td]:pl-2 [&>td]:pr-1 [&>td]:lg:pl-4 [&>td]:text-start ">
 
 
-                                        <td class="py-2">{{ $comitente->id }}</td>
-                                        <td class="py-2">{{ $comitente->nombre }}, {{ $comitente->apellido }}</td>
-                                        <td class="py-2">{{ $comitente->telefono }}</td>
-                                        <td class="py-2">{{ $comitente->CUIT }}</td>
-                                        <td class="py-2">{{ $comitente->user?->email }}</td>
-                                        <td class="py-2">{{ $comitente->alias }}</td>
+                                        <td class="py-2">{{ $adquirente->id }}</td>
+                                        <td class="py-2">{{ $adquirente->nombre }}, {{ $adquirente->apellido }}</td>
+                                        <td class="py-2">{{ $adquirente->telefono }}</td>
+                                        <td class="py-2">{{ $adquirente->CUIT }}</td>
+                                        <td class="py-2">{{ $adquirente->user?->email }}</td>
+                                        <td class="py-2">{{ $adquirente->alias?->nombre }}</td>
 
-                                        {{-- <td class="py-2">{{\Carbon\Carbon::parse($comitente->fecha_fin)->format('Y-m-d H:i') }}</td> --}}
-                                        {{-- <td class="py-2 font-semibold {{$comitente->estado ? "text-green-600" : "text-red-600"}}">{{$comitente->estado ? "On" : "Off"}}</td> --}}
+                                        {{-- <td class="py-2">{{\Carbon\Carbon::parse($adquirente->fecha_fin)->format('Y-m-d H:i') }}</td> --}}
+                                        {{-- <td class="py-2 font-semibold {{$adquirente->estado ? "text-green-600" : "text-red-600"}}">{{$adquirente->estado ? "On" : "Off"}}</td> --}}
                                         <td class="py-2">
                                             {{-- <button class="bg-cyan-900 text-white px-4 rounded-2xl cursor-pointer py-0.5 hover:bg-cyan-950" --}}
                                             <button
                                                 class="bg-cyan-900 text-white px-4 rounded-2xl cursor-pointer py-0.5 hover:bg-cyan-950"
-                                                title="Ver lotes"> {{ $comitente->lotes?->count() }}</button>
+                                                title="Ver lotes"> {{ $adquirente->lotes?->count() }}</button>
 
                                         </td>
 
@@ -143,7 +143,7 @@
 
                                                 <button
                                                     class=" hover:text-gray-200  hover:bg-yellow-900 flex items-center py-0.5 bg-yellow-800 rounded-lg px-1 cursor-pointer"
-                                                    wire:click="option('autorizados',{{ $comitente->id }})"
+                                                    wire:click="option('autorizados',{{ $adquirente->id }})"
                                                     title="Ver autorizados">
                                                     <svg width="20px" height="18px" fill="none"
                                                         viewBox="0 0 512 512" xml:space="preserve">
@@ -192,8 +192,8 @@
 
                                                 <button
                                                     class=" hover:text-gray-200  hover:bg-green-900 flex items-center py-0.5 bg-green-800 rounded-lg px-1 cursor-pointer"
-                                                    wire:click="option('view',{{ $comitente->id }})"
-                                                    title="Ver comitente">
+                                                    wire:click="option('view',{{ $adquirente->id }})"
+                                                    title="Ver adquirente">
                                                     <svg width="20px" height="19px" viewBox="0 0 24 24"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path
@@ -210,7 +210,7 @@
 
                                                 <button
                                                     class=" hover:text-gray-200  hover:bg-red-700 flex items-center py-0.5 bg-red-600 rounded-lg px-1 cursor-pointer"
-                                                    wire:click="option('delete',{{ $comitente->id }})">
+                                                    wire:click="option('delete',{{ $adquirente->id }})">
                                                     <svg width="20px" height="20px" viewBox="0 0 24 24"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <g id="SVGRepo_bgCarrier" stroke-width="0" />
@@ -228,7 +228,7 @@
 
                                                 <button
                                                     class=" hover:text-gray-200 hover:bg-orange-700 flex items-center py-0.5 bg-orange-600 rounded-lg px-1 cursor-pointer"
-                                                    wire:click="option('update',{{ $comitente->id }})">
+                                                    wire:click="option('update',{{ $adquirente->id }})">
                                                     <svg width="20px" height="20px" viewBox="0 0 24 24"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd" clip-rule="evenodd"

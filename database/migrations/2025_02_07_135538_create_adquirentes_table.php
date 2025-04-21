@@ -15,15 +15,20 @@ return new class extends Migration
       $table->id();
       $table->string('nombre');
       $table->string('apellido');
-      $table->foreignId('alias_id')->constrained('adquirentes_aliases')->onDelete('cascade');
+      $table->unsignedBigInteger('alias_id')->nullable();
       $table->foreignId('estado_id')->constrained('estados_adquirentes')->onDelete('cascade');
       $table->string('CUIT')->unique();
       $table->foreignId('condicion_iva_id')->constrained('condicion_ivas')->onDelete('cascade');
       $table->string('domicilio');
       $table->string('foto')->nullable();
-      $table->string('telefono')->unique();
+      $table->string('telefono');
       $table->decimal('comision', 5, 1)->default(20);
       $table->foreignId('user_id')->constrained()->onDelete('cascade');
+      $table->string('CBU')->nullable();
+      $table->string('banco')->nullable();
+      $table->string('numero_cuenta')->nullable();
+      $table->string('alias_bancario')->nullable();
+
       $table->softDeletes();
       $table->timestamps();
     });
