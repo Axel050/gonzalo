@@ -9,7 +9,7 @@
 ])
 
 
-<div {{ $attributes->merge(['class' => 'items-start  lg:w-auto w-[85%] mx-auto  mb-[-5px] bg-green-300']) }}>
+<div {{ $attributes->merge(['class' => 'items-start  lg:w-auto w-[85%] mx-auto  mb-[-5px] ']) }}>
     <label class="w-full text-start text-gray-500 leading-[16px] text-base">{{ $label }}</label>
     <div class="relative w-full ">
         <input type={{ $type }} wire:model="{{ $model }}" step={{ $step }} min={{ $min }}

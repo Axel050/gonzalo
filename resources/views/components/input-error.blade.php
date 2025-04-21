@@ -13,7 +13,7 @@
                 <circle cx="12" cy="16" r="1" fill="#e70d0d" />
             </g>
         </svg>
-        <p>
+        <p class="lg:max-w-60 leading-[12px]">
             {{-- <p {{ $attributes->merge(['class' => 'text-sm text-red-600']) }}>       --}}
             {{ $message }}
         </p>

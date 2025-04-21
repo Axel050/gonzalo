@@ -26,7 +26,7 @@
                     <x-form-item label="Apellido" :method="$method" model="apellido" />
 
 
-                    <div class="items-start lg:w-auto w-[85%] mx-auto bg-blue-200" x-data="{ existe: false }">
+                    <div class="items-start lg:w-auto w-[85%] mx-auto " x-data="{ existe: false }">
                         <div class="flex w-full justify-between bg-ed-100 py-0 items-end">
                             <label
                                 class="text-start text-gray-500 leading-[16px] text-base">Alias{{ $alias_id }}</label>
@@ -49,15 +49,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        {{-- <x-input-error for="alias_id" /> --}}
-                        {{-- <div class="min-w-0 break-words w-full relative">
-                            <x-input-error for="alias_id" class="break-words whitespace-normal" />
-                        </div> --}}
-                        <div class="w-full lg:max-w-60  text-red-500;">
-                            <p style="overflow-wrap: break-word; word-wrap: break-word;" class="text-green-800">
-                                Su alias esta vinculado con otros adquirentes.
-                            </p>
-                        </div>
+                        <x-input-error for="alias_id" />
 
                     </div>
 
