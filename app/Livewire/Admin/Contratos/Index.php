@@ -1,7 +1,9 @@
 <?php
 
-namespace App\Livewire\Admin\Depositos;
+namespace App\Livewire\Admin\Contratos;
 
+use App\Models\Comitente;
+use App\Models\Contrato;
 use App\Models\Deposito;
 use App\Models\Subasta;
 use Livewire\Attributes\On;
@@ -21,12 +23,19 @@ class Index extends Component
   #[Url]
   public $ids;
 
+  #[On(['lotes'])]
+  public function openLotes($id = false)
+  {
+    $this->id = $id;
+    $this->method = "lotes";
+  }
+
   public function option($method, $id = false)
   {
-    if ($method == "delete" || $method == "update" || $method == "view") {
-      $cond = Deposito::find($id);
+    if ($method == "delete" || $method == "update" || $method == "view"   || $method == "lotes") {
+      $cond = Contrato::find($id);
       if (!$cond) {
-        $this->dispatch('depositoNotExits');
+        $this->dispatch('contratoNotExits');
       } else {
         $this->method = $method;
         $this->id = $id;
@@ -39,9 +48,13 @@ class Index extends Component
   }
 
 
-  #[On(['depositoCreated', 'depositoUpdated', 'depositoDeleted'])]
+  #[On(['contratoCreated', 'contratoUpdated', 'contratoDeleted', 'loteCreated'])]
   public function mount()
   {
+
+
+
+
     if ($this->ids) {
       $exists = Subasta::where('id', $this->ids)->exists();
       if ($exists) {
@@ -66,52 +79,41 @@ class Index extends Component
 
       switch ($this->searchType) {
         case 'id':
-          $depositos = Deposito::where("id", "like", '%' . $this->query . '%');
+          $contratos = Contrato::where("id", "like", '%' . $this->query . '%');
           break;
-        case 'adquirente':
-          $depositos = Deposito::whereHas('adquirente', function ($query) {
+        case 'comitente':
+          $contratos = Contrato::whereHas('comitente', function ($query) {
             $query->where('nombre', 'like', '%' . $this->query . '%');
             $query->orWhere('apellido', 'like', '%' . $this->query . '%');
           });
           break;
         case 'alias':
-          $depositos = Deposito::whereHas('adquirente.alias', function ($query) {
+          $contratos = Contrato::whereHas('comitente.alias', function ($query) {
             $query->where('nombre', 'like', '%' . $this->query . '%');
           });
           break;
         case 'fecha':
-          $depositos = Deposito::where("fecha", "like", '%' . $this->query . '%');
+          $contratos = Contrato::where("fecha_firma", "like", '%' . $this->query . '%');
           break;
-        case 'fecha_devolucion':
-          $depositos = Deposito::where("fecha_devolucion", "like", '%' . $this->query . '%');
-          break;
-        case 'subasta':
-          $depositos = Deposito::where("subasta_id", "like", '%' . $this->query . '%');
-          break;
-        case 'estado':
-          $depositos = Deposito::where("estado", "like", '%' . $this->query . '%');
-          break;
+
         case 'todos':
-          $depositos = Deposito::where("id", "like", '%' . $this->query . '%')
-            ->orWhere("estado", "like", '%' . $this->query . '%')
-            ->orWhereHas('adquirente', function ($query) {
+          $contratos = Contrato::where("id", "like", '%' . $this->query . '%')
+            ->orWhereHas('comitente', function ($query) {
               $query->where('nombre', 'like', '%' . $this->query . '%');
               $query->orWhere('apellido', 'like', '%' . $this->query . '%');
             })
-            ->orWhereHas('adquirente.alias', function ($query) {
+            ->orWhereHas('comitente.alias', function ($query) {
               $query->where('nombre', 'like', '%' . $this->query . '%');
             })
-            ->orWhere("fecha", "like", '%' . $this->query . '%')
-            ->orWhere("fecha_devolucion", "like", '%' . $this->query . '%')
-            ->orWhere("subasta_id", "like", '%' . $this->query . '%');
+            ->orWhere("fecha_firma", "like", '%' . $this->query . '%');
           break;
       }
-      $depositos = $depositos->orderBy("id", "desc")->paginate(10);
+      $contratos = $contratos->orderBy("id", "desc")->paginate(10);
     } else {
-      $depositos = Deposito::orderBy("id", "desc")->paginate(10);
+      $contratos = Contrato::orderBy("id", "desc")->paginate(10);
     }
 
 
-    return view('livewire.admin.depositos.index', compact("depositos"));
+    return view('livewire.admin.contratos.index', compact("contratos"));
   }
 }

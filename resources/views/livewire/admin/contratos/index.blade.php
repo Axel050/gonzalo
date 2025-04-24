@@ -1,10 +1,10 @@
 <div class="bg-gay-50 w-full fullscreen py-5">
 
-    <x-action-message on="depositoCreated" class="absolute  top-0 right-0 z-50 green-action ">Deposito creado con
+    <x-action-message on="contratoCreated" class="absolute  top-0 right-0 z-50 green-action ">Contrato creado con
         exitó.</x-action-message>
-    <x-action-message on="depositoUpdated" class="absolute  top-0 right-0 z-50 orange-action">Deposito actualizado con
+    <x-action-message on="contratoUpdated" class="absolute  top-0 right-0 z-50 orange-action">Contrato actualizado con
         exitó.</x-action-message>
-    <x-action-message on="depositoDeleted" class="absolute  top-0 right-0 z-50 red-action">Deposito eliminado con
+    <x-action-message on="contratoDeleted" class="absolute  top-0 right-0 z-50 red-action">Contrato eliminado con
         exitó.</x-action-message>
 
     <div class="">
@@ -23,11 +23,8 @@
                         <option value="todos">Todos</option>
                         <option value="id">ID</option>
                         <option value="fecha">Fecha</option>
-                        <option value="fecha_devolucion">Fecha devolucion</option>
-                        <option value="adquirente">Adquirente</option>
+                        <option value="comitente">Comitente</option>
                         <option value="alias">Alias</option>
-                        <option value="subasta">Subasta</option>
-                        <option value="estado">Estado</option>
                     </select>
                 </div>
 
@@ -56,8 +53,25 @@
 
         </div>
 
+
+
+        <div wire:show="method == 'lotes' ">
+            {{-- @livewire('admin.contratos.modal-contrato-lotes', ['id' => $id]) --}}
+
+            <p class="text-2xl text-red-800">Lotes</p>
+
+        </div>
+
+        {{-- @if ($method)
+            @livewire('admin.contratos.modal', ['method' => $method, 'id' => $id])
+        @endif --}}
+
         @if ($method)
-            @livewire('admin.depositos.modal', ['method' => $method, 'id' => $id])
+            @if ($method != 'lotes')
+                @livewire('admin.contratos.modal', ['method' => $method, 'id' => $id])
+            @else
+                @livewire('admin.contratos.modal-contrato-lotes', ['id' => $id], key('modal-contrato-lotes-' . $id))
+            @endif
         @endif
 
 
@@ -69,7 +83,7 @@
             <div class="min-w-full inline-block align-middle ">
                 <div class="overflow-hidden">
 
-                    @if (count($depositos))
+                    @if (count($contratos))
 
 
 
@@ -80,38 +94,39 @@
                                     class="bg-gray-400 relative text-gray-700 font-bold divide-x-2 divide-gray-600 [&>th]:pl-2 [&>th]:pr-1 [&>th]:lg:pl-4 [&>th]:text-start text-sm ">
                                     <th scope="col" class="py-1">ID</th>
                                     <th scope="col">Fecha</th>
-                                    <th scope="col">Monto</th>
-                                    <th scope="col">Estado</th>
-                                    <th scope="col">Fecha dev</th>
-                                    <th scope="col">Adquirente</th>
+                                    <th scope="col">Comitente</th>
                                     <th scope="col">Alias</th>
-                                    <th scope="col">Subasta</th>
+                                    <th scope="col">Lotes</th>
                                     <th scope="col" class="lg:w-[190px] w-[90px]">Accion</th>
                                 </tr>
                             </thead>
 
                             <tbody class="divide-y divide-gray-400 text-gray-600  text-sm bg-gray-300">
 
-                                @foreach ($depositos as $dep)
+                                @foreach ($contratos as $cont)
                                     <tr
                                         class="divide-x-2 divide-y-2 divide-gray-400 [&>td]:pl-2 [&>td]:pr-1 [&>td]:lg:pl-4 [&>td]:text-start ">
 
-                                        <td class="py-2">{{ $dep->id }}</td>
-                                        <td class="py-2">{{ $dep->fecha }}</td>
-                                        <td class="py-2">{{ number_format($dep->monto, 0, ',', '.') }}</td>
-                                        <td class="py-2">{{ $dep->estado }}</td>
-                                        <td class="py-2">{{ $dep->fecha_devolucion }}</td>
-                                        <td class="py-2">{{ $dep->adquirente?->nombre }}
-                                            {{ $dep->adquirente?->apellido }} </td>
-                                        <td class="py-2">{{ $dep->adquirente?->alias?->nombre }}</td>
-                                        <td class="py-2">{{ $dep->subasta?->id }}</td>
+                                        <td class="py-2">{{ $cont->id }}</td>
+                                        <td class="py-2">{{ $cont->fecha_firma }}</td>
+                                        <td class="py-2">{{ $cont->comitente?->nombre }}
+                                            {{ $cont->comitente?->apellido }}</td>
+                                        <td class="py-2">{{ $cont->comitente?->alias?->nombre }}</td>
+                                        <td class="py-2">
+                                            <button
+                                                class=" hover:text-white  hover:bg-yellow-900 flex items-center py-0.5 bg-yellow-800 rounded-lg  cursor-pointer text-gray-200 px-2"
+                                                wire:click="option('lotes',{{ $cont->id }})"
+                                                title="Ver autorizados">
+                                                {{ $cont->lotes->count() }}
+                                            </button>
+                                        </td>
 
                                         <td>
                                             <div class="flex justfy-end lg:gap-x-6 gap-x-4 text-white text-xs">
 
                                                 <button
                                                     class=" hover:text-gray-200  hover:bg-red-700 flex items-center py-0.5 bg-red-600 rounded-lg px-1 cursor-pointer"
-                                                    wire:click="option('delete',{{ $dep->id }})">
+                                                    wire:click="option('delete',{{ $cont->id }})">
                                                     <svg width="20px" height="20px" viewBox="0 0 24 24"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <g id="SVGRepo_bgCarrier" stroke-width="0" />
@@ -129,7 +144,7 @@
 
                                                 <button
                                                     class=" hover:text-gray-200 hover:bg-orange-700 flex items-center py-0.5 bg-orange-600 rounded-lg px-1 cursor-pointer"
-                                                    wire:click="option('update',{{ $dep->id }})">
+                                                    wire:click="option('update',{{ $cont->id }})">
                                                     <svg width="20px" height="20px" viewBox="0 0 24 24"
                                                         fill="none" xmlns="http://www.w3.org/2000/svg">
                                                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -155,9 +170,9 @@
 
             </div>
         </div>
-        @if (count($depositos))
+        @if (count($contratos))
             <div class="w-full  justify-between  lg:w-[75%]  mx-auto px-2 ">
-                {{ $depositos->links() }}
+                {{ $contratos->links() }}
             </div>
         @endif
     </div>

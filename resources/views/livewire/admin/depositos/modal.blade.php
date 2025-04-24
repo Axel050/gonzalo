@@ -21,7 +21,8 @@
                     <x-form-item-sel label="Adquirente" :method="$method" model="adquirente_id">
                         <option>Elija adquirente </option>
                         @foreach ($adquirentes as $adq)
-                            <option value="{{ $adq->id }}">{{ $adq->nombre }} {{ $adq->apellido }}</option>
+                            <option value="{{ $adq->id }}">
+                                {{ $adq->alias?->nombre }} - {{ $adq->nombre }} {{ $adq->apellido }} </option>
                         @endforeach
                     </x-form-item-sel>
 
@@ -31,7 +32,6 @@
                             <option value="{{ $sub->id }}">{{ $sub->id }}</option>
                         @endforeach
                     </x-form-item-sel>
-
 
                     <x-form-item label="Monto" :method="$method" model="monto" type="number" />
 

@@ -33,10 +33,12 @@ Route::get("/roles", function () {
 })->name("roles")->can("personal-ver");
 
 Route::get("/depositos/{id?}", function () {
-  // $id = request('id');
-  // return view('admin.depositos', ['id' => $id]);
   return view('admin.depositos');
 })->name("depositos")->can("personal-ver");
+
+Route::get("/contratos", function () {
+  return view('admin.contratos');
+})->name("contratos")->can("personal-ver");
 
 
 // AUX

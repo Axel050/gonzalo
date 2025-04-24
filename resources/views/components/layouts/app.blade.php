@@ -83,7 +83,7 @@
     @stack('js')
 
     @stack('sc')
-</body>
+
 </body>
 
 </html>
