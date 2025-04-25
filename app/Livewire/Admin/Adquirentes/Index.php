@@ -98,7 +98,9 @@ class Index extends Component
             ->where("users.email", "like", '%' . $this->query . '%');
           break;
         case 'alias':
-          $adquirentes = Adquirente::where("alias", "like", '%' . $this->query . '%');
+          $adquirentes = Adquirente::whereHas('alias', function ($query) {
+            $query->where('nombre', 'like', '%' . $this->query . '%');
+          });
           break;
         case 'todos':
           $adquirentes = Adquirente::join('users', 'adquirentes.user_id', '=', 'users.id')
@@ -107,10 +109,11 @@ class Index extends Component
                 ->orWhere("adquirentes.nombre", "like", '%' . $this->query . '%')
                 ->orWhere("adquirentes.apellido", "like", '%' . $this->query . '%')
                 ->orWhere("adquirentes.telefono", "like", '%' . $this->query . '%')
-                // ->orWhere("email", "like", '%' . $this->query . '%')
                 ->orWhere("adquirentes.CUIT", "like", '%' . $this->query . '%')
-                ->orWhere("alias", "like", '%' . $this->query . '%')
-                ->orWhere("users.email", "like", '%' . $this->query . '%');
+                ->orWhere("users.email", "like", '%' . $this->query . '%')
+                ->orWhereHas('alias', function ($query) {
+                  $query->where('nombre', 'like', '%' . $this->query . '%');
+                });
             });
           break;
       }

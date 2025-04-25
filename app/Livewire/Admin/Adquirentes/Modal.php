@@ -4,7 +4,6 @@ namespace App\Livewire\Admin\Adquirentes;
 
 use App\Models\Adquirente;
 use App\Models\AdquirentesAlias;
-use App\Models\Alias;
 use App\Models\CondicionIva;
 use App\Models\EstadosAdquirente;
 use App\Models\User;
@@ -132,9 +131,7 @@ class Modal extends Component
     $this->condiciones = CondicionIva::all();
     $this->estados = EstadosAdquirente::all();
 
-
     if ($this->method == "save") {
-
       $this->title = "Crear";
       $this->btnText = "Guardar";
       $this->bg =  "background-color: rgb(22 163 74)";
@@ -148,6 +145,7 @@ class Modal extends Component
       $this->btnText = "Eliminar";
       $this->bg =  "background-color: rgb(239 68 68)";
     }
+
     if ($this->method == "update" || $this->method == "view") {
       $this->adquirente = Adquirente::find($this->id);
 
@@ -161,14 +159,11 @@ class Modal extends Component
       $this->estado_id =  $this->adquirente->estado_id;
       $this->foto =  $this->adquirente->foto;
 
-
       if ($this->adquirente->comision !== null) {
         $comision = floatval($this->adquirente->comision);
         $comision = ($comision == floor($comision)) ? (int)$comision : $comision;
         $this->comision =  $comision;
       }
-
-
 
       if ($this->adquirente->id == $this->adquirente->alias?->adquirente_id) {
         $this->owner = true;

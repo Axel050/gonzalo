@@ -14,17 +14,18 @@
                 <div>
                     <label for="query" class="text-sm lg:text-base text-gray-600 ">Buscar</label>
                     <input type="search" nombre="query" wire:model.live="query"
-                        class="lg:h-7 h-6 rounded-md boder border-gray-400 w-40 lg:w-48 bg-gray-100 px-1  focus:outline-2 focus:outline-cyan-900">
+                        class="lg:h-7 h-6 rounded-md boder border-gray-400 w-40 lg:w-48 bg-gray-100   focus:outline-2 focus:outline-cyan-900">
                 </div>
 
                 <div class="text-xs flex gap-2 lg:gap-3 ">
                     <select wire:model.live="searchType"
-                        class="lg:h-7 h-6 rounded-md border border-gray-400 lg:w-full w-fit ml-auto mt-1 lg:mt-0 text-gray-500 text-sm py-0.5 cursor-pointer">
+                        class="lg:h-7 h-6 rounded-md border border-gray-400 lg:w-full w-fit ml-auto mt-1 lg:mt-0 text-gray-600 text-sm py-0.5 cursor-pointer bg-gray-200">
                         <option value="todos">Todos</option>
                         <option value="id">ID</option>
                         <option value="fecha">Fecha</option>
                         <option value="comitente">Comitente</option>
                         <option value="alias">Alias</option>
+                        <option value="subasta">Subasta</option>
                     </select>
                 </div>
 
@@ -96,6 +97,7 @@
                                     <th scope="col">Fecha</th>
                                     <th scope="col">Comitente</th>
                                     <th scope="col">Alias</th>
+                                    <th scope="col">Subasta</th>
                                     <th scope="col">Lotes</th>
                                     <th scope="col" class="lg:w-[190px] w-[90px]">Accion</th>
                                 </tr>
@@ -112,9 +114,10 @@
                                         <td class="py-2">{{ $cont->comitente?->nombre }}
                                             {{ $cont->comitente?->apellido }}</td>
                                         <td class="py-2">{{ $cont->comitente?->alias?->nombre }}</td>
+                                        <td class="py-2">{{ $cont->subasta_id }}</td>
                                         <td class="py-2">
                                             <button
-                                                class=" hover:text-white  hover:bg-yellow-900 flex items-center py-0.5 bg-yellow-800 rounded-lg  cursor-pointer text-gray-200 px-2"
+                                                class=" hover:text-white  hover:bg-yellow-900 flex items-center py-0.5 bg-yellow-800 rounded-lg  cursor-pointer text-gray-200 px-3"
                                                 wire:click="option('lotes',{{ $cont->id }})"
                                                 title="Ver autorizados">
                                                 {{ $cont->lotes->count() }}

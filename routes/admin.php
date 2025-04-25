@@ -32,9 +32,9 @@ Route::get("/roles", function () {
   return view('admin.personal.roles');
 })->name("roles")->can("personal-ver");
 
-Route::get("/depositos/{id?}", function () {
+Route::get("/garantias/{id?}", function () {
   return view('admin.depositos');
-})->name("depositos")->can("personal-ver");
+})->name("garantias")->can("personal-ver");
 
 Route::get("/contratos", function () {
   return view('admin.contratos');

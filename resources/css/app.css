@@ -111,6 +111,7 @@ select:focus[data-flux-control] {
 }
 
 
+
 /* ACTION MESSAGE */
 .orange-action {
   @apply bg-gradient-to-r from-orange-600 to-orange-800 border-orange-600 before:bg-orange-600 after:bg-orange-600;
@@ -130,6 +131,10 @@ select:focus[data-flux-control] {
 
 .fullscreen {
   height: calc(100vh - 48px);
+}
+
+input[type="search"] {
+  @apply px-1;
 }
 
 /* \[:where(&)\]:size-4 {

@@ -1,6 +1,6 @@
 <x-layouts.app>
     <x-slot name="headerT">
-        Depositos
+        Garantías
     </x-slot>
 
     @livewire('admin.depositos.index')

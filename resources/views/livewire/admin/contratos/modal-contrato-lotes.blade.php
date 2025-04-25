@@ -48,11 +48,11 @@
 
                 <x-form-item label="Titulo" :method="$method" model="nombre" />
                 <x-form-item label="Descripcion" :method="$method" model="apellido" />
-                <x-form-item label='Precio' :method="$method" model="dni" />
+                <x-form-item label='Base' :method="$method" model="dni" />
 
                 <div class="col-span-3">
                     <button wire:click="add"
-                        class="bg-yellow-600 hover:bg-yellow-700 mt-4 rounded-lg px-2 lg:py-1 py-0.5 w-3/4 lg:w-2/4 mx-auto cursor-pointer ">Agregar</button>
+                        class="bg-yellow-600 hover:bg-yellow-700 mt-4 rounded-lg px-2 lg:py-1 py-0.5 w-3/4 lg:w-2/4 mx-auto  text-white">Agregar</button>
                 </div>
 
 
@@ -84,7 +84,7 @@
                                     <div class="flex justfy-end lg:gap-x-6 gap-x-3 text-white text-xs">
 
                                         <button
-                                            class=" hover:text-gray-200  hover:bg-red-700 flex items-center py-0.5 bg-red-600 rounded-lg px-1 cursor-pointer"
+                                            class=" hover:text-gray-200  hover:bg-red-700 flex items-center py-0.5 bg-red-600 rounded-lg px-1 "
                                             wire:click="quitar({{ $index }})">
                                             <svg width="20px" height="18px" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -102,7 +102,7 @@
                                         </button>
 
                                         <button
-                                            class=" hover:text-gray-200 hover:bg-orange-700 flex items-center py-0.5 bg-orange-600 rounded-lg px-1 cursor-pointer"
+                                            class=" hover:text-gray-200 hover:bg-orange-700 flex items-center py-0.5 bg-orange-600 rounded-lg px-1 "
                                             wire:click="editar({{ $index }})">
                                             <svg width="20px" height="18px" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">

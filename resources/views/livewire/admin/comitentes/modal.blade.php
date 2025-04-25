@@ -9,7 +9,7 @@
             </h2>
 
             <form
-                class="bg-red-80  w-full  flex flex-col lg:grid lg:grid-cols-2 gap-2 lg:gap-x-12 llg:text-lg  text-base lg:px-10 px-2 text-gray-200  [&>div]:flex
+                class="bg-red-80  w-full  flex flex-col lg:grid lg:grid-cols-3 gap-2 lg:gap-x-12 llg:text-lg  text-base lg:px-10 px-2 text-gray-200  [&>div]:flex
                       [&>div]:flex-col  pt-4 max-h-[85vh] overflow-y-auto"
                 wire:submit={{ $method }}>
 
@@ -23,13 +23,50 @@
 
                     <x-form-item label="Apellido" :method="$method" model="apellido" />
 
-                    <x-form-item label="Alias" :method="$method" model="alias" />
+
+
+                    <div class="items-start lg:w-auto w-[85%] mx-auto " x-data="{ existe: false }">
+                        <div class="flex w-full justify-between bg-ed-100 py-0 items-end">
+                            <label class="text-start text-gray-500 leading-[16px] text-base">Alias</label>
+                            <label class="text-gray-500 bgred-100 py-0 leading-[16px]">
+                                Existe
+                                <input type="checkbox" wire:model="existe" wire:change="$set('alias_id','')"
+                                    @disabled($method === 'view') />
+                            </label>
+                        </div>
+                        <div class="relative w-full">
+                            <input
+                                class="lg:w-60 h-6 rounded-md border border-gray-400 w-full text-gray-500 p-2 text-sm bg-gray-100 disabled:text-gray-600 disabled:bg-gray-300"
+                                wire:model="alias_id" wire:show="!existe" @disabled($method === 'view') />
+                            <select
+                                class="h-6 py-0 rounded-md border border-gray-400 lg:w-60 w-full text-gray-500 bg-gray-100 pl-2 text-sm disabled:text-gray-600 disabled:bg-gray-300"
+                                wire:model.live="alias_id" wire:show="existe" @disabled($method === 'view')>
+                                <option value="">Seleccione alias</option>
+                                @foreach ($aliases as $alias)
+                                    <option value={{ $alias->id }}>{{ $alias->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <x-input-error for="alias_id" />
+
+                    </div>
+
+
+
+                    @if (!$owner)
+                        <x-form-item label="Mail  (alias)" method="view" model="email_alias" wire:show="existe" />
+
+                        <x-form-item label="Telefono (alias)" method="view" model="telefono_alias"
+                            wire:show="existe" />
+                    @endif
+
+                    <x-form-item label="CUIT" :method="$method" model="CUIT" />
+
 
                     <x-form-item label="Mail" :method="$method" model="mail" />
 
                     <x-form-item label="Telefono" :method="$method" model="telefono" />
 
-                    <x-form-item label="CUIT" :method="$method" model="CUIT" />
 
                     <x-form-item label="Domicilio" :method="$method" model="domicilio" />
 
@@ -44,20 +81,9 @@
 
                     <x-form-item label="Alias bancario" :method="$method" model="alias_bancario" />
 
+                    <x-form-item-area label="Observaciones" :method="$method" model="observaciones" />
 
 
-
-                    <div class="!justify-start items-start  lg:w-auto w-[85%] mx-auto ">
-                        <label
-                            class="w-full text-start text-gray-500 mt-2 leading-[16px] text-base">Observaciones</label>
-                        <div class="relative w-full">
-                            <textarea wire:model="observaciones" ros="1"
-                                class =" h-auto pt-0 rounded-md border border-gray-400 lg:w-60 w-full text-gray-500 bg-gray-100 pl-2 text-sm"
-                                @disabled($method === 'view')>
-                            </textarea>
-                            <x-input-error for="observaciones" class="absolute top-full" />
-                        </div>
-                    </div>
 
 
                     {{-- }}}}}}}}}}}}}}}}}}}}} --}}
@@ -123,7 +149,7 @@
 
                 @endif
 
-                <div class="flex !flex-row gap-6 justify-center lg:text-base text-sm lg:col-span-2">
+                <div class="flex !flex-row gap-6 justify-center lg:text-base text-sm lg:col-span-3">
                     <button type="button"
                         class="bg-orange-600 hover:bg-orange-700 mt-4 rounded-lg px-2 lg:py-1 py-0.5 "
                         wire:click="$parent.$set('method',false)">

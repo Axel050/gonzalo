@@ -95,6 +95,9 @@ class Index extends Component
         case 'fecha':
           $contratos = Contrato::where("fecha_firma", "like", '%' . $this->query . '%');
           break;
+        case 'subasta':
+          $contratos = Contrato::where("subasta_id", "like", '%' . $this->query . '%');
+          break;
 
         case 'todos':
           $contratos = Contrato::where("id", "like", '%' . $this->query . '%')
@@ -105,6 +108,7 @@ class Index extends Component
             ->orWhereHas('comitente.alias', function ($query) {
               $query->where('nombre', 'like', '%' . $this->query . '%');
             })
+            ->orWhere("subasta_id", "like", '%' . $this->query . '%')
             ->orWhere("fecha_firma", "like", '%' . $this->query . '%');
           break;
       }

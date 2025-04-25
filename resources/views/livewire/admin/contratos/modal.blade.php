@@ -8,10 +8,10 @@
                 {{ $title }} contrato
             </h2>
 
-            {{-- form --}}
-            <div class="bg-red-80  w-full  flex flex-col gap-2 lg:text-lg  text-base lg:px-4 px-2 text-gray-200  [&>div]:flex
-                            [&>div]:flex-col  [&>div]:justify-center pt-4 max-h-[85vh] overflow-y-auto"
-                {{-- wire:submit={{ $method }} --}}>
+
+            <div
+                class="bg-red-80  w-full  flex flex-col gap-2 lg:text-lg  text-base lg:px-4 px-2 text-gray-200  [&>div]:flex
+                            [&>div]:flex-col  [&>div]:justify-center pt-4 max-h-[85vh] overflow-y-auto">
 
                 @if ($method == 'delete')
                     <p class="text-center text-gray-600 lg:px-10 px-6"> Esta seguro de eliminar el contrato</p>
@@ -20,18 +20,18 @@
                 @else
                     <x-form-item-sel label="Comitente" :method="$method" model="comitente_id">
                         <option>Elija comitente </option>
-                        @foreach ($comitentes as $adq)
-                            <option value="{{ $adq->id }}">
-                                {{ $adq->alias?->nombre }} - {{ $adq->nombre }} {{ $adq->apellido }} </option>
+                        @foreach ($comitentes as $com)
+                            <option value="{{ $com->id }}">
+                                {{ $com->alias?->nombre }} - {{ $com->nombre }} {{ $com->apellido }} </option>
                         @endforeach
                     </x-form-item-sel>
 
-                    {{-- <x-form-item-sel label="Subasta" :method="$method" model="subasta_id">
+                    <x-form-item-sel label="Subasta" :method="$method" model="subasta_id">
                         <option>Elija subasta </option>
                         @foreach ($subastas as $sub)
                             <option value="{{ $sub->id }}">{{ $sub->id }}</option>
                         @endforeach
-                    </x-form-item-sel> --}}
+                    </x-form-item-sel>
 
                     <x-form-item-area label="Descripcion" :method="$method" model="descripcion" />
 
@@ -46,13 +46,7 @@
                     @endif
 
 
-                    <div class="border  border-blue-900 flex flex-col p-5 text-accent">
 
-                        <button wire:click="$toggle('test')" type="button"
-                            class="text-red-500 rounded-3xl p-3 bg-amber-300">xxxx</button>
-                        <p class="bg-orage-100 p-2 text-lg">aaaaaaTest = {{ $test }}</p>
-                        <p class="bg-orage-100 p-2 text-lg" wire:show="test">aaaaaaTest </p>
-                    </div>
 
 
 
@@ -68,7 +62,7 @@
                     @if ($method != 'view')
                         <button
                             class="bg-green-600 hover:bg-green-700 mt-4 rounded-lg px-2 lg:py-1 py-0.5 flex text-center items-center "
-                            wire:click="$method">
+                            wire:click="{{ $method }}">
                             {{ $btnText }}
                         </button>
                     @endif
@@ -79,7 +73,7 @@
             </div>
 
 
-            {{-- </form> --}}
+
 
         </div>
     </div>

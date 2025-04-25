@@ -4,7 +4,6 @@ namespace App\Livewire\Admin\Contratos;
 
 use App\Models\Comitente;
 use App\Models\Contrato;
-use App\Models\Deposito;
 use App\Models\Subasta;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
@@ -20,7 +19,8 @@ class Modal extends Component
   public $method;
   public $btnText;
 
-  public $deposito;
+  public $contrato;
+  public $contrato_id;
   public $nombre;
 
   public $descripcion;
@@ -64,7 +64,8 @@ class Modal extends Component
 
 
     $this->subastas = Subasta::orderBy("id")->get();
-    $this->comitentes = Comitente::select('id', 'nombre', 'apellido')->orderBy("nombre")->get();
+    $this->comitentes = Comitente::with("alias")->orderBy("nombre")->get();
+
 
     if ($this->method == "save") {
 
@@ -74,20 +75,19 @@ class Modal extends Component
     }
 
     if ($this->method == "delete") {
-      $this->deposito = Deposito::find($this->id);
-      $this->id = $this->deposito->id;
+      $this->contrato = Contrato::find($this->id);
+      $this->id = $this->contrato->id;
       $this->title = "Eliminar";
       $this->btnText = "Eliminar";
       $this->bg =  "background-color: rgb(239 68 68)";
     }
     if ($this->method == "update" || $this->method == "view") {
-      $this->deposito = Deposito::find($this->id);
-      $this->adquirente_id =  $this->deposito->adquirente_id;
-      $this->subasta_id =  $this->deposito->subasta_id;
-      $this->fecha_devolucion =  $this->deposito->fecha_devolucion;
-      $this->fecha =  $this->deposito->fecha;
-      $this->monto =  $this->deposito->monto;
-      $this->estado =  $this->deposito->estado;
+      $this->contrato = Contrato::find($this->id);
+      $this->comitente_id =  $this->contrato->comitente_id;
+      $this->subasta_id =  $this->contrato->subasta_id;
+      $this->fecha =  $this->contrato->fecha_firma;
+      $this->descripcion =  $this->contrato->descripcion;
+
 
       if ($this->method == "update") {
         $this->title = "Editar";
@@ -109,6 +109,7 @@ class Modal extends Component
     $contrato  = Contrato::create([
       "comitente_id" => $this->comitente_id,
       "descripcion" => $this->descripcion,
+      "subasta_id" => $this->subasta_id,
       "fecha_firma" => $this->fecha,
     ]);
 
@@ -123,30 +124,30 @@ class Modal extends Component
   public function update()
   {
 
-    if (!$this->deposito) {
-      $this->dispatch('depositoNotExits');
+    if (!$this->contrato) {
+      $this->dispatch('contratoNotExits');
     } else {
       $this->validate();
 
-      $this->deposito->subasta_id = $this->subasta_id;
-      $this->deposito->adquirente_id = $this->adquirente_id;
-      $this->deposito->monto = $this->monto;
-      $this->deposito->estado = $this->estado;
-      $this->deposito->fecha = $this->fecha;
-      $this->deposito->fecha_devolucion = $this->fecha_devolucion ? $this->fecha_devolucion :  NULL;
+      $this->contrato->subasta_id = $this->subasta_id;
+      $this->contrato->adquirente_id = $this->adquirente_id;
+      $this->contrato->monto = $this->monto;
+      $this->contrato->estado = $this->estado;
+      $this->contrato->fecha = $this->fecha;
+      $this->contrato->fecha_devolucion = $this->fecha_devolucion ? $this->fecha_devolucion :  NULL;
 
-      $this->deposito->save();
-      $this->dispatch('depositoUpdated');
+      $this->contrato->save();
+      $this->dispatch('contratoUpdated');
     }
   }
 
   public function delete()
   {
-    if (!$this->deposito) {
-      $this->dispatch('depositoNotExits');
+    if (!$this->contrato) {
+      $this->dispatch('contratoNotExits');
     } else {
-      $this->deposito->delete();
-      $this->dispatch('depositoDeleted');
+      $this->contrato->delete();
+      $this->dispatch('contratoDeleted');
     }
   }
 

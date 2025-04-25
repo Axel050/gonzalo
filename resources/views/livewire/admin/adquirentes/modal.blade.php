@@ -28,8 +28,7 @@
 
                     <div class="items-start lg:w-auto w-[85%] mx-auto " x-data="{ existe: false }">
                         <div class="flex w-full justify-between bg-ed-100 py-0 items-end">
-                            <label
-                                class="text-start text-gray-500 leading-[16px] text-base">Alias{{ $alias_id }}</label>
+                            <label class="text-start text-gray-500 leading-[16px] text-base">Alias</label>
                             <label class="text-gray-500 bgred-100 py-0 leading-[16px]">
                                 Existe
                                 <input type="checkbox" wire:model="existe" wire:change="$set('alias_id','')"

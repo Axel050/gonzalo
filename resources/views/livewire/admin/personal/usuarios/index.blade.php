@@ -20,7 +20,7 @@
 
                 <div class="text-xs flex gap-2 lg:gap-3 ">
                     <select wire:model.live="searchType"
-                        class="lg:h-7 h-6 rounded-md border border-gray-400 lg:w-full w-fit ml-auto mt-1 lg:mt-0 text-gray-500 text-sm py-0.5 cursor-pointer">
+                        class="lg:h-7 h-6 rounded-md border border-gray-400 lg:w-full w-fit ml-auto mt-1 lg:mt-0 text-gray-600 text-sm py-0.5 cursor-pointer bg-gray-200">
                         <option value="todos">Todos</option>
                         <option value="id">ID</option>
                         <option value="nombre">Nombre</option>
