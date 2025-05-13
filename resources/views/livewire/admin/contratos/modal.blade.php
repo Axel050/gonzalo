@@ -15,8 +15,8 @@
 
                 @if ($method == 'delete')
                     <p class="text-center text-gray-600 lg:px-10 px-6"> Esta seguro de eliminar el contrato</p>
-                    <p class="text-center text-gray-600"><strong>"{{ $deposito->comitente?->nombre }}
-                            {{ $deposito->comitente?->apellido }}" </strong>?</p>
+                    <p class="text-center text-gray-600"><strong>"{{ $contrato->comitente?->nombre }}
+                            {{ $contrato->comitente?->apellido }}" </strong>?</p>
                 @else
                     <x-form-item-sel label="Comitente" :method="$method" model="comitente_id">
                         <option>Elija comitente </option>

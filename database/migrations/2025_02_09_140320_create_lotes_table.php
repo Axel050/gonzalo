@@ -20,16 +20,16 @@ return new class extends Migration
       $table->text('descripcion')->nullable();
       // $table->decimal('precio_base', 10, 2)->nullable(); 
       $table->decimal('valuacion', 10, 2)->nullable();
-      $table->string('foto_front')->nullable();
-      $table->string('foto_back')->nullable();
-      $table->string('foto_add_1')->nullable();
+      $table->string('foto1')->nullable();
+      $table->string('foto2')->nullable();
+      $table->string('foto3')->nullable();
       $table->integer('fraccion_min')->nullable();
 
       $table->boolean('venta_directa')->default(false);
       $table->decimal('precio_venta_directa', 10, 2)->nullable();
 
       $table->unsignedBigInteger('tipo_bien_id')->nullable();
-      $table->unsignedBigInteger('moneda_id')->nullable();
+
 
       $table->foreignId('comitente_id')
         ->constrained('comitentes')
@@ -38,6 +38,8 @@ return new class extends Migration
 
       $table->string('estado')
         ->default('disponible');
+
+      $table->foreignId('ultimo_contrato')->nullable()->constrained('contratos')->onDelete('set null');
 
       // $table->unsignedBigInteger('estado_id')->nullable();
       // $table->unsignedBigInteger('subasta_id');
@@ -49,7 +51,7 @@ return new class extends Migration
 
       // $table->foreign('comitente_id')->references('id')->on('comitentes')->onDelete('cascade');
       // $table->foreign('subasta_id')->references('id')->on('subastas')->onDelete('cascade');
-      $table->foreign('moneda_id')->references('id')->on('monedas')->onDelete('cascade');
+
       // $table->foreign('estado_id')->references('id')->on('estados_lotes')->onDelete('cascade');
       $table->foreign('tipo_bien_id')->references('id')->on('tipos_biens')->onDelete('cascade');
       // $table->foreign('contrato_id')->references('id')->on('contratos')->onDelete('cascade');              

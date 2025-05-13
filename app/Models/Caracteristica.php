@@ -7,9 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Caracteristica extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = [
-        'nombre','tipo', 
-    ];
+  protected $fillable = [
+    'nombre',
+    'tipo',
+  ];
+
+  // public function tiposBiens()
+  // {
+  //   return $this->belongsToMany(TiposBien::class, 'tipo_bien_caracteristicas')
+  //     // ->withPivot('requerido')
+  //     ->withTimestamps();
+  // }
 }

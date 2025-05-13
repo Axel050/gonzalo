@@ -11,33 +11,65 @@
             </h2>
 
             <div
-                class="bg-red-80  w-full  flex flex-col lg:grid lg:grid-cols-3 gap-2 lg:gap-x-8 llg:text-lg  text-base lg:px-10 px-2 text-gray-500  [&>div]:flex
-                      [&>div]:flex-col  [&>div]:justify-center pt-4 max-h-[85vh] overflow-y-auto">
+                class="  w-full lg:w-[90%]  flex flex-col lg:grid lg:grid-cols-4 gap-2 lg:gap-x-6  text-base lg:px-1 px-2 text-gray-500  [&>div]:flex
+                      [&>div]:flex-col  [&>div]:justify-start pt-2 max-h-[85vh] overflow-y-auto   ">
 
 
 
 
 
+                <div
+                    class="bg-whte px-6 py-3 rounded-lg shadow-lg  text-accent  relative mb-3   !flex-row !justify-between mx-auto col-span-4 ">
 
-                <div class="bg-whte p-6 rounded-lg shadow-lg w-full  text-accent col-span-3 relative">
-                    <div class="relative">
 
-                        <input type="search" wire:model.live="search" class="w-full p-2 border rounded bg-white"
+
+
+                    <div class="relative flex justify-center  mx-auto" wire:click.outside="$set('si',false)">
+
+
+                        <input type="search" wire:model.live="search"
+                            class="lg:w-80  p-2 border rounded bg-white h-7 ml-0.5 mx-auto"
                             placeholder="Buscar lotes..." />
-
-                        @if ($si)
-                            <ul
-                                class="absolute top-full z-10 w-full bg-white border border-gray-300 rounded  max-h-60 overflow-y-auto shadow-lg">
+                        @if (!empty($lotes))
+                            <ul class="absolute top-full z-10 w-full bg-white border border-gray-300 rounded-b  max-h-60 overflow-y-auto shadow-lg "
+                                wire:show="si">
                                 @foreach ($lotes as $lote)
-                                    <li class="p-2 hover:bg-gray-100 cursor-pointer"
+                                    <li class="p-2 hover:bg-gray-100 cursor-pointer shadow flex gap-2 items-center"
                                         wire:click="loteSelected({{ $lote->id }})">
+
+
+                                        @if ($lote->foto1 && Storage::disk('public')->exists('imagenes/lotes/thumbnail/' . $lote->foto1))
+                                            <img class="max-w-[50px] max-h-[50px]"
+                                                src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote->foto1) }}">
+                                        @else
+                                            <img class="max-w-[50px] max-h-[50px]"
+                                                src="{{ Storage::url('imagenes/lotes/default.png') }}">
+                                        @endif
                                         {{ $lote->titulo }}
                                     </li>
                                 @endforeach
+                                @if (strlen($search) > 1 && count($lotes) === 0)
+                                    <li class="pl-2 font-semibold text-center text-red-900 ">¡¡Sin
+                                        resultados!!
+                                    </li>
+                                @endif
                             </ul>
                         @endif
+
+                        {{-- @if (strlen($search) > 1 && count($lotes) === 0)
+                            <span wire:show="si" class="absolute top-full z-10 lg:w-80 bg-white border border-gray-300 rounded-b   shadow-lg">
+                                No
+                            </span>
+                        @endif --}}
+
+
                     </div>
 
+
+
+                    <button wire:click="limpiar" wire:show="lote_id"
+                        class=" px-1 rounded-2xl py-0 text-sm   bg-red-600 h-7 text-white w-20 hover:bg-red-700 ml-4">Limpiar
+                    </button>
 
 
                 </div>
@@ -45,85 +77,125 @@
 
 
                 {{--  --}}
+                <input type="hidden" wire:model="foto1" />
+                <x-form-item label="Titulo" :method="$lote_id ? 'view' : null" model="titulo" />
+                <x-form-item-area label="Descripcion" :method="$lote_id ? 'view' : null" model="descripcion" />
+                <x-form-item label='Base' :method="$method" model="precio_base" type="number" />
+                <x-form-item-sel label='Moneda' :method="$method" model="moneda_id">
+                    <option value="">Elija moneda</option>
+                    @foreach ($monedas as $mon)
+                        <option value="{{ $mon->id }}">{{ $mon->titulo }}</option>
+                    @endforeach
+                </x-form-item-sel>
 
-                <x-form-item label="Titulo" :method="$method" model="nombre" />
-                <x-form-item label="Descripcion" :method="$method" model="apellido" />
-                <x-form-item label='Base' :method="$method" model="dni" />
-
-                <div class="col-span-3">
+                <div class="col-span-4">
                     <button wire:click="add"
                         class="bg-yellow-600 hover:bg-yellow-700 mt-4 rounded-lg px-2 lg:py-1 py-0.5 w-3/4 lg:w-2/4 mx-auto  text-white">Agregar</button>
                 </div>
 
+                {{-- 
+                <div>
+                </div> --}}
 
-                <table class="table-auto min-w-full divide-y  divide-gray-600 shadow-lg  col-span-3 mt-2  rounded-3xl">
+                {{-- <div class="min-w-full inline-block align-middle "> --}}
+                <div class="overflow-x-scroll lg:overflow-auto col-span-4">
 
-                    <caption class="caption-top text-gray-700">
-                        Listado de lotes {{ $contrato->lotes->count() }}
-                    </caption>
-                    <thead>
-                        <tr
-                            class="bg-gray-400 relative font-bold divide-x-2 divide-gray-600  text-sm text-gray-900 text-center">
-                            <th class="py-1">ID</th>
-                            <th>Titulo</th>
-                            <th>Descripcion</th>
-                            <th>Precio</th>
-                            <th>Accion</th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-300 text-gray-600  text-sm rounded-full">
+                    <table
+                        class="table-auto min-w-full divide-y  divide-gray-600 shadow-lg  col-span-4 mt-2  rounded-3xl">
 
-                        @foreach ($tempAutorizados as $index => $item)
+                        <caption class="caption-top text-gray-700">
+                            Listado de lotes {{ count($tempLotes) }}
+                        </caption>
+                        <thead>
                             <tr
-                                class="bg-gray-100 relative font-bold divide-x-2 divide-gray-300 text-center [&>td]:lg:px-8 [&>td]:px-2 ">
-                                <td class="py-1">{{ $item['nombre'] }} {{ $item['apellido'] }} </td>
-                                <td>{{ $item['dni'] }} </td>
-                                <td>{{ $item['telefono'] }} </td>
-                                <td>{{ $item['email'] }} </td>
-                                <td>
-                                    <div class="flex justfy-end lg:gap-x-6 gap-x-3 text-white text-xs">
-
-                                        <button
-                                            class=" hover:text-gray-200  hover:bg-red-700 flex items-center py-0.5 bg-red-600 rounded-lg px-1 "
-                                            wire:click="quitar({{ $index }})">
-                                            <svg width="20px" height="18px" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                                <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                    stroke-linejoin="round" />
-                                                <g id="SVGRepo_iconCarrier">
-                                                    <path
-                                                        d="M6 7V18C6 19.1046 6.89543 20 8 20H16C17.1046 20 18 19.1046 18 18V7M6 7H5M6 7H8M18 7H19M18 7H16M10 11V16M14 11V16M8 7V5C8 3.89543 8.89543 3 10 3H14C15.1046 3 16 3.89543 16 5V7M8 7H16"
-                                                        stroke="#ffffff" stroke-width="2" stroke-linecap="round"
-                                                        stroke-linejoin="round" />
-                                                </g>
-                                            </svg>
-                                            <span class="hidden lg:block">Quitar</span>
-                                        </button>
-
-                                        <button
-                                            class=" hover:text-gray-200 hover:bg-orange-700 flex items-center py-0.5 bg-orange-600 rounded-lg px-1 "
-                                            wire:click="editar({{ $index }})">
-                                            <svg width="20px" height="18px" viewBox="0 0 24 24" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                                    d="M21.1213 2.70705C19.9497 1.53548 18.0503 1.53547 16.8787 2.70705L15.1989 4.38685L7.29289 12.2928C7.16473 12.421 7.07382 12.5816 7.02986 12.7574L6.02986 16.7574C5.94466 17.0982 6.04451 17.4587 6.29289 17.707C6.54127 17.9554 6.90176 18.0553 7.24254 17.9701L11.2425 16.9701C11.4184 16.9261 11.5789 16.8352 11.7071 16.707L19.5556 8.85857L21.2929 7.12126C22.4645 5.94969 22.4645 4.05019 21.2929 2.87862L21.1213 2.70705ZM18.2929 4.12126C18.6834 3.73074 19.3166 3.73074 19.7071 4.12126L19.8787 4.29283C20.2692 4.68336 20.2692 5.31653 19.8787 5.70705L18.8622 6.72357L17.3068 5.10738L18.2929 4.12126ZM15.8923 6.52185L17.4477 8.13804L10.4888 15.097L8.37437 15.6256L8.90296 13.5112L15.8923 6.52185ZM4 7.99994C4 7.44766 4.44772 6.99994 5 6.99994H10C10.5523 6.99994 11 6.55223 11 5.99994C11 5.44766 10.5523 4.99994 10 4.99994H5C3.34315 4.99994 2 6.34309 2 7.99994V18.9999C2 20.6568 3.34315 21.9999 5 21.9999H16C17.6569 21.9999 19 20.6568 19 18.9999V13.9999C19 13.4477 18.5523 12.9999 18 12.9999C17.4477 12.9999 17 13.4477 17 13.9999V18.9999C17 19.5522 16.5523 19.9999 16 19.9999H5C4.44772 19.9999 4 19.5522 4 18.9999V7.99994Z"
-                                                    fill="#ffffff" />
-                                            </svg>
-                                            <span class="hidden lg:block">Editar</span>
-                                        </button>
-                                    </div>
-                                </td>
+                                class="bg-gray-400 relative font-bold divide-x-2 divide-gray-600  text-sm text-gray-900 text-center">
+                                <th class="py-1">ID</th>
+                                <th>Titulo</th>
+                                <th>Descripcion</th>
+                                <th>Precio</th>
+                                <th>Moneda</th>
+                                <th>Foto</th>
+                                <th>Accion</th>
                             </tr>
-                        @endforeach
+                        </thead>
+                        <tbody class="divide-y divide-gray-300 text-gray-600  text-sm rounded-full">
 
-                    </tbody>
-                </table>
+                            @foreach ($tempLotes as $index => $item)
+                                <tr
+                                    class="bg-gray-100 relative font-bold divide-x-2 divide-gray-300 text-center [&>td]:lg:px-8 [&>td]:px-2 ">
+                                    <td>{{ $item['id'] }} </td>
+                                    <td class="py-1">{{ $item['titulo'] }} </td>
+                                    <td>{{ $item['descripcion'] }} </td>
+                                    <td>{{ (int) $item['precio_base'] }} </td>
+                                    <td>{{ $this->monedas[$item['moneda_id']]->titulo ?? 'Sin moneda' }} </td>
+                                    <td class="py-1 ">
+
+                                        @if ($item['foto1'] && Storage::disk('public')->exists('imagenes/lotes/thumbnail/' . $item['foto1']))
+                                            <img class="max-w-[50px] max-h-[50px] hover:cursor-pointer mx-auto hover:outline  hover:scale-110"
+                                                src="{{ Storage::url('imagenes/lotes/thumbnail/' . $item['foto1']) }}"
+                                                wire:click="$set('modal_foto', '{{ $item['foto1'] }}')">
+                                        @else
+                                            <img class="max-w-[50px] max-h-[50px]"
+                                                src="{{ Storage::url('imagenes/lotes/default.png') }}">
+                                        @endif
+
+                                    </td>
+                                    <td>
+                                        <div class="flex justfy-end lg:gap-x-6 gap-x-3 text-white text-xs">
+
+                                            <button
+                                                class=" hover:text-gray-200  hover:bg-red-700 flex items-center py-0.5 bg-red-600 rounded-lg px-1 "
+                                                wire:click="quitar({{ $index }})">
+                                                <svg class="size-5 mr-0.5">
+                                                    <use xlink:href="#eliminar"></use>
+                                                </svg>
+                                                <span class="hidden lg:block">Quitar</span>
+                                            </button>
+
+                                            <button
+                                                class=" hover:text-gray-200 hover:bg-orange-700 flex items-center py-0.5 bg-orange-600 rounded-lg px-1 "
+                                                wire:click="editar({{ $index }})">
+                                                <svg class="size-5 mr-0.5">
+                                                    <use xlink:href="#editar"></use>
+                                                </svg>
+                                                <span class="hidden lg:block">Editar</span>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            @endforeach
+
+                        </tbody>
+                    </table>
+                </div>
+
+
+                <!-- Modal -->
+                @if ($modal_foto)
+                    {{-- <div class="absolute inset-0 bg-gray-600/70 backdrop-blur-xs flex items-center justify-center z-50 animate-fade-in-scale cursor-pointer"
+                        x-data="{ show: true }" x-show="show" x-transition:leave="animate-fade-out-scale"
+                        x-transition:leave-end="opacity-0 scale-100"
+                        x-on:close-modal.window="show = false; setTimeout(() => { @this.set('modal_foto', null) }, 300)"
+                        x-on:click="$dispatch('close-modal')">
+
+                        <div
+                            class="relative max-w-[95%] lg:max-w-4xl max-h-[90vh] rounded-lg shadow-xl flex items-center  my-auto border-6 border-gray-100 overflow-y-hidden">
+                            <img src="{{ Storage::url('imagenes/lotes/normal/' . $modal_foto) }}"
+                                class="max-h-[90vh] w-auto rounde-lg" alt="Imagen grande">
+                        </div>
+                    </div> --}}
+                    <x-modal-foto :img="$modal_foto" />
+                @endif
+
+            </div>
 
 
 
+            <div
+                class="flex
+                                !flex-row justify-between text-center lg:text-base text-sm lg:col-span-3 text-white ">
+                <div class="flex justify-center  w-full space-x-6">
 
-                <div class="flex !flex-row gap-6 justify-center lg:text-base text-sm lg:col-span-3 text-white">
                     <button type="button"
                         class="bg-orange-600 hover:bg-orange-700 mt-4 rounded-lg px-2 lg:py-1 py-0.5 "
                         wire:click="$parent.$set('method',false)">
@@ -136,14 +208,15 @@
                         wire:click="save">
                         Guardar
                     </button>
-
-
-
                 </div>
 
 
             </div>
 
+
+
         </div>
+
+    </div>
     </div>
 </x-modal>

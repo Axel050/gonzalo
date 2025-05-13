@@ -20,12 +20,13 @@
 </head>
 
 <body class="font-sans antialiased ">
+    @include('sprite')
 
 
     <x-banner />
 
 
-    <div class="bg-amber-50 flex " x-data="{ openSide: true }" x-cloak>
+    <div class="flex bg-gradient-to-br from-sky-900 via-gray-900 to-sky-950 " x-data="{ openSide: true }" x-cloak>
         <x-side-menu />
 
         <div class="transition-all duration-500  overflow-y-auto w-full   ">
@@ -66,7 +67,7 @@
 
             {{-- <main class=" bg-gray-900  px-4 lg:px-6  "> --}}
             {{-- bg-[repeating-linear-gradient(45deg,currentColor_0,currentColor_1px,transparent_1px,transparent_5px)] --}}
-            <main class=" bg-gray-900  px-4 lg:px-6  
+            <main class="  px-4 lg:px-6  
                 ">
 
                 {{ $slot }}

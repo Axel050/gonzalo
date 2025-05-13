@@ -15,16 +15,23 @@ class Lote extends Model
     'titulo',
     'descripcion',
     'valuacion',
-    'foto_front',
-    'foto_back',
-    'foto_add_1',
+    'foto1',
+    'foto2',
+    'foto3',
     'fraccion_min',
     'venta_directa',
     'precio_venta_directa',
     'tipo_bien_id',
     'estado_id',
-    'moneda_id'
+    'comitente_id',
+    'ultimo_contrato'
   ];
+
+  public function valoresCaracteristicas()
+  {
+    return $this->hasMany(ValoresCataracteristica::class, 'lote_id');
+  }
+
 
   /* Validar si un estado es válido.
      */
@@ -51,12 +58,35 @@ class Lote extends Model
 
 
 
+
+  public function contratosLotes()
+  {
+    return $this->hasMany(ContratoLote::class, 'lote_id');
+  }
+
   // Relación con Contrato a través de ContratoLotes
   public function contratos()
   {
     return $this->belongsToMany(Contrato::class, 'contrato_lotes', 'lote_id', 'contrato_id')
       ->withPivot('precio_base'); // Incluir el campo adicional de la tabla pivote
   }
+
+  public function ultimoContrato()
+  {
+    return $this->belongsTo(Contrato::class, 'ultimo_contrato');
+  }
+
+  public function getPrecioBaseAttribute()
+  {
+    if ($this->ultimo_contrato) {
+      return $this->contratoLotes()
+        ->where('contrato_id', $this->ultimo_contrato)
+        ->value('precio_base');
+    }
+    return null; // Return null if no ultimo_contrato is set
+  }
+
+
 
   // Relación con Subasta a través de LoteSubasta
   public function subastas()
@@ -69,5 +99,33 @@ class Lote extends Model
         'precio_final',
         'estado'
       ]);
+  }
+
+  public function comitente()
+  {
+    return $this->belongsTo(Comitente::class);
+  }
+
+  public function tipo()
+  {
+    return $this->belongsTo(TiposBien::class, "tipo_bien_id");
+  }
+
+
+
+  public function contratoLotes()
+  {
+    return $this->hasMany(ContratoLote::class);
+  }
+
+  public function ultimoContratoLote()
+  {
+    return $this->hasOne(ContratoLote::class)->latestOfMany();
+  }
+
+  public function ultimoConLote()
+  {
+    return $this->hasOne(ContratoLote::class, 'lote_id')
+      ->where('contrato_id', $this->ultimo_contrato);
   }
 }

@@ -17,9 +17,8 @@ class ContratoSeeder extends Seeder
   public function run(): void
   {
     $comitentes = Comitente::take(5)->get();
-    // $lotes = Lote::take(5)->get();
 
-    // Crear 5 contratos de prueba
+
     for ($i = 0; $i < 5; $i++) {
       Contrato::create([
         'archivo_path' => 'contratos/contrato_' . ($i + 1) . '.pdf',

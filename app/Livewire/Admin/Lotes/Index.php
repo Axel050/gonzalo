@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Livewire\Admin\Contratos;
+namespace App\Livewire\Admin\Lotes;
 
-
-use App\Models\Contrato;
+use App\Models\Lote;
 use App\Models\Subasta;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -16,6 +15,7 @@ class Index extends Component
 
   public $query, $nombre, $id;
   public $method = "";
+  public $modal_foto = "";
   public $searchType = "todos";
   public $inputType = "search";
 
@@ -32,7 +32,7 @@ class Index extends Component
   public function option($method, $id = false)
   {
     if ($method == "delete" || $method == "update" || $method == "view"   || $method == "lotes") {
-      $cond = Contrato::find($id);
+      $cond = Lote::find($id);
       if (!$cond) {
         $this->dispatch('contratoNotExits');
       } else {
@@ -78,28 +78,41 @@ class Index extends Component
 
       switch ($this->searchType) {
         case 'id':
-          $contratos = Contrato::where("id", "like", '%' . $this->query . '%');
+          $lotes = Lote::where("id", "like", '%' . $this->query . '%');
           break;
         case 'comitente':
-          $contratos = Contrato::whereHas('comitente', function ($query) {
+          $lotes = Lote::whereHas('comitente', function ($query) {
             $query->where('nombre', 'like', '%' . $this->query . '%');
             $query->orWhere('apellido', 'like', '%' . $this->query . '%');
           });
           break;
         case 'alias':
-          $contratos = Contrato::whereHas('comitente.alias', function ($query) {
+          $lotes = Lote::whereHas('comitente.alias', function ($query) {
             $query->where('nombre', 'like', '%' . $this->query . '%');
           });
           break;
-        case 'fecha':
-          $contratos = Contrato::where("fecha_firma", "like", '%' . $this->query . '%');
+        case 'tipo':
+          $lotes = Lote::whereHas('tipo', function ($query) {
+            $query->where('nombre', 'like', '%' . $this->query . '%');
+          });
           break;
         case 'subasta':
-          $contratos = Contrato::where("subasta_id", "like", '%' . $this->query . '%');
+          $lotes = Lote::whereHas('ultimoContrato', function ($query) {
+            $query->where('subasta_id', 'like', '%' . $this->query . '%');
+          });
+          break;
+        case 'contrato':
+          $lotes = Lote::where("ultimo_contrato", "like", '%' . $this->query . '%');
+          break;
+        case 'estado':
+          $lotes = Lote::where("estado", "like", '%' . $this->query . '%');
+          break;
+        case 'titulo':
+          $lotes = Lote::where("titulo", "like", '%' . $this->query . '%');
           break;
 
         case 'todos':
-          $contratos = Contrato::where("id", "like", '%' . $this->query . '%')
+          $lotes = Lote::where("id", "like", '%' . $this->query . '%')
             ->orWhereHas('comitente', function ($query) {
               $query->where('nombre', 'like', '%' . $this->query . '%');
               $query->orWhere('apellido', 'like', '%' . $this->query . '%');
@@ -107,16 +120,24 @@ class Index extends Component
             ->orWhereHas('comitente.alias', function ($query) {
               $query->where('nombre', 'like', '%' . $this->query . '%');
             })
-            ->orWhere("subasta_id", "like", '%' . $this->query . '%')
-            ->orWhere("fecha_firma", "like", '%' . $this->query . '%');
+            ->orWhereHas('tipo', function ($query) {
+              $query->where('nombre', 'like', '%' . $this->query . '%');
+            })
+            ->orWhereHas('ultimoContrato', function ($query) {
+              $query->where('subasta_id', 'like', '%' . $this->query . '%');
+            })
+            ->orWhere("estado", "like", '%' . $this->query . '%')
+            ->orWhere("ultimo_contrato", "like", '%' . $this->query . '%')
+            ->orWhere("titulo", "like", '%' . $this->query . '%');
+
           break;
       }
-      $contratos = $contratos->orderBy("id", "desc")->paginate(10);
+      $lotes = $lotes->orderBy("id", "desc")->paginate(10);
     } else {
-      $contratos = Contrato::orderBy("id", "desc")->paginate(10);
+      $lotes = Lote::orderBy("id", "desc")->paginate(10);
     }
 
 
-    return view('livewire.admin.contratos.index', compact("contratos"));
+    return view('livewire.admin.lotes.index', compact("lotes"));
   }
 }

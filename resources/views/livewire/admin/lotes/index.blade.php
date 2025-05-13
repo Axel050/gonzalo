@@ -24,17 +24,20 @@
                         class="lg:h-7 h-6 rounded-md border border-gray-400 lg:w-full w-fit ml-auto mt-1 lg:mt-0 text-gray-600 text-sm py-0.5 cursor-pointer bg-gray-200">
                         <option value="todos">Todos</option>
                         <option value="id">ID</option>
-                        <option value="fecha">Fecha</option>
+                        <option value="titulo">Titulo</option>
                         <option value="comitente">Comitente</option>
                         <option value="alias">Alias</option>
+                        <option value="tipo">Tipo</option>
                         <option value="subasta">Subasta</option>
+                        <option value="contrato">Contrato</option>
+                        <option value="estado">Estado</option>
                     </select>
                 </div>
 
             </div>
 
 
-            <button
+            {{-- <button
                 class="border border-green-800 hover:text-gray-200 hover:bg-green-700 bg-green-600 px-2 py-0.5 rounded-lg text-white text-sm h-7 place-self-center flex items-center gap-x-2 cursor-pointer"
                 wire:click="option('save')">
                 <svg class="size-5 mr-0.5">
@@ -43,7 +46,7 @@
                 <span>
                     Agregar
                 </span>
-            </button>
+            </button> --}}
 
 
         </div>
@@ -53,7 +56,7 @@
 
         @if ($method)
             @if ($method != 'lotes')
-                @livewire('admin.contratos.modal', ['method' => $method, 'id' => $id])
+                @livewire('admin.lotes.modal', ['method' => $method, 'id' => $id])
             @else
                 @livewire('admin.contratos.modal-contrato-lotes', ['id' => $id], key('modal-contrato-lotes-' . $id))
             @endif
@@ -68,7 +71,7 @@
             <div class="min-w-full inline-block align-middle ">
                 <div class="overflow-hidden">
 
-                    @if (count($contratos))
+                    @if (count($lotes))
 
 
 
@@ -76,53 +79,71 @@
                             <thead>
 
                                 <tr
-                                    class="bg-gray-400 relative text-gray-700 font-bold divide-x-2 divide-gray-600 [&>th]:pl-2 [&>th]:pr-1 [&>th]:lg:pl-4 [&>th]:text-start text-sm ">
+                                    class="bg-gray-400 relative text-gray-700 font-bold divide-x-2 divide-gray-600  [&>th]:text-center text-sm ">
                                     <th scope="col" class="py-1">ID</th>
-                                    <th scope="col">Fecha</th>
+                                    <th scope="col">Titulo</th>
                                     <th scope="col">Comitente</th>
                                     <th scope="col">Alias</th>
+                                    <th scope="col">Foto</th>
+                                    <th scope="col">Tipo</th>
+                                    <th scope="col">Base</th>
+                                    <th scope="col">Valuacion</th>
+                                    <th scope="col">Moneda</th>
                                     <th scope="col">Subasta</th>
-                                    <th scope="col">Lotes</th>
+                                    <th scope="col">Contrato</th>
+                                    <th scope="col">Estado</th>
                                     <th scope="col" class="lg:w-[190px] w-[90px]">Accion</th>
                                 </tr>
                             </thead>
 
                             <tbody class="divide-y divide-gray-400 text-gray-600  text-sm bg-gray-300">
 
-                                @foreach ($contratos as $cont)
-                                    <tr
-                                        class="divide-x-2 divide-y-2 divide-gray-400 [&>td]:pl-2 [&>td]:pr-1 [&>td]:lg:pl-4 [&>td]:text-start ">
+                                @foreach ($lotes as $lot)
+                                    <tr class="divide-x-2 divide-y-2 divide-gray-400 [&>td]:px-1 [&>td]:text-center ">
 
-                                        <td class="py-2">{{ $cont->id }}</td>
-                                        <td class="py-2">{{ $cont->fecha_firma }}</td>
-                                        <td class="py-2">{{ $cont->comitente?->nombre }}
-                                            {{ $cont->comitente?->apellido }}</td>
-                                        <td class="py-2">{{ $cont->comitente?->alias?->nombre }}</td>
-                                        <td class="py-2">{{ $cont->subasta_id }}</td>
-                                        <td class="py-2">
-                                            <button
-                                                class=" hover:text-white  hover:bg-yellow-900 flex items-center py-0.5 bg-yellow-800 rounded-lg  cursor-pointer text-gray-200 px-3"
-                                                wire:click="option('lotes',{{ $cont->id }})"
-                                                title="Ver autorizados">
-                                                {{ $cont->lotes->count() }}
-                                            </button>
+                                        <td class="py-2">{{ $lot->id }}</td>
+                                        <td class="py-2">{{ $lot->titulo }}</td>
+                                        <td class="py-2">{{ $lot->comitente?->nombre }}
+                                            {{ $lot->comitente?->apellido }}</td>
+                                        <td class="py-2">{{ $lot->comitente?->alias?->nombre }}</td>
+                                        <td class="py-2 !px-0">
+                                            @if ($lot->foto1 && Storage::disk('public')->exists('imagenes/lotes/thumbnail/' . $lot->foto1))
+                                                <img class="max-w-[50px] max-h-[50px] hover:cursor-pointer hver:bg-white p-0.5 hover:outline mx-auto hover:scale-110 transition-transform"
+                                                    src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lot->foto1) }}"
+                                                    wire:click="$set('modal_foto', '{{ $lot->foto1 }}')">
+                                            @else
+                                                <svg class="mx-auto   size-10 ">
+                                                    <use xlink:href="#default-img-input"></use>
+                                                </svg>
+                                            @endif
+                                        </td>
+                                        <td>{{ $lot->tipo?->nombre }}</td>
+                                        <td>{{ (int) $lot->precio_base }}</td>
+                                        <td>{{ (int) $lot->valuacion }}</td>
+                                        <td>{{ $lot->ultimoConLote?->moneda?->titulo }}</td>
+                                        <td>{{ $lot->ultimoContrato?->subasta_id }}</td>
+                                        <td>{{ $lot->ultimo_contrato }}</td>
+
+                                        <td>
+                                            {{ $lot->estado }}
+
                                         </td>
 
                                         <td>
                                             <div class="flex justfy-end lg:gap-x-6 gap-x-4 text-white text-xs">
 
-                                                <button
+                                                <button title="eliminar"
                                                     class=" hover:text-gray-200  hover:bg-red-700 flex items-center py-0.5 bg-red-600 rounded-lg px-1 cursor-pointer"
-                                                    wire:click="option('delete',{{ $cont->id }})">
+                                                    wire:click="option('delete',{{ $lot->id }})">
                                                     <svg class="size-5 mr-0.5">
                                                         <use xlink:href="#eliminar"></use>
                                                     </svg>
                                                     <span class="hidden lg:block">Eliminar</span>
                                                 </button>
 
-                                                <button
+                                                <button title="editar"
                                                     class=" hover:text-gray-200 hover:bg-orange-700 flex items-center py-0.5 bg-orange-600 rounded-lg px-1 cursor-pointer"
-                                                    wire:click="option('update',{{ $cont->id }})">
+                                                    wire:click="option('update',{{ $lot->id }})">
                                                     <svg class="size-5 mr-0.5">
                                                         <use xlink:href="#editar"></use>
                                                     </svg>
@@ -137,6 +158,11 @@
 
                             </tbody>
                         </table>
+                        @if ($modal_foto)
+                            {{-- <div class="min-h-screen min-w-screen  absolute inset-0"> --}}
+                            <x-modal-foto :img="$modal_foto" />
+                            {{-- </div> --}}
+                        @endif
                     @else
                         <h3 class="w-full text-center py-2 px-3 rounded-md">Sin resultados para
                             "<strong>{{ $query }} </strong>"</h3>
@@ -145,9 +171,9 @@
 
             </div>
         </div>
-        @if (count($contratos))
+        @if (count($lotes))
             <div class="w-full  justify-between  lg:w-[75%]  mx-auto px-2 ">
-                {{ $contratos->links() }}
+                {{ $lotes->links() }}
             </div>
         @endif
     </div>

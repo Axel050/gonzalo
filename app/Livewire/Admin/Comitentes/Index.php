@@ -65,7 +65,7 @@ class Index extends Component
   }
 
 
-  #[On(['comitenteCreated', 'comitenteUpdated', 'comitenteDeleted', 'autorizadoCreated'])]
+  #[On(['comitenteCreated', 'comitenteUpdated', 'comitenteDeleted', 'loteCreated'])]
   public function mount()
   {
     $this->method = "";

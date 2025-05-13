@@ -1,4 +1,4 @@
-<div class="bg-gay-500 w-full z-10 fullscreen py-5">
+<div class="w-full z-10  py-5">
     <x-action-message on="subastaCreated" class="  absolute  top-0 right-0 z-50 green-action">Subasta creada con
         exitó.</x-action-message>
     <x-action-message on="subastaUpdated" class="  absolute  top-0 right-0 z-50 orange-action">Subasta actualizada con
@@ -33,16 +33,8 @@
             <button
                 class="border border-green-800 hover:text-gray-200 hover:bg-green-700 bg-green-600 px-2 py-0.5 rounded-lg text-white text-sm h-7 place-self-center flex items-center gap-x-2 cursor-pointer"
                 wire:click="option('save')">
-                <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                    stroke="#ffffff">
-                    <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                    <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round" />
-                    <g id="SVGRepo_iconCarrier">
-                        <path d="M7 12L12 12M12 12L17 12M12 12V7M12 12L12 17" stroke="#ffffff" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                        <circle cx="12" cy="12" r="9" stroke="#ffffff" stroke-width="2"
-                            stroke-linecap="round" stroke-linejoin="round" />
-                    </g>
+                <svg width="20px" height="20px">
+                    <use xlink:href="#agregar"></use>
                 </svg>
                 <span>
                     Agregar
@@ -114,9 +106,10 @@
                                             class="py-2 font-semibold {{ $subasta->estado ? 'text-green-600' : 'text-red-600' }}">
                                             {{ $subasta->estado ? 'On' : 'Off' }}</td>
                                         <td class="py-2">
-                                            <button
+                                            <a href="{{ route('admin.lotes', ['ids' => $subasta->id]) }}"
                                                 class="bg-cyan-900 text-white px-4 rounded-2xl cursor-pointer py-0.5 hover:bg-cyan-950"
-                                                title="Ver lotes">{{ $subasta->lotes->count() }}</button>
+                                                title="Ver lotes">{{ $subasta->lotes->count() }}
+                                            </a>
                                         </td>
 
 
@@ -127,32 +120,22 @@
                                         <td>
                                             <div class="flex justfy-end lg:gap-x-6 gap-x-4 text-white text-xs">
 
-                                                {{-- <a href="{{ route('admin.depositos', ['ids' => $subasta->id]) }}" --}}
-                                                <a href=""
+
+                                                <a href="{{ route('admin.garantias', ['ids' => $subasta->id]) }}"
                                                     class=" hover:text-gray-200  hover:bg-yellow-900 flex items-center py-0.5 bg-yellow-800 rounded-lg px-1 cursor-pointer"
-                                                    wire:click="option('view',{{ $subasta->id }})"
-                                                    title="Ver depositos">
-                                                    <svg fill="#fff" class="size-4 mr-0.5" viewBox="0 0 24 24"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M1.149,12.525A1,1,0,0,0,2,13H22a1,1,0,0,0,.895-1.447l-4-8A1,1,0,0,0,18,3H6a1,1,0,0,0-.895.553l-4,8A1,1,0,0,0,1.149,12.525ZM6.618,5H17.382l3,6H3.618ZM23,16a1,1,0,0,1-1,1H2a1,1,0,0,1,0-2H22A1,1,0,0,1,23,16Zm0,4a1,1,0,0,1-1,1H2a1,1,0,0,1,0-2H22A1,1,0,0,1,23,20Z" />
+                                                    title="Ver garantias">
+                                                    <svg fill="#fff" class="size-5 mr-0.5">
+                                                        <use xlink:href="#garantias"></use>
                                                     </svg>
-                                                    <span class="hidden lg:block">Depositos</span>
+                                                    <span class="hidden lg:block">Garantias</span>
                                                 </a>
 
                                                 <button
                                                     class=" hover:text-gray-200  hover:bg-green-900 flex items-center py-0.5 bg-green-800 rounded-lg px-1 cursor-pointer"
-                                                    wire:click="option('view',{{ $subasta->id }})" title="Ver subasta">
-                                                    <svg width="20px" height="19px" viewBox="0 0 24 24"
-                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path
-                                                            d="M15.0007 12C15.0007 13.6569 13.6576 15 12.0007 15C10.3439 15 9.00073 13.6569 9.00073 12C9.00073 10.3431 10.3439 9 12.0007 9C13.6576 9 15.0007 10.3431 15.0007 12Z"
-                                                            stroke="#fff" stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                        <path
-                                                            d="M12.0012 5C7.52354 5 3.73326 7.94288 2.45898 12C3.73324 16.0571 7.52354 19 12.0012 19C16.4788 19 20.2691 16.0571 21.5434 12C20.2691 7.94291 16.4788 5 12.0012 5Z"
-                                                            stroke="#fff" stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
+                                                    wire:click="option('view',{{ $subasta->id }})"
+                                                    title="Ver subasta">
+                                                    <svg class="size-5 mr-0.5">
+                                                        <use xlink:href="#ver"></use>
                                                     </svg>
                                                     <span class="hidden lg:block">Ver</span>
                                                 </button>
@@ -160,17 +143,8 @@
                                                 <button
                                                     class=" hover:text-gray-200  hover:bg-red-700 flex items-center py-0.5 bg-red-600 rounded-lg px-1 cursor-pointer"
                                                     wire:click="option('delete',{{ $subasta->id }})">
-                                                    <svg width="20px" height="20px" viewBox="0 0 24 24"
-                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <g id="SVGRepo_bgCarrier" stroke-width="0" />
-                                                        <g id="SVGRepo_tracerCarrier" stroke-linecap="round"
-                                                            stroke-linejoin="round" />
-                                                        <g id="SVGRepo_iconCarrier">
-                                                            <path
-                                                                d="M6 7V18C6 19.1046 6.89543 20 8 20H16C17.1046 20 18 19.1046 18 18V7M6 7H5M6 7H8M18 7H19M18 7H16M10 11V16M14 11V16M8 7V5C8 3.89543 8.89543 3 10 3H14C15.1046 3 16 3.89543 16 5V7M8 7H16"
-                                                                stroke="#ffffff" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round" />
-                                                        </g>
+                                                    <svg class="size-5 mr-0.5">
+                                                        <use xlink:href="#eliminar"></use>
                                                     </svg>
                                                     <span class="hidden lg:block">Eliminar</span>
                                                 </button>
@@ -178,11 +152,8 @@
                                                 <button
                                                     class=" hover:text-gray-200 hover:bg-orange-700 flex items-center py-0.5 bg-orange-600 rounded-lg px-1 cursor-pointer"
                                                     wire:click="option('update',{{ $subasta->id }})">
-                                                    <svg width="20px" height="20px" viewBox="0 0 24 24"
-                                                        fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                        <path fill-rule="evenodd" clip-rule="evenodd"
-                                                            d="M21.1213 2.70705C19.9497 1.53548 18.0503 1.53547 16.8787 2.70705L15.1989 4.38685L7.29289 12.2928C7.16473 12.421 7.07382 12.5816 7.02986 12.7574L6.02986 16.7574C5.94466 17.0982 6.04451 17.4587 6.29289 17.707C6.54127 17.9554 6.90176 18.0553 7.24254 17.9701L11.2425 16.9701C11.4184 16.9261 11.5789 16.8352 11.7071 16.707L19.5556 8.85857L21.2929 7.12126C22.4645 5.94969 22.4645 4.05019 21.2929 2.87862L21.1213 2.70705ZM18.2929 4.12126C18.6834 3.73074 19.3166 3.73074 19.7071 4.12126L19.8787 4.29283C20.2692 4.68336 20.2692 5.31653 19.8787 5.70705L18.8622 6.72357L17.3068 5.10738L18.2929 4.12126ZM15.8923 6.52185L17.4477 8.13804L10.4888 15.097L8.37437 15.6256L8.90296 13.5112L15.8923 6.52185ZM4 7.99994C4 7.44766 4.44772 6.99994 5 6.99994H10C10.5523 6.99994 11 6.55223 11 5.99994C11 5.44766 10.5523 4.99994 10 4.99994H5C3.34315 4.99994 2 6.34309 2 7.99994V18.9999C2 20.6568 3.34315 21.9999 5 21.9999H16C17.6569 21.9999 19 20.6568 19 18.9999V13.9999C19 13.4477 18.5523 12.9999 18 12.9999C17.4477 12.9999 17 13.4477 17 13.9999V18.9999C17 19.5522 16.5523 19.9999 16 19.9999H5C4.44772 19.9999 4 19.5522 4 18.9999V7.99994Z"
-                                                            fill="#ffffff" />
+                                                    <svg class="size-5 mr-0.5">
+                                                        <use xlink:href="#editar"></use>
                                                     </svg>
                                                     <span class="hidden lg:block">Editar</span>
                                                 </button>

@@ -18,7 +18,8 @@
                     </p>
                 @else
                     <div class="col-span-3">
-                        <x-form-item-foto label="" :method="$method" model="foto" />
+                        <x-form-item-foto label="" :method="$method" model="foto" :foto="$foto" w="150"
+                            h="150" />
 
                     </div>
                     <x-form-item label="Nombre" :method="$method" model="nombre" />

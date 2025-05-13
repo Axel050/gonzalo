@@ -7,5 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class TipoBienCataracteristica extends Model
 {
-    use HasFactory;
+
+  public   $table = "tipo_bien_caracteristicas";
+
+
+  use HasFactory;
 }

@@ -40,6 +40,10 @@ Route::get("/contratos", function () {
   return view('admin.contratos');
 })->name("contratos")->can("personal-ver");
 
+Route::get("/lotes/{id?}", function () {
+  return view('admin.lotes');
+})->name("lotes")->can("personal-ver");
+
 
 // AUX
 Route::get("/aux/condicion-iva", function () {

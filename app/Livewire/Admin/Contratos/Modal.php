@@ -5,7 +5,6 @@ namespace App\Livewire\Admin\Contratos;
 use App\Models\Comitente;
 use App\Models\Contrato;
 use App\Models\Subasta;
-use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class Modal extends Component
@@ -120,7 +119,7 @@ class Modal extends Component
     $this->dispatch('contratoCreated');
   }
 
-
+  // VER QUE CUANDO BORRO UN CONTATO SE PIERDE EL ULTIMO CONTRATO ; CAMPO DE LOTES
   public function update()
   {
 
