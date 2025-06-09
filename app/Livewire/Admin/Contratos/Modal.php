@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Contratos;
 use App\Models\Comitente;
 use App\Models\Contrato;
 use App\Models\Subasta;
+use Illuminate\Validation\Rule;
 use Livewire\Component;
 
 class Modal extends Component
@@ -31,7 +32,7 @@ class Modal extends Component
   public $subastas = [];
   public $comitentes = [];
 
-  public $adquirente_id, $subasta_id, $monto, $fecha, $fecha_devolucion, $estado;
+  public $adquirente_id, $subasta_id, $monto, $fecha_firma, $estado;
 
 
 
@@ -39,10 +40,17 @@ class Modal extends Component
 
   protected function rules()
   {
-
     $rules = [
-      'comitente_id' => 'required',
-      'fecha' => 'required|date',
+      'comitente_id' => [
+        'required',
+        Rule::unique('contratos')->where(function ($query) {
+          return $query->where('comitente_id', $this->comitente_id)
+            ->where('subasta_id', $this->subasta_id);
+        })->ignore(
+          $this->contrato->id ?? 0
+        ),
+      ],
+      'fecha_firma' => 'required|date',
     ];
 
     return $rules;
@@ -52,6 +60,7 @@ class Modal extends Component
   {
     return [
       "comitente_id.required" => "Elija comitente.",
+      'comitente_id.unique' => 'Comitente y subasta existente. ',
       "fecha_firma.required" => "Elija fecha.",
     ];
   }
@@ -84,7 +93,7 @@ class Modal extends Component
       $this->contrato = Contrato::find($this->id);
       $this->comitente_id =  $this->contrato->comitente_id;
       $this->subasta_id =  $this->contrato->subasta_id;
-      $this->fecha =  $this->contrato->fecha_firma;
+      $this->fecha_firma =  $this->contrato->fecha_firma;
       $this->descripcion =  $this->contrato->descripcion;
 
 
@@ -109,7 +118,7 @@ class Modal extends Component
       "comitente_id" => $this->comitente_id,
       "descripcion" => $this->descripcion,
       "subasta_id" => $this->subasta_id,
-      "fecha_firma" => $this->fecha,
+      "fecha_firma" => $this->fecha_firma,
     ]);
 
     if ($this->lotes && $contrato) {
@@ -129,11 +138,9 @@ class Modal extends Component
       $this->validate();
 
       $this->contrato->subasta_id = $this->subasta_id;
-      $this->contrato->adquirente_id = $this->adquirente_id;
-      $this->contrato->monto = $this->monto;
-      $this->contrato->estado = $this->estado;
-      $this->contrato->fecha = $this->fecha;
-      $this->contrato->fecha_devolucion = $this->fecha_devolucion ? $this->fecha_devolucion :  NULL;
+      $this->contrato->descripcion = $this->descripcion;
+      $this->contrato->comitente_id = $this->comitente_id;
+      $this->contrato->fecha_firma = $this->fecha_firma;
 
       $this->contrato->save();
       $this->dispatch('contratoUpdated');

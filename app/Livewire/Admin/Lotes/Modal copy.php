@@ -355,10 +355,6 @@ class Modal extends Component
   }
 
 
-
-
-
-
   public function update()
   {
 
@@ -379,37 +375,42 @@ class Modal extends Component
 
       DB::transaction(function () {
         $caracteristicaIds = $this->caracteristicas->pluck('id')->toArray();
-        $formCaracteristicaIds = array_keys($this->formData);
 
-        // Procesar las características enviadas en el formulario
-        foreach ($caracteristicaIds as $caracteristicaId) {
-          // Obtener el valor del formData para esta característica, o null si no existe
-          $valor = $this->formData[$caracteristicaId] ?? null;
+        $filtered = collect($this->formData)->filter(function ($value, $key) use ($caracteristicaIds) {
+          return in_array($key, $caracteristicaIds);
+        })->toArray();
 
+
+        foreach ($filtered as $caracteristicaId => $valor) {
           // Asegurarse de que la característica es válida
           if (in_array($caracteristicaId, $caracteristicaIds)) {
-            // Buscar el registro existente para el lote_id y caracteristica_id
-            $existingRecord = ValoresCataracteristica::where('lote_id', $this->lote->id)
-              ->where('caracteristica_id', $caracteristicaId)
-              ->first();
+            // Buscar o crear el registro en valores_cataracteristicas
 
             $tipo = Caracteristica::find($caracteristicaId)->tipo;
 
-            if ($tipo == "file" && $valor instanceof UploadedFile) {
-              // Si se subió un nuevo archivo, eliminar el archivo existente si lo hay
-              if ($existingRecord && $existingRecord->valor) {
-                Storage::disk('public')->delete('lotes/' . basename($existingRecord->valor));
-              }
+            if ($tipo == "file") {
+              if ($valor instanceof UploadedFile) {
 
-              // Generar el nombre del nuevo archivo y guardarlo
-              $filename = time() . '.' . $valor->getClientOriginalExtension();
-              $valor = $valor->storeAs("lotes", $filename, "public");
-            } elseif (is_null($valor)) {
-              // Si el valor es nulo, eliminar el archivo existente (si es tipo file) y establecer valor como null
-              if ($tipo == "file" && $existingRecord && $existingRecord->valor) {
-                Storage::disk('public')->delete('lotes/' . basename($existingRecord->valor));
+
+                // 
+                $existingRecord = ValoresCataracteristica::where('lote_id', $this->lote->id)
+                  ->where('caracteristica_id', $caracteristicaId)
+                  ->first();
+
+                // Si existe un archivo previo, eliminarlo
+                // if ($existingRecord && $existingRecord->valor) {
+                //   Storage::disk('public')->delete($existingRecord->valor);
+                // }
+                if ($existingRecord && $existingRecord->valor) {
+                  Storage::disk('public')->delete('lotes/' . basename($existingRecord->valor));
+                }
+
+                // 
+                $filename =  time() . '.' . $valor->getClientOriginalExtension();
+                $destino = public_path("storage/lotes/");
+
+                $valor = $valor->storeAs("lotes", $filename, "public");
               }
-              $valor = null; // Establecer el valor como null para vaciar el campo
             }
 
             ValoresCataracteristica::updateOrCreate(
@@ -424,31 +425,21 @@ class Modal extends Component
           }
         }
 
-        // Eliminar registros de ValoresCataracteristica que no están en formData
-        $recordsToDelete = ValoresCataracteristica::where('lote_id', $this->lote->id)
-          ->whereNotIn('caracteristica_id', $formCaracteristicaIds)
-          ->get();
-
-        foreach ($recordsToDelete as $record) {
-          // Si el registro es de tipo file, eliminar el archivo del almacenamiento
-          $tipo = Caracteristica::find($record->caracteristica_id)->tipo;
-          if ($tipo == "file" && $record->valor) {
-            Storage::disk('public')->delete('lotes/' . basename($record->valor));
-          }
-        }
-
-        // Eliminar los registros
+        // info(["tipo" => $this->tipo_bien_id]);
+        // info($this->formData);
+        // // Opcional: Eliminar registros de valores_cataracteristicas que no están en formData
         ValoresCataracteristica::where('lote_id', $this->lote->id)
-          ->whereNotIn('caracteristica_id', $formCaracteristicaIds)
+          ->whereNotIn('caracteristica_id', array_keys($filtered))
           ->delete();
 
         // Actualizar otros campos del lote si es necesario
         $this->lote->update([
+          // Por ejemplo, actualizar tipo_bien_id o comitente_id si están en el formulario
           'tipo_bien_id' => $this->tipo_bien_id,
-          // Otros campos aquí si es necesario, por ejemplo:
-          // 'comitente_id' => $this->comitente_id,
+          // Otros campos...
         ]);
       });
+
 
 
 
@@ -461,11 +452,10 @@ class Modal extends Component
       $this->lote->descripcion = $this->descripcion;
 
 
-
       $this->lote->ultimoConLote->moneda_id = $this->moneda_id;
       $this->lote->ultimoConLote->precio_base = $this->base;
 
-      $this->lote->ultimoConLote?->save();
+      $this->lote->ultimoConLote->save();
 
 
 

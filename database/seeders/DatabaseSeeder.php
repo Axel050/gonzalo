@@ -38,20 +38,24 @@ class DatabaseSeeder extends Seeder
     $this->call(AutorizadosSeeder::class);
     $this->call(MonedaSeeder::class);
     // $this->call(DeparatamentoPersonalSeeder::class);
+
     $this->call(PersonalSeeder::class);
     $this->call(CaracteristicaSeeder::class);
     $this->call(TipoBienSeeder::class);
     $this->call(TipoBienCaracteristicaSeeder::class);
     $this->call(EstadosLoteSeeder::class);
     $this->call(ContratoSeeder::class);
+
     $this->call(LoteSeeder::class);
+
     $this->call(ValoresCaracteristicaSeeder::class);
     $this->call(ProveedorSeeder::class);
     $this->call(DevolucionSeeder::class);
     $this->call(FacturaSeeder::class);
     $this->call(DepositoSeeder::class);
-    $this->call(PujaSeeder::class);
     $this->call(LoteSubastaSeeder::class);
+
     $this->call(ContratoLoteSeeder::class);
+    $this->call(PujaSeeder::class);
   }
 }

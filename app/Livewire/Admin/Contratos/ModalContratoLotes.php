@@ -24,7 +24,7 @@ class ModalContratoLotes extends Component
   public $id;
   public $foto1;
 
-  public $moneda_id;
+  public $moneda_id = 1; //peso
   public $contrato;
   public $lote_id = false;
   public $titulo, $descripcion, $precio_base;
@@ -67,7 +67,7 @@ class ModalContratoLotes extends Component
       $this->descripcion = $lote->descripcion;
       $this->foto1 = $lote->foto1;
       $this->precio_base = (int)$lote->precio_base;
-      $this->moneda_id = $lote->ultimoContratoLote?->moneda_id;
+      $this->moneda_id = $lote->ultimoContratoLote?->moneda_id ?? 1;
       // $ultimoContratoLote = $lote->contratosLotes()
       //   ->orderBy('id', 'desc')
       //   ->first();
@@ -107,10 +107,10 @@ class ModalContratoLotes extends Component
     $this->tempLotes = $this->contrato->lotes->map(function ($lote) {
       $array = $lote->toArray();
       $array['precio_base'] = $lote->pivot?->precio_base;
-      $array['moneda_id'] = $lote->ultimoContratoLote?->moneda_id;
+      $array['moneda_id'] = $lote->ultimoConLote?->moneda_id;
       return $array;
     })->toArray();
-    info($this->tempLotes);
+    // info($this->tempLotes);
   }
 
 
@@ -118,7 +118,7 @@ class ModalContratoLotes extends Component
   {
     $rules = [
       'titulo' => 'required',
-      'precio_base' => 'required|numeric',
+      'precio_base' => 'required|numeric|min:1',
       'moneda_id' => 'required',
     ];
     return $rules;
@@ -129,8 +129,9 @@ class ModalContratoLotes extends Component
   {
     return [
       "titulo.required" => "Ingrese titulo.",
-      "precio_base.required" => "Ingrese  base.",
-      "precio_base.numeric" => "Ingrese  numero.",
+      "precio_base.required" => "Ingrese base.",
+      "precio_base.numeric" => "Ingrese numero.",
+      "precio_base.min" => "Ingrese base.",
       "moneda_id.required" => "Elija moneda.",
     ];
   }
@@ -148,14 +149,15 @@ class ModalContratoLotes extends Component
     }
     $this->resetErrorBag('titulo');
 
-    $this->tempLotes[] = [
+    // $this->tempLotes[] = [
+    array_unshift($this->tempLotes, [
       'titulo' => $this->titulo,
       'descripcion' => $this->descripcion,
       'precio_base' => $this->precio_base,
       'id' => $this->lote_id,
       'foto1' => $this->foto1,
       'moneda_id' => $this->moneda_id,
-    ];
+    ]);
 
     $this->reset(['titulo', 'descripcion', 'precio_base', 'lote_id', 'foto1', 'moneda_id']);
   }
@@ -174,9 +176,13 @@ class ModalContratoLotes extends Component
     if (isset($this->tempLotes[$index])) {
       $this->titulo = $this->tempLotes[$index]['titulo'];
       $this->descripcion = $this->tempLotes[$index]['descripcion'];
-      $this->precio_base = $this->tempLotes[$index]['precio_base'];
+      $this->precio_base = (int)$this->tempLotes[$index]['precio_base'];
       $this->lote_id = $this->tempLotes[$index]['id'];
       $this->moneda_id = $this->tempLotes[$index]['moneda_id'];
+
+      if ($this->tempLotes[$index]['foto1']) {
+        $this->foto1 = $this->tempLotes[$index]['foto1'];
+      }
 
       // Eliminar el elemento de la lista temporal
       unset($this->tempLotes[$index]);
@@ -237,6 +243,7 @@ class ModalContratoLotes extends Component
           'descripcion' => $tempLote['descripcion'],
           'comitente_id' => $this->contrato?->comitente_id,
           'ultimo_contrato' => $this->contrato?->id,
+          'estado' => LotesEstados::INCOMPLETO,
         ]);
 
         ContratoLote::create([

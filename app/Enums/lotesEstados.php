@@ -4,11 +4,11 @@ namespace App\Enums;
 
 class LotesEstados
 {
+  public const INCOMPLETO = 'incompleto';
   public const DISPONIBLE = 'disponible';
-  public const ASIGNADO = 'asignado';
+  // public const ASIGNADO = 'asignado';
   public const EN_SUBASTA = 'en_subasta';
   public const VENDIDO = 'vendido';
-  public const NO_VENDIDO = 'no_vendido';
   public const DEVUELTO = 'devuelto';
 
   /**
@@ -19,11 +19,11 @@ class LotesEstados
   public static function all(): array
   {
     return [
+      self::INCOMPLETO,
       self::DISPONIBLE,
-      self::ASIGNADO,
+      // self::ASIGNADO,
       self::EN_SUBASTA,
       self::VENDIDO,
-      self::NO_VENDIDO,
       self::DEVUELTO,
     ];
   }
@@ -37,11 +37,11 @@ class LotesEstados
   public static function getLabel(string $estado): string
   {
     return match ($estado) {
-      self::DISPONIBLE => 'disponible',
-      self::ASIGNADO => 'Asignado',
+      self::INCOMPLETO => 'Incompleto',
+      self::DISPONIBLE => 'Disponible',
+      // self::ASIGNADO => 'Asignado',
       self::EN_SUBASTA => 'En Subasta',
       self::VENDIDO => 'Vendido',
-      self::NO_VENDIDO => 'No Vendido',
       self::DEVUELTO => 'Devuelto',
       default => 'Desconocido',
     };

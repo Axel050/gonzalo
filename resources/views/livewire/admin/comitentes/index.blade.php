@@ -119,9 +119,14 @@
                                         {{-- <td class="py-2">{{\Carbon\Carbon::parse($comitente->fecha_fin)->format('Y-m-d H:i') }}</td> --}}
                                         {{-- <td class="py-2 font-semibold {{$comitente->estado ? "text-green-600" : "text-red-600"}}">{{$comitente->estado ? "On" : "Off"}}</td> --}}
                                         <td class="py-2">
-                                            <button
-                                                class="bg-cyan-900 text-white px-4 rounded-2xl cursor-pointer py-0.5 hover:bg-cyan-950"
-                                                title="Ver lotes"> {{ $comitente->lotes->count() }}</button>
+                                            <a
+                                                href="{{ route('admin.lotes', ['ids' => 'comitente-' . $comitente->id]) }}">
+                                                <button
+                                                    class="bg-cyan-900 text-white px-4 rounded-2xl cursor-pointer py-0.5 hover:bg-cyan-950"
+                                                    title="Ver lotes">
+                                                    {{ $comitente->Clotes->count() }}
+                                                </button>
+                                            </a>
                                         </td>
 
 

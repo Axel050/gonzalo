@@ -1,6 +1,7 @@
 <div class="    hover:text-gray-100 hover:shadow-md hover:shadow-cyan-700  relative rounded-lg px-0  h-8  z-50"
     x-data="{ open: false }" @click="open = ! open" @click.outside="open = false" x
-    :class="{ ' lg:block hidden lock transition-all duration-1000': !openSide }">
+    :class="{ ' block idden lock transition-all duration-1000': !openSide }">
+    {{-- :class="{ ' lg:block hidden lock transition-all duration-1000': !openSide }"> --}}
 
 
     <div class="flex   justify-start items-center py-0.5 pl-2 borde lg:w-48 w-40 rounded-lg"

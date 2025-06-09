@@ -18,11 +18,12 @@ class Lote extends Model
     'foto1',
     'foto2',
     'foto3',
+    'foto4',
     'fraccion_min',
     'venta_directa',
     'precio_venta_directa',
     'tipo_bien_id',
-    'estado_id',
+    'estado',
     'comitente_id',
     'ultimo_contrato'
   ];
@@ -76,6 +77,8 @@ class Lote extends Model
     return $this->belongsTo(Contrato::class, 'ultimo_contrato');
   }
 
+
+
   public function getPrecioBaseAttribute()
   {
     if ($this->ultimo_contrato) {
@@ -118,9 +121,9 @@ class Lote extends Model
     return $this->hasMany(ContratoLote::class);
   }
 
-  public function ultimoContratoLote()
+  public function ultimoContratoLote22()
   {
-    return $this->hasOne(ContratoLote::class)->latestOfMany();
+    // return $this->hasOne(ContratoLote::class)->latestOfMany();
   }
 
   public function ultimoConLote()

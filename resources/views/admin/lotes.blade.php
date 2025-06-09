@@ -5,4 +5,5 @@
 
     @livewire('admin.lotes.index')
 
+
 </x-layouts.app>

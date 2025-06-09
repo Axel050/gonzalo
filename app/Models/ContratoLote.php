@@ -27,4 +27,9 @@ class ContratoLote extends Model
   {
     return $this->belongsTo(Moneda::class);
   }
+
+  public function pujas()
+  {
+    return $this->hasMany(Puja::class, "lote_id", $this->lote_id);
+  }
 }

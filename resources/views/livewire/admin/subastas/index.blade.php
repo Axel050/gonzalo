@@ -106,9 +106,11 @@
                                             class="py-2 font-semibold {{ $subasta->estado ? 'text-green-600' : 'text-red-600' }}">
                                             {{ $subasta->estado ? 'On' : 'Off' }}</td>
                                         <td class="py-2">
-                                            <a href="{{ route('admin.lotes', ['ids' => $subasta->id]) }}"
+                                            <a href="{{ route('admin.lotes', ['ids' => 'subasta-' . $subasta->id]) }}"
                                                 class="bg-cyan-900 text-white px-4 rounded-2xl cursor-pointer py-0.5 hover:bg-cyan-950"
-                                                title="Ver lotes">{{ $subasta->lotes->count() }}
+                                                title="Ver lotes">
+                                                {{-- {{ $subasta->lotes->count() }} --}}
+                                                {{ $subasta->contarLotes() }}
                                             </a>
                                         </td>
 

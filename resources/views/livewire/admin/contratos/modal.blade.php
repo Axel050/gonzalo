@@ -35,7 +35,7 @@
 
                     <x-form-item-area label="Descripcion" :method="$method" model="descripcion" />
 
-                    <x-form-item label="Fecha" :method="$method" model="fecha" type="date" />
+                    <x-form-item label="Fecha" :method="$method" model="fecha_firma" type="date" />
 
                     @if ($method == 'save')
                         <label

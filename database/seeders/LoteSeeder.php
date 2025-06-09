@@ -2,15 +2,16 @@
 
 namespace Database\Seeders;
 
+use App\Enums\LotesEstados;
 use App\Models\Comitente;
 use App\Models\Contrato;
-use App\Models\EstadosLote;
 use App\Models\Lote;
 use App\Models\Moneda;
 use App\Models\Subasta;
 use App\Models\TiposBien;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Log;
 
 class LoteSeeder extends Seeder
@@ -221,6 +222,27 @@ class LoteSeeder extends Seeder
         'foto3' => 'tapiz_persa_add1.jpg',
         'fraccion_min' => 4000,
       ],
+
+      [
+        'titulo' => 'Collar de esmeraldas y diamantes',
+        'descripcion' => 'Elegante collar con esmeraldas colombianas y diamantes talla brillante, montado en oro blanco de 18k.',
+      ],
+      [
+        'titulo' => 'Fotografía histórica firmada',
+        'descripcion' => 'Rara fotografía en blanco y negro de un evento icónico del siglo XX, firmada por el fotógrafo.',
+      ],
+      [
+        'titulo' => 'Cámara Leica antigua',
+        'descripcion' => 'Modelo Leica IIIc de 1940, en excelente estado de conservación y funcional, con estuche original.',
+      ],
+      [
+        'titulo' => 'Botella de vino de colección',
+        'descripcion' => 'Vino tinto Gran Reserva de una bodega prestigiosa, añada 1970, conservado en óptimas condiciones.',
+      ],
+      [
+        'titulo' => 'Violín antiguo de luthier',
+        'descripcion' => 'Violín europeo del siglo XIX, atribuido a un luthier reconocido, con sonido cálido y potente.',
+      ],
     ];
 
     foreach ($lotes as $lote) {
@@ -229,17 +251,38 @@ class LoteSeeder extends Seeder
         // 'numero' => $lote['numero'],
         'descripcion' => $lote['descripcion'],
         // 'precio_base' => $lote['precio_base'],
-        'valuacion' => $lote['valuacion'],
-        'foto1' =>  $images[array_rand($images)],
-        'foto2' => $lote['foto2'],
-        'foto3' => $lote['foto3'],
-        'fraccion_min' => $lote['fraccion_min'],
-        'tipo_bien_id' => TiposBien::inRandomOrder()->first()->id,
+        'valuacion' => $lote['valuacion'] ?? 0,
+        'foto1' =>  !empty($lote['foto1'])
+          ? $images[array_rand($images)]
+          : null,
+        'foto2' => $lote['foto2'] ?? 0,
+        'foto3' => $lote['foto3'] ?? 0,
+        'fraccion_min' => $lote['fraccion_min'] ?? 0,
+        'tipo_bien_id' =>  !empty($lote['foto1'])
+          ? TiposBien::inRandomOrder()->first()->id : null,
+
         'comitente_id' => Comitente::inRandomOrder()->first()->id,
         'ultimo_contrato' => Contrato::inRandomOrder()->first()->id,
+        'estado' => !empty($lote['foto1'])
+          ? Arr::random([LotesEstados::DISPONIBLE, LotesEstados::EN_SUBASTA])
+          : LotesEstados::INCOMPLETO,
+        // 'estado' => !empty($lote['foto1'])
+        //   ? Arr::random(array_filter(
+        //     LotesEstados::all(),
+        //     fn($estado) => $estado !== LotesEstados::INCOMPLETO
+        //   ))
+        //   : LotesEstados::INCOMPLETO,
         // 'comitente_id' => Comitente::inRandomOrder()->first()->id,
         // 'contrato_id' => Contrato::inRandomOrder()->first()->id ?? 1,
       ]);
+    }
+
+
+
+    $newLos = Lote::all();
+
+    foreach ($newLos as $key => $value) {
+      # code...
     }
   }
 }

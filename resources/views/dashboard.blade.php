@@ -7,6 +7,7 @@
             <div class="relative aspect-video overflow-hidden rounded-xl border border-cyan-600 ">
                 <x-placeholder-pattern class="absolute inset-0 size-full stroke-cyan-900/70 " />
 
+
             </div>
             <div class="relative aspect-video overflow-hidden rounded-xl border border-neutral-200 ">
                 <x-placeholder-pattern class="absolute inset-0 size-full stroke-cyan-900/70 " />

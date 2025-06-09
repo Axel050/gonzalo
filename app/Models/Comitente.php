@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Comitente extends Model
 {
@@ -47,6 +48,10 @@ class Comitente extends Model
 
 
   // Relación con Lote a través de Contrato y ContratoLotes
+  public function Clotes()
+  {
+    return $this->hasMany(Lote::class);
+  }
   public function lotes()
   {
     return $this->hasManyThrough(
