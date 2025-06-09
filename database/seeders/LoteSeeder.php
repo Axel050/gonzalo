@@ -90,8 +90,8 @@ class LoteSeeder extends Seeder
         'precio_base' => 14000.00,
         'valuacion' => 22000.00,
         'foto1' => 'reloj_vintage_front.jpg',
-        'foto2' => 'reloj_vintage_back.jpg',
-        'foto3' => 'reloj_vintage_add1.jpg',
+        'foto2' => '',
+        'foto3' => '',
         'fraccion_min' => 2000,
 
       ],
@@ -102,8 +102,8 @@ class LoteSeeder extends Seeder
         'precio_base' => 5000.00,
         'valuacion' => 6000.00,
         'foto1' => 'discos_vinilo_front.jpg',
-        'foto2' => 'discos_vinilo_back.jpg',
-        'foto3' => 'discos_vinilo_add1.jpg',
+        'foto2' => '',
+        'foto3' => '',
         'fraccion_min' => 1000,
 
       ],
@@ -114,8 +114,8 @@ class LoteSeeder extends Seeder
         'precio_base' => 4000.00,
         'valuacion' => 4000.00,
         'foto1' => 'monedas_antiguas_front.jpg',
-        'foto2' => 'monedas_antiguas_back.jpg',
-        'foto3' => 'monedas_antiguas_add1.jpg',
+        'foto2' => '',
+        'foto3' => '',
         'fraccion_min' => 500,
       ],
 
@@ -125,8 +125,8 @@ class LoteSeeder extends Seeder
         'precio_base' => 8000.00,
         'valuacion' => 15000.00,
         'foto1' => 'cuadro_abstracto_front.jpg',
-        'foto2' => 'cuadro_abstracto_back.jpg',
-        'foto3' => 'cuadro_abstracto_add1.jpg',
+        'foto2' => '',
+        'foto3' => '',
         'fraccion_min' => 1000,
       ],
       [
@@ -135,8 +135,8 @@ class LoteSeeder extends Seeder
         'precio_base' => 12000.00,
         'valuacion' => 20000.00,
         'foto1' => 'jarron_porcelana_front.jpg',
-        'foto2' => 'jarron_porcelana_back.jpg',
-        'foto3' => 'jarron_porcelana_add1.jpg',
+        'foto2' => '',
+        'foto3' => '',
         'fraccion_min' => 2000,
       ],
       [
@@ -145,8 +145,8 @@ class LoteSeeder extends Seeder
         'precio_base' => 18000.00,
         'valuacion' => 30000.00,
         'foto1' => 'mueble_caoba_front.jpg',
-        'foto2' => 'mueble_caoba_back.jpg',
-        'foto3' => 'mueble_caoba_add1.jpg',
+        'foto2' => '',
+        'foto3' => '',
         'fraccion_min' => 5000,
       ],
       [
@@ -155,8 +155,8 @@ class LoteSeeder extends Seeder
         'precio_base' => 3500.00,
         'valuacion' => 7000.00,
         'foto1' => 'postales_historicas_front.jpg',
-        'foto2' => 'postales_historicas_back.jpg',
-        'foto3' => 'postales_historicas_add1.jpg',
+        'foto2' => '',
+        'foto3' => '',
         'fraccion_min' => 500,
       ],
       [
@@ -165,8 +165,8 @@ class LoteSeeder extends Seeder
         'precio_base' => 9000.00,
         'valuacion' => 16000.00,
         'foto1' => 'lampara_art_deco_front.jpg',
-        'foto2' => 'lampara_art_deco_back.jpg',
-        'foto3' => 'lampara_art_deco_add1.jpg',
+        'foto2' => '',
+        'foto3' => '',
         'fraccion_min' => 1500,
       ],
       [
@@ -175,8 +175,8 @@ class LoteSeeder extends Seeder
         'precio_base' => 14000.00,
         'valuacion' => 24000.00,
         'foto1' => 'estatua_bronce_front.jpg',
-        'foto2' => 'estatua_bronce_back.jpg',
-        'foto3' => 'estatua_bronce_add1.jpg',
+        'foto2' => '',
+        'foto3' => '',
         'fraccion_min' => 3000,
       ],
       [
@@ -252,8 +252,8 @@ class LoteSeeder extends Seeder
         'foto1' =>  !empty($lote['foto1'])
           ? $images[array_rand($images)]
           : null,
-        'foto2' => $lote['foto2'] ?? 0,
-        'foto3' => $lote['foto3'] ?? 0,
+        'foto2' => "",
+        'foto3' => "",
         'fraccion_min' => $lote['fraccion_min'] ?? 0,
         'tipo_bien_id' =>  !empty($lote['foto1'])
           ? TiposBien::inRandomOrder()->first()->id : null,
