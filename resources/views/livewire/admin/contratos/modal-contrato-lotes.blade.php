@@ -3,28 +3,37 @@
     <div class="bg-gray-200  pb-6 text-gray-700  text-start rounded-xl ml-0 ">
         <div class="flex  flex-col justify-center items-center  max-h-[90vh]">
             <h2
-                class="lg:text-2xl text-xl mb-2  w-full text-center py-1  border-b border-gray-300 text-white rounded-t-lg bg-yellow-800">
+                class="lg:text-2xl text-lg mb-1  w-full text-center py-1  border-b border-gray-300 text-white rounded-t-lg bg-yellow-800">
                 Lotes contrato
-                <b>{{ $contrato->comitente?->nombre }}, {{ $contrato->comitente?->apellido }}
+                <b> {{ $contrato->id }} </b> - <b>{{ $contrato->comitente?->nombre }}
+                    {{ $contrato->comitente?->apellido }}
 
                 </b>
             </h2>
 
             <div
                 class="  w-full lg:w-auto  flex flex-col lg:grid lg:grid-cols-4 gap-2 lg:gap-x-6  text-base lg:px-3 px-2 text-gray-500  [&>div]:flex
-                      [&>div]:flex-col  [&>div]:justify-start pt-2 max-h-[85vh] overflow-y-auto   ">
+                      [&>div]:flex-col  [&>div]:justify-start  max-h-[85vh] overflow-y-auto   relative">
 
 
 
 
+
+                <div class="!flex-row  w-full  !justify-between lg:!hidden ">
+                    <label>Subasta: {{ $contrato->subasta_id }}</label>
+                    <label>Fecha contrato: {{ $contrato->fecha_firma }}</label>
+                </div>
 
                 <div
-                    class="bg-whte px-6 py-3 rounded-lg shadow-lg  text-accent  relative mb-3   !flex-row !justify-between mx-auto col-span-4 ">
+                    class="bg-whte px-6 lg:py-2 py-1 rounded-lg shadow-lg  text-accent  relative mb-2   !flex-row !justify-between mx-auto col-span-4  lg:w-full ">
+
+                    <label class="order-1 hidden lg:inline-block">Subasta : {{ $contrato->subasta_id }}</label>
+                    <label class="order-3 hidden lg:inline-block">Fecha contrato: {{ $contrato->fecha_firma }}</label>
 
 
-
-
-                    <div class="relative flex justify-center  mx-auto" wire:click.outside="$set('si',false)">
+                    <div class="relative flex
+                        justify-center mx-auto order-2"
+                        wire:click.outside="$set('si',false)">
 
 
                         <input type="search" wire:model.live="search"

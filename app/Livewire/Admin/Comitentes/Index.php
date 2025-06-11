@@ -7,6 +7,7 @@ use App\Models\Subasta;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Url;
 
 class Index extends Component
 {
@@ -21,6 +22,9 @@ class Index extends Component
   public $searchType = "todos";
   public $inputType = "search";
 
+
+  #[Url]
+  public $ids, $alias;
 
   public function updatedSearchType()
   {
@@ -68,6 +72,16 @@ class Index extends Component
   #[On(['comitenteCreated', 'comitenteUpdated', 'comitenteDeleted', 'loteCreated'])]
   public function mount()
   {
+
+    if ($this->ids) {
+      $this->query = $this->ids;
+      $this->searchType = "id";
+    }
+    if ($this->alias) {
+      $this->query = $this->alias;
+      $this->searchType = "alias";
+    }
+
     $this->method = "";
     $this->resetPage();
   }
@@ -102,16 +116,36 @@ class Index extends Component
           });
           break;
         case 'todos':
-          $comitentes = Comitente::where("id", "like", '%' . $this->query . '%')
-            ->orWhere("nombre", "like", '%' . $this->query . '%')
-            ->orWhere("apellido", "like", '%' . $this->query . '%')
-            ->orWhere("telefono", "like", '%' . $this->query . '%')
-            ->orWhere("mail", "like", '%' . $this->query . '%')
-            ->orWhere("CUIT", "like", '%' . $this->query . '%')
-            ->orWhereHas('alias', function ($query) {
-              $query->where('nombre', 'like', '%' . $this->query . '%');
-            });
+          $comitentes = Comitente::where(function ($q) {
+            $search = trim($this->query);
+            $words = array_filter(explode(' ', $search)); // Separa palabras y elimina vacías
+
+            $q->orWhere('id', 'like', "%$search%")
+              ->orWhere('nombre', 'like', "%$search%")
+              ->orWhere('apellido', 'like', "%$search%")
+              ->orWhere('telefono', 'like', "%$search%")
+              ->orWhere('mail', 'like', "%$search%")
+              ->orWhere('CUIT', 'like', "%$search%")
+              ->orWhereHas('alias', function ($query) use ($search) {
+                $query->where('nombre', 'like', "%$search%");
+              });
+
+            // Si hay al menos dos palabras, buscar combinación nombre + apellido
+            if (count($words) >= 2) {
+              $nombre = $words[0];
+              $apellido = $words[1];
+
+              $q->orWhere(function ($subq) use ($nombre, $apellido) {
+                $subq->where('nombre', 'like', "%$nombre%")
+                  ->where('apellido', 'like', "%$apellido%");
+              });
+            }
+          });
           break;
+
+          // 
+
+          // 
       }
       $comitentes = $comitentes->orderBy("id", "desc")->paginate(7);
     } else {

@@ -95,10 +95,25 @@
 
                                         <td class="py-2">{{ $cont->id }}</td>
                                         <td class="py-2">{{ $cont->fecha_firma }}</td>
-                                        <td class="py-2">{{ $cont->comitente?->nombre }}
-                                            {{ $cont->comitente?->apellido }}</td>
-                                        <td class="py-2">{{ $cont->comitente?->alias?->nombre }}</td>
-                                        <td class="py-2">{{ $cont->subasta_id }}</td>
+                                        <td class="py-2">
+                                            <a href="{{ route('admin.comitentes', ['ids' => $cont->comitente?->id]) }}"
+                                                class="cursor-pointer hover:font-bold">
+                                                {{ $cont->comitente?->nombre }}
+                                                {{ $cont->comitente?->apellido }}
+                                            </a>
+                                        </td>
+                                        <td class="py-2">
+                                            <a href="{{ route('admin.comitentes', ['alias' => $cont->comitente?->alias?->nombre]) }}"
+                                                class="cursor-pointer hover:font-bold">
+                                                {{ $cont->comitente?->alias?->nombre }}
+                                            </a>
+                                        </td>
+                                        <td class="py-2">
+                                            <a href="{{ route('admin.subastas', ['ids' => $cont->subasta_id]) }}"
+                                                class="cursor-pointer hover:font-extrabold">
+                                                {{ $cont->subasta_id }}
+                                            </a>
+                                        </td>
                                         <td class="py-2">
                                             <button
                                                 class=" hover:text-white  hover:bg-yellow-900 flex items-center py-0.5 bg-yellow-800 rounded-lg  cursor-pointer text-gray-200 px-3"

@@ -42,22 +42,15 @@ class ModalHistory extends Component
   public $estado;
   public $estados;
 
+  public $adquirente, $fecha, $precio_final, $subasta;
 
 
 
 
 
 
-  public function close()
-  {
-    if ($this->index) {
-      info("index");
-      $this->dispatch("closeModalToIndex");
-    } else {
-      info("Noindex");
-      $this->dispatch("closeModalToView");
-    }
-  }
+
+
 
   public function mount()
   {
@@ -79,9 +72,25 @@ class ModalHistory extends Component
     $this->estado = $this->lote->estado;
     // $this->tempLotes = $this->contrato->lotes->toArray();
     // $this->contratosLotes = 
+
+    if ($this->estado == "vendido") {
+      $this->adquirente = $this->lote->getPujaFinal()?->adquirente?->nombre . " " . $this->lote->getPujaFinal()?->adquirente?->apellido;;
+      $this->subasta = $this->lote->getPujaFinal()?->subasta_id;
+      $this->precio_final = (int)$this->lote->getPujaFinal()?->monto;
+      // $this->fecha = $this->lote->getPujaFinal()?->created_at;
+      $this->fecha = optional($this->lote->getPujaFinal())->created_at?->format('Y-m-d H:i:s');
+    }
   }
 
 
+  public function close()
+  {
+    if ($this->index) {
+      $this->dispatch("closeModalToIndex");
+    } else {
+      $this->dispatch("closeModalToView");
+    }
+  }
 
   public function render()
   {

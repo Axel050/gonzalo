@@ -131,4 +131,15 @@ class Lote extends Model
     return $this->hasOne(ContratoLote::class, 'lote_id')
       ->where('contrato_id', $this->ultimo_contrato);
   }
+
+
+  public function pujas()
+  {
+    return $this->hasMany(Puja::class)->orderBy('id', 'desc');;
+  }
+
+  public function getPujaFinal()
+  {
+    return $this->pujas()->orderByDesc('id')->first();
+  }
 }

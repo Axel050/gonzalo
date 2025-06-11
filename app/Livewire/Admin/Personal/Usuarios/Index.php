@@ -6,10 +6,14 @@ use App\Models\Personal;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Url;
 
 class Index extends Component
 {
   use WithPagination;
+
+  #[Url]
+  public $ids;
 
   public $query, $nombre, $id;
   public $method = "";
@@ -37,6 +41,11 @@ class Index extends Component
   #[On(['personalCreated', 'personalUpdated', 'personalDeleted'])]
   public function mount()
   {
+    if ($this->ids) {
+      $this->query = $this->ids;
+      $this->searchType = "id";
+    }
+
     $this->method = "";
     $this->resetPage();
   }

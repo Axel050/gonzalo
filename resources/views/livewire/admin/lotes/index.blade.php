@@ -111,9 +111,19 @@
 
                                         <td class="py-2">{{ $lot->id }}</td>
                                         <td class="py-2">{{ $lot->titulo }}</td>
-                                        <td class="py-2">{{ $lot->comitente?->nombre }}
-                                            {{ $lot->comitente?->apellido }}</td>
-                                        <td class="py-2">{{ $lot->comitente?->alias?->nombre }}</td>
+                                        <td class="py-2">
+                                            <a href="{{ route('admin.comitentes', ['ids' => $lot->comitente?->id]) }}"
+                                                class="cursor-pointer hover:font-bold">
+                                                {{ $lot->comitente?->nombre }}
+                                                {{ $lot->comitente?->apellido }}
+                                            </a>
+                                        </td>
+                                        <td class="py-2">
+                                            <a href="{{ route('admin.comitentes', ['alias' => $lot->comitente?->alias?->nombre]) }}"
+                                                class="cursor-pointer hover:font-bold">
+                                                {{ $lot->comitente?->alias?->nombre }}
+                                            </a>
+                                        </td>
                                         <td class="py-2 !px-0">
                                             @if ($lot->foto1 && Storage::disk('public')->exists('imagenes/lotes/thumbnail/' . $lot->foto1))
                                                 <img class="max-w-[50px] max-h-[50px] hover:cursor-pointer hver:bg-white p-0.5 hover:outline mx-auto hover:scale-110 transition-transform"
@@ -125,15 +135,34 @@
                                                 </svg>
                                             @endif
                                         </td>
-                                        <td>{{ $lot->tipo?->nombre }}</td>
-                                        <td>{{ $lot->tipo?->encargado?->nombre }}
-                                            {{ $lot->tipo?->encargado?->apellido }}
+                                        <td>
+                                            <a href="{{ route('admin.tipo-bien', ['ids' => $lot->tipo?->id]) }}"
+                                                class="cursor-pointer hover:font-bold">
+                                                {{ $lot->tipo?->nombre }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('admin.usuarios', ['ids' => $lot->tipo?->encargado?->id]) }}"
+                                                class="cursor-pointer hover:font-bold">
+                                                {{ $lot->tipo?->encargado?->nombre }}
+                                                {{ $lot->tipo?->encargado?->apellido }}
+                                            </a>
                                         </td>
                                         <td>{{ (int) $lot->precio_base }}</td>
                                         <td>{{ (int) $lot->valuacion }}</td>
                                         <td>{{ $lot->ultimoConLote?->moneda?->titulo }}</td>
-                                        <td>{{ $lot->ultimoContrato?->subasta_id }}</td>
-                                        <td>{{ $lot->ultimo_contrato }}</td>
+                                        <td>
+                                            <a href="{{ route('admin.subastas', ['ids' => $lot->ultimoContrato?->subasta_id]) }}"
+                                                class="cursor-pointer hover:font-extrabold">
+                                                {{ $lot->ultimoContrato?->subasta_id }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('admin.contratos', ['ids' => $lot->ultimo_contrato]) }}"
+                                                class="cursor-pointer hover:font-extrabold">
+                                                {{ $lot->ultimo_contrato }}
+                                            </a>
+                                        </td>
 
                                         <td>
                                             {{ collect($estados)->firstWhere('value', $lot->estado)['label'] ?? $lot->estado }}

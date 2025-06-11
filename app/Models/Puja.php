@@ -7,5 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Puja extends Model
 {
-    use HasFactory;
+  use HasFactory;
+
+
+  public function adquirente()
+  {
+    return $this->belongsTo(Adquirente::class);
+  }
 }

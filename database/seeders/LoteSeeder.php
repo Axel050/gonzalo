@@ -261,7 +261,7 @@ class LoteSeeder extends Seeder
         'comitente_id' => Comitente::inRandomOrder()->first()->id,
         'ultimo_contrato' => Contrato::inRandomOrder()->first()->id,
         'estado' => !empty($lote['foto1'])
-          ? Arr::random([LotesEstados::DISPONIBLE, LotesEstados::EN_SUBASTA])
+          ? Arr::random([LotesEstados::DISPONIBLE, LotesEstados::EN_SUBASTA, LotesEstados::STANDBY])
           : LotesEstados::INCOMPLETO,
         // 'estado' => !empty($lote['foto1'])
         //   ? Arr::random(array_filter(

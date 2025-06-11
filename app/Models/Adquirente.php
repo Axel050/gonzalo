@@ -13,7 +13,7 @@ class Adquirente extends Model
   protected $fillable = [
     'nombre',
     'apellido',
-    'alias',
+    'alias_id',
     'telefono',
     'CUIT',
     'domicilio',

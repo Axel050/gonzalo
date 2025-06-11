@@ -8,6 +8,7 @@ use App\Models\Subasta;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Livewire\Attributes\Url;
 
 class Index extends Component
 {
@@ -15,12 +16,15 @@ class Index extends Component
 
   use WithPagination;
 
+  #[Url]
+  public $ids, $alias;
 
   public $query, $nombre, $id;
 
   public $method = "";
   public $searchType = "todos";
   public $inputType = "search";
+
 
 
   public function updatedSearchType()
@@ -68,6 +72,16 @@ class Index extends Component
   #[On(['adquirenteCreated', 'adquirenteUpdated', 'adquirenteDeleted', 'autorizadoCreated'])]
   public function mount()
   {
+
+    if ($this->ids) {
+      $this->query = $this->ids;
+      $this->searchType = "id";
+    }
+    if ($this->alias) {
+      $this->query = $this->alias;
+      $this->searchType = "alias";
+    }
+
     $this->method = "";
     $this->resetPage();
   }

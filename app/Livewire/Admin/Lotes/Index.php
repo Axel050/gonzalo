@@ -70,6 +70,7 @@ class Index extends Component
     // ]);
     // dd("MEJOREAR EL SEEDERR  PARA LOTES Y CONTRATO LOTES");
     // $this->estados = LotesEstados::all();
+
     $this->estados = array_map(function ($estado) {
       return [
         'value' => $estado,
@@ -84,15 +85,18 @@ class Index extends Component
       $parts = explode('-', $this->ids);
 
       info($parts);
+
       if ($parts[0] == "comitente") {
         $exists = Comitente::where('id', $parts[1])->first();
         $this->query = $exists->nombre . ' ' . $exists->apellido;
         // $this->query = $exists->nombre;
+
         info([
           "existes" => $exists,
           "nomrne" => $exists->nombre
         ]);
       }
+
       if ($parts[0] == "subasta") {
         $exists = Subasta::where('id', $parts[1])->exists();
         $this->query = $parts[1];
@@ -106,11 +110,6 @@ class Index extends Component
       }
     }
 
-
-    info([
-      "search" => $this->searchType,
-      "quey" => $this->query
-    ]);
     $this->method = "";
     $this->resetPage();
   }

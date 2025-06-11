@@ -89,14 +89,32 @@
                                         class="divide-x-2 divide-y-2 divide-gray-400 [&>td]:pl-2 [&>td]:pr-1 [&>td]:lg:pl-4 [&>td]:text-start ">
 
                                         <td class="py-2">{{ $dep->id }}</td>
-                                        <td class="py-2">{{ $dep->fecha }}</td>
-                                        <td class="py-2">{{ number_format($dep->monto, 0, ',', '.') }}</td>
-                                        <td class="py-2">{{ $dep->estado }}</td>
-                                        <td class="py-2">{{ $dep->fecha_devolucion }}</td>
-                                        <td class="py-2">{{ $dep->adquirente?->nombre }}
-                                            {{ $dep->adquirente?->apellido }} </td>
-                                        <td class="py-2">{{ $dep->adquirente?->alias?->nombre }}</td>
-                                        <td class="py-2">{{ $dep->subasta?->id }}</td>
+                                        <td>{{ $dep->fecha }}</td>
+                                        <td>{{ number_format($dep->monto, 0, ',', '.') }}</td>
+                                        <td>{{ $dep->estado }}</td>
+                                        <td>{{ $dep->fecha_devolucion }}</td>
+                                        <td>
+                                            <a href="{{ route('admin.adquirentes', ['ids' => $dep->adquirente?->id]) }}"
+                                                class="cursor-pointer hover:font-bold">
+                                                {{ $dep->adquirente?->nombre }}
+                                                {{ $dep->adquirente?->apellido }}
+                                            </a>
+                                        </td>
+
+                                        <td>
+                                            <a href="{{ route('admin.adquirentes', ['alias' => $dep->adquirente?->alias?->nombre]) }}"
+                                                class="cursor-pointer hover:font-bold">
+                                                {{ $dep->adquirente?->alias?->nombre }}
+                                            </a>
+                                        </td>
+
+
+                                        <td>
+                                            <a href="{{ route('admin.subastas', ['ids' => $dep->subasta?->id]) }}"
+                                                class="cursor-pointer hover:font-extrabold">
+                                                {{ $dep->subasta?->id }}
+                                            </a>
+                                        </td>
 
                                         <td>
                                             <div class="flex justfy-end lg:gap-x-6 gap-x-4 text-white text-xs">

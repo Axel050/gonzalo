@@ -32,10 +32,12 @@
                     </x-form-item-sel>
 
                     @if ($estado == 'vendido')
-                        <x-form-item label="Adquirente" method="view" model="" />
-                        <x-form-item label="Precio final" method="view" model="" />
-                        <x-form-item label="Fecha" method="view" model="" />
-                        <x-form-item label="Subasta" method="view" model="" />
+                        <x-form-item label="Adquirente" method="view" model="adquirente"
+                            class="disabled:text-green-700" />
+                        <x-form-item label="Precio final" method="view" model="precio_final"
+                            class="disabled:text-green-700" />
+                        <x-form-item label="Fecha" method="view" model="fecha" class="disabled:text-green-700" />
+                        <x-form-item label="Subasta" method="view" model="subasta" class="disabled:text-green-700" />
                     @endif
 
                     <div class="min-w-full inline-block align-middle col-span-4 ">
@@ -88,36 +90,45 @@
 
                                 <table class="min-w-full divide-y  divide-gray-600 ">
                                     <caption class="caption-top text-gray-700">
-                                        Listado de pujas {{ $contratosLotes->count() }}
+                                        Listado de pujas {{ $lote->pujas?->count() }}
                                     </caption>
                                     <thead>
                                         <tr
                                             class="bg-gray-400 relative font-bold divide-x-2 divide-gray-600  text-sm text-gray-900 text-center">
-                                            <th class="py-1">Contrato</th>
-                                            <th>Fecha</th>
+                                            <th class="py-1">ID</th>
+                                            <th>Adquirente</th>
+                                            <th>Alias</th>
+                                            <th>Monto</th>
                                             <th>Subasta</th>
-                                            <th>Base</th>
-                                            <th>Moneda</th>
-                                            {{-- <th>Foto</th> --}}
+                                            <th>Fecha</th>
                                             {{-- <th>Accion</th> --}}
 
                                         </tr>
                                     </thead>
                                     <tbody class="divide-y divide-gray-300 text-gray-600  text-sm rounded-full">
 
-                                        @foreach ($lote->ultimoConLote?->pujas as $index => $item)
-                                            <tr
-                                                class="bg-gray-100 relative font-semibold divide-x-2 divide-gray-300 text-center [&>td]:lg:px-8 [&>td]:px-2 ">
-                                                <td class="py-0.5">
-                                                    <a href="">
-                                                        {{ $item->contrato_id }}
-                                                    </a>
-                                                </td>
-                                                <td>{{ $item->contrato->fecha_firma }} </td>
-                                                <td>{{ $item->contrato->subasta_id }} </td>
-                                                <td>{{ (int) $item->precio_base }} </td>
-                                                <td>{{ $this->monedas[$item->moneda_id]->titulo ?? 'Sin moneda' }}
-                                                </td>
+                                        @foreach ($lote->pujas as $index => $item)
+                                            @if ($lote->estado === 'vendido' && $index === 0)
+                                                <tr
+                                                    class="bg-gray-100 relative font-semibold divide-x-2 divide-gray-300 text-center text-green-600 [&>td]:lg:px-8 [&>td]:px-2">
+                                                @else
+                                                <tr
+                                                    class="bg-gray-100 relative  divide-x-2 divide-gray-300 text-center [&>td]:lg:px-8 [&>td]:px-2">
+                                            @endif
+
+                                            <td class="py-0.5">
+                                                <a href="">
+                                                    {{ $item->id }}
+                                                </a>
+                                            </td>
+                                            <td>{{ $item->adquirente?->nombre }}
+                                                {{ $item->adquirente?->apellido }}</td>
+                                            <td>{{ $item->adquirente?->alias?->nombre }}</td>
+                                            <td>{{ (int) $item->monto }} </td>
+                                            <td>{{ $item->subasta_id }} </td>
+                                            <td>{{ $item->created_at }} </td>
+
+                                            </td>
                                             </tr>
                                         @endforeach
 
