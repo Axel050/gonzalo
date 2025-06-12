@@ -150,6 +150,7 @@
                         type="number" wire:show="venta_directa == '1'" />
 
 
+
                     <div
                         class="  lg:col-span-4  col-span-1  !grid lg:grid-cols-4 grid-cols-1  [&>div]:flex
                       [&>div]:flex-col gap-2 lg:gap-x-12 ">
@@ -173,39 +174,56 @@
 
                 @endif
 
-                <div class="flex !flex-row gap-6 justify-center lg:text-base text-sm lg:col-span-4">
-                    <button type="button"
-                        class="bg-orange-600 hover:bg-orange-700 mt-4 rounded-lg px-2 lg:py-1 py-0.5 "
-                        wire:click="$parent.$set('method',false)">
-                        Cancelar
-                    </button>
+                <div class="flex !flex-row gap-6 !justify-center lg:text-base text-sm lg:col-span-4 ">
 
-                    @if ($method != 'view')
-                        <button
-                            class="bg-green-600 hover:bg-green-700 mt-4 rounded-lg px-2 lg:py-1 py-0.5 flex text-center items-center "
-                            wire:click="{{ $method }}">
-                            {{ $btnText }}
-                        </button>
-                    @endif
+                    <div class=" flex justify-center gap-x-5 lg:gap-x-8">
 
-                    @if ($method == 'view')
-                        <button
-                            class="bg-cyan-700 hover:bg-cyan-800 mt-4 rounded-lg px-2 lg:py-1 py-0.5 flex text-center items-center "
-                            wire:click="$set('historial',{{ $lote->id }})" title="historial">
-                            Historial
+
+                        <button type="button"
+                            class="bg-orange-600 hover:bg-orange-700 mt-4 rounded-lg px-2 lg:py-1 py-0.5 "
+                            wire:click="$parent.$set('method',false)">
+                            Cancelar
                         </button>
 
-                        <div wire:ignore.self>
+                        @if ($method != 'view')
+                            <button
+                                class="bg-green-600 hover:bg-green-700 mt-4 rounded-lg px-2 lg:py-1 py-0.5 flex text-center items-center "
+                                wire:click="{{ $method }}" title="Salir">
+                                {{ $btnText }}
+                            </button>
+                        @endif
 
-                            @if ($historial)
-                                @livewire('admin.lotes.modal-history', ['id' => $lote->id, 'index' => false], key('modal-contrato-lotes-history-' . $lote->id))
-                            @endif
-                        </div>
+                        @if ($method == 'view')
+                            <button
+                                class="bg-cyan-700 hover:bg-cyan-800 mt-4 rounded-lg px-2 lg:py-1 py-0.5 flex text-center items-center "
+                                wire:click="$set('historial',{{ $lote->id }})" title="Ver historial">
+                                Historial
+                            </button>
+
+                            <button
+                                class="bg-indigo-800 hover:bg-indigo-900 mt-4 rounded-lg px-2 lg:py-1 py-0.5 flex text-center items-center "
+                                wire:click="$set('qr',{{ $lote->id }})" title="Ver QR">
+                                QR
+                            </button>
+
+                            <div wire:ignore.self>
+
+                                @if ($qr)
+                                    @livewire('admin.lotes.modal-qr', ['id' => $id], key('modal-contrato-lotes-qr-' . $id))
+                                @endif
+                            </div>
+
+                            <div wire:ignore.self>
+
+                                @if ($historial)
+                                    @livewire('admin.lotes.modal-history', ['id' => $lote->id, 'index' => false], key('modal-contrato-lotes-history-' . $lote->id))
+                                @endif
+                            </div>
 
 
-                    @endif
+                        @endif
 
-
+                    </div>
                 </div>
 
             </div>

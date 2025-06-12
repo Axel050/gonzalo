@@ -7,9 +7,9 @@ use App\Models\ComitentesAlias;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\ImageManager;
 use Livewire\Component;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
-use Intervention\Image\ImageManager;
 
 class Modal extends Component
 {

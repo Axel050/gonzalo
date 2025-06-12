@@ -26,4 +26,11 @@ Route::middleware(['auth'])->group(function () {
   Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
 });
 
+
+// Route::get('/lotes/{id}', [QrCodeController::class, 'show'])->name('lotes.show');
+Route::get('/lotes/{id}', function ($id) {
+  // $id = 11;
+  return view('detalle-lotes', compact("id"));
+})->name('lotes.show');
+
 require __DIR__ . '/auth.php';

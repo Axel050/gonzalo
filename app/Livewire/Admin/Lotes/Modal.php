@@ -19,6 +19,7 @@ use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 use Livewire\Attributes\On;
 use Livewire\Features\SupportFileUploads\WithFileUploads;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Modal extends Component
 {
@@ -26,6 +27,8 @@ class Modal extends Component
 
   use WithFileUploads;
 
+
+  public $qr;
 
   public $historial;
 
@@ -85,6 +88,13 @@ class Modal extends Component
 
 
 
+
+
+  #[On(['closeModalToQR'])]
+  public function closeQrModal()
+  {
+    $this->qr = false;
+  }
 
   #[On(['closeModalToView'])]
   public function closeHistory()
