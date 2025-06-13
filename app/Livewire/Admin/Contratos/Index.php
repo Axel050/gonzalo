@@ -14,6 +14,7 @@ class Index extends Component
 {
   use WithPagination;
 
+  public $new;
   public $query, $nombre, $id;
   public $method = "";
   public $searchType = "todos";
@@ -25,6 +26,7 @@ class Index extends Component
   #[On(['lotes'])]
   public function openLotes($id = false)
   {
+    $this->new = 1;
     $this->id = $id;
     $this->method = "lotes";
   }
@@ -32,6 +34,7 @@ class Index extends Component
   public function option($method, $id = false)
   {
     if ($method == "delete" || $method == "update" || $method == "view"   || $method == "lotes") {
+      $this->new = false;
       $cond = Contrato::find($id);
       if (!$cond) {
         $this->dispatch('contratoNotExits');

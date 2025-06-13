@@ -9,12 +9,13 @@
                     {{ $contrato->comitente?->apellido }}
 
                 </b>
+
             </h2>
 
             <div
                 class="  w-full lg:w-auto  flex flex-col lg:grid lg:grid-cols-4 gap-2 lg:gap-x-6  text-base lg:px-3 px-2 text-gray-500  [&>div]:flex
                       [&>div]:flex-col  [&>div]:justify-start  max-h-[85vh] overflow-y-auto   relative">
-
+                @dump($new)
 
 
 

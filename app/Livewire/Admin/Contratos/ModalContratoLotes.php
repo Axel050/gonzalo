@@ -3,15 +3,18 @@
 namespace App\Livewire\Admin\Contratos;
 
 use App\Enums\LotesEstados;
+use App\Mail\TestEmail;
 use App\Models\Contrato;
 use App\Models\ContratoLote;
 use App\Models\Lote;
 use App\Models\Moneda;
+use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 
 class ModalContratoLotes extends Component
 
 {
+  public $new;
 
   public $modal_foto = false;
   public $search;
@@ -194,6 +197,22 @@ class ModalContratoLotes extends Component
   public function save()
   {
 
+    $data = [
+      'message' => 'This is a test message from Livewire!',
+      'extra' => "xxaa", // Additional parameter
+    ];
+
+    Mail::to('axeldavidpaz@gmail.com')->send(new TestEmail($data));
+
+    // $this->dispatch('lotes', 6, $this->extraParameter); // Dispatch event with two parameters
+
+    // session()->flash('message', 'Email sent successfully!');
+  }
+
+  public function save2()
+  {
+
+
     $existingIds = $this->contrato->lotes->pluck('id')->toArray();
 
     // Obtener los IDs de los lotes en $tempLotes
@@ -256,6 +275,15 @@ class ModalContratoLotes extends Component
     }
 
     $this->contrato->save();
+
+
+
+    if ($this->new) {
+      info("Mandar mail new ");
+    } else {
+      info("Mail updated");
+    }
+
 
     $this->dispatch('loteCreated');
   }

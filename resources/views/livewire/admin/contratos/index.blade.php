@@ -55,7 +55,7 @@
             @if ($method != 'lotes')
                 @livewire('admin.contratos.modal', ['method' => $method, 'id' => $id])
             @else
-                @livewire('admin.contratos.modal-contrato-lotes', ['id' => $id], key('modal-contrato-lotes-' . $id))
+                @livewire('admin.contratos.modal-contrato-lotes', ['id' => $id, 'new' => $new], key('modal-contrato-lotes-' . $id))
             @endif
         @endif
 
