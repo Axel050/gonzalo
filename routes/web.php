@@ -3,6 +3,7 @@
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
+use App\Mail\ContratoEmail;
 use Illuminate\Support\Facades\Route;
 use App\Mail\TestEmail;
 use App\Models\Contrato;
@@ -52,7 +53,7 @@ Route::get('/test-mail', function () {
   ];
 
 
-  return (new TestEmail($data))->render();
+  return (new ContratoEmail($data))->render();
 });
 
 require __DIR__ . '/auth.php';

@@ -55,7 +55,7 @@ class Modal extends Component
       'apellido' => 'required',
       'telefono' => 'required',
       'mail' => 'required|email',
-      // 'domicilio' => 'required',        
+      'domicilio' => 'required',
       'comision' => 'required|numeric|min:0',
       // 'banco' => 'required',
       'numero_cuenta' => 'required',
@@ -97,6 +97,7 @@ class Modal extends Component
       "comision.min" => "Comision invalida.",
       "CBU.required" => "Ingrese CBU.",
       "numero_cuenta.required" => "Ingrese numero de cuenta.",
+      "domicilio.required" => "Ingrese domicilio.",
 
     ];
   }

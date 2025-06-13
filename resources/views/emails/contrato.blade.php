@@ -21,7 +21,7 @@
                         <td>Contrato: {{ $data['id'] }}</td>
                     </tr>
                 </table>
-
+                {{-- ADDD BTON --}}
                 <br>
                 <p style="font-size: 16px; line-height: 1.5; margin: 0 0 20px 0;">{{ $data['message'] }} de contrato.
                 </p>

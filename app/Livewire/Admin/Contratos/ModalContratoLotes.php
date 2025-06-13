@@ -3,7 +3,7 @@
 namespace App\Livewire\Admin\Contratos;
 
 use App\Enums\LotesEstados;
-use App\Mail\TestEmail;
+use App\Mail\ContratoEmail;
 use App\Models\Contrato;
 use App\Models\ContratoLote;
 use App\Models\Lote;
@@ -194,46 +194,17 @@ class ModalContratoLotes extends Component
   }
 
 
-  public function save2()
+
+
+  public function save($send = false)
   {
 
-    // info($this->contrato->lotes);
-    if ($this->new) {
-      $data = [
-        'message' => 'Creación ',
-        'lotes' => $this->contrato->lotes, // Additional parameter
-      ];
-    } else {
-      $data = [
-        'message' => 'Actualización ',
-        'lotes' => $this->contrato->lotes, // Additional parameter
-      ];
-    }
-
-    Mail::to('axeldavidpaz@gmail.com')->send(new TestEmail($data));
-
-    // $this->dispatch('lotes', 6, $this->extraParameter); // Dispatch event with two parameters
-
-    // session()->flash('message', 'Email sent successfully!');
-  }
-
-  public function savee()
-  {
-
-    $data = [
-      'message' => 'Este es un mensaje de prueba',
-      'lotes' => [
-        (object)['titulo' => 'Lote 1'],
-        (object)['titulo' => 'Lote 2'],
-        (object)['titulo' => 'Lote 3'],
-      ]
-    ];
-
-    return view('emails.test', ['data' => $data]);
-  }
-
-  public function save()
-  {
+    $this->validate([
+      'tempLotes' => 'required|array|min:1', // Ensures tempLotes is an array with at least one element
+    ], [
+      'tempLotes.required' => 'Debe agregar al menos un lote.',
+      'tempLotes.min' => 'Debe agregar al menos un lote.',
+    ]);
 
     $existingIds = $this->contrato->lotes->pluck('id')->toArray();
 
@@ -248,7 +219,6 @@ class ModalContratoLotes extends Component
         ->delete();
     }
 
-    // 2. Procesar cada elemento en $tempLotes
     foreach ($this->tempLotes as $tempLote) {
 
       if ($tempLote['id']) {
@@ -272,10 +242,6 @@ class ModalContratoLotes extends Component
           ]);
 
           Lote::find($tempLote['id'])->update(['ultimo_contrato' => $this->contrato->id]);
-          // info([
-          //   "lllloooooo" => "ada",
-          //   "lote temp" => $tempLote["id"]
-          // ]);
         }
       } else {
 
@@ -296,25 +262,29 @@ class ModalContratoLotes extends Component
       }
     }
 
-    $message = "";
-    if ($this->new) {
-      $message = "Creación";
-    } else {
-      $message = "Actualización";
+
+
+    if ($send) {
+      $message = "";
+      if ($this->new) {
+        $message = "Creación";
+      } else {
+        $message = "Actualización";
+      }
+
+      $contratoLotes = ContratoLote::where('contrato_id', $this->contrato->id)->get();
+      $data = [
+        'message' => $message,
+        'lotes' => $contratoLotes,
+        'comitente' => $this->contrato->comitente?->nombre . " " . $this->contrato->comitente?->apellido,
+        "id" => $this->contrato->id,
+        "subasta" => $this->contrato->subasta_id,
+        "fecha" => $this->contrato->fecha_firma,
+      ];
+
+      // Mail::to('axeldavidpaz@gmail.com')->send(new TestEmail($data));
+      Mail::to($this->contrato->comitente?->mail)->send(new ContratoEmail($data));
     }
-
-    $contratoLotes = ContratoLote::where('contrato_id', $this->contrato->id)->get();
-    $data = [
-      'message' => $message,
-      'lotes' => $contratoLotes,
-      'comitente' => $this->contrato->comitente?->nombre . " " . $this->contrato->comitente?->apellido,
-      "id" => $this->contrato->id,
-      "subasta" => $this->contrato->subasta_id,
-      "fecha" => $this->contrato->fecha_firma,
-    ];
-
-    // Mail::to('axeldavidpaz@gmail.com')->send(new TestEmail($data));
-    Mail::to($this->contrato->comitente?->mail)->send(new TestEmail($data));
 
 
     $this->dispatch('loteCreated');

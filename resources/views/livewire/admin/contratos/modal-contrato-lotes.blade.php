@@ -15,7 +15,7 @@
             <div
                 class="  w-full lg:w-auto  flex flex-col lg:grid lg:grid-cols-4 gap-2 lg:gap-x-6  text-base lg:px-3 px-2 text-gray-500  [&>div]:flex
                       [&>div]:flex-col  [&>div]:justify-start  max-h-[85vh] overflow-y-auto   relative">
-                @dump($new)
+
 
 
 
@@ -29,11 +29,11 @@
                     class="bg-whte px-6 lg:py-2 py-1 rounded-lg shadow-lg  text-accent  relative mb-2   !flex-row !justify-between mx-auto col-span-4  lg:w-full ">
 
                     <label class="order-1 hidden lg:inline-block">Subasta : {{ $contrato->subasta_id }}</label>
-                    <label class="order-3 hidden lg:inline-block">Fecha contrato: {{ $contrato->fecha_firma }}</label>
+                    <label class="order-4 hidden lg:inline-block">Fecha contrato: {{ $contrato->fecha_firma }}</label>
 
 
                     <div class="relative flex
-                        justify-center mx-auto order-2"
+                        justify-center mx-auto order-2 items-center"
                         wire:click.outside="$set('si',false)">
 
 
@@ -72,14 +72,14 @@
                             </span>
                         @endif --}}
 
+                        <button wire:click="limpiar" wire:show="lote_id"
+                            class=" px-2   rounded-2xl py-0 text-xs   bg-red-600 h-6 text-white  w-fit hover:bg-red-700 ml-4 order-3 lg:self-start">Limpiar
+                        </button>
 
                     </div>
 
 
 
-                    <button wire:click="limpiar" wire:show="lote_id"
-                        class=" px-1 rounded-2xl py-0 text-sm   bg-red-600 h-7 text-white w-20 hover:bg-red-700 ml-4">Limpiar
-                    </button>
 
 
                 </div>
@@ -102,6 +102,11 @@
                         class="bg-yellow-600 hover:bg-yellow-700 mt-4 rounded-lg px-2 lg:py-1 py-0.5 w-3/4 lg:w-2/4 mx-auto  text-white">Agregar</button>
                 </div>
 
+                <div class=" flex justify-center mx-auto col-span-4">
+
+                    <x-input-error for="tempLotes" class="top-full py-0 leading-[12px] text-red-500" />
+                    {{-- <p>x</p> --}}
+                </div>
                 {{-- 
                 <div>
                 </div> --}}
@@ -195,7 +200,7 @@
             <div
                 class="flex
                                 !flex-row justify-between text-center lg:text-base text-sm lg:col-span-3 text-white ">
-                <div class="flex justify-center  w-full space-x-6">
+                <div class="flex justify-center  w-full lg:space-x-10 space-x-4">
 
                     <button type="button"
                         class="bg-orange-600 hover:bg-orange-700 mt-4 rounded-lg px-2 lg:py-1 py-0.5 "
@@ -208,6 +213,12 @@
                         class="bg-green-600 hover:bg-green-700 mt-4 rounded-lg px-2 lg:py-1 py-0.5 flex text-center items-center "
                         wire:click="save">
                         Guardar
+                    </button>
+
+                    <button
+                        class="bg-cyan-700 hover:bg-cyan-800 mt-4 rounded-lg px-2 lg:py-1 py-0.5 flex text-center items-center "
+                        wire:click="save(true)">
+                        Guardar y enviar mail
                     </button>
                 </div>
 
