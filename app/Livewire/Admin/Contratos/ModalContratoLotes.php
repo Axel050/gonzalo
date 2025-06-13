@@ -104,7 +104,7 @@ class ModalContratoLotes extends Component
 
     // $this->monedas = Moneda::all();
     $this->monedas = Moneda::all()->keyBy('id');
-    info($this->monedas[2]);
+
     $this->contrato = Contrato::find($this->id);
     // $this->tempLotes = $this->contrato->lotes->toArray();
     $this->tempLotes = $this->contrato->lotes->map(function ($lote) {
@@ -194,7 +194,7 @@ class ModalContratoLotes extends Component
   }
 
 
-  public function save()
+  public function save2()
   {
 
     // info($this->contrato->lotes);
@@ -217,9 +217,23 @@ class ModalContratoLotes extends Component
     // session()->flash('message', 'Email sent successfully!');
   }
 
-  public function save2()
+  public function savee()
   {
 
+    $data = [
+      'message' => 'Este es un mensaje de prueba',
+      'lotes' => [
+        (object)['titulo' => 'Lote 1'],
+        (object)['titulo' => 'Lote 2'],
+        (object)['titulo' => 'Lote 3'],
+      ]
+    ];
+
+    return view('emails.test', ['data' => $data]);
+  }
+
+  public function save()
+  {
 
     $existingIds = $this->contrato->lotes->pluck('id')->toArray();
 
@@ -258,10 +272,10 @@ class ModalContratoLotes extends Component
           ]);
 
           Lote::find($tempLote['id'])->update(['ultimo_contrato' => $this->contrato->id]);
-          info([
-            "lllloooooo" => "ada",
-            "lote temp" => $tempLote["id"]
-          ]);
+          // info([
+          //   "lllloooooo" => "ada",
+          //   "lote temp" => $tempLote["id"]
+          // ]);
         }
       } else {
 
@@ -282,15 +296,24 @@ class ModalContratoLotes extends Component
       }
     }
 
-    $this->contrato->save();
-
-
-
+    $message = "";
     if ($this->new) {
-      info("Mandar mail new ");
+      $message = "Creación";
     } else {
-      info("Mail updated");
+      $message = "Atualización";
     }
+
+    $contratoLotes = ContratoLote::where('contrato_id', $this->contrato->id)->get();
+    $data = [
+      'message' => $message,
+      'lotes' => $contratoLotes,
+      'comitente' => $this->contrato->comitente?->nombre . " " . $this->contrato->comitente?->apellido,
+      "id" => $this->contrato->id,
+      "subasta" => $this->contrato->subasta_id,
+      "fecha" => $this->contrato->fecha_firma,
+    ];
+
+    Mail::to('axeldavidpaz@gmail.com')->send(new TestEmail($data));
 
 
     $this->dispatch('loteCreated');
