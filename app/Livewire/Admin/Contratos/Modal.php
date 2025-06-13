@@ -112,15 +112,15 @@ class Modal extends Component
   public function save()
   {
 
-    return $this->dispatch("lotes", 6);
-    // $this->validate();
+    // return $this->dispatch("lotes", 6);
+    $this->validate();
 
-    // $contrato  = Contrato::create([
-    //   "comitente_id" => $this->comitente_id,
-    //   "descripcion" => $this->descripcion,
-    //   "subasta_id" => $this->subasta_id,
-    //   "fecha_firma" => $this->fecha_firma,
-    // ]);
+    $contrato  = Contrato::create([
+      "comitente_id" => $this->comitente_id,
+      "descripcion" => $this->descripcion,
+      "subasta_id" => $this->subasta_id,
+      "fecha_firma" => $this->fecha_firma,
+    ]);
 
     if ($this->lotes && $contrato) {
       // return $this->dispatch("lotes", $contrato->id);

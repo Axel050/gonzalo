@@ -7,8 +7,17 @@
 
 <body>
     <h1>CASABLANCA.AR</h1>
-    <p>Creacion de contrato .</p>
-    <p>Message: {{ $data['message'] }}</p>
+    <p>{{ $data['message'] }} de contrato</p>
+    <br>
+    <p>Lotes:</p>
+    <ul>
+        @foreach ($data['lotes'] as $lote)
+            <li>{{ $lote->titulo }}</li>
+        @endforeach
+
+    </ul>
+
+
 </body>
 
 </html>

@@ -197,10 +197,18 @@ class ModalContratoLotes extends Component
   public function save()
   {
 
-    $data = [
-      'message' => 'This is a test message from Livewire!',
-      'extra' => "xxaa", // Additional parameter
-    ];
+    // info($this->contrato->lotes);
+    if ($this->new) {
+      $data = [
+        'message' => 'Creación ',
+        'lotes' => $this->contrato->lotes, // Additional parameter
+      ];
+    } else {
+      $data = [
+        'message' => 'Actualización ',
+        'lotes' => $this->contrato->lotes, // Additional parameter
+      ];
+    }
 
     Mail::to('axeldavidpaz@gmail.com')->send(new TestEmail($data));
 
