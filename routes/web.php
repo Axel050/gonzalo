@@ -37,6 +37,7 @@ Route::get('/lotes/{id}', function ($id) {
 })->name('lotes.show');
 
 
+// TESTER MAIL 
 Route::get('/test-mail', function () {
 
   $contratoLotes = ContratoLote::where('contrato_id', 6)->get();

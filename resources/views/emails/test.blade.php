@@ -14,9 +14,8 @@
         <tr>
             <td style="padding: 20px;">
                 <h1 style="font-size: 24px; color: #1a73e8; margin: 0 0 20px 0; text-align: center;">CASABLANCA.AR</h1>
-                <br>
                 <table width="100%">
-                    <tr>
+                    <tr style="font-size: 14px;">
                         <td>Comitente: {{ $data['comitente'] }}</td>
                         <td>Fecha: {{ $data['fecha'] }}</td>
                         <td>Contrato: {{ $data['id'] }}</td>

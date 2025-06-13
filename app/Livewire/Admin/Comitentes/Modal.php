@@ -65,11 +65,13 @@ class Modal extends Component
     ];
     if ($this->method == "update") {
       $rules["CUIT"] = 'required|unique:comitentes,CUIT,' . $this->comitente->id;
+      $rules['mail'] = 'required|email|unique:comitentes,mail,' . $this->comitente->id;
       if (!$this->existe && $this->owner) {
         $rules["alias_id"] = 'unique:comitentes_aliases,nombre,' . $this->comitente->alias_id;
       }
     } else {
       $rules["CUIT"] = 'required|unique:comitentes,CUIT';
+      $rules['mail'] = 'required|email|unique:comitentes,mail';
     }
 
     if (!$this->existe && !$this->owner) {
@@ -85,6 +87,7 @@ class Modal extends Component
       "apellido.required" => "Ingrese  apellido.",
       "mail.required" => "Ingrese  mail.",
       "mail.email" => "Mail invalido.",
+      "mail.unique" => "Mail existente.",
       "telefono.required" => "Ingrese  telefono.",
       "CUIT.required" => "Ingrese  CUIT.",
       "CUIT.unique" => "CUIT existente.",
@@ -94,6 +97,7 @@ class Modal extends Component
       "comision.min" => "Comision invalida.",
       "CBU.required" => "Ingrese CBU.",
       "numero_cuenta.required" => "Ingrese numero de cuenta.",
+
     ];
   }
 

@@ -300,7 +300,7 @@ class ModalContratoLotes extends Component
     if ($this->new) {
       $message = "Creación";
     } else {
-      $message = "Atualización";
+      $message = "Actualización";
     }
 
     $contratoLotes = ContratoLote::where('contrato_id', $this->contrato->id)->get();
@@ -313,7 +313,8 @@ class ModalContratoLotes extends Component
       "fecha" => $this->contrato->fecha_firma,
     ];
 
-    Mail::to('axeldavidpaz@gmail.com')->send(new TestEmail($data));
+    // Mail::to('axeldavidpaz@gmail.com')->send(new TestEmail($data));
+    Mail::to($this->contrato->comitente?->mail)->send(new TestEmail($data));
 
 
     $this->dispatch('loteCreated');
