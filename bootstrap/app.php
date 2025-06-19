@@ -11,6 +11,7 @@ return Application::configure(basePath: dirname(__DIR__))
     commands: __DIR__ . '/../routes/console.php',
     health: '/up',
     then: function () {
+      // Route::middleware('web', 'auth', 'active.role') // <-- Aplica el grupo de middleware 'web' (u otro que necesites, ej: 'auth', ['web', 'auth'])
       Route::middleware('web', 'auth', 'active.role') // <-- Aplica el grupo de middleware 'web' (u otro que necesites, ej: 'auth', ['web', 'auth'])
         ->prefix('admin')   // <-- Opcional: Añade el prefijo /admin a todas las rutas del archivo
         ->name('admin.')    // <-- Opcional: Añade el prefijo 'admin.' a los nombres de las rutas

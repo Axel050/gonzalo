@@ -2,13 +2,14 @@
 
 use Illuminate\Support\Facades\Route;
 
-
 Route::get("/ini", function () {
   return "addmixn";
 });
 
 
-Route::view('dashboard', 'dashboard');
+
+// Route::view('/dashboard', 'dashboard');
+
 
 Route::get("/subastas", function () {
   return view('admin.subastas');
@@ -70,3 +71,7 @@ Route::get("/aux/monedas", function () {
 Route::get("/aux/estado-lotes", function () {
   return view('admin.auxiliares.estado-lotes');
 })->name("estado-lotes")->can("auxiliares-ver");
+
+Route::get("/", function () {
+  return view('admin.index');
+})->name("index");

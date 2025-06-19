@@ -18,11 +18,58 @@
                 @else
                     <x-form-item label="Nombre" model="nombre" />
 
-                    <x-form-item-sel label="Tipo" model="tipo">
+                    <x-form-item-sel label="Tipo" model="tipo" live="true">
                         <option value="text">Texto</option>
                         <option value="file">Archivo</option>
+                        <option value="select">Desplegable</option>
                     </x-form-item-sel>
+
+
+                    @if ($tipo == 'select')
+                        <div class="items-start  lg:w-60 w-[85%] mx-auto  relative">
+
+                            <div class="flex  justify-around w-full ">
+                                <label class="block text-sm font-medium text-gray-700 ">
+                                    Opciones
+                                </label>
+                            </div>
+
+                            <div class=" w-full">
+                                @foreach ($opciones as $index => $opcion)
+                                    <div class="flex items-center mt-2 bg-blue-200 w-full">
+                                        <input type="text" wire:model.live="opciones.{{ $index }}"
+                                            class=" lg:w-60 w-full h-6 rounded-md border border-gray-400  text-gray-500 pl-2 text-sm bg-gray-100 "
+                                            placeholder="Opción {{ $index + 1 }}">
+
+                                        <button type="button" wire:click="removeOpcion({{ $index }})"
+                                            class=" hover:bg-red-700 bg-red-500 rounded-lg px-1 py-0.5 ml-2 lg:absolute right-[-40px] "
+                                            title="quitar" wire:show="opciones.length>1">
+                                            <svg class="size-5 mr-0.5">
+                                                <use xlink:href="#eliminar"></use>
+                                            </svg>
+                                        </button>
+
+                                    </div>
+
+                                    <x-input-error for="opciones.{{ $index }}"
+                                        class="top-full py-0 leading-[12px] text-red-500" />
+                                @endforeach
+                                <div class="flex w-full">
+                                    <button type="button" wire:click="addOpcion"
+                                        class="bg-cyan-700 text-white px-2  mt-1 h-5  text-xs rounded-lg mx-auto hover:bg-cyan-900">
+                                        Agregar Opción
+                                    </button>
+                                </div>
+                            </div>
+
+                        </div>
+                    @endif
+
+
                 @endif
+
+
+
 
                 <div class="flex !flex-row gap-6 justify-center lg:text-base text-sm">
                     <button type="button"

@@ -14,6 +14,12 @@ class Caracteristica extends Model
     'tipo',
   ];
 
+
+  public function opciones()
+  {
+    return $this->hasMany(CaracteristicaOpcion::class);
+  }
+
   // public function tiposBiens()
   // {
   //   return $this->belongsToMany(TiposBien::class, 'tipo_bien_caracteristicas')

@@ -42,20 +42,22 @@ class Modal extends Component
     $rules = [
       'nombre' => 'required',
       'apellido' => 'required',
-      'domicilio' => 'required',
+      // 'domicilio' => 'required',
       'role_id' => 'required',
       'email' => 'required|unique:users,email',
-      'alias' => 'required|unique:personals,alias',
+      'alias' => 'unique:personals,alias',
       'telefono' => 'required|unique:personals,telefono',
-      'CUIT' => 'required|unique:personals,CUIT',
+      // 'CUIT' => 'required|unique:personals,CUIT',
       // 'password' => 'required|unique:personals,CUIT',
     ];
 
     if ($this->method == "update") {
       $rules["email"] = 'required|unique:users,email,' . $this->personal->user?->id;
-      $rules["alias"] = 'required|unique:personals,alias,' . $this->personal->id;
+      $rules["alias"] = 'unique:personals,alias,' . $this->personal->id;
       $rules["telefono"] = 'required|unique:personals,telefono,' . $this->personal->id;
-      $rules["CUIT"] = 'required|unique:personals,CUIT,' . $this->personal->id;
+      if ($this->CUIT) {
+        $rules["CUIT"] = 'unique:personals,CUIT,' . $this->personal->id;
+      }
 
       if ($this->password || $this->password_confirmation) {
         $rules['password'] = 'required|string|confirmed|min:8';

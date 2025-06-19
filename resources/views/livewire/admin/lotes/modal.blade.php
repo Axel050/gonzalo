@@ -91,7 +91,7 @@
                                             }
                                         @endphp
 
-                                        @if ($url)
+                                        @if ($url && $method != 'view')
                                             <button
                                                 class="rounded-full px-2  bg-red-600 ml-4 text-xs hover:bg-red-800 mb-[2px] leading-[14px] h-[15px]"
                                                 title="quitar audio" wire:click="deleteAudio({{ $item->id }})">
@@ -132,6 +132,14 @@
                                             class="top-full py-0 leading-[12px] text-red-500" />
                                     </div>
                                 </div>
+                            @elseif($item->tipo == 'select')
+                                <x-form-item-sel label="{{ $item->nombre }}" :method="$method"
+                                    model="formData.{{ $item->id }}">
+                                    <option value="">Elija opción</option>
+                                    @foreach ($item->opciones as $opt)
+                                        <option value={{ $opt->valor }}>{{ $opt->valor }}</option>
+                                    @endforeach
+                                </x-form-item-sel>
                             @else
                                 <x-form-item label="{{ $item->nombre }}" :method="$method"
                                     model="formData.{{ $item->id }}" type="{{ $item->tipo }}" />

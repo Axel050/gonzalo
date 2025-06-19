@@ -6,7 +6,7 @@
     x-cloak>
     {{-- :class="openSide ? 'lg:w-[260px] lg:min-w-[260px]  w-0  ' : 'w-[360px] lg:w-0 '" x-cloak> --}}
 
-    <a href="" class="w-full   g-green-200 flex justify-center  lg:mb-18 mb-6 lg:mt-2 mt-12">
+    <a href="{{ route('home') }}" class="w-full   g-green-200 flex justify-center  lg:mb-18 mb-6 lg:mt-2 mt-12">
         {{-- <img src="logo-dark.png" class="h-6" alt=""> --}}
         <h2 class="lg:text-2xl text-lg font-extrabold  w-full text-center p-0 text-white ">CASABLANCA.AR</h2>
     </a>

@@ -5,7 +5,7 @@
         <div class="flex  flex-col justify-center items-center  ">
             <h2 class="lg:text-2xl text-xl mb-2  w-full text-center py-1  border-b border-gray-300 text-white rounded-t-lg"
                 style="{{ $bg }}">
-                {{ $title }} deposito
+                {{ $title }} garantia
             </h2>
 
             <form
@@ -14,7 +14,7 @@
                 wire:submit={{ $method }}>
 
                 @if ($method == 'delete')
-                    <p class="text-center text-gray-600 lg:px-10 px-6"> Esta seguro de eliminar el deposito</p>
+                    <p class="text-center text-gray-600 lg:px-10 px-6"> Esta seguro de eliminar la garantia</p>
                     <p class="text-center text-gray-600"><strong>"{{ $deposito->adquirente?->nombre }}
                             {{ $deposito->adquirente?->apellido }}" </strong>?</p>
                 @else

@@ -60,7 +60,16 @@
                             <tr
                                 class="bg-gray-100 relative font-bold divide-x-2 divide-gray-300 text-center [&>td]:lg:px-8 [&>td]:px-2 ">
                                 <td class="py-1">{{ $item['nombre'] }}</td>
-                                <td>{{ $item['tipo'] }} </td>
+                                <td>
+                                    @if ($item['tipo'] == 'file')
+                                        archivo
+                                    @elseif($item['tipo'] == 'select')
+                                        desplegable
+                                    @else
+                                        texto
+                                    @endif
+
+                                </td>
                                 <td>{{ $item['pivot']['requerido'] ? 'Sí' : 'No' }}</td>
                                 <td>
                                     <div class="flex justfy-end lg:gap-x-6 gap-x-3 text-white text-xs">

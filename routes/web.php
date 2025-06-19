@@ -9,18 +9,29 @@ use App\Mail\TestEmail;
 use App\Models\Contrato;
 use App\Models\ContratoLote;
 
+
+
 Route::get('/test', function () {
   return view('livewire.auth.role-desactivated');
 });
+
+Route::get('/dashboard', function () {
+  if (auth()->user()->hasPermissionTo('dashboard-ver')) {
+    return view('dashboard');
+  }
+  return redirect()->route('admin.index')->with('error', 'No tienes permiso para acceder al panel de control.');
+})->middleware(['auth', 'verified', 'active.role'])->name('dashboard');
 
 Route::get('/', function () {
   return view('welcome');
 })->name('home');
 
-Route::view('dashboard', 'dashboard')
-  ->middleware(['auth', 'verified', 'active.role'])
-  ->name('dashboard')
-  ->can("dashboard-ver");
+// Route::view('dashboard', 'dashboard')
+//   ->middleware(['auth', 'verified', 'active.role'])
+//   ->name('dashboard')
+//   ->can("dashboard-ver");
+
+
 
 Route::middleware(['auth'])->group(function () {
   Route::redirect('settings', 'settings/profile');

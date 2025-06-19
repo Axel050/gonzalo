@@ -84,6 +84,8 @@
                                         <td>
                                             @if ($car->tipo == 'text')
                                                 Texto
+                                            @elseif ($car->tipo == 'select')
+                                                Desplegable
                                             @else
                                                 Archivo
                                             @endif
