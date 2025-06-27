@@ -10,11 +10,12 @@ use Livewire\Component;
 
 class Modal extends Component
 {
-
+  //  ['method' => $method, 'id' => $id])
   public $test;
 
   public $title;
   public $id;
+
   public $bg;
   public $method;
   public $btnText;
@@ -69,8 +70,6 @@ class Modal extends Component
   public function mount()
   {
 
-
-
     $this->subastas = Subasta::orderBy("id")->get();
     $this->comitentes = Comitente::with("alias")->orderBy("nombre")->get();
 
@@ -106,15 +105,15 @@ class Modal extends Component
         $this->bg =  "background-color: rgb(31, 83, 44)";
       }
     }
+
+    $this->dispatch('modalOpenedContratos', comitenteId: $this->comitente_id);
   }
 
 
   public function save()
   {
 
-    // return $this->dispatch("lotes", 6);
     $this->validate();
-
     $contrato  = Contrato::create([
       "comitente_id" => $this->comitente_id,
       "descripcion" => $this->descripcion,
@@ -133,6 +132,7 @@ class Modal extends Component
   // VER QUE CUANDO BORRO UN CONTATO SE PIERDE EL ULTIMO CONTRATO ; CAMPO DE LOTES
   public function update()
   {
+
 
     if (!$this->contrato) {
       $this->dispatch('contratoNotExits');

@@ -19,7 +19,7 @@
                 @else
                     <div class="col-span-3">
                         <x-form-item-foto label="" :method="$method" model="foto" :foto="$foto" w="150"
-                            h="150" />
+                            h="150" folder="adquirentes" />
 
                     </div>
                     <x-form-item label="Nombre" :method="$method" model="nombre" />
@@ -99,7 +99,7 @@
                             <select wire:model="condicion_iva_id"
                                 class =" h-6 py-0 rounded-md border border-gray-400 lg:w-60 w-full text-gray-500 bg-gray-100 pl-2 text-sm disabled:text-gray-600 disabled:bg-gray-300"
                                 @disabled($method === 'view')>
-                                <option>Elija estado </option>
+                                <option>Elija condicion </option>
                                 @foreach ($condiciones as $cond)
                                     <option value={{ $cond->id }}>{{ $cond->nombre }}</option>
                                 @endforeach

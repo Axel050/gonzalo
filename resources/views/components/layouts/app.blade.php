@@ -12,12 +12,78 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+
+    <link href="{{ asset('assets/css/tom.css') }}" rel="stylesheet">
+
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <!-- Styles -->
     @livewireStyles
 
+    <style>
+        #wrapper-select-tom2 .ts-control {
+            margin: 0 auto;
+            width: 240px;
+            height: 24px;
+            padding: 0;
+            padding-top: 2px;
+            padding-left: 8px;
+            border: 1px solid #99a1af;
+            border-radius: 6px;
+            background-color: #f3f4f6;
+
+        }
+
+        #wrapper-select-tom2 .ts-control::after {
+            content: "^";
+            transform: rotate(180deg);
+            font-weight: bold;
+            font-size: 14px;
+            color: #6a7282;
+            position: absolute;
+            right: 10px;
+            top: 9%;
+            display: inline-block;
+        }
+
+        #wrapper-select-tom2 .ts-control>input::placeholder {
+            color: #6a7282;
+            font-size: 14px;
+        }
+
+        #wrapper-select-tom2 .ts-control .item {
+            color: #6a7282;
+            font-size: 14px;
+        }
+
+        #wrapper-select-tom2 .ts-dropdown {
+            width: 240px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+
+
+        @media (max-width: 1023px) {
+            #wrapper-select-tom2 .ts-control {
+                width: 100% !important;
+            }
+
+            #wrapper-select-tom2 .ts-dropdown {
+                width: 85% !important;
+                /* max-width: 85% !important; */
+            }
+
+            #wrapper-select-tom2.campos .ts-dropdown {
+                width: 100% !important;
+            }
+
+        }
+    </style>
+
+    @stack('contra')
 
 </head>
 
@@ -84,6 +150,9 @@
     @stack('js')
 
     @stack('sc')
+
+    @stack('contra')
+
 
 </body>
 

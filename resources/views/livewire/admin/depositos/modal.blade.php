@@ -18,13 +18,26 @@
                     <p class="text-center text-gray-600"><strong>"{{ $deposito->adquirente?->nombre }}
                             {{ $deposito->adquirente?->apellido }}" </strong>?</p>
                 @else
-                    <x-form-item-sel label="Adquirente" :method="$method" model="adquirente_id">
+                    {{-- <x-form-item-sel label="Adquirente" :method="$method" model="adquirente_id">
                         <option>Elija adquirente </option>
                         @foreach ($adquirentes as $adq)
                             <option value="{{ $adq->id }}">
                                 {{ $adq->alias?->nombre }} - {{ $adq->nombre }} {{ $adq->apellido }} </option>
                         @endforeach
-                    </x-form-item-sel>
+                    </x-form-item-sel> --}}
+
+                    <div id="wrapper-select-tom2" class="lg:w-60 w-[85%] mx-auto ">
+                        <label class="w-full text-start text-gray-500 leading-[16px] text-base">Adquirente</label>
+                        <select id="select-tom-garantias" placeholder="Elija adquirente" wire:model="adquirente_id">
+                            <option value="">Elija comitente</option>
+                            @foreach ($adquirentes as $adq)
+                                <option value="{{ $adq->id }}">
+                                    {{ $adq->alias?->nombre }} - {{ $adq->nombre }} {{ $adq->apellido }} </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+
 
                     <x-form-item-sel label="Subasta" :method="$method" model="subasta_id">
                         <option>Elija subasta </option>

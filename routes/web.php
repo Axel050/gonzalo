@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AdquirenteController;
+use App\Http\Controllers\ComitenteController;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -49,6 +51,8 @@ Route::get('/lotes/{id}', function ($id) {
 })->name('lotes.show');
 
 
+
+
 // TESTER MAIL 
 Route::get('/test-mail', function () {
 
@@ -66,5 +70,26 @@ Route::get('/test-mail', function () {
 
   return (new ContratoEmail($data))->render();
 });
+
+// dd("TTTTEEST EL POST ; CREAR UN FORMULARIO CON PSOT ; SIMPLE PARA ASFGURA EL CSRF TOKEN");
+Route::get('/comitentes/crear', [ComitenteController::class, "create"])->name('comitentes.create');
+
+Route::get('/adquirentes/crear', [AdquirenteController::class, "create"])->name('adquirentes.create');
+
+Route::get('/comitentes/test', function () {
+  return response()->json(['message' => 'Ruta de test funcionando correctamente']);
+});
+
+Route::post('/comitentes/store', [ComitenteController::class, 'store'])->name('comitentes.store');
+
+Route::get('/csrf-token', function () {
+  return response()->json(['csrf_token' => csrf_token()]);
+});
+
+
+
+
+
+
 
 require __DIR__ . '/auth.php';

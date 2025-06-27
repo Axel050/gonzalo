@@ -18,22 +18,48 @@
                 @else
                     <x-form-item label="Nombre" :method="$method" model="nombre" />
 
-                    <x-form-item-sel label="Encargado" :method="$method" model="encargado_id">
+                    {{-- <x-form-item-sel label="Encargado" :method="$method" model="encargado_id">
                         <option>Elija encargado </option>
                         @foreach ($encargados as $encargado)
                             <option value="{{ $encargado->id }}"> {{ $encargado->nombre }},{{ $encargado->apellido }}
                             </option>
                         @endforeach
-                    </x-form-item-sel>
+                    </x-form-item-sel> --}}
+
+                    <div id="wrapper-select-tom2" class="lg:w-60 w-[85%] mx-auto ">
+                        <label class="w-full text-start text-gray-500 leading-[16px] text-base">Encargado</label>
+                        <select id="select-tom-tipo-bien-encargado" placeholder="Elija encargado"
+                            wire:model="encargado_id">
+                            <option value="">Elija encargado</option>
+                            @foreach ($encargados as $encargado)
+                                <option value="{{ $encargado->id }}">
+                                    {{ $encargado->nombre }},{{ $encargado->apellido }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
 
 
-                    <x-form-item-sel label="Suplente" :method="$method" model="suplente_id">
+                    {{-- <x-form-item-sel label="Suplente" :method="$method" model="suplente_id">
                         <option>Elija suplente </option>
                         @foreach ($encargados as $suplente)
                             <option value="{{ $suplente->id }}"> {{ $suplente->nombre }},{{ $suplente->apellido }}
                             </option>
                         @endforeach
-                    </x-form-item-sel>
+                    </x-form-item-sel> --}}
+
+                    <div id="wrapper-select-tom2" class="lg:w-60 w-[85%] mx-auto ">
+                        <label class="w-full text-start text-gray-500 leading-[16px] text-base">Suplente</label>
+                        <select id="select-tom-tipo-bien-suplente" placeholder="Elija suplente"
+                            wire:model="suplente_id">
+                            <option value="">Elija suplente</option>
+                            @foreach ($encargados as $suplente)
+                                <option value="{{ $suplente->id }}"> {{ $suplente->nombre }},{{ $suplente->apellido }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
 
                     @if ($method == 'save')
                         <label class="w-fit text-center text-gray-500 leading-[16px] text-base  lg:m-2 mx-auto ">

@@ -16,7 +16,7 @@ class Index extends Component
 
   public $new;
   public $query, $nombre, $id;
-  public $method = "";
+  public $method;
   public $searchType = "todos";
   public $inputType = "search";
 

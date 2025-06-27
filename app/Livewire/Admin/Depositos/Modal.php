@@ -113,6 +113,9 @@ class Modal extends Component
         $this->bg =  "background-color: rgb(31, 83, 44)";
       }
     }
+
+
+    $this->dispatch('modalOpenedGarantias', adquirenteId: $this->adquirente_id); // Envía el ID
   }
 
 

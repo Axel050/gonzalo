@@ -34,8 +34,8 @@ class Modal extends Component
   public $alias_id;
 
   public $nombre, $apellido, $alias, $CUIT, $domicilio, $telefono, $mail, $banco, $numero_cuenta, $CBU, $alias_bancario, $foto, $estado_id;
-  public $password = "12345678";
-  public  $password_confirmation = "12345678";
+  public $password;
+  public  $password_confirmation;
   public $comision = 20;
   public $condicion_iva_id;
   public $estados = [];

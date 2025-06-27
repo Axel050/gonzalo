@@ -54,6 +54,11 @@
         @if ($method)
             @if ($method != 'lotes')
                 @livewire('admin.contratos.modal', ['method' => $method, 'id' => $id])
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Livewire.dispatch('modalOpened');
+                    });
+                </script>
             @else
                 @livewire('admin.contratos.modal-contrato-lotes', ['id' => $id, 'new' => $new], key('modal-contrato-lotes-' . $id))
             @endif
@@ -166,6 +171,8 @@
             </div>
         @endif
     </div>
+
+
 
 </div> <!-- end card -->
 

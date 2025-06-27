@@ -4,8 +4,8 @@ namespace App\Livewire\Admin\Comitentes;
 
 use App\Models\Comitente;
 use App\Models\ComitentesAlias;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\UploadedFile;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 use Livewire\Component;

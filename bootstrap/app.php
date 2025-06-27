@@ -16,6 +16,11 @@ return Application::configure(basePath: dirname(__DIR__))
         ->prefix('admin')   // <-- Opcional: Añade el prefijo /admin a todas las rutas del archivo
         ->name('admin.')    // <-- Opcional: Añade el prefijo 'admin.' a los nombres de las rutas
         ->group(base_path('routes/admin.php')); // <-- Ahora sí, group() carga el archivo dentro del contexto del middleware/prefijo
+
+      Route::middleware('api')
+        ->prefix('api') // Asegura el prefijo /api
+        ->name('api.')  // Opcional: Prefijo para nombres de rutas
+        ->group(base_path('routes/api.php'));
     }
   )
   ->withMiddleware(function (Middleware $middleware) {
