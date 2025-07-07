@@ -6,11 +6,13 @@ use App\Models\Adquirente;
 use App\Models\Deposito;
 use App\Models\Subasta;
 use Illuminate\Validation\Rule;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Modal extends Component
 {
 
+  public $mounted;
   public $title;
   public $id;
   public $bg;
@@ -26,6 +28,17 @@ class Modal extends Component
   public $adquirente_id, $subasta_id, $monto, $fecha, $fecha_devolucion, $estado;
 
 
+
+  public function updatedSubastaId()
+  {
+
+    $s = Subasta::find($this->subasta_id);
+
+    if ($s) {
+      $this->monto = $s->garantia;
+    }
+    $this->dispatch('modalOpenedGarantias', adquirenteId: $this->adquirente_id); // Envía el ID
+  }
 
 
 
@@ -61,6 +74,7 @@ class Modal extends Component
 
     return $rules;
   }
+
 
   protected function messages()
   {
@@ -115,7 +129,25 @@ class Modal extends Component
     }
 
 
-    $this->dispatch('modalOpenedGarantias', adquirenteId: $this->adquirente_id); // Envía el ID
+    $this->dispatch('modalOpenedGarantias', adquirenteId: $this->adquirente_id); // Envía el ID    
+  }
+
+
+  #[On('setAdquirente')]
+  public function setAdquirenteId($id)
+  {
+    $this->adquirente_id = $id;
+  }
+
+  public function test()
+  {
+    $this->monto = 11;
+    // info("88888888888888888888888888888");
+  }
+
+  public function updated($propertyName, $value)
+  {
+    info("wUPPPPPPPPPPPP");
   }
 
 
@@ -168,8 +200,13 @@ class Modal extends Component
   }
 
 
+
   public function render()
   {
+
+
+
+
     return view('livewire.admin.depositos.modal');
   }
 }

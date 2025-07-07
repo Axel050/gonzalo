@@ -13,6 +13,9 @@ class Index extends Component
 {
   use WithPagination;
 
+  public $sortField = 'id';
+  public $sortDirection = 'desc'; //
+
   public $query, $nombre, $id;
   public $method = "";
   public $searchType = "todos";
@@ -20,6 +23,18 @@ class Index extends Component
 
   #[Url]
   public $ids;
+
+  public function sortBy($field)
+  {
+    if ($this->sortField === $field) {
+      $this->sortDirection = $this->sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      $this->sortField = $field;
+      $this->sortDirection = 'asc';
+    }
+    $this->resetPage(); // Reinicia la paginación al cambiar el orden
+  }
+
 
   public function option($method, $id = false)
   {
@@ -57,16 +72,23 @@ class Index extends Component
     $this->resetPage();
   }
 
+
+  public function updatingQuery()
+  {
+    $this->resetPage();
+  }
+
+  public function updatingSearchType()
+  {
+    $this->resetPage();
+  }
+
   public function render()
   {
-
-
     if ($this->query) {
-
-
       switch ($this->searchType) {
         case 'id':
-          $depositos = Deposito::where("id", "like", '%' . $this->query . '%');
+          $depositos = Deposito::where("depositos.id", "like", '%' . $this->query . '%');
           break;
         case 'adquirente':
           $depositos = Deposito::whereHas('adquirente', function ($query) {
@@ -92,7 +114,7 @@ class Index extends Component
           $depositos = Deposito::where("estado", "like", '%' . $this->query . '%');
           break;
         case 'todos':
-          $depositos = Deposito::where("id", "like", '%' . $this->query . '%')
+          $depositos = Deposito::where("depositos.id", "like", '%' . $this->query . '%')
             ->orWhere("estado", "like", '%' . $this->query . '%')
             ->orWhereHas('adquirente', function ($query) {
               $query->where('nombre', 'like', '%' . $this->query . '%');
@@ -106,11 +128,27 @@ class Index extends Component
             ->orWhere("subasta_id", "like", '%' . $this->query . '%');
           break;
       }
-      $depositos = $depositos->orderBy("id", "desc")->paginate(10);
-    } else {
-      $depositos = Deposito::orderBy("id", "desc")->paginate(10);
-    }
 
+      // Aplicar ordenamiento dinámico
+      if ($this->sortField === 'adquirente') {
+        $depositos = $depositos->join('adquirentes', 'depositos.adquirente_id', '=', 'adquirentes.id')
+          ->orderBy('adquirentes.nombre', $this->sortDirection)
+          ->select('depositos.*');
+      } else {
+        $depositos = $depositos->orderBy($this->sortField, $this->sortDirection);
+      }
+      $depositos = $depositos->paginate(15);
+    } else {
+      // Ordenamiento para cuando no hay búsqueda
+      if ($this->sortField === 'adquirente') {
+        $depositos = Deposito::join('adquirentes', 'depositos.adquirente_id', '=', 'adquirentes.id')
+          ->orderBy('adquirentes.nombre', $this->sortDirection)
+          ->select('depositos.*')
+          ->paginate(15);
+      } else {
+        $depositos = Deposito::orderBy($this->sortField, $this->sortDirection)->paginate(15);
+      }
+    }
 
     return view('livewire.admin.depositos.index', compact("depositos"));
   }

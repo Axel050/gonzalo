@@ -1,0 +1,302 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: #f0f0f0;
+  font-family: sans-serif;
+  font-size: 20px;
+  padding: 2rem;
+}
+
+#container {
+  margin: auto;
+  width: 1400px;
+  position: relative;
+  background: #fff;
+  border-radius: 2rem;
+  overflow: clip;
+}
+
+ul {
+  display: flex;
+  gap: 1rem;
+  margin: 0;
+  padding: 0;
+
+  li {
+    list-style: none;
+  }
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  padding: 1rem 2rem;
+
+  a {
+    text-decoration: none;
+  }
+
+  nav {
+    color: #aaa;
+
+    .current {
+      color: black;
+    }
+  }
+
+  #meta {
+    display: flex;
+    align-items: center;
+    padding-left: 1rem;
+    gap: 2rem;
+
+    svg {
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+  }
+
+  .user {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+}
+
+/* Just from */
+#from {
+  #logo {
+    color: #000;
+    font-size: 2rem;
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 5rem;
+    padding-bottom: 3rem;
+
+    #toggle-view {
+      margin-bottom: 2rem;
+      border: 2px solid #777;
+      padding: 0.2rem 0.5rem;
+      background: transparent;
+      color: #777;
+      cursor: pointer;
+
+      &:hover {
+        background: #777;
+        color: #fff;
+      }
+    }
+
+    .movies.column {
+      flex-direction: column;
+
+      li {
+        a {
+          width: 150px;
+        }
+
+        .details {
+          display: block;
+
+          .cast {
+            display: flex;
+            gap: 2rem;
+            font-size: 0.8rem;
+            color: #777;
+
+            .name {
+              font-weight: bold;
+            }
+          }
+        }
+      }
+    }
+
+    .movies li {
+      display: flex;
+      gap: 2rem;
+
+      a {
+        width: 250px;
+        display: block;
+        position: relative;
+        text-decoration: none;
+
+        img {
+          width: 100%;
+          height: auto;
+          aspect-ratio: 2/3;
+          object-fit: cover;
+          display: block;
+          border-radius: 2rem;
+        }
+      }
+
+      .details {
+        display: none;
+      }
+
+      h3 {
+        display: inline-block;
+        color: #000;
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+/* Just to */
+#to {
+
+  #logo,
+  #meta {
+    color: #fff;
+  }
+
+  #hero {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 2rem;
+  }
+
+  main {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+    color: #fff;
+    padding: 2rem;
+    border-radius: 2rem;
+    overflow: clip;
+  }
+
+  h1 {
+    display: inline-block;
+    margin-bottom: 0;
+  }
+
+  button {
+    font-size: 1.2rem;
+    line-height: 3rem;
+    padding: .1rem 1rem;
+    border-radius: 1.6rem;
+    background: #FFF;
+    color: #000;
+    border: none;
+  }
+}
+
+/* View transitions */
+
+/* 1. Opt-in to view transitions */
+
+@view-transition {
+  navigation: auto;
+}
+
+/* 2. Animate logo */
+
+#logo {
+  view-transition-name: title;
+}
+
+/* 3. Animation timing */
+
+::view-transition-group(*) {
+  animation-duration: 0.5s;
+}
+
+/* 4. Define the transition for the poster */
+
+#lion-king,
+#hero {
+  view-transition-name: poster;
+}
+
+/* 5. Aspect ratio animation for poster */
+
+::view-transition-old(poster),
+::view-transition-new(poster) {
+  animation: none;
+  mix-blend-mode: normal;
+  height: 100%;
+  overflow: clip;
+  border-radius: 2rem;
+}
+
+#to::view-transition-new(poster) {
+  object-fit: cover;
+}
+
+#from::view-transition-new(poster) {
+  object-fit: contain;
+}
+
+#from::view-transition-old(poster) {
+  object-fit: cover;
+}
+
+/* 6. Header animations */
+
+::view-transition-group(poster) {
+  z-index: 1;
+}
+
+::view-transition-group(title) {
+  z-index: 2;
+}
+
+#meta {
+  view-transition-name: meta-navigation;
+}
+
+::view-transition-group(meta-navigation) {
+  z-index: 2;
+}
+
+/* 7. Animate elements just on one page (to) with custom animation */
+
+#to main {
+  view-transition-name: movie-description;
+}
+
+::view-transition-group(movie-description) {
+  z-index: 2;
+  overflow: clip;
+  border-radius: 2rem;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+::view-transition-new(movie-description) {
+  animation: 300ms cubic-bezier(0, 0, 0.2, 1) both fade-in;
+  animation-delay: 0.5s;
+}
+
+::view-transition-old(movie-description) {
+  animation: 150ms cubic-bezier(0.4, 0, 1, 1) both fade-out;
+}

@@ -26,6 +26,9 @@
                     <x-form-item label="Tiempo post subasta (min)" :method="$method" model="tiempoPos" type="number"
                         step="1" min=0 />
 
+                    <x-form-item label="Garantia" :method="$method" model="garantia" type="number" step="1"
+                        min=0 />
+
 
                     <div class="items-start  lg:w-auto w-[85%] mx-auto ">
                         <label class="w-full text-start text-gray-500  leading-[16px] text-base">Inicio </label>

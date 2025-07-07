@@ -70,23 +70,25 @@ class AdquirenteService
         'nombre' => $data['nombre'],
         'apellido' => $data['apellido'],
         'telefono' => $data['telefono'],
-        'CUIT' => $data['CUIT'] ?? null,
+        // 'CUIT' => $data['CUIT'] ?? null,
         'comision' => 20,
-        'domicilio' => $data['domicilio'],
-        'banco' => $data['banco'] ?? null,
-        'numero_cuenta' => $data['numero_cuenta'] ?? null,
-        'CBU' => $data['CBU'] ?? null,
-        'alias_bancario' => $data['alias_bancario'] ?? null,
-        'foto' => $filename,
+        // 'domicilio' => $data['domicilio'],
+        // 'banco' => $data['banco'] ?? null,
+        // 'numero_cuenta' => $data['numero_cuenta'] ?? null,
+        // 'CBU' => $data['CBU'] ?? null,
+        // 'alias_bancario' => $data['alias_bancario'] ?? null,
+        // 'foto' => $filename,
         'user_id' => $user->id,
-        "condicion_iva_id" => $data['condicion_iva_id'],
+        // "condicion_iva_id" => $data['condicion_iva_id'],
         "estado_id" =>  2,
       ]);
     }
 
 
 
-
+    if ($adquirente) {
+      $user->assignRole("adquirente");
+    }
 
     info('Adquirente creado', ['id' => $adquirente->id]);
 
@@ -103,9 +105,8 @@ class AdquirenteService
       'apellido' => 'required',
       'telefono' => 'required|unique:adquirentes,telefono',
       'mail' => 'required|email|unique:users,email',
-      'CUIT' => 'required|unique:adquirentes,CUIT',
+      // 'CUIT' => 'unique:adquirentes,CUIT',
       'password' => 'required|string|confirmed|min:8',
-      'condicion_iva_id' => 'required',
       // 'g-recaptcha-response' => ['required', new RecaptchaRule()],
 
     ];

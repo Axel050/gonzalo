@@ -41,8 +41,8 @@
 
 
 
-            <a href=""
-                class="font-medium  text-gray-200 p-1 pl-3 hover:text-gray-200 hover:font-bold  hover:bg-cyan-900 rounded-lg ">Perfil</a>
+            {{-- <a href=""
+                class="font-medium  text-gray-200 p-1 pl-3 hover:text-gray-200 hover:font-bold  hover:bg-cyan-900 rounded-lg ">Perfil</a> --}}
 
             <form method="POST" action="{{ route('logout') }}" x-data>
                 @csrf

@@ -26,38 +26,37 @@
                         @endforeach
                     </x-form-item-sel> --}}
 
-                    <div id="wrapper-select-tom2" class="lg:w-60 w-[85%] mx-auto ">
-                        <label class="w-full text-start text-gray-500 leading-[16px] text-base">Encargado</label>
-                        <select id="select-tom-tipo-bien-encargado" placeholder="Elija encargado"
-                            wire:model="encargado_id">
-                            <option value="">Elija encargado</option>
-                            @foreach ($encargados as $encargado)
-                                <option value="{{ $encargado->id }}">
-                                    {{ $encargado->nombre }},{{ $encargado->apellido }}
-                                </option>
-                            @endforeach
-                        </select>
+                    <div class="lg:w-60 w-[85%] mx-auto ">
+                        <div id="wrapper-select-tom2" wire:ignore>
+                            <label class="w-full text-start text-gray-500 leading-[16px] text-base">Encargado</label>
+                            <select id="select-tom-tipo-bien-encargado" placeholder="Elija encargado"
+                                wire:model="encargado_id">
+                                <option value="">Elija encargado</option>
+                                @foreach ($encargados as $encargado)
+                                    <option value="{{ $encargado->id }}">
+                                        {{ $encargado->nombre }},{{ $encargado->apellido }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <x-input-error for="encargado_id" class="absotule top-full py-0 leading-[12px] text-red-500" />
                     </div>
 
 
-                    {{-- <x-form-item-sel label="Suplente" :method="$method" model="suplente_id">
-                        <option>Elija suplente </option>
-                        @foreach ($encargados as $suplente)
-                            <option value="{{ $suplente->id }}"> {{ $suplente->nombre }},{{ $suplente->apellido }}
-                            </option>
-                        @endforeach
-                    </x-form-item-sel> --}}
 
-                    <div id="wrapper-select-tom2" class="lg:w-60 w-[85%] mx-auto ">
-                        <label class="w-full text-start text-gray-500 leading-[16px] text-base">Suplente</label>
-                        <select id="select-tom-tipo-bien-suplente" placeholder="Elija suplente"
-                            wire:model="suplente_id">
-                            <option value="">Elija suplente</option>
-                            @foreach ($encargados as $suplente)
-                                <option value="{{ $suplente->id }}"> {{ $suplente->nombre }},{{ $suplente->apellido }}
-                                </option>
-                            @endforeach
-                        </select>
+                    <div class="lg:w-60 w-[85%] mx-auto ">
+                        <div id="wrapper-select-tom2" wire:ignore>
+                            <label class="w-full text-start text-gray-500 leading-[16px] text-base">Suplente</label>
+                            <select id="select-tom-tipo-bien-suplente" placeholder="Elija suplente">
+                                <option value="">Elija suplente</option>
+                                @foreach ($encargados as $suplente)
+                                    <option value="{{ $suplente->id }}">
+                                        {{ $suplente->nombre }},{{ $suplente->apellido }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <x-input-error for="suplente_id" class="absotule top-full py-0 leading-[12px] text-red-500" />
                     </div>
 
 

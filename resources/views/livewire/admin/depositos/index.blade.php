@@ -50,13 +50,18 @@
 
         @if ($method)
             @livewire('admin.depositos.modal', ['method' => $method, 'id' => $id])
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Livewire.dispatch('modalOpenedGarantias');
+                });
+            </script>
         @endif
 
 
 
         <div class="overflow-x-auto bg-gray-200 m-4 border-2 border-gray-600  mx-auto rounded-md  shadow-md relative">
 
-
+            {{-- @dump($sortField) --}}
 
             <div class="min-w-full inline-block align-middle ">
                 <div class="overflow-hidden">
@@ -70,12 +75,40 @@
 
                                 <tr
                                     class="bg-gray-400 relative text-gray-700 font-bold divide-x-2 divide-gray-600 [&>th]:pl-2 [&>th]:pr-1 [&>th]:lg:pl-4 [&>th]:text-start text-sm ">
-                                    <th scope="col" class="py-1">ID</th>
+
+                                    <th wire:click="sortBy('id')" style="cursor: pointer;">
+                                        ID
+                                        @if ($sortDirection === 'asc')
+                                            <svg
+                                                class="size-4 inline @if ($sortField != 'id') opacity-40 @endif">
+                                                <use xlink:href="#orderasc"></use>
+                                            </svg>
+                                        @else
+                                            <svg
+                                                class="size-4 inline @if ($sortField != 'id') opacity-40 @endif">
+                                                <use xlink:href="#orderdesc"></use>
+                                            </svg>
+                                        @endif
+
+                                    </th>
                                     <th scope="col">Fecha</th>
                                     <th scope="col">Monto</th>
                                     <th scope="col">Estado</th>
                                     <th scope="col">Fecha dev</th>
-                                    <th scope="col">Adquirente</th>
+                                    <th wire:click="sortBy('adquirente')" style="cursor: pointer;">
+                                        Adquirente
+                                        @if ($sortDirection === 'asc')
+                                            <svg
+                                                class="size-4 inline @if ($sortField != 'adquirente') opacity-40 @endif">
+                                                <use xlink:href="#orderasc"></use>
+                                            </svg>
+                                        @else
+                                            <svg
+                                                class="size-4 inline @if ($sortField != 'adquirente') opacity-40 @endif">
+                                                <use xlink:href="#orderdesc"></use>
+                                            </svg>
+                                        @endif
+                                    </th>
                                     <th scope="col">Alias</th>
                                     <th scope="col">Subasta</th>
                                     <th scope="col" class="lg:w-[190px] w-[90px]">Accion</th>

@@ -70,6 +70,16 @@ class Index extends Component
     $this->resetPage();
   }
 
+  public function updatingQuery()
+  {
+    $this->resetPage();
+  }
+
+  public function updatingSearchType()
+  {
+    $this->resetPage();
+  }
+
   public function render()
   {
 
@@ -95,9 +105,9 @@ class Index extends Component
             ->orWhere("fecha_fin", "like", '%' . $this->query . '%');
           break;
       }
-      $subastas = $subastas->orderBy("id", "desc")->paginate(10);
+      $subastas = $subastas->orderBy("id", "desc")->paginate(15);
     } else {
-      $subastas = Subasta::orderBy("id", "desc")->paginate(10);
+      $subastas = Subasta::orderBy("id", "desc")->paginate(15);
     }
 
 

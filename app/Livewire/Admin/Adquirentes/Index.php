@@ -86,6 +86,17 @@ class Index extends Component
     $this->resetPage();
   }
 
+  public function updatingQuery()
+  {
+    $this->resetPage();
+  }
+
+  public function updatingSearchType()
+  {
+    $this->resetPage();
+  }
+
+
   public function render()
   {
 
@@ -132,10 +143,10 @@ class Index extends Component
           break;
       }
 
-      $adquirentes = $adquirentes->orderBy("adquirentes.id", "desc")->paginate(10);
+      $adquirentes = $adquirentes->orderBy("adquirentes.id", "desc")->paginate(15);
       // $adquirentes = $adquirentes->paginate(7);
     } else {
-      $adquirentes = Adquirente::orderBy("adquirentes.id", "desc")->paginate(10);
+      $adquirentes = Adquirente::orderBy("adquirentes.id", "desc")->paginate(15);
     }
 
 

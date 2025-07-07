@@ -18,4 +18,6 @@ Route::get('/comitentes/test', function () {
 Route::post('/comitentes/store', [ComitenteController::class, 'store'])->name('comitentes.store');
 
 Route::post('/adquirentes/store', [AdquirenteController::class, 'store'])->name('adquirentes.store');
+
+Route::get('/subastas/{subasta}/lotes', [AdquirenteController::class, 'getLotesActivos']);
 // });

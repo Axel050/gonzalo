@@ -28,6 +28,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
     $middleware->alias([
       'active.role' => \App\Http\Middleware\CheckActiveRole::class,
+      'adquirente.logged' => \App\Http\Middleware\CheckAdquirenteLogged::class,
     ]);
   })
   ->withExceptions(function (Exceptions $exceptions) {

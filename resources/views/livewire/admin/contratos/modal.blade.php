@@ -1,13 +1,12 @@
 <div class="fixed  inset-0 flex items-center justify-center  z-50 animate-fade-in-scale">
 
-
     <div class="absolute inset-0  bg-gray-600/70 backdrop-blur-xs transition-opacity duration-300"
         wire:click="$parent.$set('method',false)">
     </div>
 
     <div
         class = ' border  border-gray-500   md:max-w-xl  lg:w-[40%] w-[90%] x-auto  z-50  shadow-gray-400 shadow-md max-h-[95%] 
-                                                      transition delay-150 duration-300 ease-in-out  rounded-2xl '>
+   transition delay-150 duration-300 ease-in-out  rounded-2xl '>
 
         {{-- <x-modal> --}}
 
@@ -29,27 +28,28 @@
                         <p class="text-center text-gray-600"><strong>"{{ $contrato->comitente?->nombre }}
                                 {{ $contrato->comitente?->apellido }}" </strong>?</p>
                     @else
-                        {{-- <x-form-item-sel label="Comitente" :method="$method" model="comitente_id">
-                            <option>Elija comitente </option>
-                            @foreach ($comitentes as $com)
-                                <option value="{{ $com->id }}">
-                                    {{ $com->alias?->nombre }} - {{ $com->nombre }} {{ $com->apellido }} </option>
-                            @endforeach
-                        </x-form-item-sel> --}}
-
-
-
-                        <div id="wrapper-select-tom2" class="lg:w-60 w-[85%] mx-auto ">
-                            <label class="w-full text-start text-gray-500 leading-[16px] text-base">Comitente</label>
-                            <select id="select-tom-contratos" placeholder="Elija comitente" wire:model="comitente_id">
-                                <option value="">Elija comitente</option>
-                                @foreach ($comitentes as $com)
-                                    <option value="{{ $com->id }}">
-                                        {{ $com->alias?->nombre }} - {{ $com->nombre }} {{ $com->apellido }}
-                                    </option>
-                                @endforeach
-                            </select>
+                        <div class="lg:w-60 w-[85%] mx-auto ">
+                            <div id="wrapper-select-tom2" wire:ignore>
+                                <label
+                                    class="w-full text-start text-gray-500 leading-[16px] text-base">Comitente</label>
+                                <select id="select-tom-contratos" placeholder="Elija comitente">
+                                    <option value="">Elija comitente</option>
+                                    @foreach ($comitentes as $com)
+                                        <option value="{{ $com->id }}">
+                                            {{ $com->alias?->nombre }} - {{ $com->nombre }} {{ $com->apellido }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <x-input-error for="comitente_id"
+                                class="absotule top-full py-0 leading-[12px] text-red-500" />
                         </div>
+
+
+
+
+
+
 
 
                         <x-form-item-sel label="Subasta" :method="$method" model="subasta_id">

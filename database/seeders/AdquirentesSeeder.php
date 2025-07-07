@@ -120,7 +120,7 @@ class AdquirentesSeeder extends Seeder
       $roles = ['adq guest', 'adquirente'];
       $randomRole = $roles[array_rand($roles)];
 
-      $user->assignRole($randomRole);
+      $user->assignRole("adquirente");
     }
   }
 }

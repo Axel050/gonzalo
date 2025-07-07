@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Auxiliares\TipoBien;
 use Livewire\Component;
 use App\Models\Caracteristica;
 use App\Models\TiposBien;
+use Livewire\Attributes\On;
 
 class ModalCampos extends Component
 {
@@ -27,6 +28,12 @@ class ModalCampos extends Component
 
     $this->tempCampos = $this->tipo->tbcaracteristicas->toArray();
     $this->dispatch('modalOpenedTipoBienCampo');
+  }
+
+  #[On('setCampo')]
+  public function setCampo($id)
+  {
+    $this->camp = $id;
   }
 
 
@@ -68,7 +75,9 @@ class ModalCampos extends Component
       ]
     ];
 
-    $this->reset(['camp']);
+    $this->camp = "";
+    $this->dispatch('reset-tom-select-campo');
+    // $this->reset(['camp']);
   }
 
 

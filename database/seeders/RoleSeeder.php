@@ -29,6 +29,7 @@ class RoleSeeder extends Seeder
     Permission::create(['name' => 'comitentes-ver']);
     Permission::create(['name' => 'adquirentes-ver']);
     Permission::create(['name' => 'auxiliares-ver']);
+    Permission::create(['name' => 'adquirente-logged']);
 
     // update cache to know about the newly created permissions (required if using WithoutModelEvents in seeders)
     app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
@@ -40,10 +41,10 @@ class RoleSeeder extends Seeder
     $role2->givePermissionTo('dashboard-ver');
 
     // or may be done by chaining
-    $role3 = Role::create(['name' => 'adq guest', "description" => "descripcion test gue"])
-      ->givePermissionTo(['dashboard-ver', 'personal-ver']);
+    // $role3 = Role::create(['name' => 'adq guest', "description" => "descripcion test gue"])
+    //   ->givePermissionTo(['dashboard-ver', 'personal-ver']);
 
-    $role4 = Role::create(['name' => 'adquirente', "description" => "descripcion test adq"]);
+    $role4 = Role::create(['name' => 'adquirente', "description" => "descripcion test adq"])->givePermissionTo(['adquirente-logged']);;
 
 
     // create roles and assign created permissions

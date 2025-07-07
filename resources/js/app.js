@@ -3,24 +3,15 @@ import TomSelect from 'tom-select';
 
 window.addEventListener('modalOpenedContratos', (event) => {
   const comitenteId = event.detail.comitenteId;
-
-  const selectElement = document.querySelector("#select-tom");
-
-  if (selectElement) {
-    new TomSelect("#select-tom", {
-      sortField: {
-        field: "text",
-        direction: "asc"
-      }
-    });
-  }
-
   const selectTomContrato = document.querySelector("#select-tom-contratos");
   if (selectTomContrato) {
     new TomSelect("#select-tom-contratos", {
       sortField: {
         field: "text",
         direction: "asc"
+      },
+      onChange: function (value) {
+        Livewire.dispatch('setComitente', { id: value });
       },
 
       onInitialize: function () {
@@ -31,23 +22,39 @@ window.addEventListener('modalOpenedContratos', (event) => {
 
 });
 
+
 window.addEventListener('modalOpenedGarantias', (event) => {
   const adquirenteId = event.detail.adquirenteId;
   const selectTomGarantias = document.querySelector("#select-tom-garantias");
+
   if (selectTomGarantias) {
+    if (selectTomGarantias.tomselect) {
+      selectTomGarantias.tomselect.destroy();
+    }
+
     new TomSelect("#select-tom-garantias", {
       sortField: {
         field: "text",
         direction: "asc"
       },
-
+      // Escuchamos el evento 'change' de Tom Select
+      onChange: function (value) {
+        Livewire.dispatch('setAdquirente', { id: value });
+      },
       onInitialize: function () {
-        if (adquirenteId) this.setValue(adquirenteId);
+        // Al inicializar, si recibimos un ID, lo establecemos como valor inicial
+        if (adquirenteId) {
+          this.setValue(adquirenteId);
+        }
       }
     });
   }
-
 });
+
+
+
+
+
 
 
 window.addEventListener('modalOpenedTipoBien', (event) => {
@@ -58,6 +65,9 @@ window.addEventListener('modalOpenedTipoBien', (event) => {
       sortField: {
         field: "text",
         direction: "asc"
+      },
+      onChange: function (value) {
+        Livewire.dispatch('setEncargado', { id: value });
       },
       onInitialize: function () {
         if (encargadoId) this.setValue(encargadoId);
@@ -74,12 +84,16 @@ window.addEventListener('modalOpenedTipoBien', (event) => {
         field: "text",
         direction: "asc"
       },
+      onChange: function (value) {
+        Livewire.dispatch('setSuplente', { id: value });
+      },
       onInitialize: function () {
         if (suplenteId) this.setValue(suplenteId);
       }
     });
   }
 });
+
 
 window.addEventListener('modalOpenedTipoBienCampo', () => {
   const selectTomTPCampo = document.querySelector("#select-tom-tipo-bien-campo");
@@ -88,9 +102,22 @@ window.addEventListener('modalOpenedTipoBienCampo', () => {
       sortField: {
         field: "text",
         direction: "asc"
-      }
+      },
+      onChange: function (value) {
+        Livewire.dispatch('setCampo', { id: value });
+      },
 
     });
   }
 
+});
+
+window.addEventListener('reset-tom-select-campo', event => {
+  const selectEl = document.querySelector("#select-tom-tipo-bien-campo");
+
+  // Verificamos que el select y su instancia de TomSelect existan
+  if (selectEl && selectEl.tomselect) {
+    // Usamos el método `clear()` de la API de Tom Select para borrar la selección.
+    selectEl.tomselect.clear();
+  }
 });

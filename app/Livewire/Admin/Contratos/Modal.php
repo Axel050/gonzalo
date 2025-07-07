@@ -6,6 +6,7 @@ use App\Models\Comitente;
 use App\Models\Contrato;
 use App\Models\Subasta;
 use Illuminate\Validation\Rule;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Modal extends Component
@@ -108,6 +109,14 @@ class Modal extends Component
 
     $this->dispatch('modalOpenedContratos', comitenteId: $this->comitente_id);
   }
+
+
+  #[On('setComitente')]
+  public function setComitenteId($id)
+  {
+    $this->comitente_id = $id;
+  }
+
 
 
   public function save()

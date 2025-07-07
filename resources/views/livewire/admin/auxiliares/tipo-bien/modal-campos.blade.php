@@ -28,15 +28,18 @@
                     </div>
                 </div> --}}
 
-                <div id="wrapper-select-tom2" class="lg:w-auto w-[90%] mx-auto  col-span-2 campos">
-                    <label class="w-full text-start text-gray-500 leading-[16px] text-base">Campo</label>
-                    <select id="select-tom-tipo-bien-campo" placeholder="Elija campo" wire:model="camp">
-                        <option value="">Elija campos</option>
-                        @foreach ($caracteristicas as $car)
-                            <option value="{{ $car->nombre }}-/{{ $car->tipo }}-/{{ $car->id }}">
-                                {{ $car->nombre }} | tipo={{ $car->tipo }}</option>
-                        @endforeach
-                    </select>
+                <div class="lg:w-auto w-[90%] mx-auto  col-span-2 campos">
+                    <div id="wrapper-select-tom2" wire:ignore>
+                        <label class="w-full text-start text-gray-500 leading-[16px] text-base">Campo</label>
+                        <select id="select-tom-tipo-bien-campo" placeholder="Elija campo">
+                            <option value="">Elija campos</option>
+                            @foreach ($caracteristicas as $car)
+                                <option value="{{ $car->nombre }}-/{{ $car->tipo }}-/{{ $car->id }}">
+                                    {{ $car->nombre }} | tipo={{ $car->tipo }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <x-input-error for="camp" class="absotule top-full py-0 leading-[12px] text-red-500" />
                 </div>
 
                 <div class="items-start  lg:w-auto w-[90%] mx-auto col-span-2 ">

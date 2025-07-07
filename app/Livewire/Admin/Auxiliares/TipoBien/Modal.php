@@ -4,6 +4,7 @@ namespace App\Livewire\Admin\Auxiliares\TipoBien;
 
 use App\Models\Personal;
 use App\Models\TiposBien;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Modal extends Component
@@ -87,9 +88,21 @@ class Modal extends Component
   }
 
 
+  #[On('setSuplente')]
+  public function setSuplenteId($id)
+  {
+    $this->suplente_id = $id;
+  }
+
+  #[On('setEncargado')]
+  public function setEncargadoId($id)
+  {
+    $this->encargado_id = $id;
+  }
+
   public function save()
   {
-
+    info($this->suplente_id);
     $this->validate();
 
     $tipo = TiposBien::create([

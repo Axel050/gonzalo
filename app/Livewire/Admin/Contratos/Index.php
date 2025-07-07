@@ -72,6 +72,16 @@ class Index extends Component
     $this->resetPage();
   }
 
+  public function updatingQuery()
+  {
+    $this->resetPage();
+  }
+
+  public function updatingSearchType()
+  {
+    $this->resetPage();
+  }
+
   public function render()
   {
 
@@ -114,9 +124,9 @@ class Index extends Component
             ->orWhere("fecha_firma", "like", '%' . $this->query . '%');
           break;
       }
-      $contratos = $contratos->orderBy("id", "desc")->paginate(10);
+      $contratos = $contratos->orderBy("id", "desc")->paginate(15);
     } else {
-      $contratos = Contrato::orderBy("id", "desc")->paginate(10);
+      $contratos = Contrato::orderBy("id", "desc")->paginate(15);
     }
 
 

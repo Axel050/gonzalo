@@ -12,67 +12,93 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
+
+
 #[Layout('components.layouts.auth')]
 class Login extends Component
 {
-    #[Validate('required|string|email')]
-    public string $email = '';
+  public $mail, $pas;
 
-    #[Validate('required|string')]
-    public string $password = '';
+  #[Validate('required|string|email')]
+  public string $email = '';
 
-    public bool $remember = false;
+  #[Validate('required|string')]
+  public string $password = '';
 
-    /**
-     * Handle an incoming authentication request.
-     */
-    public function login(): void
-    {
-        $this->validate();
+  public bool $remember = false;
 
-        $this->ensureIsNotRateLimited();
+  /**
+   * Handle an incoming authentication request.
+   */
+  public function mount()
+  {
+    info("Mount");
+    if (Session::has('prefill')) {
+      $this->email = Session::get('prefill.mail');
+      $this->password  = Session::get('prefill.pas');
+      info(["eee" => $this->email]);
+      info(["ppppp" => $this->password]);
+      info(["xxx" => Session::get('prefill.mail')]);
+    }
+  }
 
-        if (! Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
-            RateLimiter::hit($this->throttleKey());
+  public function login(): void
+  {
+    $this->validate();
 
-            throw ValidationException::withMessages([
-                // 'email' => __('auth.failed'),
-                'email' => "Datos incorrectos",
-            ]);
-        }
+    $this->ensureIsNotRateLimited();
 
-        RateLimiter::clear($this->throttleKey());
-        Session::regenerate();
+    if (! Auth::attempt(['email' => $this->email, 'password' => $this->password], $this->remember)) {
+      RateLimiter::hit($this->throttleKey());
 
-        $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+      throw ValidationException::withMessages([
+        // 'email' => __('auth.failed'),
+        'email' => "Datos incorrectos",
+      ]);
     }
 
-    /**
-     * Ensure the authentication request is not rate limited.
-     */
-    protected function ensureIsNotRateLimited(): void
-    {
-        if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
-            return;
-        }
+    RateLimiter::clear($this->throttleKey());
+    Session::regenerate();
 
-        event(new Lockout(request()));
+    $user  = Auth::user();
 
-        $seconds = RateLimiter::availableIn($this->throttleKey());
+    // $user  = auth()->user();
+    // info(["user" => $user]);
+    // $user = $request->user();
+    if ($user->hasRole('adquirente')) {
+      session()->forget('url.intended');
+      $this->redirectIntended(default: route('adquirentes.perfil', absolute: false), navigate: false);
+    } else {
+      $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
+    }
+  }
 
-        throw ValidationException::withMessages([
-            'email' => __('auth.throttle', [
-                'seconds' => $seconds,
-                'minutes' => ceil($seconds / 60),
-            ]),
-        ]);
+  /**
+   * Ensure the authentication request is not rate limited.
+   */
+  protected function ensureIsNotRateLimited(): void
+  {
+    if (! RateLimiter::tooManyAttempts($this->throttleKey(), 5)) {
+      return;
     }
 
-    /**
-     * Get the authentication rate limiting throttle key.
-     */
-    protected function throttleKey(): string
-    {
-        return Str::transliterate(Str::lower($this->email).'|'.request()->ip());
-    }
+    event(new Lockout(request()));
+
+    $seconds = RateLimiter::availableIn($this->throttleKey());
+
+    throw ValidationException::withMessages([
+      'email' => __('auth.throttle', [
+        'seconds' => $seconds,
+        'minutes' => ceil($seconds / 60),
+      ]),
+    ]);
+  }
+
+  /**
+   * Get the authentication rate limiting throttle key.
+   */
+  protected function throttleKey(): string
+  {
+    return Str::transliterate(Str::lower($this->email) . '|' . request()->ip());
+  }
 }

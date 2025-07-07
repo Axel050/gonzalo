@@ -2,14 +2,36 @@
 
 namespace App\Livewire\Register;
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 use Livewire\Component;
 
 class ModalSuccess extends Component
 {
+  public $pas, $mail;
 
   public function close()
   {
-    return $this->redirect('/', navigate: true);   // Livewire 3
+
+    if ($this->mail && $this->pas) {
+      Session::flash('prefill', [
+        'mail' => $this->mail,
+        'pas'  => $this->pas,
+      ]);
+    }
+
+    if (Auth::check()) {
+
+      Auth::logout();
+      session()->regenerateToken();
+    }
+
+    return $this->redirect('/login', navigate: true);
+  }
+
+  public function home()
+  {
+    return $this->redirect('/', navigate: true);
   }
 
   public function render()

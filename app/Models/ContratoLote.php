@@ -32,4 +32,11 @@ class ContratoLote extends Model
   {
     return $this->hasMany(Puja::class, "lote_id", $this->lote_id);
   }
+
+  public function isActivo()
+  {
+    $now = now();
+    return $this->estado === 'activo' &&
+      ($this->tiempo_post_subasta_fin === null || $now->lte($this->tiempo_post_subasta_fin));
+  }
 }

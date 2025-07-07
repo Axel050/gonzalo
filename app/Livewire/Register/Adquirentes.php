@@ -16,6 +16,8 @@ class Adquirentes extends Component
 {
   use WithFileUploads;
 
+  public $pasP, $mailP;
+
   public $nombre, $apellido, $mail, $telefono, $CUIT, $domicilio;
   public $banco, $numero_cuenta, $CBU, $alias_bancario, $observaciones, $foto;
   public $password, $password_confirmation;
@@ -39,10 +41,10 @@ class Adquirentes extends Component
     $rules =   [
       'nombre' => 'required',
       'apellido' => 'required',
-      'condicion_iva_id' => 'required',
+      // 'condicion_iva_id' => 'required',
       'telefono' => 'required|unique:adquirentes,telefono',
       'mail' => 'required|email|unique:users,email',
-      'CUIT' => 'required|unique:adquirentes,CUIT',
+      // 'CUIT' => 'unique:adquirentes,CUIT',
       'password' => 'required|string|confirmed|min:8',
     ];
     if (!$this->g_recaptcha_response) {
@@ -60,7 +62,7 @@ class Adquirentes extends Component
       "apellido.required" => "Ingrese  apellido.",
       "telefono.required" => "Ingrese  telefono.",
       "telefono.unique" => "Telefono existente.",
-      "CUIT.required" => "Ingrese  CUIT.",
+      // "CUIT.required" => "Ingrese  CUIT.",
       "CUIT.unique" => "CUIT existente.",
       "condicion_iva_id.required" => "Elija condicion.",
       "estado_id.required" => "Elija estado.",
@@ -76,33 +78,30 @@ class Adquirentes extends Component
 
 
 
+
   public function save(AdquirenteService $adquirenteService)
   {
     try {
 
       $this->validate();
-
+      $this->pasP = $this->password;
+      $this->mailP = $this->mail;
       $data = [
         'nombre' => $this->nombre,
         'apellido' => $this->apellido,
         'mail' => $this->mail,
         'telefono' => $this->telefono,
-        'CUIT' => $this->CUIT,
-        'domicilio' => $this->domicilio,
-        'banco' => $this->banco,
-        'numero_cuenta' => $this->numero_cuenta,
-        'CBU' => $this->CBU,
-        'alias_bancario' => $this->alias_bancario,
-        'observaciones' => $this->observaciones,
-        'condicion_iva_id' => $this->condicion_iva_id,
-        'foto' => $this->foto,
+        // 'CUIT' => $this->CUIT,
         'password' => $this->password,
         'password_confirmation' => $this->password_confirmation,
       ];
 
+
       $adquirente = $adquirenteService->createAdquirente($data);
 
-      $this->reset();
+      $this->pasP = $this->password;
+      $this->mailP = $this->mail;
+      $this->resetExcept(["mailP", "pasP"]);
       $this->method = "ok";
     } catch (ValidationException $e) {
       $this->dispatch('reset-recaptcha');

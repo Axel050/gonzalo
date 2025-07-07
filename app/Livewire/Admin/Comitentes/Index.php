@@ -7,11 +7,11 @@ use App\Models\Subasta;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
+
 use Livewire\Attributes\Url;
 
 class Index extends Component
 {
-
 
   use WithPagination;
 
@@ -69,6 +69,7 @@ class Index extends Component
   }
 
 
+
   #[On(['comitenteCreated', 'comitenteUpdated', 'comitenteDeleted', 'loteCreated'])]
   public function mount()
   {
@@ -85,6 +86,17 @@ class Index extends Component
     $this->method = "";
     $this->resetPage();
   }
+
+  public function updatingQuery()
+  {
+    $this->resetPage();
+  }
+
+  public function updatingSearchType()
+  {
+    $this->resetPage();
+  }
+
 
   public function render()
   {
@@ -147,9 +159,9 @@ class Index extends Component
 
           // 
       }
-      $comitentes = $comitentes->orderBy("id", "desc")->paginate(7);
+      $comitentes = $comitentes->orderBy("id", "desc")->paginate(15);
     } else {
-      $comitentes = Comitente::orderBy("id", "desc")->paginate(7);
+      $comitentes = Comitente::orderBy("id", "desc")->paginate(15);
     }
 
 

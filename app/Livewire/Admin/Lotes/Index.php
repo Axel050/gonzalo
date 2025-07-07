@@ -114,89 +114,99 @@ class Index extends Component
     $this->resetPage();
   }
 
-  public function render2()
+  // public function render2()
+  // {
+
+
+  //   if ($this->query) {
+
+
+
+  //     switch ($this->searchType) {
+  //       case 'id':
+  //         $lotes = Lote::where("id", "like", '%' . $this->query . '%');
+  //         break;
+  //       case 'comitente':
+  //         $lotes = Lote::whereHas('comitente', function ($query) {
+  //           $query->where('nombre', 'like', '%' . $this->query . '%');
+  //           $query->orWhere('apellido', 'like', '%' . $this->query . '%');
+  //         });
+  //         break;
+  //       case 'alias':
+  //         $lotes = Lote::whereHas('comitente.alias', function ($query) {
+  //           $query->where('nombre', 'like', '%' . $this->query . '%');
+  //         });
+  //         break;
+  //       case 'tipo':
+  //         $lotes = Lote::whereHas('tipo', function ($query) {
+  //           $query->where('nombre', 'like', '%' . $this->query . '%');
+  //         });
+  //         break;
+  //       case 'subasta':
+  //         $lotes = Lote::whereHas('ultimoContrato', function ($query) {
+  //           $query->where('subasta_id', 'like', '%' . $this->query . '%');
+  //         });
+  //         break;
+  //       case 'contrato':
+  //         $lotes = Lote::where("ultimo_contrato", "like", '%' . $this->query . '%');
+  //         break;
+  //       case 'estado':
+  //         $lotes = Lote::where("estado", "like", '%' . $this->query . '%');
+  //         break;
+  //       case 'titulo':
+  //         $lotes = Lote::where("titulo", "like", '%' . $this->query . '%');
+  //         break;
+  //       case 'encargado':
+  //         $lotes = Lote::whereHas('tipo.encargado', function ($query) {
+  //           $query->where('nombre', 'like', '%' . $this->query . '%')
+  //             ->orWhere('apellido', 'like', '%' . $this->query . '%');
+  //         });
+  //         break;
+
+  //       case 'todos':
+  //         $lotes = Lote::where("id", "like", '%' . $this->query . '%')
+  //           ->orWhereHas('comitente', function ($query) {
+  //             $query->where('nombre', 'like', '%' . $this->query . '%');
+  //             $query->orWhere('apellido', 'like', '%' . $this->query . '%');
+  //           })
+  //           ->orWhereHas('comitente.alias', function ($query) {
+  //             $query->where('nombre', 'like', '%' . $this->query . '%');
+  //           })
+  //           ->orWhereHas('tipo', function ($query) {
+  //             $query->where('nombre', 'like', '%' . $this->query . '%');
+  //           })
+  //           ->orWhereHas('tipo.encargado', function ($query) {
+  //             $query->where('nombre', 'like', '%' . $this->query . '%');
+  //           })
+  //           ->orWhereHas('ultimoContrato', function ($query) {
+  //             $query->where('subasta_id', 'like', '%' . $this->query . '%');
+  //           })
+  //           ->orWhere("estado", "like", '%' . $this->query . '%')
+  //           ->orWhere("ultimo_contrato", "like", '%' . $this->query . '%')
+  //           ->orWhere("titulo", "like", '%' . $this->query . '%');
+
+
+  //         break;
+  //     }
+  //     $lotes = $lotes->orderBy("id", "desc")->paginate(10);
+  //   } else {
+  //     $lotes = Lote::orderBy("id", "desc")->paginate(10);
+  //   }
+
+
+  //   return view('livewire.admin.lotes.index', compact("lotes"));
+  // }
+
+
+  public function updatingQuery()
   {
-
-
-    if ($this->query) {
-
-
-
-      switch ($this->searchType) {
-        case 'id':
-          $lotes = Lote::where("id", "like", '%' . $this->query . '%');
-          break;
-        case 'comitente':
-          $lotes = Lote::whereHas('comitente', function ($query) {
-            $query->where('nombre', 'like', '%' . $this->query . '%');
-            $query->orWhere('apellido', 'like', '%' . $this->query . '%');
-          });
-          break;
-        case 'alias':
-          $lotes = Lote::whereHas('comitente.alias', function ($query) {
-            $query->where('nombre', 'like', '%' . $this->query . '%');
-          });
-          break;
-        case 'tipo':
-          $lotes = Lote::whereHas('tipo', function ($query) {
-            $query->where('nombre', 'like', '%' . $this->query . '%');
-          });
-          break;
-        case 'subasta':
-          $lotes = Lote::whereHas('ultimoContrato', function ($query) {
-            $query->where('subasta_id', 'like', '%' . $this->query . '%');
-          });
-          break;
-        case 'contrato':
-          $lotes = Lote::where("ultimo_contrato", "like", '%' . $this->query . '%');
-          break;
-        case 'estado':
-          $lotes = Lote::where("estado", "like", '%' . $this->query . '%');
-          break;
-        case 'titulo':
-          $lotes = Lote::where("titulo", "like", '%' . $this->query . '%');
-          break;
-        case 'encargado':
-          $lotes = Lote::whereHas('tipo.encargado', function ($query) {
-            $query->where('nombre', 'like', '%' . $this->query . '%')
-              ->orWhere('apellido', 'like', '%' . $this->query . '%');
-          });
-          break;
-
-        case 'todos':
-          $lotes = Lote::where("id", "like", '%' . $this->query . '%')
-            ->orWhereHas('comitente', function ($query) {
-              $query->where('nombre', 'like', '%' . $this->query . '%');
-              $query->orWhere('apellido', 'like', '%' . $this->query . '%');
-            })
-            ->orWhereHas('comitente.alias', function ($query) {
-              $query->where('nombre', 'like', '%' . $this->query . '%');
-            })
-            ->orWhereHas('tipo', function ($query) {
-              $query->where('nombre', 'like', '%' . $this->query . '%');
-            })
-            ->orWhereHas('tipo.encargado', function ($query) {
-              $query->where('nombre', 'like', '%' . $this->query . '%');
-            })
-            ->orWhereHas('ultimoContrato', function ($query) {
-              $query->where('subasta_id', 'like', '%' . $this->query . '%');
-            })
-            ->orWhere("estado", "like", '%' . $this->query . '%')
-            ->orWhere("ultimo_contrato", "like", '%' . $this->query . '%')
-            ->orWhere("titulo", "like", '%' . $this->query . '%');
-
-
-          break;
-      }
-      $lotes = $lotes->orderBy("id", "desc")->paginate(10);
-    } else {
-      $lotes = Lote::orderBy("id", "desc")->paginate(10);
-    }
-
-
-    return view('livewire.admin.lotes.index', compact("lotes"));
+    $this->resetPage();
   }
 
+  public function updatingSearchType()
+  {
+    $this->resetPage();
+  }
 
   public function render()
   {
@@ -325,7 +335,7 @@ class Index extends Component
     }
 
     // Si no hay filtros, mostrar todos los lotes
-    $lotes = $lotes->orderBy('id', 'desc')->paginate(10);
+    $lotes = $lotes->orderBy('id', 'desc')->paginate(15);
     return view('livewire.admin.lotes.index', compact('lotes'));
   }
 }

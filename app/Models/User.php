@@ -17,7 +17,7 @@ class User extends Authenticatable
   /** @use HasFactory<\Database\Factories\UserFactory> */
   use HasFactory, Notifiable;
   use HasRoles;
-  use HasPermissions;
+  // use HasPermissions;
 
   /**
    * The attributes that are mass assignable.
@@ -95,5 +95,11 @@ class User extends Authenticatable
     }
 
     return parent::can($ability, $arguments) && $this->hasActiveRole();
+  }
+
+
+  public function adquirente()
+  {
+    return $this->hasOne(Adquirente::class, 'user_id');
   }
 }

@@ -142,4 +142,20 @@ class Lote extends Model
   {
     return $this->pujas()->orderByDesc('id')->first();
   }
+
+  // New7-4
+  public function isActivoEnSubasta($subastaId)
+  {
+    $contratoLote = $this->contratoLotes()
+      ->whereHas('contrato', function ($query) use ($subastaId) {
+        $query->where('subasta_id', $subastaId);
+      })
+      ->first();
+
+    if (!$contratoLote) {
+      return false;
+    }
+
+    return $contratoLote->isActivo();
+  }
 }

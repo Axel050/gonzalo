@@ -9,7 +9,6 @@ class Adquirente extends Model
 {
   use HasFactory;
 
-
   protected $fillable = [
     'nombre',
     'apellido',
@@ -44,5 +43,19 @@ class Adquirente extends Model
   public function alias()
   {
     return $this->belongsTo(AdquirentesAlias::class, "alias_id");
+  }
+
+
+  public function garantias()
+  {
+    return $this->hasMany(Deposito::class);
+  }
+
+  public function garantia(int $subasta_id): bool
+  {
+    return $this->garantias()
+      ->where('subasta_id', $subasta_id)
+      ->where('estado', 'pagado')
+      ->exists();
   }
 }

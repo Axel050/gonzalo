@@ -6,8 +6,8 @@
 
     <h1 class="text-2xl text-white mx-auto font-bold mt-6 mb-4 ">Nuevo Comitente</h1>
 
-    <a href="{{ route('home') }}"
-        class="px-3 py-1 rounded-2xl bg-cyan-700 text-white absolute lg:top-5 lg:left-5 top-3 left-3 lg:text-base text-xs  ">Home</a>
+    {{-- <a href="{{ route('home') }}"
+        class="px-3 py-1 rounded-2xl bg-cyan-700 text-white absolute lg:top-5 lg:left-5 top-3 left-3 lg:text-base text-xs  ">Home</a> --}}
 
     <form wire:submit.prevent="save" class="grid lg:grid-cols-2  grid-cols-1 gap-y-2 gap-x-8">
 

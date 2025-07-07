@@ -1,24 +1,24 @@
 <div class="flex j flex-col ustify-center items-center h-lvh w-full ">
 
     @if ($method)
-        @livewire('register.modal-success', ['pas' => 'pas', 'mail' => '222@22'])
+        @livewire('register.modal-success', ['pas' => $pasP, 'mail' => $mailP])
     @endif
 
-    <a href="{{ route('home') }}"
-        class="px-3 py-1 rounded-2xl bg-cyan-700 text-white absolute lg:top-5 lg:left-5 top-3 left-3 lg:text-base text-xs  ">Home</a>
+
 
     <h1 class="text-2xl text-white mx-auto font-bold mt-6 mb-4">Nuevo Adquirente</h1>
 
+
     <form wire:submit.prevent="save" class="grid lg:grid-cols-2  grid-cols-1 gap-y-2 gap-x-8">
 
-        <div class= 'items-start  lg:w-60 w-[85%] mx-auto  mb-[-5px] '>
+        {{-- <div class= 'items-start  lg:w-60 w-[85%] mx-auto  mb-[-5px] '>
             <label class="w-full text-start text-gray-500 leading-[16px] text-base">Foto</label>
             <div class="relative w-full ">
                 <input type="file" wire:model="foto"
                     class = 'lg:w-60 h-6 rounded-md border border-gray-400 w-full text-gray-500 pl-2 text-sm bg-gray-100 disabled:bg-gray-300 disabled:text-gray-600' />
                 <x-input-error for="foto" class="top-full py-0 leading-[12px] text-red-500" />
             </div>
-        </div>
+        </div> --}}
 
         <div class= 'items-start  lg:w-60 w-[85%] mx-auto  mb-[-5px] '>
             <label class="w-full text-start text-gray-500 leading-[16px] text-base">Nombre</label>
@@ -47,14 +47,14 @@
             </div>
         </div>
 
-        <div class= 'items-start  lg:w-60 w-[85%] mx-auto  mb-[-5px] '>
+        {{-- <div class= 'items-start  lg:w-60 w-[85%] mx-auto  mb-[-5px] '>
             <label class="w-full text-start text-gray-500 leading-[16px] text-base">CUIT</label>
             <div class="relative w-full ">
                 <input wire:model="CUIT"
                     class = 'lg:w-60 h-6 rounded-md border border-gray-400 w-full text-gray-500 pl-2 text-sm bg-gray-100 disabled:bg-gray-300 disabled:text-gray-600' />
                 <x-input-error for="CUIT" class="top-full py-0 leading-[12px] text-red-500" />
             </div>
-        </div>
+        </div> --}}
 
         <div class= 'items-start  lg:w-60 w-[85%] mx-auto  mb-[-5px] '>
             <label class="w-full text-start text-gray-500 leading-[16px] text-base">Telefono</label>
@@ -65,16 +65,16 @@
             </div>
         </div>
 
-        <div class= 'items-start  lg:w-60 w-[85%] mx-auto  mb-[-5px] '>
+        {{-- <div class= 'items-start  lg:w-60 w-[85%] mx-auto  mb-[-5px] '>
             <label class="w-full text-start text-gray-500 leading-[16px] text-base">Domicilio</label>
             <div class="relative w-full ">
                 <input wire:model="domicilio"
                     class = 'lg:w-60 h-6 rounded-md border border-gray-400 w-full text-gray-500 pl-2 text-sm bg-gray-100 disabled:bg-gray-300 disabled:text-gray-600' />
                 <x-input-error for="domicilio" class="top-full py-0 leading-[12px] text-red-500" />
             </div>
-        </div>
+        </div> --}}
 
-        <div class= 'items-start  lg:w-60 w-[85%] mx-auto  mb-[-5px] '>
+        {{-- <div class= 'items-start  lg:w-60 w-[85%] mx-auto  mb-[-5px] '>
             <label class="w-full text-start text-gray-500 leading-[16px] text-base">Banco</label>
             <div class="relative w-full ">
                 <input wire:model="banco"
@@ -123,7 +123,7 @@
                 </select>
                 <x-input-error for="condicion_iva_id" class="top-full py-0 leading-[12px] text-red-500" />
             </div>
-        </div>
+        </div> --}}
 
         <div class= 'items-start  lg:w-60 w-[85%] mx-auto  mb-[-5px] '>
             <label class="w-full text-start text-gray-500 leading-[16px] text-base">Password</label>

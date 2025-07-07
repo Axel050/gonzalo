@@ -17,72 +17,72 @@ class PersonalSeeder extends Seeder
   {
     $personals = [
       [
-        'nombre' => 'Lucas',
+        'nombre' => 'Ignacion',
         'apellido' => 'Fernández',
-        'alias' => 'LFernandez',
-        'role_id' => Role::inRandomOrder()->first()->id,
+        'alias' => 'IFernandez',
+        'role_id' => 2,
         'CUIT' => '20-54321678-5',
         'domicilio' => 'Las Heras 345, Mendoza',
         'telefono' => '3456789012',
         'user' => [
-          'name' => 'Lucas FernándezP',
-          'email' => 'lucas.fernandez@example.comP',
+          'name' => 'igncacio FernándezP',
+          'email' => 'ignacion.fernandez@casablanca.com',
           'password' => bcrypt('12345678'),
         ]
       ],
       [
-        'nombre' => 'Laura',
+        'nombre' => 'Marta',
         'apellido' => 'García',
-        'alias' => 'LGarcia',
-        'role_id' => Role::inRandomOrder()->first()->id,
+        'alias' => 'MGarcia',
+        'role_id' => 2,
         'CUIT' => '27-34567890-3',
         'domicilio' => 'Mitre 789, Salta',
         'telefono' => '7890123456',
         'user' => [
-          'name' => 'Laura GarcíaP',
-          'email' => 'laura.garcia@example.comP',
+          'name' => 'marta GarcíaP',
+          'email' => 'marta.garcia@casablanca.com',
           'password' => bcrypt('12345678'),
         ]
       ],
       [
-        'nombre' => 'Martín',
+        'nombre' => 'Enzo',
         'apellido' => 'Pérez',
-        'alias' => 'MPerez',
-        'role_id' => Role::inRandomOrder()->first()->id,
+        'alias' => 'EPerez',
+        'role_id' => 2,
         'CUIT' => '20-98765432-1',
         'domicilio' => 'Roca 123, Tucumán',
         'telefono' => '1239876543',
         'user' => [
           'name' => 'Martín PérezP',
-          'email' => 'martin.perez@example.comP',
+          'email' => 'martin.perez@casablanca.com',
           'password' => bcrypt('12345678'),
         ]
       ],
       [
-        'nombre' => 'Sofía',
+        'nombre' => 'Mirian',
         'apellido' => 'Ramírez',
-        'alias' => 'SRamirez',
-        'role_id' => Role::inRandomOrder()->first()->id,
+        'alias' => 'MRamirez',
+        'role_id' => 2,
         'CUIT' => '27-87654321-9',
         'domicilio' => 'Corrientes 456, Chaco',
         'telefono' => '4567891234',
         'user' => [
-          'name' => 'Sofía RamírezP',
-          'email' => 'sofia.ramirez@example.comP',
+          'name' => 'Mirian RamírezP',
+          'email' => 'mirian.ramirez@casablanca.com',
           'password' => bcrypt('12345678'),
         ]
       ],
       [
-        'nombre' => 'Pablo',
+        'nombre' => 'Lucho',
         'apellido' => 'González',
-        'alias' => 'PGonzalez',
-        'role_id' => Role::inRandomOrder()->first()->id,
+        'alias' => 'LGonzalez',
+        'role_id' => 2,
         'CUIT' => '20-45612378-5',
         'domicilio' => 'Belgrano 890, Formosa',
         'telefono' => '8901234567',
         'user' => [
-          'name' => 'Pablo GonzálezP',
-          'email' => 'pablo.gonzalez@example.comP',
+          'name' => 'Lucho GonzálezP',
+          'email' => 'lucho.gonzalez@casablanca.com',
           'password' => bcrypt('12345678'),
         ]
       ]

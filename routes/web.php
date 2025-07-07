@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdquirenteController;
 use App\Http\Controllers\ComitenteController;
+use App\Livewire\LotesActivos;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -10,12 +11,13 @@ use Illuminate\Support\Facades\Route;
 use App\Mail\TestEmail;
 use App\Models\Contrato;
 use App\Models\ContratoLote;
-
-
+use App\Models\Lote;
+use App\Models\Subasta;
 
 Route::get('/test', function () {
   return view('livewire.auth.role-desactivated');
 });
+
 
 Route::get('/dashboard', function () {
   if (auth()->user()->hasPermissionTo('dashboard-ver')) {
@@ -24,9 +26,11 @@ Route::get('/dashboard', function () {
   return redirect()->route('admin.index')->with('error', 'No tienes permiso para acceder al panel de control.');
 })->middleware(['auth', 'verified', 'active.role'])->name('dashboard');
 
+
 Route::get('/', function () {
   return view('welcome');
 })->name('home');
+
 
 // Route::view('dashboard', 'dashboard')
 //   ->middleware(['auth', 'verified', 'active.role'])
@@ -34,10 +38,8 @@ Route::get('/', function () {
 //   ->can("dashboard-ver");
 
 
-
 Route::middleware(['auth'])->group(function () {
   Route::redirect('settings', 'settings/profile');
-
   Route::get('settings/profile', Profile::class)->name('settings.profile');
   Route::get('settings/password', Password::class)->name('settings.password');
   Route::get('settings/appearance', Appearance::class)->name('settings.appearance');
@@ -45,10 +47,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 // Route::get('/lotes/{id}', [QrCodeController::class, 'show'])->name('lotes.show');
-Route::get('/lotes/{id}', function ($id) {
-  // $id = 11;
-  return view('detalle-lotes', compact("id"));
-})->name('lotes.show');
+
 
 
 
@@ -88,8 +87,25 @@ Route::get('/csrf-token', function () {
 
 
 
+Route::get('/adquirentes/perfil', [AdquirenteController::class, "perfil"])->name('adquirentes.perfil')->middleware('adquirente.logged');
+
+Route::get('/lotes', function () {
+
+  $lotes = Lote::where("estado", "en_subasta")->get();
+  $subasta = Subasta::find(9);
+
+  return view("lotes", compact(["lotes", "subasta"]));
+})->name('lotes')->middleware(['auth']);
 
 
+Route::get('/lotes/{id}', function ($id) {
+  return view('detalle-lotes', compact("id"));
+})->name('lotes.show');
 
+
+Route::get('/tuactivos', LotesActivos::class)->name('lotes.activos');
+// Route::get('/subastas/{subasta}/lotes-activos', [AdquirenteController::class, 'getLotesActivos']);
+
+Route::get('/subastas/{subasta}/lotes', [AdquirenteController::class, 'getLotes'])->name('subasta.lotes')->middleware(['auth']);
 
 require __DIR__ . '/auth.php';

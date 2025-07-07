@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Livewire\LotesActivos;
+use App\Models\Adquirente;
+use App\Models\Lote;
+use App\Models\Subasta;
 use App\Services\AdquirenteService;
 use App\Services\AdquirenteServiceService;
+use App\Services\SubastaService;
 use Illuminate\Container\Attributes\Log;
 use Illuminate\Http\Request;
+use Livewire\Livewire;
 
 class AdquirenteController extends Controller
 {
@@ -24,6 +30,17 @@ class AdquirenteController extends Controller
   /**
    * Show the form for creating a new resource.
    */
+  public function perfil()
+  {
+    $user  = auth()->user();
+    // $adquirente = Adquirente::where("user_id", $user->id)->first();
+    $adquirente = Adquirente::where("user_id", $user->id)->first();
+    // if (auth()->user()->hasPermissionTo('adquirente-logged')) {
+    return view('perfil', compact(["user", "adquirente"]));
+    // }
+
+  }
+
   public function create()
   {
     return view('adquirente');
@@ -88,5 +105,46 @@ class AdquirenteController extends Controller
   public function destroy(string $id)
   {
     //
+  }
+
+  public function lotes()
+  {
+    $lotes = Lote::limit(3)->get();
+
+    return view("lotes", compact("lotes"));
+  }
+
+  public function loted(string $id)
+  {
+    $lote = Lote::find($id);
+    return view("detail", compact("lote"));
+  }
+
+
+  public function getLotes(Subasta $subasta)
+  {
+    return view("lotes-activos", compact("subasta"));
+  }
+
+
+  public function getLotesActivos(Subasta $subasta)
+  {
+    if (!$subasta->isActiva()) {
+      return response()->json(['error' => 'Subasta no activa'], 403);
+    }
+
+    $lotes = app(SubastaService::class)->getLotesActivos($subasta)->toArray();
+    // $lotes = $subasta->lotesActivos()->get()->map(function ($lote) use ($subasta) {
+    //   return [
+    //     'id' => $lote->id,
+    //     'titulo' => $lote->titulo,
+    //     'precio_base' => $lote->pivot->precio_base,
+    //     'puja_actual' => $lote->getPujaFinal()?->monto,
+    //     'tiempo_post_subasta_fin' => $lote->pivot->tiempo_post_subasta_fin,
+    //     'estado' => $lote->isActivoEnSubasta($subasta->id) ? 'activo' : 'inactivo',
+    //   ];
+    // });
+
+    return response()->json($lotes);
   }
 }

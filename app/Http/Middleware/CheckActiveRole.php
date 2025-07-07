@@ -16,8 +16,15 @@ class CheckActiveRole
    */
   public function handle(Request $request, Closure $next): Response
   {
+    if (!auth()->user()) {
+      return response()->view('livewire.auth.noautorizado', [], 403);
+    }
 
-    if (!auth()->user()->hasActiveRole()) {
+    if (auth()->user()->hasRole('adquirente')) {
+      return response()->view('livewire.auth.noautorizado', [], 403);
+    }
+
+    if (!auth()->user()?->hasActiveRole()) {
 
       $request->session()->invalidate();
       $request->session()->regenerateToken();
