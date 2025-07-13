@@ -1,11 +1,11 @@
 <div>
 
     <h1 class="text-white font-bold text-xl">Lotes</h1>
-    {{-- @dump($subasta->toArray()) --}}
+
     <hr>
-    {{-- <hr><br> --}}
+    {{-- {{ $test }} --}}
     <hr><br>
-    {{-- @dump($lotes) --}}
+
 
     <div class="grid grid-cols-3 gap-7">
         @foreach ($lotes as $lote)
@@ -18,7 +18,7 @@
                     </figure>
                     <p class="text-gray-200 mt-1">{{ $lote['precio_base'] }}</p>
                     <p class="text-gray-200 mt-1">Lote: {{ $lote['id'] }}</p>
-                    {{-- @dump($lote) --}}
+
                 </a>
             </article>
         @endforeach

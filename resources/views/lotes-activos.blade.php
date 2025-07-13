@@ -5,4 +5,5 @@
 
     @livewire('lotes-activos', ['subasta' => $subasta])
 
+
 </x-layouts.guest>

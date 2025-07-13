@@ -7,6 +7,8 @@
 
 
     <h1 class="text-2xl text-white mx-auto font-bold mt-6 mb-4">Nuevo Adquirente</h1>
+    {{-- <button wire:click="evento">evebto</button> --}}
+    {{-- <button wire:click="comprobar" class="m-8 bg-red-300 ">Comprao</button> --}}
 
 
     <form wire:submit.prevent="save" class="grid lg:grid-cols-2  grid-cols-1 gap-y-2 gap-x-8">

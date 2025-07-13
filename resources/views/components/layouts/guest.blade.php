@@ -15,6 +15,7 @@
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
+
     <!-- Styles -->
     @livewireStyles
 
@@ -203,6 +204,7 @@
 
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
+    {{-- <script src="resources/js/echo.js'"></script> --}}
 
     @stack('captcha')
 </body>

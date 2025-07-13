@@ -7,5 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CarritoLote extends Model
 {
-    use HasFactory;
+  use HasFactory;
+
+  protected $fillable = ["carrito_id", "lote_id", "ultima_oferta"];
 }

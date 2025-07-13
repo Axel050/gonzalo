@@ -100,7 +100,7 @@ Route::get('/lotes', function () {
 
 Route::get('/lotes/{id}', function ($id) {
   return view('detalle-lotes', compact("id"));
-})->name('lotes.show');
+})->name('lotes.show')->middleware(['auth']);;
 
 
 Route::get('/tuactivos', LotesActivos::class)->name('lotes.activos');

@@ -13,12 +13,40 @@ class LotesActivos extends Component
   public Subasta $subasta;
   public $lotes = [];
   public $error = null;
+  // public $test = "11";
+  public $subastaEstado = "11";
+
+  // #[On('echo:subasta.{subasta.id},SubastaEstadoActualizado')]
+  // #[On('echo:my-channel.{subasta.id},SubastaEstadoActualizado')]
+
+  #[On('echo:my-channel,SubastaEstadoActualizado')]
+  public function actualizarEstado($event)
+  {
+    // Si cambio manual en la BD estdo lote , y disparao el even , actualizar sin refresh OK  
+
+    // $this->subastaEstado = $event['estado'];
+    // $this->lotes = $event['lotes'];
+    // if ($this->subastaEstado === 'inactiva') {
+    //     $this->error = 'La subasta ha finalizado';
+    // }
+
+
+    $this->loadLotes();
+    // $this->test = "22";
+    info("REVERT  XXXX");
+    // info(["lotes " => $event['lotes']]);
+    // info(["subata estado " => $event['estado']]);
+    // dd("aaaa");
+
+  }
 
   public function mount(Subasta $subasta)
   {
+    info("lotees actuvis ");
     // info(["subasta" => $subasta]);
-    // $this->subasta = Subasta::find(9);
-    $this->subasta = $subasta;
+    $this->subasta = Subasta::find(9);
+    // $this->subasta = $subasta;
+
     $this->loadLotes();
   }
 
@@ -27,11 +55,11 @@ class LotesActivos extends Component
     // info(["lotexxxxsClass" => $this->lotes]);
     try {
       $this->lotes = app(SubastaService::class)->getLotesActivos($this->subasta)->toArray();
-      // info(["lotesClass" => $this->lotes]);
+      info(["lotesClass" => $this->lotes]);
       $this->error = null;
     } catch (\Exception $e) {
-      // info(["error" => $this->lotes]);
-      // info($e->getMessage());
+      // info(["error" => $this-}>lotes]);
+      info(["errorrrr" => $e->getMessage()]);
       $this->lotes = [];
       $this->error = $e->getMessage();
     }
@@ -68,21 +96,22 @@ class LotesActivos extends Component
 
   }
 
-  #[On('echo:subasta.{subasta.id},PujaRealizada')]
-  public function actualizarLote($event)
-  {
-    foreach ($this->lotes as &$lote) {
-      if ($lote['id'] == $event['lote_id']) {
-        $lote['puja_actual'] = $event['monto'];
-        $lote['tiempo_post_subasta_fin'] = $event['tiempo_post_subasta_fin'];
-        $lote['estado'] = $event['estado'];
-        break;
-      }
-    }
-  }
+  // #[On('echo:subasta.{subasta.id},PujaRealizada')]
+  // public function actualizarLote($event)
+  // {
+  //   foreach ($this->lotes as &$lote) {
+  //     if ($lote['id'] == $event['lote_id']) {
+  //       $lote['puja_actual'] = $event['monto'];
+  //       $lote['tiempo_post_subasta_fin'] = $event['tiempo_post_subasta_fin'];
+  //       $lote['estado'] = $event['estado'];
+  //       break;
+  //     }
+  //   }
+  // }
 
   public function render()
   {
+
     return view('livewire.lotes-activos');
   }
 }

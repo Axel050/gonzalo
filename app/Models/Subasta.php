@@ -59,9 +59,9 @@ class Subasta extends Model implements Auditable
   // New7-4
   public function lotesActivos()
   {
-    info(["ContratosS" => $this->contratos->toArray()]);
+    // info(["ContratosS" => $this->contratos->toArray()]);
 
-    $query = \App\Models\Lote::query()
+    $query = Lote::query()
       ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
       ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
       ->where('contratos.subasta_id', $this->id)
@@ -81,16 +81,19 @@ class Subasta extends Model implements Auditable
         'lotes.estado as lote_estado',
         'contrato_lotes.precio_base',
         'contrato_lotes.tiempo_post_subasta_fin',
-        'contrato_lotes.estado as contrato_lote_estado'
-      )
-      ->with(['pujas' => function ($query) {
-        $query->orderByDesc('id')->first();
-      }]);
+        'contrato_lotes.estado as contrato_lote_estado',
+        'contrato_lotes.id as contrato_lote_id',
 
-    info(["test"]);
+      )
+      // ->with(['pujas' => function ($query) {
+      //   $query->orderByDesc('id')->first();
+      // }])
+    ;
+
+    // info(["test"]);
     try {
       $results = $query->get();
-      info(["Lotes activoss" => $results->toArray()]);
+      // info(["Lotes activoss" => $results->toArray()]);
     } catch (\Exception $e) {
       info(["Error en lotesActivos" => $e->getMessage()]);
       throw $e;
@@ -121,7 +124,7 @@ class Subasta extends Model implements Auditable
   public function isActiva()
   {
     $now = now();
-    if ($this->estado === 'activa' && $now->between($this->fecha_inicio, $this->fecha_fin)) {
+    if ($this->estado === '1' && $now->between($this->fecha_inicio, $this->fecha_fin)) {
       return true;
     }
     return $this->lotesActivos()->exists();
