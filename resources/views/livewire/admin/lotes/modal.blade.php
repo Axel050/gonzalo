@@ -49,7 +49,6 @@
                         <option>Elija estado </option>
                         @foreach ($estados as $item)
                             <option value="{{ $item['value'] }}"> {{ $item['label'] }} </option>
-                            @dump($item)
                         @endforeach
                     </x-form-item-sel>
 

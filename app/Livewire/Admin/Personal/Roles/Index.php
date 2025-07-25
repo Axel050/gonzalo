@@ -46,28 +46,33 @@ class Index extends Component
   {
 
 
+    $rolesQuery = Role::where('name', '!=', 'adquirente');
+
     if ($this->query) {
       switch ($this->searchType) {
         case 'id':
-          $roles = Role::where("id", "like", '%' . $this->query . '%');
+          $rolesQuery->where('id', 'like', '%' . $this->query . '%');
           break;
-        case 'name':
-          $roles = Role::where("name", "like", '%' . $this->query . '%');
-          break;
-        case 'description':
-          $roles = Role::where("description", "like", '%' . $this->query . '%');
-          break;
-        case 'todos':
-          $roles = Role::where("id", "like", '%' . $this->query . '%')
-            ->orWhere("name", "like", '%' . $this->query . '%')
-            ->orWhere("description", "like", '%' . $this->query . '%');
 
+        case 'name':
+          $rolesQuery->where('name', 'like', '%' . $this->query . '%');
+          break;
+
+        case 'description':
+          $rolesQuery->where('description', 'like', '%' . $this->query . '%');
+          break;
+
+        case 'todos':
+          $rolesQuery->where(function ($q) {
+            $q->where('id', 'like', '%' . $this->query . '%')
+              ->orWhere('name', 'like', '%' . $this->query . '%')
+              ->orWhere('description', 'like', '%' . $this->query . '%');
+          });
           break;
       }
-      $roles = $roles->orderBy("id", "desc")->paginate(10);
-    } else {
-      $roles = Role::orderBy("id", "desc")->paginate(10);
     }
+
+    $roles = $rolesQuery->orderBy('id', 'desc')->paginate(10);
 
 
 

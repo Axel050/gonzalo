@@ -9,7 +9,8 @@ class ContratoLote extends Model
 {
   use HasFactory;
 
-  protected $fillable = ['contrato_id', 'lote_id', 'precio_base', 'moneda_id', 'tiempo_post_subasta_fin'];
+  protected $fillable = ['contrato_id', 'lote_id', 'precio_base', 'moneda_id', 'tiempo_post_subasta_fin', 'estado'];
+
 
   // Relación con Contrato
   public function contrato()

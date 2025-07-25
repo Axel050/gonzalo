@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdquirenteController;
+use App\Http\Controllers\CarritoController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ComitenteController;
 use Illuminate\Support\Facades\Route;
@@ -15,9 +16,21 @@ Route::get('/comitentes/test', function () {
 })->name("comitentes.test");
 
 
+// Al agregar app,  crear middleware por auth ,  miestras quedaran comentadas
+
 Route::post('/comitentes/store', [ComitenteController::class, 'store'])->name('comitentes.store');
 
 Route::post('/adquirentes/store', [AdquirenteController::class, 'store'])->name('adquirentes.store');
 
 Route::get('/subastas/{subasta}/lotes', [AdquirenteController::class, 'getLotesActivos']);
+
+
+
+
+
+Route::delete('/carrito', [CarritoController::class, 'destroy'])->name('carrito.delete');
+
+Route::post('/carrito', [CarritoController::class, 'store'])->name('carrito.store');
+
+Route::post('/carrito/pujar', [CarritoController::class, 'pujar'])->name('carrito.pujar');
 // });

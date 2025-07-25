@@ -102,10 +102,16 @@ Route::get('/lotes/{id}', function ($id) {
   return view('detalle-lotes', compact("id"));
 })->name('lotes.show')->middleware(['auth']);;
 
+Route::get('/carrito', function () {
+  return view('carrito');
+})->name('carrito')->middleware(['auth']);;
+
 
 Route::get('/tuactivos', LotesActivos::class)->name('lotes.activos');
 // Route::get('/subastas/{subasta}/lotes-activos', [AdquirenteController::class, 'getLotesActivos']);
 
 Route::get('/subastas/{subasta}/lotes', [AdquirenteController::class, 'getLotes'])->name('subasta.lotes')->middleware(['auth']);
+
+
 
 require __DIR__ . '/auth.php';

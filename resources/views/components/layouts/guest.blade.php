@@ -144,26 +144,28 @@
                         class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal bg-cyan-800">
                         Comitentes
                     </a>
-                    <a href="{{ route('subasta.lotes', 9) }}"
-                        class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal bg-cyan-800">
-                        Subasta 9
-                    </a>
+
 
                 </div>
                 <div class="flex">
                     @auth
 
 
-                        {{-- @role(['super-admin', 'admin']) --}}
-                        {{-- @role('adquirente') --}}
                         @unlessrole('adquirente')
                             <a href="{{ url('/dashboard') }}"
                                 class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border txt-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal mr-8 bg-cyan-800 text-gray-300">
                                 Dashboard
                             </a>
-                            {{-- @endrole --}}
                         @endunlessrole
 
+
+                        @role('adquirente')
+                            <a href="{{ route('carrito') }}" class="bg-cyan-500 px-2 rounded py-0.5 mr-4 hover:bg-cyan-600">
+                                <svg fill="#fff" class="w-6 h-6 ">
+                                    <use xlink:href="#cart"></use>
+                                </svg>
+                            </a>
+                        @endrole
                         <div
                             class="flex justify-end ml-auto mr-4 bg-cya-800 text-white rounded-lg bg-linear-to-l from-cyan-800 to-cyan-950 z-50">
 
@@ -207,6 +209,7 @@
     {{-- <script src="resources/js/echo.js'"></script> --}}
 
     @stack('captcha')
+    @stack('timer')
 </body>
 
 </html>

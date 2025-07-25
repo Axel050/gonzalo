@@ -6,7 +6,7 @@ class LotesEstados
 {
   public const INCOMPLETO = 'incompleto';
   public const DISPONIBLE = 'disponible';
-  // public const ASIGNADO = 'asignado';
+  public const ASIGNADO = 'asignado';
   public const EN_SUBASTA = 'en_subasta';
   public const VENDIDO = 'vendido';
   public const DEVUELTO = 'devuelto';
@@ -22,7 +22,7 @@ class LotesEstados
     return [
       self::INCOMPLETO,
       self::DISPONIBLE,
-      // self::ASIGNADO,
+      self::ASIGNADO,
       self::EN_SUBASTA,
       self::VENDIDO,
       self::DEVUELTO,
@@ -41,7 +41,7 @@ class LotesEstados
     return match ($estado) {
       self::INCOMPLETO => 'Incompleto',
       self::DISPONIBLE => 'Disponible',
-      // self::ASIGNADO => 'Asignado',
+      self::ASIGNADO => 'Asignado',
       self::EN_SUBASTA => 'En Subasta',
       self::VENDIDO => 'Vendido',
       self::DEVUELTO => 'Devuelto',

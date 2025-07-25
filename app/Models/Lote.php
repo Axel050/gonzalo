@@ -72,6 +72,7 @@ class Lote extends Model
       ->withPivot('precio_base'); // Incluir el campo adicional de la tabla pivote
   }
 
+
   public function ultimoContrato()
   {
     return $this->belongsTo(Contrato::class, 'ultimo_contrato');
@@ -125,6 +126,8 @@ class Lote extends Model
   {
     // return $this->hasOne(ContratoLote::class)->latestOfMany();
   }
+
+
 
   public function ultimoConLote()
   {

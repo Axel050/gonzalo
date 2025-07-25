@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Jobs\ActivarLotes;
+use App\Jobs\DesactivarLotesExpirados;
 use App\Models\Puja;
 use App\Models\Subasta;
 use App\Services\SubastaService;
@@ -10,10 +12,11 @@ use Livewire\Component;
 
 class LotesActivos extends Component
 {
+  protected $subastaService;
+
   public Subasta $subasta;
   public $lotes = [];
   public $error = null;
-  // public $test = "11";
   public $subastaEstado = "11";
 
   // #[On('echo:subasta.{subasta.id},SubastaEstadoActualizado')]
@@ -40,22 +43,45 @@ class LotesActivos extends Component
 
   }
 
-  public function mount(Subasta $subasta)
+  public function activar()
   {
-    info("lotees actuvis ");
-    // info(["subasta" => $subasta]);
-    $this->subasta = Subasta::find(9);
-    // $this->subasta = $subasta;
+    info("ACTIVAR");
+    $job = new ActivarLotes();
+    $job->handle();
+  }
 
-    $this->loadLotes();
+  public function job()
+  {
+    $job = new DesactivarLotesExpirados();
+    $job->handle();
+  }
+
+
+
+  public function mount(Subasta $subasta, SubastaService $subastaService)
+  {
+    info("mount ");
+    $this->subastaService = $subastaService;
+    $this->subasta = $subasta;
+
+    $now = now();
+    if ($this->subasta->estado === 'activa' && $now->between($this->subasta->fecha_inicio, $this->subasta->fecha_fin)) {
+      $this->loadLotes();
+    } elseif ($this->subasta->estado === 'enpuja') {
+      $this->loadLotes();
+    } else {
+      info("mount444 ");
+      $this->lotes = [];
+    }
   }
 
   public function loadLotes()
   {
-    // info(["lotexxxxsClass" => $this->lotes]);
     try {
-      $this->lotes = app(SubastaService::class)->getLotesActivos($this->subasta)->toArray();
-      info(["lotesClass" => $this->lotes]);
+      info("lotesClass");
+
+      $this->lotes = $this->subastaService?->getLotesActivos($this->subasta)?->toArray();
+      // info(["lotesClass" => $this->lotes]);
       $this->error = null;
     } catch (\Exception $e) {
       // info(["error" => $this-}>lotes]);
@@ -65,36 +91,7 @@ class LotesActivos extends Component
     }
   }
 
-  public function registrarPuja($loteId, $monto)
-  {
-    $lote = $this->subasta->lotesActivos()->where('lotes.id', $loteId)->first();
-    $contratoLote = $lote->contratoLotes()
-      ->whereHas('contrato', fn($query) => $query->where('subasta_id', $this->subasta->id))
-      ->first();
 
-    if (!$this->subasta->isActiva() || !$contratoLote || !$contratoLote->isActivo()) {
-      $this->addError('puja', 'Subasta o lote inactivo');
-      return;
-    }
-    // 'adquirente_id' => auth()->id(),
-
-    Puja::create([
-      'adquirente_id' => 2,
-      'lote_id' => $lote->id,
-      'subasta_id' => $this->subasta->id,
-      'monto' => $monto,
-    ]);
-
-    if (now()->gt($this->subasta->fecha_fin)) {
-      $contratoLote->update(['tiempo_post_subasta_fin' => now()->addMinutes($this->subasta->tiempo_post_subasta)]);
-    }
-
-    //   event(new \App\Events\PujaRealizada(null, $this->subasta, $lote));
-    //   $this->loadLotes(); // Recargar lotes después de la puja
-
-
-
-  }
 
   // #[On('echo:subasta.{subasta.id},PujaRealizada')]
   // public function actualizarLote($event)

@@ -102,12 +102,36 @@
                                         </td>
                                         <td class="py-2">
                                             {{ \Carbon\Carbon::parse($subasta->fecha_fin)->format('Y-m-d H:i') }}</td>
-                                        <td
-                                            class="py-2 font-semibold {{ $subasta->estado ? 'text-green-600' : 'text-red-600' }}">
-                                            {{ $subasta->estado ? 'On' : 'Off' }}</td>
+
+                                        @php
+
+                                            switch ($subasta->estado) {
+                                                case 'activa':
+                                                    $color = 'text-green-500';
+                                                    $text = 'Activa';
+                                                    break;
+                                                case 'inactiva':
+                                                    $color = 'text-red-500';
+                                                    $text = 'Inactiva';
+                                                    break;
+                                                case 'enpuja':
+                                                    $color = 'text-yellow-500';
+                                                    $text = 'En puja';
+                                                    break;
+                                                default:
+                                                    $color = '';
+                                                    $text = '';
+                                                    break;
+                                            }
+                                        @endphp
+
+                                        <td {{-- class="py-2 font-semibold {{ $subasta->estado ? 'text-green-600' : 'text-red-600' }}" --}} class="py-2 font-semibold  {{ $color }}">
+                                            {{-- {{ $subasta->estado ? 'On' : 'Off' }} --}}
+                                            {{ $text }}
+                                        </td>
                                         <td class="py-2">
                                             <a href="{{ route('admin.lotes', ['ids' => 'subasta-' . $subasta->id]) }}"
-                                                class="bg-cyan-900 text-white px-4 rounded-2xl cursor-pointer py-0.5 hover:bg-cyan-950"
+                                                class="bg-cyan-900 text-white px-4 rounded-2xl cursor-pointer py-0.5 hover:bg-cyan-950 "
                                                 title="Ver lotes">
                                                 {{-- {{ $subasta->lotes->count() }} --}}
                                                 {{ $subasta->contarLotes() }}

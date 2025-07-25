@@ -66,8 +66,9 @@
                             <select wire:model.live="estado"
                                 class="h-6 rounded-md border border-gray-400 w-60 text-gray-500 text-sm py-0.5 bg-gray-100 pl-1 "
                                 @disabled($method === 'view')>
-                                <option value="1">Activo</option>
-                                <option value="0">Inactivo</option>
+                                @foreach ($estados as $item)
+                                    <option value="{{ $item['value'] }}"> {{ $item['label'] }} </option>
+                                @endforeach
                             </select>
                             <x-input-error for="estado" class="absolute top-full" />
                         </div>

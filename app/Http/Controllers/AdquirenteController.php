@@ -129,9 +129,12 @@ class AdquirenteController extends Controller
 
   public function getLotesActivos(Subasta $subasta)
   {
+    info("FIRST");
     if (!$subasta->isActiva()) {
+      info("IF");
       return response()->json(['error' => 'Subasta no activa'], 403);
     }
+    info("SECOND");
 
     $lotes = app(SubastaService::class)->getLotesActivos($subasta)->toArray();
     // $lotes = $subasta->lotesActivos()->get()->map(function ($lote) use ($subasta) {

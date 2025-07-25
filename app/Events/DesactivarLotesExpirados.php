@@ -22,10 +22,14 @@ class DesactivarLotesExpirados implements ShouldQueue
 
   public function handle()
   {
-    info("Iniciando job DesactivarLotesExpirados a las " . now()->toDateTimeString());
+    info("Iniciando job DesactivarLotesExpirados xxxa las " . now()->toDateTimeString());
+
+    $ss = Subasta::find(9);
+    info(["estado " => $ss]);
+    info(["estado " => $ss->estado == "activo"]);
 
     try {
-      Subasta::where('estado', 'activa')
+      Subasta::where('estado', 'activo')
         ->where('fecha_fin', '<=', now())
         ->each(function ($subasta) {
           info("Procesando subasta ID: {$subasta->id}, Título: {$subasta->titulo}");
@@ -46,7 +50,7 @@ class DesactivarLotesExpirados implements ShouldQueue
 
             if (!$hasPujas && now()->gte($subasta->fecha_fin)) {
               // Desactivar lotes sin pujas después de fecha_fin
-              info("Desactivando lote ID: {$lote->id} (sin pujas) en subasta ID: {$subasta->id}");
+              info("Desactivando lote ID: {$lote->id}   (sin pujas) en subasta ID: {$subasta->id}");
               $contratoLote->update(['estado' => 'inactivo']);
               $lotesActualizados = true;
             } elseif ($hasPujas && !$contratoLote->tiempo_post_subasta_fin && now()->gte($subasta->fecha_fin)) {
@@ -74,7 +78,7 @@ class DesactivarLotesExpirados implements ShouldQueue
 
           if ($lotesActualizados || $subasta->wasChanged('estado')) {
             info("Emitiendo evento SubastaEstadoActualizado para subasta ID: {$subasta->id}");
-            event(new SubastaEstadoActualizado($subasta));
+            // event(new SubastaEstadoActualizado($subasta));
           }
         });
 

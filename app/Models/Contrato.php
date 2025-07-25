@@ -23,6 +23,11 @@ class Contrato extends Model
     return $this->belongsTo(Comitente::class);
   }
 
+  public function subasta()
+  {
+    return $this->belongsTo(Subasta::class);
+  }
+
   // Relación con Lote a través de ContratoLotes
   public function lotes()
   {

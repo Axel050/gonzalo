@@ -29,6 +29,11 @@ class Adquirente extends Model
 
 
 
+  public function carrito()
+  {
+    return $this->hasOne(Carrito::class);
+  }
+
   public function autorizados()
   {
     return $this->hasMany(Autorizado::class);

@@ -3,8 +3,7 @@
         Detalles
     </x-slot>
 
-
-    @livewire('detalle-lote', ['id' => $id])
+    @livewire('carrito-show')
 
 
 </x-layouts.guest>

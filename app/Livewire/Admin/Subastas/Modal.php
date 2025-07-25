@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Admin\Subastas;
 
-
+use App\Enums\SubastaEstados;
 use App\Models\Subasta;
 use Carbon\Carbon;
 use Livewire\Component;
@@ -37,6 +37,8 @@ class Modal extends Component
   public $titulo;
   public $descripcion;
   public $num;
+
+  public $estados;
 
 
 
@@ -92,6 +94,14 @@ class Modal extends Component
 
   public function mount()
   {
+
+    $this->estados = array_map(function ($estado) {
+      return [
+        'value' => $estado,
+        'label' => SubastaEstados::getLabel($estado),
+      ];
+    }, SubastaEstados::all());
+
 
     if ($this->method == "save") {
       $this->num = Subasta::max('id') + 1;

@@ -26,6 +26,14 @@ class Subasta extends Model implements Auditable
     'garantia',
   ];
 
+  protected $casts = [
+    'fecha_fin' => 'datetime',
+    'fecha_inicio' => 'datetime',
+    'created_at' => 'datetime',
+    'updated_at' => 'datetime',
+    'deleted_at' => 'datetime',
+  ];
+
 
 
 
@@ -57,18 +65,25 @@ class Subasta extends Model implements Auditable
 
 
   // New7-4
+  // info(["ContratosS" => $this->contratos->toArray()]);
   public function lotesActivos()
   {
-    // info(["ContratosS" => $this->contratos->toArray()]);
 
+    // if (!$this->isActiva()) {
+    //   return [];
+    // }
+
+    info(["LOTESACTIVOS" => now()]);
     $query = Lote::query()
       ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
       ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
       ->where('contratos.subasta_id', $this->id)
-      ->where('lotes.estado', 'disponible')
+      ->where('lotes.estado', 'ensubasta')
       ->where('contrato_lotes.estado', 'activo')
       ->where(function ($query) {
-        $query->whereNull('contrato_lotes.tiempo_post_subasta_fin')
+        $query
+          ->whereNull('contrato_lotes.tiempo_post_subasta_fin')
+          // ->orWhere('contrato_lotes.tiempo_post_subasta_fin', '>=', now()->subMinute());
           ->orWhere('contrato_lotes.tiempo_post_subasta_fin', '>=', now());
       })
       ->select(
@@ -124,9 +139,20 @@ class Subasta extends Model implements Auditable
   public function isActiva()
   {
     $now = now();
-    if ($this->estado === '1' && $now->between($this->fecha_inicio, $this->fecha_fin)) {
+
+
+    if ($this->estado === 'activa' && $now->between($this->fecha_inicio, $this->fecha_fin)) {
       return true;
     }
+
+    if ($this->estado === 'enpuja') {
+      return true;
+    }
+
+    if ($this->estado === 'pausada') {
+      return false;
+    }
+
     return $this->lotesActivos()->exists();
   }
 }

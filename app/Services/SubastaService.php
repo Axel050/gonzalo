@@ -9,11 +9,13 @@ class SubastaService
   public function getLotesActivos(Subasta $subasta)
   {
 
+    info("In SUBASTA SERVICE");
+
     if (!$subasta->isActiva()) {
-      // info("NO ACRIVPOO");
+      info("NO ACRIVA ");
       throw new \Exception('Subasta no activa', 403);
     }
-    // info("pasosoo");
+    info("pasosoo");
 
     return $subasta->lotesActivos()->get()->map(function ($lote) use ($subasta) {
       return [
