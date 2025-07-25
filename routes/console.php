@@ -10,7 +10,7 @@ Artisan::command('inspire', function () {
   $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
 
-// Schedule::job(new DesactivarLotesExpirados)->everyThirtySeconds();
 Schedule::job(new ActivarLotes)->everyMinute();
 Schedule::job(new DesactivarLotesExpirados)->everyMinute();
+// Schedule::job(new DesactivarLotesExpirados)->everyThirtySeconds();
 // Schedule::job(new DesactivarLotesExpirados)->everyFifteenSeconds();

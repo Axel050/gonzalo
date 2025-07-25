@@ -73,7 +73,7 @@ class Subasta extends Model implements Auditable
     //   return [];
     // }
 
-    info(["LOTESACTIVOS" => now()]);
+    // info(["LOTESACTIVOS" => now()]);
     $query = Lote::query()
       ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
       ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')

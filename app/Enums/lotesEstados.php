@@ -41,11 +41,11 @@ class LotesEstados
     return match ($estado) {
       self::INCOMPLETO => 'Incompleto',
       self::DISPONIBLE => 'Disponible',
-      self::ASIGNADO => 'Asignado',
       self::EN_SUBASTA => 'En Subasta',
       self::VENDIDO => 'Vendido',
       self::DEVUELTO => 'Devuelto',
       self::STANDBY => 'Standby',
+      self::ASIGNADO => 'Asignado',
       default => 'Desconocido',
     };
   }

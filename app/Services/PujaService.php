@@ -73,7 +73,7 @@ class PujaService
       ->whereHas('contrato', fn($q) => $q->where('subasta_id', $subasta->id))
       ->first();
 
-    info(" PUJA isACtiva");
+    // info(" PUJA isACtiva");
     // if (!$subasta->isActiva() || !$contratoLote || !$contratoLote->isActivo()) {
     if (!$subasta->isActiva()) {
       throw new DomainException('Subasta  inactiva');
@@ -83,11 +83,11 @@ class PujaService
       throw new DomainException('Lote inactivo');
     }
 
-    info(" PUJA FINAL");
+    // info(" PUJA FINAL");
     if ($lote->getPujaFinal()?->adquirente_id == $adquirenteId) {
       throw new DomainException('Tu oferta es la última');
     }
-    info(" PUJA SERVICE ULTIMO MONTO");
+    // info(" PUJA SERVICE ULTIMO MONTO");
 
     $ultimoMonto = Puja::where('lote_id', $lote->id)
       ->where('subasta_id', $subasta->id)
@@ -96,7 +96,7 @@ class PujaService
 
     $montoFinal = $ultimoMonto + $monto;
 
-    info(" PUJA SERVICE PUJA_CREATE");
+    // info(" PUJA SERVICE PUJA_CREATE");
     $puja = Puja::create([
       'adquirente_id' => $adquirenteId,
       'lote_id' => $lote->id,
@@ -110,10 +110,10 @@ class PujaService
       ]);
     }
 
-    info("ANTES EVENT");
+    // info("ANTES EVENT");
     event(new PujaRealizada($lote->id, $montoFinal, $puja->id));
 
-    info("DESPUES EVENT");
+    // info("DESPUES EVENT");
     return [
       'success' => true,
       'message' => [

@@ -135,10 +135,10 @@
                         const now = new Date();
                         const end = new Date(endTimeString);
 
-                        console.log(`new INIT for lote ${loteId}`);
-                        console.log(`endTime from data attribute: ${endTimeString}`);
-                        console.log(`end (Date object): ${end}`);
-                        console.log(`now: ${now}`);
+                        // console.log(`new INIT for lote ${loteId}`);
+                        // console.log(`endTime from data attribute: ${endTimeString}`);
+                        // console.log(`end (Date object): ${end}`);
+                        // console.log(`now: ${now}`);
 
                         if (!isNaN(end.getTime()) && end > now) {
                             this.isValid = true;
@@ -151,11 +151,10 @@
                                     this.timeRemaining = '00:00';
                                     this.isValid = false; // Oculta el contador
                                     clearInterval(this.interval);
-                                    console.log(
-                                        `Temporizador detenido para lote ${loteId}: tiempo agotado`);
+                                    // console.log(`Temporizador detenido para lote ${loteId}: tiempo agotado`);
 
-                                    console.log(
-                                        `Despachando evento 'timer-expired' para el lote ${loteId}`);
+                                    // console.log(
+                                    //     `Despachando evento 'timer-expired' para el lote ${loteId}`);
                                     this.$dispatch('timer-expired', {
                                         loteId: loteId
                                     });
