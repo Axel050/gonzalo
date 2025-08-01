@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Adquirente extends Model
+class Adquirente extends Model implements Auditable
 {
   use HasFactory;
+  use \OwenIt\Auditing\Auditable;
 
   protected $fillable = [
     'nombre',
@@ -53,7 +55,7 @@ class Adquirente extends Model
 
   public function garantias()
   {
-    return $this->hasMany(Deposito::class);
+    return $this->hasMany(Garantia::class);
   }
 
   public function garantia(int $subasta_id): bool

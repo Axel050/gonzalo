@@ -2,7 +2,8 @@
 
 namespace App\Livewire\Admin\Depositos;
 
-use App\Models\Deposito;
+
+use App\Models\Garantia;
 use App\Models\Subasta;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -39,7 +40,7 @@ class Index extends Component
   public function option($method, $id = false)
   {
     if ($method == "delete" || $method == "update" || $method == "view") {
-      $cond = Deposito::find($id);
+      $cond = Garantia::find($id);
       if (!$cond) {
         $this->dispatch('depositoNotExits');
       } else {
@@ -88,33 +89,33 @@ class Index extends Component
     if ($this->query) {
       switch ($this->searchType) {
         case 'id':
-          $depositos = Deposito::where("depositos.id", "like", '%' . $this->query . '%');
+          $depositos = Garantia::where("depositos.id", "like", '%' . $this->query . '%');
           break;
         case 'adquirente':
-          $depositos = Deposito::whereHas('adquirente', function ($query) {
+          $depositos = Garantia::whereHas('adquirente', function ($query) {
             $query->where('nombre', 'like', '%' . $this->query . '%');
             $query->orWhere('apellido', 'like', '%' . $this->query . '%');
           });
           break;
         case 'alias':
-          $depositos = Deposito::whereHas('adquirente.alias', function ($query) {
+          $depositos = Garantia::whereHas('adquirente.alias', function ($query) {
             $query->where('nombre', 'like', '%' . $this->query . '%');
           });
           break;
         case 'fecha':
-          $depositos = Deposito::where("fecha", "like", '%' . $this->query . '%');
+          $depositos = Garantia::where("fecha", "like", '%' . $this->query . '%');
           break;
         case 'fecha_devolucion':
-          $depositos = Deposito::where("fecha_devolucion", "like", '%' . $this->query . '%');
+          $depositos = Garantia::where("fecha_devolucion", "like", '%' . $this->query . '%');
           break;
         case 'subasta':
-          $depositos = Deposito::where("subasta_id", "like", '%' . $this->query . '%');
+          $depositos = Garantia::where("subasta_id", "like", '%' . $this->query . '%');
           break;
         case 'estado':
-          $depositos = Deposito::where("estado", "like", '%' . $this->query . '%');
+          $depositos = Garantia::where("estado", "like", '%' . $this->query . '%');
           break;
         case 'todos':
-          $depositos = Deposito::where("depositos.id", "like", '%' . $this->query . '%')
+          $depositos = Garantia::where("depositos.id", "like", '%' . $this->query . '%')
             ->orWhere("estado", "like", '%' . $this->query . '%')
             ->orWhereHas('adquirente', function ($query) {
               $query->where('nombre', 'like', '%' . $this->query . '%');
@@ -141,12 +142,12 @@ class Index extends Component
     } else {
       // Ordenamiento para cuando no hay búsqueda
       if ($this->sortField === 'adquirente') {
-        $depositos = Deposito::join('adquirentes', 'depositos.adquirente_id', '=', 'adquirentes.id')
+        $depositos = Garantia::join('adquirentes', 'depositos.adquirente_id', '=', 'adquirentes.id')
           ->orderBy('adquirentes.nombre', $this->sortDirection)
           ->select('depositos.*')
           ->paginate(15);
       } else {
-        $depositos = Deposito::orderBy($this->sortField, $this->sortDirection)->paginate(15);
+        $depositos = Garantia::orderBy($this->sortField, $this->sortDirection)->paginate(15);
       }
     }
 

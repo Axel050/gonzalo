@@ -16,6 +16,7 @@ return new class extends Migration
       $table->string('nombre')->unique();
       $table->foreignId('adquirente_id')->constrained('adquirentes')->onDelete('cascade');
       $table->timestamps();
+      $table->softDeletes();
     });
   }
 

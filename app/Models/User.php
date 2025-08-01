@@ -102,4 +102,9 @@ class User extends Authenticatable
   {
     return $this->hasOne(Adquirente::class, 'user_id');
   }
+
+  public function personal()
+  {
+    return $this->hasOne(Personal::class, 'user_id');
+  }
 }

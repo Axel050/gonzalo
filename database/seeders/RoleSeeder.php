@@ -30,6 +30,7 @@ class RoleSeeder extends Seeder
     Permission::create(['name' => 'adquirentes-ver']);
     Permission::create(['name' => 'auxiliares-ver']);
     Permission::create(['name' => 'adquirente-logged']);
+    Permission::create(['name' => 'auditoria-ver']);
 
     // update cache to know about the newly created permissions (required if using WithoutModelEvents in seeders)
     app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();

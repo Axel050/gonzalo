@@ -11,12 +11,8 @@ return new class extends Migration
    */
   public function up(): void
   {
-    Schema::create('comitentes_aliases', function (Blueprint $table) {
-      $table->id();
-      $table->string('nombre')->unique();
-      $table->foreignId('comitente_id')->constrained('comitentes')->onDelete('cascade');
-      $table->timestamps();
-      $table->softDeletes();
+    Schema::table('adquirentes', function (Blueprint $table) {
+      $table->integer('comision')->default(20)->change();
     });
   }
 
@@ -25,6 +21,8 @@ return new class extends Migration
    */
   public function down(): void
   {
-    Schema::dropIfExists('comitentes_aliases');
+    Schema::table('adquirentes', function (Blueprint $table) {
+      $table->decimal('comision', 5, 1)->default(20);
+    });
   }
 };

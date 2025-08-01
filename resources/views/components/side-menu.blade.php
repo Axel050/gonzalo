@@ -165,6 +165,16 @@
             </x-li-single>
         @endcan
 
+        @can('auditoria-ver')
+            <x-li-single :active="Request::is('admin/auditorias')" route="admin.auditoria">
+
+                <svg class="size-6">
+                    <use xlink:href="#audit"></use>
+                </svg>
+                <span class="ml-1 ">Auditoria</span>
+            </x-li-single>
+        @endcan
+
 
 
 

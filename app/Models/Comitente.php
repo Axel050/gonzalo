@@ -5,10 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Comitente extends Model
+class Comitente extends Model implements Auditable
 {
   use HasFactory;
+  use \OwenIt\Auditing\Auditable;
 
   protected $fillable = [
     'nombre',
@@ -52,6 +54,7 @@ class Comitente extends Model
   {
     return $this->hasMany(Lote::class);
   }
+
   public function lotes()
   {
     return $this->hasManyThrough(

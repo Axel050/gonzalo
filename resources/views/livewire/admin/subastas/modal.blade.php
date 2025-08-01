@@ -60,19 +60,45 @@
 
                     <x-form-item-area label="Descripcion" :method="$method" model="descripcion" />
 
-                    <div class="items-start  lg:w-auto w-[85%] mx-auto ">
-                        <label class="w-full text-start text-gray-500 mt-1 leading-[16px] text-base">Estado</label>
-                        <div class="relative w-full ">
-                            <select wire:model.live="estado"
-                                class="h-6 rounded-md border border-gray-400 w-60 text-gray-500 text-sm py-0.5 bg-gray-100 pl-1 "
-                                @disabled($method === 'view')>
-                                @foreach ($estados as $item)
-                                    <option value="{{ $item['value'] }}"> {{ $item['label'] }} </option>
-                                @endforeach
-                            </select>
-                            <x-input-error for="estado" class="absolute top-full" />
+                    @if ($method == 'update' || $method == 'view')
+                        <x-form-item label="Estado" method="view" model="estado" />
+                    @endif
+
+
+
+                    {{-- <x-form-item-sel label="Estado" :method="$method" model="estado" method="view">
+                        <option>Elija estado </option>
+                        @foreach ($estados as $item)
+                            <option value="{{ $item['value'] }}"> {{ $item['label'] }} </option>
+                        @endforeach
+                    </x-form-item-sel> --}}
+
+
+                    @if ($method == 'update' && in_array($subasta->estado, ['activa', 'pausada', 'enpuja']))
+                        <div class="items-start  lg:w-60 w-[85%] mx-auto  mb-[-5px] mt-1.5">
+
+                            <label class="w-full text-start text-gray-500  leading-[16px] text-base">
+                                {{ $subasta->estado == 'activa' || $subasta->estado == 'enpuja' ? 'Pausar' : 'Activar' }}
+                            </label>
+                            <div class="relative w-full   text-gray-600 flex pl-14 gap-x-10 lg:gap-x-14  text-base">
+
+                                <div class="flex  items-center">
+
+                                    <input type="radio" wire:model="pausar" value="0" name="pausa"
+                                        class ="h-6 rounded-md border border-gray-400 w-4 text-gray-500 p-1 text-sm bg-gray-100 mr-0.5" />
+                                    No
+                                </div>
+
+                                <div class="flex   items-center">
+                                    <input type="radio" wire:model="pausar" value="1" name="pausa"
+                                        class ="h-6 rounded-md border border-gray-400 w-4 text-gray-500 pl-1 text-sm bg-gray-100 mr-0.5" />Si
+                                </div>
+                                <x-input-error for="finD" class="relative top-full py-0 leading-[12px]" />
+                            </div>
                         </div>
-                    </div>
+                    @endif
+
+
                 @endif
 
                 <div class="flex !flex-row gap-6 justify-center lg:text-base text-sm">

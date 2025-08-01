@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Enums\LotesEstados;
+use App\Enums\SubastaEstados;
 use App\Models\Subasta;
 use App\Events\SubastaEstadoActualizado;
 use Illuminate\Bus\Queueable;
@@ -20,7 +22,7 @@ class ActivarLotes implements ShouldQueue
     info("Iniciando job ActivarLotes a las " . now()->toDateTimeString());
 
     try {
-      Subasta::where('estado', 'inactiva')
+      Subasta::where('estado', SubastaEstados::INACTIVA)
         ->where('fecha_inicio', '<=', now())
         ->where('fecha_fin', '>=', now())
         ->each(function ($subasta) {
@@ -33,7 +35,7 @@ class ActivarLotes implements ShouldQueue
 
           $lotesActualizados = false;
           $lotes = $subasta->lotes()
-            ->where('estado', 'asignado')
+            ->where('estado', LotesEstados::ASIGNADO)
             ->whereHas(
               'contratoLotes',
               fn($query) => $query
@@ -46,16 +48,16 @@ class ActivarLotes implements ShouldQueue
 
           DB::transaction(function () use ($subasta, &$lotesActualizados, $lotes) {
             // Activar la subasta
-            if ($subasta->estado !== 'activa') {
+            if ($subasta->estado !== SubastaEstados::ACTIVA) {
               info("Cambiando subasta ID: {$subasta->id} a estado 'activa'");
-              $subasta->update(['estado' => 'activa']);
+              $subasta->update(['estado' => SubastaEstados::ACTIVA]);
               $lotesActualizados = true;
             }
 
             // Activar lotes
             foreach ($lotes as $lote) {
               info("Activando lote ID: {$lote->id} (nuevo estado: ensubasta) en subasta ID: {$subasta->id}");
-              $lote->update(['estado' => 'ensubasta']);
+              $lote->update(['estado' => LotesEstados::EN_SUBASTA]);
               $lotesActualizados = true;
             }
           });

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\LotesEstados;
 use App\Events\PujaRealizada;
 use App\Models\Adquirente;
 use App\Models\Lote;
@@ -18,6 +19,9 @@ class PujaService
   public function registrarPuja(int $adquirenteId, int $loteId, int $monto): array
   {
     info("registrar PUJA SERVICE");
+
+
+
     if (!$adquirenteId) {
       throw new InvalidArgumentException('Adquirente no especificado');
     }
@@ -31,7 +35,7 @@ class PujaService
       throw new ModelNotFoundException('Lote no encontrado');
     }
 
-    if ($lote->estado != "ensubasta") {
+    if ($lote->estado != LotesEstados::EN_SUBASTA) {
       throw new DomainException('Lote no disponible');
     }
 
@@ -57,6 +61,10 @@ class PujaService
       throw new DomainException('No puedes participar de esta subata aun');
     }
 
+
+    if ($lote->comitente?->mail == $adquirente->user?->email) {
+      throw new DomainException('No puedes pujar por tu lote');
+    }
 
 
     $existsInCarrito = $adquirente->carrito?->carritoLotes()

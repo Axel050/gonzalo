@@ -2,6 +2,8 @@
 
 namespace App\Jobs;
 
+use App\Enums\LotesEstados;
+use App\Enums\SubastaEstados;
 use App\Events\SubastaEstado;
 use App\Models\Subasta;
 use App\Events\SubastaEstadoActualizado;
@@ -21,7 +23,7 @@ class DesactivarLotesExpirados implements ShouldQueue
     info("Iniciando NEW  job DesactivarLotesExpirados a las " . now()->toDateTimeString());
 
     try {
-      Subasta::whereIn('estado', ['activa', 'enpuja'])
+      Subasta::whereIn('estado', [SubastaEstados::ACTIVA, SubastaEstados::ENPUJA])
         ->where('fecha_fin', '<=', now())
         ->each(function ($subasta) {
           info("Procesando subasta ID: {$subasta->id}, Título: {$subasta->titulo}, Estado: {$subasta->estado}");
@@ -36,7 +38,7 @@ class DesactivarLotesExpirados implements ShouldQueue
           $lotes = $subasta->lotes()->with([
             'pujas' => fn($query) => $query->where('subasta_id', $subasta->id),
             // 'ultimoConLote' => fn($query) => $query->whereColumn('contrato_lotes.contrato_id', 'lotes.ultimo_contrato')
-          ])->where('estado', 'ensubasta') // Solo procesar lotes en subasta
+          ])->where('estado', LotesEstados::EN_SUBASTA) // Solo procesar lotes en subasta
             ->get();
 
           info("Antes  trans");
@@ -65,14 +67,14 @@ class DesactivarLotesExpirados implements ShouldQueue
 
                 $nuevoTiempo = $subasta->fecha_fin->addMinutes($minutos);
                 $contratoLote->update(['tiempo_post_subasta_fin' => $nuevoTiempo]);
-                $lote->update(['estado' => 'ensubasta']);
+                $lote->update(['estado' => LotesEstados::EN_SUBASTA]);
                 info("Asignado tiempo_post_subasta_fin: {$nuevoTiempo} para lote ID: {$lote->id} en subasta ID: {$subasta->id}");
                 $lotesActualizados = true;
               } elseif ($hasPujas && $contratoLote->tiempo_post_subasta_fin && now()->gt($contratoLote->tiempo_post_subasta_fin)) {
                 // Lote vendido
                 info("Desactivando lote ID: {$lote->id} (vendido, tiempo post-subasta expirado: {$contratoLote->tiempo_post_subasta_fin}, nuevo estado: vendido)");
                 $contratoLote->update(['estado' => 'inactivo']);
-                $lote->update(['estado' => 'vendido']);
+                $lote->update(['estado' => LotesEstados::VENDIDO]);
                 $lotesActualizados = true;
               } elseif (!$hasPujas) {
                 // Lote no vendido, pasa a standby
@@ -81,14 +83,14 @@ class DesactivarLotesExpirados implements ShouldQueue
 
                 info("Desactivando lote ID: {$lote->id} (sin pujas, nuevo estado: standby) en subasta ID: {$subasta->id}");
                 $contratoLote->update(['estado' => 'inactivo']);
-                $lote->update(['estado' => 'standby']);
+                $lote->update(['estado' => LotesEstados::STANDBY]);
                 $lotesActualizados = true;
               }
             }
 
             $subasta->refresh();
             $hasActiveLotesWithPujas = $subasta->lotes()
-              ->where('estado', 'ensubasta')
+              ->where('estado', LotesEstados::EN_SUBASTA)
               ->whereHas(
                 'contratoLotes',
                 fn($query) => $query
@@ -104,7 +106,7 @@ class DesactivarLotesExpirados implements ShouldQueue
 
             // $hasActiveLotes = $subasta->lotes()->whereHas('ultimoConLote', fn($query) => $query->where('estado', 'activo'))->exists();
             $hasActiveLotes = $subasta->lotes()
-              ->where('estado', 'ensubasta')
+              ->where('estado', LotesEstados::EN_SUBASTA)
               ->whereHas(
                 'contratoLotes',
                 fn($query) => $query
@@ -117,12 +119,12 @@ class DesactivarLotesExpirados implements ShouldQueue
             info("Subasta ID: {$subasta->id} tiene lotes activos con pujas: " . ($hasActiveLotesWithPujas ? 'Sí' : 'No'));
             info("Subasta ID: {$subasta->id} tiene lotes activos: " . ($hasActiveLotes ? 'Sí' : 'No'));
 
-            if ($hasActiveLotesWithPujas && $subasta->estado !== 'enpuja') {
+            if ($hasActiveLotesWithPujas && $subasta->estado !== SubastaEstados::ENPUJA) {
               info("Cambiando subasta ID: {$subasta->id} a estado 'enpuja'");
-              $subasta->update(['estado' => 'enpuja']);
+              $subasta->update(['estado' => SubastaEstados::ENPUJA]);
             } elseif (!$hasActiveLotes && $subasta->estado !== 'inactiva') {
               info("Desactivando subasta ID: {$subasta->id}");
-              $subasta->update(['estado' => 'inactiva']);
+              $subasta->update(['estado' => SubastaEstados::FINALIZADA]);
             }
           });
 

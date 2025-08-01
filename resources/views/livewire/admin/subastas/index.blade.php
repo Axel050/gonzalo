@@ -107,7 +107,7 @@
 
                                             switch ($subasta->estado) {
                                                 case 'activa':
-                                                    $color = 'text-green-500';
+                                                    $color = 'text-green-600';
                                                     $text = 'Activa';
                                                     break;
                                                 case 'inactiva':
@@ -115,8 +115,16 @@
                                                     $text = 'Inactiva';
                                                     break;
                                                 case 'enpuja':
-                                                    $color = 'text-yellow-500';
+                                                    $color = 'text-yellow-700';
                                                     $text = 'En puja';
+                                                    break;
+                                                case 'finalizada':
+                                                    $color = 'text-cyan-700';
+                                                    $text = 'Finalizada';
+                                                    break;
+                                                case 'pausada':
+                                                    $color = 'text-purple-700';
+                                                    $text = 'Pausada';
                                                     break;
                                                 default:
                                                     $color = '';

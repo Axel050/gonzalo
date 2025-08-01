@@ -2,7 +2,8 @@
 
 namespace App\Models;
 
-
+use App\Enums\LotesEstados;
+use App\Enums\SubastaEstados;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -78,7 +79,7 @@ class Subasta extends Model implements Auditable
       ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
       ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
       ->where('contratos.subasta_id', $this->id)
-      ->where('lotes.estado', 'ensubasta')
+      ->where('lotes.estado', LotesEstados::EN_SUBASTA)
       ->where('contrato_lotes.estado', 'activo')
       ->where(function ($query) {
         $query
@@ -141,15 +142,15 @@ class Subasta extends Model implements Auditable
     $now = now();
 
 
-    if ($this->estado === 'activa' && $now->between($this->fecha_inicio, $this->fecha_fin)) {
+    if ($this->estado === SubastaEstados::ACTIVA && $now->between($this->fecha_inicio, $this->fecha_fin)) {
       return true;
     }
 
-    if ($this->estado === 'enpuja') {
+    if ($this->estado === SubastaEstados::ENPUJA) {
       return true;
     }
 
-    if ($this->estado === 'pausada') {
+    if ($this->estado === SubastaEstados::PAUSADA) {
       return false;
     }
 

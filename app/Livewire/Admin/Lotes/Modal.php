@@ -472,10 +472,14 @@ class Modal extends Component
 
 
 
-      $this->lote->ultimoConLote->moneda_id = $this->moneda_id;
-      $this->lote->ultimoConLote->precio_base = $this->base;
 
-      $this->lote->ultimoConLote?->save();
+      if ($this->lote->ultimoConLote) {
+
+        $this->lote->ultimoConLote->moneda_id = $this->moneda_id;
+        $this->lote->ultimoConLote->precio_base = $this->base;
+
+        $this->lote->ultimoConLote?->save();
+      }
 
 
 

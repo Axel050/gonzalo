@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class ContratoLote extends Model
+class ContratoLote extends Model implements Auditable
 {
   use HasFactory;
+  use SoftDeletes;
+  use \OwenIt\Auditing\Auditable;
 
   protected $fillable = ['contrato_id', 'lote_id', 'precio_base', 'moneda_id', 'tiempo_post_subasta_fin', 'estado'];
 

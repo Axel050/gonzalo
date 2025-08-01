@@ -219,7 +219,7 @@ class ModalContratoLotes extends Component
         ->delete();
 
       Lote::whereIn('id', $lotesToDelete)
-        ->update(['estado' => 'disponible']);
+        ->update(['estado' => LotesEstados::DISPONIBLE]);
     }
 
     foreach ($this->tempLotes as $tempLote) {
@@ -242,7 +242,7 @@ class ModalContratoLotes extends Component
             "moneda_id" => $tempLote['moneda_id'],
           ]);
 
-          Lote::find($tempLote['id'])->update(['ultimo_contrato' => $this->contrato->id, "estado"  => "asignado"]);
+          Lote::find($tempLote['id'])->update(['ultimo_contrato' => $this->contrato->id, "estado"  => LotesEstados::ASIGNADO]);
         }
       } else {
 

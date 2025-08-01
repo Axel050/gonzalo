@@ -9,7 +9,6 @@ use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
-use App\Models\Subasta;
 
 
 class SubastaEstado implements ShouldBroadcast

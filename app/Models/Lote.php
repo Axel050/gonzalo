@@ -5,10 +5,14 @@ namespace App\Models;
 use App\Enums\LotesEstados;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Lote extends Model
+class Lote extends Model implements Auditable
 {
   use HasFactory;
+  use SoftDeletes;
+  use \OwenIt\Auditing\Auditable;
 
 
   protected $fillable = [

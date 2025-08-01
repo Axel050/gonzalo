@@ -11,11 +11,7 @@ return new class extends Migration
    */
   public function up(): void
   {
-    Schema::create('comitentes_aliases', function (Blueprint $table) {
-      $table->id();
-      $table->string('nombre')->unique();
-      $table->foreignId('comitente_id')->constrained('comitentes')->onDelete('cascade');
-      $table->timestamps();
+    Schema::table('contrato_lotes', function (Blueprint $table) {
       $table->softDeletes();
     });
   }
@@ -25,6 +21,6 @@ return new class extends Migration
    */
   public function down(): void
   {
-    Schema::dropIfExists('comitentes_aliases');
+    Schema::table('contrato_lotes', function (Blueprint $table) {});
   }
 };

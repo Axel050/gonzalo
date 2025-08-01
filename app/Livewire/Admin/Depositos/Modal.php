@@ -3,7 +3,7 @@
 namespace App\Livewire\Admin\Depositos;
 
 use App\Models\Adquirente;
-use App\Models\Deposito;
+use App\Models\Garantia;
 use App\Models\Subasta;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\On;
@@ -103,14 +103,14 @@ class Modal extends Component
     }
 
     if ($this->method == "delete") {
-      $this->deposito = Deposito::find($this->id);
+      $this->deposito = Garantia::find($this->id);
       $this->id = $this->deposito->id;
       $this->title = "Eliminar";
       $this->btnText = "Eliminar";
       $this->bg =  "background-color: rgb(239 68 68)";
     }
     if ($this->method == "update" || $this->method == "view") {
-      $this->deposito = Deposito::find($this->id);
+      $this->deposito = Garantia::find($this->id);
       $this->adquirente_id =  $this->deposito->adquirente_id;
       $this->subasta_id =  $this->deposito->subasta_id;
       $this->fecha_devolucion =  $this->deposito->fecha_devolucion;
@@ -156,7 +156,7 @@ class Modal extends Component
 
     $this->validate();
 
-    Deposito::create([
+    Garantia::create([
       "subasta_id" => $this->subasta_id,
       "adquirente_id" => $this->adquirente_id,
       "monto" => $this->monto,

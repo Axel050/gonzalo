@@ -70,7 +70,6 @@ class CarritoShow extends Component
 
   public function mount()
   {
-    // dd("AGREGAR EVENTO CUANDO SE DESACTIVA LA SUBASTA ; PARA QUE EN EL CARRITO SE REFRESQU E LA INFO Y COMIENZEN LOS CRONOMETROS DONDE SEA NECESSARIO ");
     info("mount_ CarritoShow");
     $user  = auth()->user();
     $this->adquirente = Adquirente::where("user_id", $user->id)->first();
@@ -90,17 +89,32 @@ class CarritoShow extends Component
   public function registrarPuja(PujaService $pujaService, $loteId)
   {
     info("CARRITO-SHOW  registrarPuja");
+
     try {
       info("CARRITO-SHOW  registrarPuja TRY");
+
+      $fraccion = $this->fraccion_min[$loteId] ?? null;
+
+      // ✅ Validación: debe ser un entero positivo
+      if (!is_numeric($fraccion) || intval($fraccion) != $fraccion || $fraccion < 1) {
+        $this->addError('puja.' . $loteId, 'Monto invalido.');
+        // $this->fraccion_min[$loteId] = $this->adquirente?->carrito?->lotes?->firstWhere('id', $loteId)?->fraccion_min;
+        $this->fraccion_min[$loteId] = $this->lotes->firstWhere('id', $loteId)?->fraccion_min;
+        return;
+      }
+
+
+
       $result = $pujaService->registrarPuja(
         $this->adquirente?->id,
         $loteId,
-        $this->fraccion_min[$loteId]
+        $fraccion
       );
 
       session()->flash('success', 'Puja registrada correctamente.');
       $this->pujado = true;
       $this->ultimaOferta = $result['message']['monto_final'];
+      $this->fraccion_min[$loteId] = $this->lotes->firstWhere('id', $loteId)?->fraccion_min;
     } catch (ModelNotFoundException | InvalidArgumentException | DomainException $e) {
       $this->addError('puja.' . $loteId, $e->getMessage());
       info('Error en Livewire::registrarPujaxxxx', ['exception' => $e]);

@@ -45,6 +45,10 @@ Route::get("/lotes/{id?}", function () {
   return view('admin.lotes');
 })->name("lotes")->can("personal-ver");
 
+Route::get("/auditoria", function () {
+  return view('admin.auditorias');
+})->name("auditoria")->can("auditoria-ver");
+
 
 // AUX
 Route::get("/aux/condicion-iva", function () {

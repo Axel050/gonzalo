@@ -24,20 +24,17 @@
                     <x-form-item label="Titulo" method="view" model="titulo" />
                     <x-form-item-area label="Descripcion" method="view" model="descripcion" />
                     <x-form-item label="Valuación" method="view" model="valuacion" />
-                    <x-form-item-sel label="Estado" method="view" model="estado">
-                        <option value="">Sin estado</option>
-                        @foreach ($estados as $item)
-                            <option value="{{ $item['value'] }}">{{ $item['label'] }}</option>
-                        @endforeach
-                    </x-form-item-sel>
+                    <x-form-item label="Estado" method="view" model="estadoLabel" />
 
-                    @if ($estado == 'vendido')
+                    @if ($estado == \App\Enums\LotesEstados::VENDIDO)
                         <x-form-item label="Adquirente" method="view" model="adquirente"
-                            class="disabled:text-green-700" />
+                            class="disabled:text-green-700 disabled:border-green-600 shadow-xs disabled:shadow-green-600" />
                         <x-form-item label="Precio final" method="view" model="precio_final"
-                            class="disabled:text-green-700" />
-                        <x-form-item label="Fecha" method="view" model="fecha" class="disabled:text-green-700" />
-                        <x-form-item label="Subasta" method="view" model="subasta" class="disabled:text-green-700" />
+                            class="disabled:text-green-700 disabled:border-green-600 shadow-xs disabled:shadow-green-600" />
+                        <x-form-item label="Fecha" method="view" model="fecha"
+                            class="disabled:text-green-700 disabled:border-green-600 shadow-xs disabled:shadow-green-600" />
+                        <x-form-item label="Subasta" method="view" model="subasta"
+                            class="disabled:text-green-700 disabled:border-green-600 shadow-xs disabled:shadow-green-600" />
                     @endif
 
                     <div class="min-w-full inline-block align-middle col-span-4 ">
@@ -83,7 +80,8 @@
                     </div>
 
 
-                    @if ($lote->estado == 'en_subasta' || $lote->estado == 'vendido')
+                    {{-- @if ($lote->estado == 'ensubasta' || $lote->estado == 'vendido') --}}
+                    @if ($lote->pujas?->count())
 
                         <div class="min-w-full inline-block align-middle col-span-4  mt-8">
                             <div class="overflow-hidden ">
@@ -108,7 +106,7 @@
                                     <tbody class="divide-y divide-gray-300 text-gray-600  text-sm rounded-full">
 
                                         @foreach ($lote->pujas as $index => $item)
-                                            @if ($lote->estado === 'vendido' && $index === 0)
+                                            @if ($lote->estado === \App\Enums\LotesEstados::VENDIDO && $index === 0)
                                                 <tr
                                                     class="bg-gray-100 relative font-semibold divide-x-2 divide-gray-300 text-center text-green-600 [&>td]:lg:px-8 [&>td]:px-2">
                                                 @else

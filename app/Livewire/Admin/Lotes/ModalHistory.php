@@ -40,7 +40,8 @@ class ModalHistory extends Component
   public $monedas;
   public $valuacion;
   public $estado;
-  public $estados;
+  public $estadoLabel;
+
 
   public $adquirente, $fecha, $precio_final, $subasta;
 
@@ -54,12 +55,6 @@ class ModalHistory extends Component
 
   public function mount()
   {
-    $this->estados = array_map(function ($estado) {
-      return [
-        'value' => $estado,
-        'label' => LotesEstados::getLabel($estado),
-      ];
-    }, LotesEstados::all());
 
     $this->lote = Lote::find($this->id);
     $this->monedas = Moneda::all()->keyBy('id');
@@ -70,6 +65,7 @@ class ModalHistory extends Component
     $this->descripcion = $this->lote->descripcion;
     $this->valuacion = (int)$this->lote->valuacion;
     $this->estado = $this->lote->estado;
+    $this->estadoLabel = LotesEstados::getLabel($this->estado);
     // $this->tempLotes = $this->contrato->lotes->toArray();
     // $this->contratosLotes = 
 

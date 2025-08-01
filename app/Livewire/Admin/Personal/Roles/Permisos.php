@@ -67,6 +67,13 @@ class Permisos extends Component
       'crear' => false,
       'actualizar' => false,
       'eliminar' => false,
+    ],
+    [
+      'name' => 'Auditoria',
+      'ver' => false,
+      'crear' => false,
+      'actualizar' => false,
+      'eliminar' => false,
     ]
 
   ];

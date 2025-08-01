@@ -2,6 +2,9 @@
 
 namespace App\Services;
 
+use App\Enums\LotesEstados;
+use App\Enums\SubastaEstados;
+use App\Events\SubastaEstado;
 use App\Models\Adquirente;
 use App\Models\Carrito;
 use App\Models\Lote;
@@ -26,10 +29,16 @@ class CarritoService
       throw new ModelNotFoundException('Subasta no encontrada');
     }
 
+
     $adquirente = Adquirente::find($adquirenteId);
     if (!$adquirente) {
       throw new ModelNotFoundException('Adquirente no encontrado');
     }
+
+    if ($lote->comitente?->mail == $adquirente->user?->email) {
+      throw new DomainException('No puedes pujar por tu lote');
+    }
+
 
 
     if (
@@ -38,11 +47,11 @@ class CarritoService
       throw new DomainException('No puedes participar de esta subata aun');
     }
 
-    if (!in_array($subasta->estado, ['activa', 'enpuja'])) {
+    if (!in_array($subasta->estado, [SubastaEstados::ACTIVA, SubastaEstados::ENPUJA])) {
       throw new DomainException('La subasta no está activa ni en fase de puja');
     }
 
-    if ($lote->estado !== 'ensubasta') {
+    if ($lote->estado !== LotesEstados::EN_SUBASTA) {
       throw new DomainException('Lote no disponible para subasta');
     }
 

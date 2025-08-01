@@ -18,7 +18,9 @@ class Modal extends Component
 
   public $subasta;
 
-  public $estado = 1;
+  public $estado;
+
+  public $pausar = 0;
 
   public $tiempoPos = "2";
 
@@ -94,6 +96,7 @@ class Modal extends Component
 
   public function mount()
   {
+    // dd("Comprobar si subasta estado en puja , pausar , que pasa , se debe poder pausar en puja ? ");
 
     $this->estados = array_map(function ($estado) {
       return [
@@ -132,7 +135,8 @@ class Modal extends Component
       }
 
       $this->garantia =  $this->subasta->garantia;
-      $this->estado =  $this->subasta->estado;
+      // $this->estado =  $this->subasta->estado;
+      $this->estado =  SubastaEstados::getLabel($this->subasta->estado);
       $this->tiempoPos =  $this->subasta->tiempo_post_subasta;
 
       $carbonIni = Carbon::parse($this->subasta->fecha_inicio);
@@ -163,11 +167,11 @@ class Modal extends Component
 
     Subasta::create([
       "titulo" => $this->titulo,
-      "comision" => $this->comision,
+      "comision" => (int)$this->comision,
       "tiempo_post_subasta" => $this->tiempoPos,
       "descripcion" => $this->descripcion,
       "garantia" => (int) $this->garantia,
-      "estado" => $this->estado,
+      "estado" => SubastaEstados::INACTIVA,
       "fecha_inicio" => $this->iniD . " " . $this->iniH,
       "fecha_fin" => $this->finD . " " . $this->finH,
     ]);
@@ -189,7 +193,20 @@ class Modal extends Component
       $this->subasta->descripcion = $this->descripcion;
       $this->subasta->comision = $this->comision;
       $this->subasta->tiempo_post_subasta = $this->tiempoPos;
-      $this->subasta->estado = $this->estado;
+
+
+      info(["ESTADO" => $this->subasta->estado]);
+      if ($this->subasta->estado == SubastaEstados::PAUSADA && $this->pausar) {
+        $this->subasta->estado = SubastaEstados::ACTIVA;
+      } elseif (($this->subasta->estado == SubastaEstados::ACTIVA || $this->subasta->estado == SubastaEstados::ENPUJA) && $this->pausar) {
+        $this->subasta->estado = SubastaEstados::PAUSADA;
+      }
+
+      if ($this->pausar) {
+      }
+      // $this->subasta->estado =$this->subasta->estado "pausada";
+
+
       $this->subasta->garantia = (int)$this->garantia;
       $this->subasta->fecha_inicio = $this->iniD . " " . $this->iniH;
       $this->subasta->fecha_fin = $this->finD . " " . $this->finH;
