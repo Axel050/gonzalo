@@ -4,11 +4,16 @@ namespace App\Livewire;
 
 use App\Jobs\ActivarLotes;
 use App\Jobs\DesactivarLotesExpirados;
+use App\Models\Garantia;
 use App\Models\Puja;
 use App\Models\Subasta;
+use App\Services\MPService;
 use App\Services\SubastaService;
 use Livewire\Attributes\On;
 use Livewire\Component;
+use MercadoPago\Client\Payment\PaymentRefundClient;
+use MercadoPago\MercadoPagoConfig;
+
 
 class LotesActivos extends Component
 {
@@ -105,6 +110,32 @@ class LotesActivos extends Component
   //     }
   //   }
   // }
+
+  public function mp(MPService $mpService)
+  {
+    $preference = $mpService->crearPreferencia("Deposito", 1, 300);
+
+    // info(["PPPP" => $preference]);
+  }
+
+
+
+  public function crearDevolucion(MPService $mpService)
+  {
+    info("CREEEEE");
+    try {
+      $de = $mpService->crearDevolucion(21);
+      //code...
+    } catch (\Throwable $th) {
+      //throw $th;
+      info(["EERRROORRR"  => $th]);
+    }
+  }
+
+
+
+
+
 
   public function render()
   {

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdquirenteController;
 use App\Http\Controllers\ComitenteController;
+use App\Http\Controllers\MPController;
 use App\Livewire\LotesActivos;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
@@ -112,6 +113,32 @@ Route::get('/tuactivos', LotesActivos::class)->name('lotes.activos');
 
 Route::get('/subastas/{subasta}/lotes', [AdquirenteController::class, 'getLotes'])->name('subasta.lotes')->middleware(['auth']);
 
+
+// MP
+Route::get(
+  '/success',
+  function () {
+    // return redirect()->route('lotes.show', ['id' => 123]);
+    return "<h1> SUCEESS</h1>";
+  }
+);
+
+Route::get(
+  '/failure',
+  function () {
+    return "<h1> failure</h1>";
+  }
+);
+
+Route::get(
+  '/pending',
+  function () {
+    return "<h1> pending</h1>";
+  }
+);
+
+// Route::post('/gonza', [MPController::class, 'notificacion'])->name('subasta.lotes')->middleware(['auth']);
+// Route::post('/notification', [MPController::class, 'notification']);
 
 
 require __DIR__ . '/auth.php';

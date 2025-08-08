@@ -27,6 +27,8 @@ class DetalleLote extends Component
   public $lote_id;
   public $subasta_id;
 
+  public $method;
+
 
   // #[On('echo:my-channel.{subasta.id},SubastaEstadoActualizado')]
 

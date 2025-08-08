@@ -1,5 +1,10 @@
 <div class="flex flex-col justify-center items-center h-lvh w-full ">
 
+    @if ($method == 'noHabilitado')
+        @livewire('modal-no-habilitado-pujar', ['subasta' => $lote->ultimoContrato?->subasta_id, 'adquirente' => $adquirente->id, 'lote' => $lote_id], key('modal-contrato-lotes-'))
+    @endif
+    @dump($method)
+    @dump(config('services.mercadopago.host') . '/success')
 
     <article class="bg-cyan-950/35 rounded-2xl p-5 flex lg:flex-row flex-col gap-x-2 relative">
 
@@ -11,6 +16,7 @@
             </figure>
 
         </div>
+
 
 
         <div class="bg-cyn-700 flex flex-col pl-2">
@@ -56,8 +62,9 @@
                         </button>
                         {{-- @endif --}}
                     @else
-                        <span class="bg-red-800 px-4 py-2 rounded-2xl mx-auto text-white mt-8 font-bold text-xl ">No
-                            habilitado para esta subasta</span>
+                        <button wire:click="$set('method', 'noHabilitado')"
+                            class="bg-red-800 px-4 py-2 rounded-2xl mx-auto text-white mt-8 font-bold text-xl ">No
+                            habilitado para esta subasta</button>
                         {{-- <button
                         class="bg-green-500 px-4 py-2 rounded-2xl mx-auto text-white mt-8 font-bold text-xl hover:bg-green-700">
                         <span wire:click="addCarrito">Agregar al carrito para Pujar</span>

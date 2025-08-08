@@ -4,6 +4,7 @@ use App\Http\Controllers\AdquirenteController;
 use App\Http\Controllers\CarritoController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ComitenteController;
+use App\Http\Controllers\MPController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -33,4 +34,6 @@ Route::delete('/carrito', [CarritoController::class, 'destroy'])->name('carrito.
 Route::post('/carrito', [CarritoController::class, 'store'])->name('carrito.store');
 
 Route::post('/carrito/pujar', [CarritoController::class, 'pujar'])->name('carrito.pujar');
+
+Route::post('/notification', [MPController::class, 'notification']);
 // });

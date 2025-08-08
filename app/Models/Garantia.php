@@ -13,7 +13,7 @@ class Garantia extends Model implements Auditable
   use \OwenIt\Auditing\Auditable;
 
   protected $table = "depositos";
-  protected $fillable = ["subasta_id", "adquirente_id", "monto", "estado", "fecha", "fecha_devolucion"];
+  protected $fillable = ["subasta_id", "adquirente_id", "monto", "estado", "fecha", "fecha_devolucion", "payment_id"];
 
   public function adquirente()
   {
