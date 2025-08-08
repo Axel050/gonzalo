@@ -18,7 +18,7 @@ class SubastasTableSeeder extends Seeder
   {
     $faker = Factory::create();
 
-    foreach (range(1, 10) as $index) {
+    foreach (range(1, 6) as $index) {
       DB::table('subastas')->insert([
         // 'numero_subasta' => $index,
         'titulo' => $faker->sentence(3),
@@ -28,7 +28,7 @@ class SubastasTableSeeder extends Seeder
         'fecha_fin' => $faker->dateTimeBetween('now', '+1 months'),
         'tiempo_post_subasta' => $faker->numberBetween(1, 24),
         'estado' => Arr::random(SubastaEstados::all()),
-        'garantia' => $faker->numberBetween(1000, 5000),
+        'garantia' => $faker->numberBetween(100, 2000),
         'created_at' => now(),
         'updated_at' => now()
       ]);

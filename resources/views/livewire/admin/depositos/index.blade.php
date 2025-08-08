@@ -111,6 +111,7 @@
                                     </th>
                                     <th scope="col">Alias</th>
                                     <th scope="col">Subasta</th>
+                                    <th scope="col">Pago ID</th>
                                     <th scope="col" class="lg:w-[190px] w-[90px]">Accion</th>
                                 </tr>
                             </thead>
@@ -147,6 +148,11 @@
                                                 class="cursor-pointer hover:font-extrabold">
                                                 {{ $dep->subasta?->id }}
                                             </a>
+                                        </td>
+
+                                        <td>
+                                            {{ $dep->payment_id }}
+
                                         </td>
 
                                         <td>

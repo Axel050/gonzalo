@@ -14,6 +14,7 @@ use App\Models\Contrato;
 use App\Models\ContratoLote;
 use App\Models\Lote;
 use App\Models\Subasta;
+use Illuminate\Support\Carbon;
 
 Route::get('/test', function () {
   return view('livewire.auth.role-desactivated');
@@ -29,7 +30,10 @@ Route::get('/dashboard', function () {
 
 
 Route::get('/', function () {
-  return view('welcome');
+  $subastasProx = Subasta::where('fecha_inicio', '>=', Carbon::now())->get();
+  $subastasAct = Subasta::whereIn('estado', ["activa", "en_puja"])->get();
+  // info(["subastas " => $subastas]);
+  return view('welcome', compact("subastasProx", "subastasAct"));
 })->name('home');
 
 

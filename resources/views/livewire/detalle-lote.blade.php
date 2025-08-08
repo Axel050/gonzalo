@@ -3,8 +3,8 @@
     @if ($method == 'noHabilitado')
         @livewire('modal-no-habilitado-pujar', ['subasta' => $lote->ultimoContrato?->subasta_id, 'adquirente' => $adquirente->id, 'lote' => $lote_id], key('modal-contrato-lotes-'))
     @endif
-    @dump($method)
-    @dump(config('services.mercadopago.host') . '/success')
+    {{-- @dump($method) --}}
+    {{-- @dump(config('services.mercadopago.host') . '/success') --}}
 
     <article class="bg-cyan-950/35 rounded-2xl p-5 flex lg:flex-row flex-col gap-x-2 relative">
 
