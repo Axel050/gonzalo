@@ -19,7 +19,7 @@ class ActivarLotes implements ShouldQueue
 
   public function handle()
   {
-    info("Iniciando job ActivarLotes a las " . now()->toDateTimeString());
+    // info("Iniciando job ActivarLotes a las " . now()->toDateTimeString());
 
     try {
       Subasta::where('estado', SubastaEstados::INACTIVA)
@@ -68,7 +68,7 @@ class ActivarLotes implements ShouldQueue
           }
         });
 
-      info("Finalizado job ActivarLotes a las " . now()->toDateTimeString());
+      // info("Finalizado job ActivarLotes a las " . now()->toDateTimeString());
     } catch (\Exception $e) {
       info("Error en job ActivarLotes: " . $e->getMessage());
       throw $e;

@@ -44,7 +44,7 @@
 
 
 
-        @if ($subastasProx)
+        @if (count($subastasProx))
             <div class="flex flex-col  gap-x-14 text-white mt-8 bg-cyan-950/55 py-3 px-8 rounded-2xl items-center">
                 <h2 class="text-center mb-2 text-lg">Proximas subastas</h2>
 

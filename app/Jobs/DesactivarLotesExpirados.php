@@ -20,7 +20,7 @@ class DesactivarLotesExpirados implements ShouldQueue
 
   public function handle()
   {
-    info("Iniciando NEW  job DesactivarLotesExpirados a las " . now()->toDateTimeString());
+    // info("Iniciando NEW  job DesactivarLotesExpirados a las " . now()->toDateTimeString());
 
     try {
       Subasta::whereIn('estado', [SubastaEstados::ACTIVA, SubastaEstados::ENPUJA])
@@ -135,7 +135,7 @@ class DesactivarLotesExpirados implements ShouldQueue
           }
         });
 
-      info("Finalizado job DesactivarLotesExpirados a las " . now()->toDateTimeString());
+      // info("Finalizado job DesactivarLotesExpirados a las " . now()->toDateTimeString());
     } catch (\Exception $e) {
       info("Error en job DesactivarLotesExpirados: " . $e->getMessage());
       throw $e;
