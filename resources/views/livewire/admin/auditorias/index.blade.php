@@ -128,7 +128,7 @@
                                             {{ \Carbon\Carbon::parse($aud->created_at)->format('Y-m-d H:i') }}
                                         </td>
                                         <td class="py-2">
-                                            {{ $aud->user->name }} {{ $aud->user?->personal?->apellido }}</td>
+                                            {{ $aud->user?->name }} {{ $aud->user?->personal?->apellido }}</td>
 
 
                                         @php

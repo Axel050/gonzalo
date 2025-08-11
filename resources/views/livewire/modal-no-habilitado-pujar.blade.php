@@ -15,8 +15,8 @@
                     class="lg:text-2xl text-xl mb-2  w-full text-center py-1  border-b border-gray-300 text-white rounded-t-lg bg-purple-900">
                     Acceso a puja
                 </h2>
-                @dump($subasta)
-                @dump($adquirente)
+                {{-- @dump($subasta) --}}
+                {{-- @dump($adquirente) --}}
                 <div class="w-full   flex flex-col  items-center  p-8 text-gray-500  ">
 
                     <p class="text-xl text-gray-700">Para poder participar de la puja debe tener depositada una garantia

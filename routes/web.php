@@ -31,7 +31,7 @@ Route::get('/dashboard', function () {
 
 Route::get('/', function () {
   $subastasProx = Subasta::where('fecha_inicio', '>=', Carbon::now())->get();
-  $subastasAct = Subasta::whereIn('estado', ["activa", "en_puja"])->get();
+  $subastasAct = Subasta::whereIn('estado', ["activa", "enpuja"])->get();
   // info(["subastas " => $subastas]);
   return view('welcome', compact("subastasProx", "subastasAct"));
 })->name('home');

@@ -74,30 +74,37 @@ class MPService
     try {
       info("TRYYYYY");
       // Buscar la garantía en la base de datos
-      $garantia = Garantia::findOrFail(22);
+      // $garantia = Garantia::findOrFail(25);
 
-      info(["GARANTIAEX" => $garantia]);
-      // Verificar que la garantía tenga un payment_id y esté en estado 'pagado'
-      if (!$garantia->payment_id || $garantia->estado !== 'pagado') {
-        info("No se puede procesar la devolución para la garantía {$garantiaId}. Estado: {$garantia->estado}, Payment ID: {$garantia->payment_id}");
-        throw new \Exception("La garantía no está en estado pagado o no tiene un payment_id asociado.");
-      }
+      // info(["GARANTIAEX" => $garantia]);
+      // // Verificar que la garantía tenga un payment_id y esté en estado 'pagado'
+      // if (!$garantia->payment_id || $garantia->estado !== 'pagado') {
+      //   info("No se puede procesar la devolución para la garantía {$garantiaId}. Estado: {$garantia->estado}, Payment ID: {$garantia->payment_id}");
+      //   throw new \Exception("La garantía no está en estado pagado o no tiene un payment_id asociado.");
+      // }
 
       // Inicializar el cliente de pagos
 
 
       $paymentClient = new PaymentClient();
       // $payment = $paymentClient->get($garantia->payment_id);
-      $payment = $paymentClient->get(120887771737);
+      // $payment = $paymentClient->get(120887771737);
+      $payment = $paymentClient->get(121151650315);
 
       // Verificar que el pago esté en estado 'approved'
       if ($payment->status !== 'approved') {
-        info("El pago {$garantia->payment_id} no está en estado 'approved'. Estado actual: {$payment->status}");
+        info("El pago  no está en estado 'approved'. Estado actual: {$payment->status}");
+        // info("El pago {$garantia->payment_id} no está en estado 'approved'. Estado actual: {$payment->status}");
         throw new \Exception("El pago no está aprobado, no se puede procesar la devolución.");
       }
 
 
       info(["ANTEEEEE" => $payment]);
+
+
+      $client = new PaymentRefundClient();
+      $refund = $client->refund(121884371342, 5);
+
 
 
       $client = new PaymentRefundClient();
@@ -119,11 +126,12 @@ class MPService
 
 
       // Actualizar el estado de la garantía
-      $garantia->estado = 'reembolsado';
-      $garantia->fecha_reembolso = now();
-      $garantia->save();
+      // $garantia->estado = 'reembolsado';
+      // $garantia->fecha_reembolso = now();
+      // $garantia->save();
 
-      info("Devolución procesada para garantía {$garantiaId}, payment_id: {$garantia->payment_id}, monto: {$garantia->monto}");
+      info("Devolución procesada para garantía {$garantiaId}, payment_id:, monto: ");
+      // info("Devolución procesada para garantía {$garantiaId}, payment_id: {$garantia->payment_id}, monto: {$garantia->monto}");
 
       return [
         'status' => 'success',

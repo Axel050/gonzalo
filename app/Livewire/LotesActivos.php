@@ -113,7 +113,7 @@ class LotesActivos extends Component
 
   public function mp(MPService $mpService)
   {
-    $preference = $mpService->crearPreferencia("Deposito", 1, 300);
+    $preference = $mpService->crearPreferencia("Deposito", 1, 300, 5, 6);
 
     // info(["PPPP" => $preference]);
   }
