@@ -54,7 +54,7 @@
                             <span class="text-gray-500"> {{ $auditoria->auditable_id }}
                             </span>
                         </li>
-                        <li class="">Usario: <span class="text-gray-500"> {{ $auditoria->user->name }}
+                        <li class="">Usuario: <span class="text-gray-500"> {{ $auditoria->user?->name }}
                                 {{ $auditoria->user?->personal?->apellido }}</span></li>
                         <li>Fecha: <span class="text-gray-500"> {{ $auditoria->created_at }}</span></li>
 
