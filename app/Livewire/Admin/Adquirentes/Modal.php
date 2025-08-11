@@ -225,6 +225,9 @@ class Modal extends Component
       "password" => bcrypt($this->password),
     ]);
 
+    // $user->assign
+    $user->assignRole("adquirente");
+
     $adq = "";
     if ($user) {
 
@@ -263,6 +266,8 @@ class Modal extends Component
           $adq->save();
         }
       }
+
+
 
 
       if ($this->autorizados) {
