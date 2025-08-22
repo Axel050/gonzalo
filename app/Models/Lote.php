@@ -84,6 +84,18 @@ class Lote extends Model implements Auditable
 
 
 
+  public function getMonedaAttribute()
+  {
+    if ($this->ultimo_contrato) {
+      return $this->contratoLotes()
+        ->where('contrato_id', $this->ultimo_contrato)
+        ->value('moneda_id');
+    }
+    return null; // Return null if no ultimo_contrato is set
+
+  }
+
+
   public function getPrecioBaseAttribute()
   {
     if ($this->ultimo_contrato) {

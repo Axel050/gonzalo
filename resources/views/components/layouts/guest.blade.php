@@ -20,122 +20,87 @@
     @livewireStyles
 
     <style>
-        /* @view-transition {
-            navigation: auto;
+        .swiper-subastas .swiper-slide {
+            /* background-color: gray; */
+            width: fit-content;
         }
 
-        ::view-transition-group(*) {
-            animation-duration: 0.5s;
+            {}
+
+        .swiper-home-subastas .swiper-wrapper {
+            /* background-color: yellow; */
+            /* width: fit-content; */
+
+            /* margin: 0; */
+            /* padding: 0; */
         }
 
-
-        #img1,
-        #img2 {
-            view-transition-name: poster;
-        } */
-
-        /* ::view-transition-old(imagen-destacada) {
-            animation: slide-out 0.5s ease-in;
-        }
-
-        ::view-transition-new(imagen-destacada) {
-            animation: slide-in 0.5s ease-out;
-        } */
-
-        /* Animación: sale hacia la izquierda, entra desde la derecha */
-        @keyframes slide-out {
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-
-            to {
-                transform: translateX(-100%);
-                opacity: 0;
-            }
-        }
-
-        @keyframes slide-in {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
-
-
-
-        /* Define una transición para un elemento con view-transition-name */
-        /* ::view-transition-old(root) {
-            animation: fade-out 0.5s ease-in;
-        }
-
-        ::view-transition-new(root) {
-            animation: fade-in 0.5s ease-out;
-        } */
-
-        @keyframes fade-out {
-
-            /* opacity: 1; */
-            /* transform: translateX(0); */
-            from {
-                transform: translateX(0);
-                opacity: 1;
-            }
-
-            to {
-                transform: translateX(-100%);
-                opacity: 0;
-            }
-
-        }
-
-        @keyframes fade-in {
-            from {
-                transform: translateX(100%);
-                opacity: 0;
-            }
-
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+        .swiper-home-subastas .swiper-slide:last-child {
+            margin-right: 0px !important;
         }
     </style>
 
 </head>
 
-<body class="font-sans antialiased ">
-    @include('sprite')
+<body class="font-sans antialiased bg-base text-casa-black">
+    @include('sprite-front')
 
 
-    <x-banner />
+    <div class="flex flex-col bg-casa-base  " x-data="{ openSide: true }" x-cloak>
 
 
-    <div class="flex bg-gradient-to-br from-sky-900 via-gray-900 to-sky-950  " x-data="{ openSide: true }" x-cloak>
+        {{-- <div class="transition-all duration-500  overflow-y-auto w-full   "> --}}
 
 
-        <div class="transition-all duration-500  overflow-y-auto w-full   ">
+        <nav
+            class=" sticky top-0 z-50  flex  w-full -200 justify-between py-4 px-24  text-gray-800  border-b  border-gray-700 shadow-lg h-30 items-center hover:bg-casa-base   transition-colors duration-1000 ease-in-out">
 
 
-            <nav
-                class="h-12 sticky top-0 z-50  flex  w-full -200 justify-between py-2 bg-gradient-to-br from-sky-900 via-gray-900 to-sky-950 ">
-                {{-- <div
-                    class="  w-full h-12  z-10 justify-center flex flex-row items-center border-b-2 border-ky-900 b-sky-950 bg-linear-to-r from-cyan-800 to-cyan-950 border border-green-300"> --}}
 
 
-                <a href="{{ route('home') }}"
-                    class="px-3 py-1 rounded-2xl bg-cyan-700 text-white  ml-2 lg:text-base text-xs  ">Home</a>
-
+            <div class="flex">
 
 
 
                 <div class="flex gap-4 text-gray-300">
 
+                    <a href="" class="over:scale-105">
+                        <svg fill="#fff" class="size-8 ">
+                            <use xlink:href="#instagram"></use>
+                        </svg>
+                    </a>
+
+                    <a href="" class="over:scale-105">
+                        <svg fill="#fff" class="size-8 ">
+                            <use xlink:href="#what"></use>
+                        </svg>
+                    </a>
+
+                    <a href="" class="over:scale-105">
+                        <svg fill="#fff" class="size-8 ">
+                            <use xlink:href="#mail"></use>
+                        </svg>
+                    </a>
+
+                </div>
+
+
+
+                <a href="{{ route('subastas') }}"
+                    class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black text-black ml-8 mr-4 h-fit">
+                    Subastas
+                </a>
+
+                <a href=""
+                    class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black text-black h-fit">
+                    ¿Primera vez?
+                </a>
+
+
+
+            </div>
+            {{-- <div class="flex gap-4 text-gray-300">
+                  
                     <a href="{{ route('adquirentes.create') }}"
                         class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal bg-cyan-800">
                         Adquirentes
@@ -143,61 +108,84 @@
                     <a href="{{ route('comitentes.create') }}"
                         class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal bg-cyan-800">
                         Comitentes
-                    </a>
+                    </a> --}}
 
 
-                </div>
-                <div class="flex">
-                    @auth
+            {{-- </div> --}}
 
 
-                        @unlessrole('adquirente')
+            <a href="{{ route('home') }}" class=" over:scale-105">
+                <svg fill="#fff" class="w-59 h-7 ">
+                    <use xlink:href="#casa-icon"></use>
+                </svg>
+            </a>
+
+
+            <div class="flex">
+                <a href=""
+                    class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black mr-8 text-black  h-fit">
+                    ¿Tenés algo para vender?
+                </a>
+
+
+
+
+
+                @auth
+
+
+                    {{-- @unlessrole('adquirente')
                             <a href="{{ url('/dashboard') }}"
                                 class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border txt-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal mr-8 bg-cyan-800 text-gray-300">
                                 Dashboard
                             </a>
-                        @endunlessrole
+                        @endunlessrole --}}
 
 
-                        @role('adquirente')
-                            <a href="{{ route('carrito') }}" class="bg-cyan-500 px-2 rounded py-0.5 mr-4 hover:bg-cyan-600">
-                                <svg fill="#fff" class="w-6 h-6 ">
-                                    <use xlink:href="#cart"></use>
-                                </svg>
-                            </a>
-                        @endrole
-                        <div
-                            class="flex justify-end ml-auto mr-4 bg-cya-800 text-white rounded-lg bg-linear-to-l from-cyan-800 to-cyan-950 z-50">
 
-                            <x-dropdownlog />
-                        </div>
-                    @else
-                        <a href="{{ route('login') }}"
-                            class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-gray border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] rounded-sm text-sm leading-normal bg-cyan-700 mr-2 text-white">
-                            Log in
+                    <div class="flex justify-end ml-auto mr-4  text-black  z-50 cursor-pointer">
+
+                        <x-dropdownlogfront />
+                    </div>
+
+                    @role('adquirente')
+                        <a href="{{ route('pre-carrito') }}" class=" px-2 rounded  hover:scale-105  pt-1">
+                            <svg fill="#fff" class="size-8">
+                                <use xlink:href="#cart"></use>
+                            </svg>
                         </a>
+                    @endrole
+                @else
+                    <a href="{{ route('login') }}"
+                        class="inline-block px-3 py-2  text-white  rounded-full text-sm bg-casa-black hover:scale-105">
+                        Log in
+                    </a>
 
-                    @endauth
-                </div>
-
-
-                {{-- </div> --}}
-
-            </nav>
-
-            <!-- Page Content -->
-
+                @endauth
+            </div>
 
 
-            {{-- <main class=" bg-gray-900  px-4 lg:px-6  "> --}}
-            {{-- bg-[repeating-linear-gradient(45deg,currentColor_0,currentColor_1px,transparent_1px,transparent_5px)] --}}
-            <main class="  px-4 lg:px-6  bgred-500 h-[calc(100dvh-48px)]" style="min-height: calc(100dvh - 48px);">
-                {{ $slot }}
-            </main>
+            {{-- </div> --}}
 
-        </div>
+        </nav>
 
-    </div>
+        <!-- Page Content -->
+
+
+
+        {{-- <main class=" bg-gray-900  px-4 lg:px-6  "> --}}
+        {{-- bg-[repeating-linear-gradient(45deg,currentColor_0,currentColor_1px,transparent_1px,transparent_5px)] --}}
+        {{-- <main class="   bgred-500 h-[calc(100dvh-48px)]" style="min-height: calc(100dvh - 48px); "> --}}
+        {{-- <main class="   bgred-500 h-dvh" style="min-height: calc(100dvh - 48px); "> --}}
+        <main class="   bgred-500 -dvh">
+            {{ $slot }}
+        </main>
+
+        {{-- </div> --}}
+
+
+
+        <x-footer />
     </div>
 
     @livewireScripts

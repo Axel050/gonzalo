@@ -107,15 +107,24 @@ Route::get('/lotes/{id}', function ($id) {
   return view('detalle-lotes', compact("id"));
 })->name('lotes.show')->middleware(['auth']);;
 
+Route::get('/pre-carrito', function () {
+  return view('pre-carrito');
+})->name('pre-carrito')->middleware(['auth']);
+
 Route::get('/carrito', function () {
   return view('carrito');
-})->name('carrito')->middleware(['auth']);;
+})->name('carrito')->middleware(['auth']);
+
+Route::get('/subastas', function () {
+  return view('subastas');
+})->name('subastas');
 
 
 Route::get('/tuactivos', LotesActivos::class)->name('lotes.activos');
 // Route::get('/subastas/{subasta}/lotes-activos', [AdquirenteController::class, 'getLotesActivos']);
 
 Route::get('/subastas/{subasta}/lotes', [AdquirenteController::class, 'getLotes'])->name('subasta.lotes')->middleware(['auth']);
+
 
 
 // MP

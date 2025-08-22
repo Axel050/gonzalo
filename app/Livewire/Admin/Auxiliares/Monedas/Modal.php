@@ -16,6 +16,7 @@ class Modal extends Component
 
   public $moneda;
   public $titulo;
+  public $signo;
 
   protected function rules()
   {
@@ -58,6 +59,7 @@ class Modal extends Component
     if ($this->method == "update" || $this->method == "view") {
       $this->moneda = Moneda::find($this->id);
       $this->titulo =  $this->moneda->titulo;
+      $this->signo =  $this->moneda->signo;
 
       if ($this->method == "update") {
         $this->title = "Editar";
@@ -78,6 +80,7 @@ class Modal extends Component
 
     Moneda::create([
       "titulo" => $this->titulo,
+      "signo" => $this->signo,
     ]);
 
     $this->dispatch('monedaCreated');
@@ -93,6 +96,7 @@ class Modal extends Component
       $this->validate();
 
       $this->moneda->titulo = $this->titulo;
+      $this->moneda->signo = $this->signo;
 
       $this->moneda->save();
       $this->dispatch('monedaUpdated');

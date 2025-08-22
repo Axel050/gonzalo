@@ -22,10 +22,12 @@ class SubastaService
         'id' => $lote->id,
         'titulo' => $lote->titulo,
         'foto' => $lote->foto1,
+        'descripcion' => $lote->descripcion,
         'precio_base' => $lote->precio_base,
         'puja_actual' => $lote->pujas->first()?->monto,
         'tiempo_post_subasta_fin' => $lote->tiempo_post_subasta_fin,
         'estado' => $lote->isActivoEnSubasta($subasta->id) ? 'activo' : 'inactivo',
+        'moneda_id' => $lote->moneda_id,
       ];
     });
   }

@@ -12,7 +12,7 @@ use InvalidArgumentException;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-class CarritoShow extends Component
+class Carrito extends Component
 {
   public array $fraccion_min = [];
 
@@ -160,9 +160,8 @@ class CarritoShow extends Component
     }
   }
 
-
   public function render()
   {
-    return view('livewire.carrito-show');
+    return view('livewire.carrito');
   }
 }

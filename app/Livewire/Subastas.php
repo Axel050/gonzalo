@@ -16,7 +16,7 @@ use MercadoPago\Client\Payment\PaymentRefundClient;
 use MercadoPago\MercadoPagoConfig;
 
 
-class LotesActivos extends Component
+class Subastas extends Component
 {
   protected $subastaService;
 
@@ -25,6 +25,7 @@ class LotesActivos extends Component
   public $lotes = [];
   public $error = null;
   public $subastaEstado = "11";
+  public $subastas;
 
   // #[On('echo:subasta.{subasta.id},SubastaEstadoActualizado')]
   // #[On('echo:my-channel.{subasta.id},SubastaEstadoActualizado')]
@@ -75,6 +76,10 @@ class LotesActivos extends Component
     info("mount ");
     $this->subastaService = $subastaService;
     $this->subasta = $subasta;
+
+
+    $this->subastas = Subasta::whereIn('estado', ["activa", "enpuja"])->get();
+
 
     $this->monedas = Moneda::all();
 
@@ -142,13 +147,8 @@ class LotesActivos extends Component
   }
 
 
-
-
-
-
   public function render()
   {
-
-    return view('livewire.lotes-activos');
+    return view('livewire.subastas');
   }
 }

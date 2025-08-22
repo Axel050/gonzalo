@@ -1,5 +1,82 @@
 import TomSelect from 'tom-select';
 
+import Swiper from 'swiper';
+import 'swiper/css'; // Importa los estilos básicos de Swiper
+
+// Opcional: Si necesitas módulos específicos, como navegación o paginación
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
+
+// Configura tu Swiper
+document.addEventListener('DOMContentLoaded', () => {
+
+
+  const swiper = new Swiper('.swiper', {
+    // Configuración básica
+    slidesPerView: 1,
+
+    spaceBetween: 30,
+    loop: true,
+    autoplay: {
+      delay: 3000,
+    },
+    breakpoints: {
+      // when window width is >= 320px
+      420: {
+        slidesPerView: 3,
+        spaceBetween: 32
+      },
+    },
+
+    // Opcional: Habilita módulos
+    modules: [Navigation, Pagination, Autoplay],
+    navigation: {
+      nextEl: '.swiper-button-next',
+      prevEl: '.swiper-button-prev',
+    },
+    pagination: {
+      el: '.swiper-pagination',
+      clickable: true,
+    },
+  });
+
+
+  document.querySelectorAll('.swiper-home-subastas').forEach((el, index) => {
+    new Swiper(el, {
+      slidesPerView: 2,
+      spaceBetween: 30,
+      centerInsufficientSlides: true,
+      loop: true,
+      autoplay: { delay: 2000 },
+      breakpoints: {
+        420: { slidesPerView: 3, spaceBetween: 50 },
+      },
+      modules: [Autoplay],
+
+    });
+  });
+
+
+  document.querySelectorAll('.swiper-subastas').forEach((el, index) => {
+    new Swiper(el, {
+      slidesPerView: 1,
+      spaceBetween: 30,
+      loop: true,
+      autoplay: { delay: 3000 },
+      breakpoints: {
+        420: { slidesPerView: 3, spaceBetween: 32 },
+      },
+      modules: [Autoplay],
+    });
+  });
+
+
+});
+
+// 8888888888888
+
 
 window.addEventListener('modalOpenedContratos', (event) => {
   const comitenteId = event.detail.comitenteId;

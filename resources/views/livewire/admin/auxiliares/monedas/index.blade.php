@@ -67,6 +67,7 @@
                                     class="bg-gray-400 relative text-gray-700 font-bold divide-x-2 divide-gray-600 [&>th]:pl-2 [&>th]:pr-1 [&>th]:lg:pl-4 [&>th]:text-start text-sm ">
                                     <th scope="col" class="py-1">ID</th>
                                     <th scope="col">Nombre</th>
+                                    <th scope="col">Signo</th>
                                     <th scope="col" class="lg:w-[190px] w-[90px]">Accion</th>
                                 </tr>
                             </thead>
@@ -79,6 +80,7 @@
 
                                         <td class="py-2">{{ $moneda->id }}</td>
                                         <td class="py-2">{{ $moneda->titulo }}</td>
+                                        <td class="py-2">{{ $moneda->signo }}</td>
 
                                         <td>
                                             <div class="flex justfy-end lg:gap-x-6 gap-x-4 text-white text-xs">

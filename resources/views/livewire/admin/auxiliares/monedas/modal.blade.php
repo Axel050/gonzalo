@@ -17,6 +17,7 @@
                     <p class="text-center text-gray-600"><strong>"{{ $moneda->titulo }}" </strong>?</p>
                 @else
                     <x-form-item label="Nombre" :method="$method" model="titulo" />
+                    <x-form-item label="Signo" :method="$method" model="signo" />
                 @endif
 
                 <div class="flex !flex-row gap-6 justify-center lg:text-base text-sm">

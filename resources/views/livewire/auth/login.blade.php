@@ -1,4 +1,10 @@
-<div class="flex flex-col gap-6 ">
+<div class="flex flex-col gap-6  ">
+
+    <a href="{{ route('home') }}" class=" over:scale-105 bg-ed-200  text-white">
+        <svg fill="#fff" class="w-59 h-12 mx-auto">
+            <use xlink:href="#casa-icon"></use>
+        </svg>
+    </a>
 
     <x-auth-header :title="__('Ingresa en tu cuenta')" :description="__('')" />
 

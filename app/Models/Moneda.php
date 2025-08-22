@@ -9,5 +9,5 @@ class Moneda extends Model
 {
   use HasFactory;
 
-  protected $fillable = ["titulo"];
+  protected $fillable = ["titulo", "signo"];
 }

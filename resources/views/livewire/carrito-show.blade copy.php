@@ -1,135 +1,17 @@
-<div class="flex flex-col justify-center items-center hvh w-full  pt-0  ">
+<div>
 
-    <x-counter-header />
+    <h1 class="text-white font-bold text-xl">Carrito</h1>
 
+    <hr>
+    {{-- <button class="bg-white rounded text-red-700 px-5 py-2 mt-4 ml-40 mr-30 " wire:click="activar">Cheack Activar</button>
+    <button class="bg-white rounded text-red-700 px-5 py-2 mt-4 mx-auto " wire:click="job">Cheack Desactivar</button> --}}
+    <hr><br>
 
-    <article class="bg-red-00 flex idden  w-full justify-center flex-col mt-10 mb-8">
-        {{-- <svg width="247" height="47" viewBox="0 0 247 47" fill="none" xmlns="http://www.w3.org/2000/svg"> --}}
-        <svg fill="#fff" class="w-[247px] h-[47px] mx-auto mb-2">
-            <use xlink:href="#tuslotes"></use>
-        </svg>
-        <h3 class="font-helvetica font-semibold text-3xl leading-[1] tracking-normal text-center mt-4 mb-2 ">Estos son
-            lotes que agregaste a tu carrito.
-        </h3>
-        <p class="text-center text-3xl">Vehicula adipiscing pellentesque volutpat dui rhoncus neque urna.</p>
+    {{-- EVALUAR SI PUEDO TRAER DESDE  CARRITO SERVICE YA LOS LOTES CON MAS INFO ; POR EJEMPLO SUBASTA ID ; TIEMPO FIN DUSBASTA ; ETC PARA EVITAR TENER QUE LLAMAR A LOS MODEL TRAS MODEL DESDE BLADE  por  ej: ($lote->ultimoContrato?->subasta->fecha_fin) 
+     VER SI DETALLE LOTE PONGO CONTADOR , CREO QUE SI 
+    --}}
 
-
-
-    </article>
-
-
-
-
-    <div class="grid grid-cols-3 px-20 mt-10 gap-12 mb-2">
-
-        @if (isset($lotes) && count($lotes))
-            @foreach ($lotes as $lote)
-                <div class="w-full bg-casa-base-2 flex flex-col p-6 gap-y-1 border border-casa-black ">
-
-                    {{-- <div class="flex justify-between items-center"> --}}
-                    <button class="font-semibold text-xl w-full text-end -mt-2 ">X</button>
-                    <a href="{{ route('lotes.show', $lote['id']) }}"
-                        class="font-bold text-3xl w-full  mb-1">{{ $lote['titulo'] }}</a>
-
-                    {{-- </div> --}}
-
-                    <div class="flex gap-x-4 justify-center my-2">
-
-                        {{-- <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote->foto1) }}" class="size-36 obje " /> --}}
-                        <img src="{{ Storage::url('imagenes/lotes/normal/' . $lote->foto1) }}" class="size-49  obje " />
-
-                    </div>
-
-
-                    <div class="flex justify-between items-center mt-2">
-                        <ul class="flex gap-4 text-sm">
-                            <li class="px-3 py-2 rounded-full border border-casa-black">Lote: 29</li>
-                            <li class="px-3 py-2 rounded-full border border-casa-black">Subasta: Objetos</li>
-
-                        </ul>
-
-                        <x-hammer />
-
-
-                    </div>
-
-
-                    @php
-                        $actual =
-                            optional($lote->getPujaFinal())->monto !== null ? (int) $lote->getPujaFinal()->monto : 0;
-
-                        if (is_int($actual)) {
-                            $actual = number_format($actual, 0, ',', '.');
-                        }
-
-                        $signo = $this->getMonedaSigno($lote->moneda);
-                    @endphp
-
-                    <p class="text-xl  mt-auto">Base:
-                        {{ $signo }}{{ number_format($lote['precio_base'], 0, ',', '.') }}
-                    </p>
-
-
-                    <p class="text-xl font-semibold mb-3">Oferta
-                        actual: {{ $signo }}{{ $actual }}
-                    </p>
-
-                    <p class="text-xl  mb-2">Fraccion minima:
-                        {{ $signo }}{{ number_format($lote['fraccion_min'], 0, ',', '.') }}</p>
-
-
-
-
-                    @if ($lote?->getPujaFinal()?->adquirente_id == $adquirente?->id)
-                        <p
-                            class="text-casa-black  border border-black rounded-full px-4 flex items-center justify-  py-2  w-full  text-xl  mb-2 bg-casa-base">
-                            Ofertaste:
-                            <b class="ml-1"> {{ $signo }}{{ $actual }}</b>
-                        </p>
-
-                        <p
-                            class="text-center text-casa-black   border border-black rounded-full px-4   py-2  w-full  text-xl  mb-2 font-bold ">
-                            Tu puja es la última
-                        </p>
-                    @else
-                        <input type="number"
-                            class="bg-base border border-casa-black  text-casa-black  rounded-full px-4 flex items-center justify-between  py-2  w-full  text-xl font-semibold mb-2"
-                            placeholder="Tu oferta" />
-
-
-
-                        <button
-                            class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  py-2  w-full  text-xl font-bold">
-                            Pujar
-                            <svg class="size-8 ">
-                                <use xlink:href="#arrow-right"></use>
-                            </svg>
-                        </button>
-                    @endif
-
-
-
-
-
-
-                </div>
-            @endforeach
-        @endif
-
-    </div>
-
-
-    <a href="{{ route('carrito') }}"
-        class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  py-2 text-xl font-bold w-5/6 mt-6">
-        Ver tu carrito
-        <svg class="size-8 ">
-            <use xlink:href="#arrow-right"></use>
-        </svg>
-    </a>
-
-
-
-    <div class="hidden rid grid-cols-3 gap-7 pb-8 ">
+    <div class="grid grid-cols-3 gap-7 pb-8">
         @if ($lotes)
 
             @foreach ($lotes as $lote)

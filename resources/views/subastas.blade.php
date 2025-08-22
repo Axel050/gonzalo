@@ -3,7 +3,7 @@
         Detalles
     </x-slot>
 
-    @livewire('carrito')
+    @livewire('subastas')
 
 
 </x-layouts.guest>
