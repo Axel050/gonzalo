@@ -51,7 +51,7 @@
                         <x-form-item-sel label="Subasta" :method="$method" model="subasta_id" live="true">
                             <option>Elija subasta </option>
                             @foreach ($subastas as $sub)
-                                <option value="{{ $sub->id }}">{{ $sub->id }}</option>
+                                <option value="{{ $sub->id }}">{{ $sub->id }} - {{ $sub->titulo }}</option>
                             @endforeach
                         </x-form-item-sel>
 
