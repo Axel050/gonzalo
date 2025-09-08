@@ -21,6 +21,11 @@ class Carrito extends Model
     return $this->hasMany(CarritoLote::class);
   }
 
+  public function carritoLo()
+  {
+    return $this->hasMany(CarritoLote::class);
+  }
+
   public function lotes()
   {
     return $this->belongsToMany(Lote::class, 'carrito_lotes')

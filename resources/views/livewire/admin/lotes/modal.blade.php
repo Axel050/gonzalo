@@ -156,6 +156,30 @@
                     <x-form-item label="Precio venta directa" :method="$method" model="precio_venta_directa"
                         type="number" wire:show="venta_directa == '1'" />
 
+                    {{-- <x-form-item label="Destacado" :method="$method" model="destacado" typ="number" /> --}}
+                    <div class="items-start  lg:w-60 w-[85%] mx-auto  mb-[-5px] mt-1.5">
+                        <label class="w-full text-start text-gray-500  leading-[16px] text-base">
+                            Destacado
+                        </label>
+                        <div class="relative w-full   text-gray-600 flex pl-18 gap-x-10 lg:gap-x-14  text-base">
+
+                            <div class="flex  items-center ">
+                                <input type="radio" wire:model="destacado" value="0" name="destacado"
+                                    class ="h-6 rounded-md border border-gray-400 w-4 text-gray-500 p-1 text-sm bg-gray-100 mr-0.5  "
+                                    @disabled($method == 'view') />
+                                No
+                            </div>
+
+                            <div class="flex   items-center">
+                                <input type="radio" wire:model="destacado" value="1" name="destacado"
+                                    class ="h-6 rounded-md border border-gray-400 w-4 text-gray-500 pl-1 text-sm bg-gray-100 mr-0.5"
+                                    @disabled($method == 'view') />Si
+                            </div>
+
+
+                        </div>
+                    </div>
+
 
 
                     <div
@@ -171,8 +195,8 @@
                         <x-form-item-imagen label="Foto 3" :method="$method" model="foto3" :foto="$foto3" w="150"
                             h="150" folder="lotes/thumbnail/" />
 
-                        <x-form-item-imagen label="Foto 4" :method="$method" model="foto4" :foto="$foto4" w="150"
-                            h="150" folder="lotes/thumbnail/" />
+                        <x-form-item-imagen label="Foto 4" :method="$method" model="foto4" :foto="$foto4"
+                            w="150" h="150" folder="lotes/thumbnail/" />
 
                     </div>
 

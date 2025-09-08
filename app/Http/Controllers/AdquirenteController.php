@@ -126,6 +126,21 @@ class AdquirenteController extends Controller
     return view("lotes-activos", compact("subasta"));
   }
 
+  public function getLotesProximos(Subasta $subasta)
+  {
+    return view("lotes-proximos", compact("subasta"));
+  }
+
+  public function getLotesPasados(Subasta $subasta)
+  {
+    return view("lotes-pasados", compact("subasta"));
+  }
+
+  public function getLotesSearch()
+  {
+    return view("lotes-search");
+  }
+
 
   public function getLotesActivos(Subasta $subasta)
   {

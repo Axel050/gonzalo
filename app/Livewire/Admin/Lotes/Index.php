@@ -22,6 +22,7 @@ class Index extends Component
   public $inputType = "search";
   public $estados = [];
   public $estadoFilter;
+  public $destacados;
 
   #[Url]
   public $ids;
@@ -332,6 +333,10 @@ class Index extends Component
     // Filtro por estado
     if ($this->estadoFilter) {
       $lotes->where('estado', $this->estadoFilter);
+    }
+
+    if ($this->destacados) {
+      $lotes->where('destacado', true);
     }
 
     // Si no hay filtros, mostrar todos los lotes

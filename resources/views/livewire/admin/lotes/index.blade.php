@@ -11,7 +11,7 @@
             class="w-full flex item-center justify-between order-4  lg:flex-row lg:items-center  mx-auto bg-gray-300 lg:py-4  py-2 lg:px-6 px-3 rounded-md  shadow-md">
             <div class="flex flex-col lg:flex-row lg:gap-4  text-gray-700  ">
 
-                <div class="flex bred-200 py-1 px-4 bg-whit shadow-md shadow-gray-400 rounded-lg">
+                <div class="flex bred-200 py-1 lg:px-4 px-2 bg-whit shadow-md shadow-gray-400 rounded-lg items-center">
 
                     <div class="flex items-center">
                         <label for="query" class="text-sm lg:text-base text-gray-600 mr-1">Buscar</label>
@@ -21,7 +21,7 @@
 
                     <div class="text-xs ">
                         <select wire:model.live="searchType"
-                            class=" h-6 rounded-md border border-gray-400 lg:w-full w-fit -auto mt-1 lg:mt-0 text-gray-600 text-sm py-0 cursor-pointer bg-gray-200 ml-1">
+                            class=" h-6 rounded-md border border-gray-400 lg:w-full w-fit -auto lg:mt-0 text-gray-600 text-sm py-0 cursor-pointer bg-gray-200 ml-1">
                             <option value="todos">Todos</option>
                             <option value="id">ID</option>
                             <option value="titulo">Titulo</option>
@@ -36,20 +36,34 @@
                     </div>
                 </div>
 
+                <div class="flex  justify-between">
 
-                <div class="flex bred-200 py-1 px-4 bg-whit shadow-md shadow-gray-400 rounded-lg lg:ml-8 items-center ">
-                    <span class=" mr-1">
-                        Estados
-                    </span>
-                    <div class="text-xs flex gap-2 lg:gap-3 ">
-                        <select wire:model.live="estadoFilter"
-                            class="h-6 rounded-md border border-gray-400 lg:w-full w-fit ml-auto mt-1 lg:mt-0 text-gray-600 text-sm  cursor-pointer bg-gray-200 py-0">
-                            <option value="">Todos </option>
-                            @foreach ($estados as $estado)
-                                <option value="{{ $estado['value'] }}">{{ $estado['label'] }}</option>
-                            @endforeach
 
-                        </select>
+                    <div
+                        class="flex bred-200 py-1 lg:px-4 px-2 bg-whit shadow-md shadow-gray-400 rounded-lg lg:ml-8 items-center  w-fit">
+                        <span class=" mr-1">
+                            Estados
+                        </span>
+                        <div class="text-xs flex gap-2 lg:gap-3 ">
+                            <select wire:model.live="estadoFilter"
+                                class="h-6 rounded-md border border-gray-400 lg:w-full w-fit ml-auto mt-1 lg:mt-0 text-gray-600 text-sm  cursor-pointer bg-gray-200 py-0">
+                                <option value="">Todos </option>
+                                @foreach ($estados as $estado)
+                                    <option value="{{ $estado['value'] }}">{{ $estado['label'] }}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
+                    </div>
+
+                    <div
+                        class="flex bred-200 py-1 lg:px-4 px-2 bg-whit shadow-md shadow-gray-400 rounded-lg lg:ml-12  items-center  w-fit ">
+                        <span class=" mr-1">
+                            Destacados
+                        </span>
+                        <div class="text-xs flex gap-2 lg:gap-3 ">
+                            <input type="checkbox" class=" size-5 ml-1.5" wire:model.live="destacados">
+                        </div>
                     </div>
                 </div>
 
@@ -191,7 +205,8 @@
 
                                                 <button title="eliminar"
                                                     class=" hover:text-gray-200  hover:bg-red-700 flex items-center py-0.5 bg-red-600 rounded-lg px-1 cursor-pointer"
-                                                    wire:click="option('delete',{{ $lot->id }})" title="Eliminar">
+                                                    wire:click="option('delete',{{ $lot->id }})"
+                                                    title="Eliminar">
                                                     <svg class="size-5 ">
                                                         <use xlink:href="#eliminar"></use>
                                                     </svg>

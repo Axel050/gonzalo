@@ -141,6 +141,24 @@ class ModalContratoLotes extends Component
 
 
 
+  public function add2()
+  {
+    // $contratoLote = ContratoLote::where('contrato_id', 7)
+    //   ->where('lote_id', 25)
+    //   ->first();
+    // $contratoLote = ContratoLote::where([
+    //   'contrato_id' => 7,
+    //   'lote_id' => 25
+    // ])->first();
+
+
+    $contratoLote2 = ContratoLote::find(43);
+
+
+
+    // info(["contratoLote" => $contratoLote]);
+    info(["contratoLote2" => $contratoLote2]);
+  }
   public function add()
   {
     $this->validate();
@@ -211,6 +229,8 @@ class ModalContratoLotes extends Component
     // Obtener los IDs de los lotes en $tempLotes
     $tempIds = collect($this->tempLotes)->pluck('id')->filter()->toArray(); // Filtra IDs válidos (excluye false/null)
 
+
+
     $lotesToDelete = array_diff($existingIds, $tempIds);
     if (!empty($lotesToDelete)) {
 
@@ -226,15 +246,20 @@ class ModalContratoLotes extends Component
 
       if ($tempLote['id']) {
 
+
+
         $contratoLote = ContratoLote::where('contrato_id', $this->contrato->id)
           ->where('lote_id', $tempLote['id'])
           ->first();
 
         if ($contratoLote) {
+          info(["INTOOOO" => $tempLote['precio_base']]);
           $contratoLote->update([
             'precio_base' => $tempLote['precio_base'],
+            'moneda_id' => $tempLote['moneda_id'],
           ]);
         } else {
+          info("INTOOOO eeeslllllllseeee");
           ContratoLote::create([
             "contrato_id" => $this->contrato->id,
             "lote_id" => $tempLote['id'],

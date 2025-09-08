@@ -32,8 +32,13 @@ Route::get('/dashboard', function () {
 Route::get('/', function () {
   $subastasProx = Subasta::where('fecha_inicio', '>=', Carbon::now())->get();
   $subastasAct = Subasta::whereIn('estado', ["activa", "enpuja"])->get();
+  $subastasFin = Subasta::whereIn('estado', ["finalizada"])->get();
+  $last = Subasta::whereIn('estado', ['activa', 'en_puja'])
+    ->where('fecha_fin', '>', Carbon::now())
+    ->orderBy('fecha_fin', 'asc')
+    ->first();
   // info(["subastas " => $subastas]);
-  return view('welcome', compact("subastasProx", "subastasAct"));
+  return view('welcome', compact("subastasProx", "subastasAct", "subastasFin", "last"));
 })->name('home');
 
 
@@ -123,7 +128,15 @@ Route::get('/subastas', function () {
 Route::get('/tuactivos', LotesActivos::class)->name('lotes.activos');
 // Route::get('/subastas/{subasta}/lotes-activos', [AdquirenteController::class, 'getLotesActivos']);
 
+Route::get('/subastas/proximas/{subasta}/lotes', [AdquirenteController::class, 'getLotesProximos'])->name('subasta-proximas.lotes')->middleware(['auth']);
+
+Route::get('/subastas/pasadas/{subasta}/lotes', [AdquirenteController::class, 'getLotesPasados'])->name('subasta-pasadas.lotes')->middleware(['auth']);
+
+
+Route::get('/subastas/buscador/lotes', [AdquirenteController::class, 'getLotesSearch'])->name('subasta-buscador.lotes')->middleware(['auth']);
+
 Route::get('/subastas/{subasta}/lotes', [AdquirenteController::class, 'getLotes'])->name('subasta.lotes')->middleware(['auth']);
+
 
 
 

@@ -1,10 +1,8 @@
 <div class="flex flex-col justify-center items-center hvh w-full  pt-0  ">
 
-    <x-counter-header />
 
 
-    <article class="bg-red-00 flex idden  w-full justify-center flex-col mt-10 mb-8">
-        {{-- <svg width="247" height="47" viewBox="0 0 247 47" fill="none" xmlns="http://www.w3.org/2000/svg"> --}}
+    {{-- <article class="bg-red-00 flex idden  w-full justify-center flex-col mt-10 mb-8">        
         <svg fill="#fff" class="w-[247px] h-[47px] mx-auto mb-2">
             <use xlink:href="#tuslotes"></use>
         </svg>
@@ -15,7 +13,7 @@
 
 
 
-    </article>
+    </article> --}}
 
 
 
@@ -24,63 +22,206 @@
 
         @if (isset($lotes) && count($lotes))
             @foreach ($lotes as $lote)
-                <div class="w-full bg-casa-base-2 flex flex-col p-6 gap-y-1 border border-casa-black ">
-
-                    {{-- <div class="flex justify-between items-center"> --}}
-                    <button class="font-semibold text-xl w-full text-end -mt-2 ">X</button>
-                    <a href="{{ route('lotes.show', $lote['id']) }}"
-                        class="font-bold text-3xl w-full  mb-1">{{ $lote['titulo'] }}</a>
-
-                    {{-- </div> --}}
-
-                    <div class="flex gap-x-4 justify-center my-2">
-
-                        {{-- <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote->foto1) }}" class="size-36 obje " /> --}}
-                        <img src="{{ Storage::url('imagenes/lotes/normal/' . $lote->foto1) }}" class="size-49  obje " />
-
-                    </div>
+                <div class="flex flex-col ">
 
 
-                    <div class="flex justify-between items-center mt-2">
-                        <ul class="flex gap-4 text-sm">
-                            <li class="px-3 py-2 rounded-full border border-casa-black">Lote: 29</li>
-                            <li class="px-3 py-2 rounded-full border border-casa-black">Subasta: Objetos</li>
-
-                        </ul>
-
-                        <x-hammer />
+                    <div class="w-full bg-casa-base-2 flex flex-col p-6  gap-y-1 border border-casa-black relative">
 
 
-                    </div>
+                        {{-- <button class="font-semibold text-xl w-full text-end -mt-2 " wire:click="quitar({{ $lote['id'] }})"
+                        title="Quitar del carrito">X</button> --}}
+                        <button class="font-semibold text-xs w-full text-end -mt-2 "
+                            wire:click="quitar({{ $lote['id'] }})" title="Quitar del carrito">X</button>
+
+                        {{-- <a href="{{ route('lotes.show', $lote['id']) }}"
+                        class="font-bold text-3xl w-full  mb-1">{{ $lote['titulo'] }}</a> --}}
+                        <a href="{{ route('lotes.show', $lote['id']) }}"
+                            class="font-bold text-lg w-full  mb-1">{{ $lote['titulo'] }}</a>
 
 
-                    @php
-                        $actual =
-                            optional($lote->getPujaFinal())->monto !== null ? (int) $lote->getPujaFinal()->monto : 0;
 
-                        if (is_int($actual)) {
-                            $actual = number_format($actual, 0, ',', '.');
-                        }
+                        <div class="flex gap-x-4 justify-center my-2">
 
-                        $signo = $this->getMonedaSigno($lote->moneda);
+                            {{-- <img src="{{ Storage::url('imagenes/lotes/normal/' . $lote->foto1) }}" class="size-49  obje " /> --}}
+                            <img src="{{ Storage::url('imagenes/lotes/normal/' . $lote->foto1) }}"
+                                class="size-10  obje " />
+
+                        </div>
+
+
+                        <div class="flex justify-between items-center mt-2">
+                            <ul class="flex gap-4 text-sm">
+                                <li class="px-3 py-2 rounded-full border border-casa-black"><a
+                                        href="{{ route('lotes.show', $lote['id']) }}">Lote: {{ $lote->id }}</a></li>
+                                <li class="px-3 py-2 rounded-full border border-casa-black"><a
+                                        href="{{ route('subasta.lotes', $lote->ultimoContrato?->subasta_id) }}">Subasta:
+                                        {{ $lote->ultimoContrato?->subasta?->titulo }}</a></li>
+
+
+                            </ul>
+
+                            <x-hammer />
+
+
+                        </div>
+
+
+                        @php
+                            $actual =
+                                optional($lote->getPujaFinal())->monto !== null
+                                    ? (int) $lote->getPujaFinal()->monto
+                                    : 0;
+
+                            if (is_int($actual)) {
+                                $actual = number_format($actual, 0, ',', '.');
+                            }
+
+                            $signo = $this->getMonedaSigno($lote->moneda);
+                        @endphp
+
+                        <p class="text-xl  mt-auto">Base:
+                            {{ $signo }}{{ number_format($lote['precio_base'], 0, ',', '.') }}
+                        </p>
+
+
+                        <p class="text-xl font-semibold mb-3">Oferta
+                            actual: {{ $signo }}{{ $actual }}
+                        </p>
+
+                        <p class="text-xl  mb-2">Fraccion minima:
+                            {{ $signo }}{{ number_format($lote['fraccion_min'], 0, ',', '.') }}</p>
+
+
+
+                        @php
+                            $adquirenteEsGanador = $lote?->getPujaFinal()?->adquirente_id === $adquirente?->id;
+                            $subastaActiva = \Carbon\Carbon::parse(
+                                $lote->ultimoConLote?->tiempo_post_subasta_fin ??
+                                    $lote->ultimoContrato?->subasta->fecha_fin,
+                            )->gte(now());
+                        @endphp
+
+                        @if ($adquirenteEsGanador)
+                            @if ($subastaActiva)
+                                <p
+                                    class="text-casa-black border border-black rounded-full px-4 py-2 flex items-center justify-center w-full text-xl mb-2 bg-casa-base">
+                                    Ofertaste: <b class="ml-1">{{ $signo }}{{ $actual }}</b>
+                                </p>
+                            @else
+                                {{-- <div class="flex flex-col items-center gap-2"> --}}
+                                <span
+                                    class="text-casa-black border border-black rounded-full px-4 py-2 w-full text-xl font-bold text-center order-1 mb-2">
+                                    Puja finalizada
+                                </span>
+                                <a href="{{ route('carrito') }}"
+                                    class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  py-2  w-full  text-xl font-bold order-3 mt-2">
+                                    Pagar
+                                    <svg class="size-8 ">
+                                        <use xlink:href="#arrow-right"></use>
+                                    </svg>
+
+                                </a>
+                                {{-- </div> --}}
+                            @endif
+
+                            <h2
+                                class="text-casa-black border border-black rounded-full px-4 py-2 w-full text-xl font-bold text-center order-2">
+                                {{ $subastaActiva ? 'Tu puja es la última' : 'El lote es tuyo' }}
+                            </h2>
+                        @else
+                            @if ($subastaActiva)
+                                <div class="flex flex-col gap-3">
+                                    <input type="number"
+                                        class="bg-base border border-casa-black text-casa-black rounded-full px-4 py-2 w-full text-xl font-semibold"
+                                        placeholder="Tu oferta" wire:model.defer="ofertas.{{ $lote->id }}" />
+
+                                    <button
+                                        class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  py-2  w-full  text-xl font-bold order-3 "
+                                        wire:click="registrarPuja({{ $lote->id }})" wire:loading.attr="disabled">
+                                        <span wire:loading.remove wire:target="registrarPuja({{ $lote->id }})">
+                                            Pujar
+                                        </span>
+
+                                        <span wire:loading wire:target="registrarPuja({{ $lote->id }})">
+                                            Procesando...
+                                        </span>
+                                        <svg class="size-8 ">
+                                            <use xlink:href="#arrow-right"></use>
+                                        </svg>
+                                    </button>
+                                    <x-input-error-front for="puja.{{ $lote['id'] }}"
+                                        class="absolte bottom-0 text-red-500 order-4 text-lg" />
+                                </div>
+                            @else
+                                <div class="flex flex-col gap-2 items-center">
+                                    <span
+                                        class="text-casa-black border border-black rounded-full px-4 py-2 w-full text-xl font-bold text-center">
+                                        Puja finalizada
+                                    </span>
+                                    <span
+                                        class="text-casa-black border border-black rounded-full px-4 py-2 w-full text-xl font-bold text-center mt-1">
+                                        Alguien ofertó más
+                                    </span>
+                                </div>
+                            @endif
+                        @endif
+
+
+                        {{-- @php
+                        $adquirenteEsGanador = $lote?->getPujaFinal()?->adquirente_id == $adquirente?->id;
+                        $subastaActiva =
+                            \Carbon\Carbon::parse($lote->ultimoConLote?->tiempo_post_subasta_fin)->gte(now()) ||
+                            \Carbon\Carbon::parse($lote->ultimoContrato?->subasta->fecha_fin)->gte(now());
                     @endphp
 
-                    <p class="text-xl  mt-auto">Base:
-                        {{ $signo }}{{ number_format($lote['precio_base'], 0, ',', '.') }}
-                    </p>
+                    @if ($adquirenteEsGanador)
+                        @if ($subastaActiva)
+                            <p
+                                class="text-casa-black  border border-black rounded-full px-4 flex items-center justify-  py-2  w-full  text-xl  mb-2 bg-casa-base">
+                                Ofertaste:
+                                <b class="ml-1"> {{ $signo }}{{ $actual }}</b>
+                            </p>
+                        @else
+                            <span class="bg-red-500 px-4 py-2 rounded-2xl mx-auto text-white mt-8 font-bold text-xl">
+                                Puja finalizada
+                            </span>
+                            <span
+                                class="bg-purple-500 px-4 py-2 rounded-2xl mx-auto text-white mt-8 font-bold text-xl order-1">
+                                Pagar
+                            </span>
+                        @endif
+                        <h2
+                            class="bg-white px-4 py-2 rounded-2xl mx-auto mt-8 font-bold text-xl 
+               {{ $subastaActiva ? 'text-blue-600' : 'text-green-600' }}">
+                            {{ $subastaActiva ? 'Tu puja es la última' : 'Ganaste la puja' }}
+                        </h2>
+                    @else
+                        @if ($subastaActiva)
+                            <input type="number"
+                                class="bg-base border border-casa-black  text-casa-black  rounded-full px-4 flex items-center justify-between  py-2  w-full  text-xl font-semibold mb-2"
+                                placeholder="Tu oferta" />
+                            <button
+                                class="bg-green-500 px-4 py-2 rounded-2xl mx-auto text-white mt-8 font-bold text-xl hover:bg-green-700"
+                                wire:click="registrarPuja({{ $lote['id'] }})" wire:loading.attr="disabled">
+                                <span wire:target="registrarPuja({{ $lote['id'] }})">Pujar</span>
+                                <span wire:loading
+                                    wire:target="registrarPuja({{ $lote['id'] }})">Procesando...</span>
+                            </button>
+                        @else
+                            <span
+                                class="text-center text-casa-black   border border-black rounded-full px-4   py-2  w-full  text-xl  mb-2 font-bold ">
+                                Puja finalizada
+                            </span>
+                            <span
+                                class="text-center text-casa-black   border border-black rounded-full px-4   py-2  w-full  text-xl  mb-2 font-bold ">
+                                Alguien ofertó mas
+                            </span>
+                        @endif
+                    @endif --}}
 
 
-                    <p class="text-xl font-semibold mb-3">Oferta
-                        actual: {{ $signo }}{{ $actual }}
-                    </p>
 
-                    <p class="text-xl  mb-2">Fraccion minima:
-                        {{ $signo }}{{ number_format($lote['fraccion_min'], 0, ',', '.') }}</p>
-
-
-
-
-                    @if ($lote?->getPujaFinal()?->adquirente_id == $adquirente?->id)
+                        {{-- @if ($lote?->getPujaFinal()?->adquirente_id == $adquirente?->id)
                         <p
                             class="text-casa-black  border border-black rounded-full px-4 flex items-center justify-  py-2  w-full  text-xl  mb-2 bg-casa-base">
                             Ofertaste:
@@ -99,16 +240,51 @@
 
 
                         <button
-                            class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  py-2  w-full  text-xl font-bold">
+                            class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  py-2  w-full  text-xl font-bold"
+                            wire:target="registrarPuja({{ $lote['id'] }})">
                             Pujar
                             <svg class="size-8 ">
                                 <use xlink:href="#arrow-right"></use>
                             </svg>
                         </button>
+                    @endif --}}
+
+
+
+
+
+
+
+
+                    </div>
+
+
+
+
+                    @if (!empty($lote->ultimoConLote?->tiempo_post_subasta_fin))
+                        <div x-data="countdownTimer({
+                            // El valor inicial se puede pasar aquí o leerlo desde el data attribute en init
+                            loteId: '{{ $lote['id'] }}'
+                        })" {{-- Guardamos el valor dinámico en un atributo que Alpine puede leer --}}
+                            data-end-time="{{ $lote->ultimoConLote?->tiempo_post_subasta_fin }}"
+                            x-init="init(); // Llama a init en la carga inicial
+                            $wire.on('lotes-updated', () => {
+                                console.log('Evento lotes-updated recibido para lote {{ $lote['id'] }}');
+                            
+                                // $nextTick espera a que Livewire termine de actualizar el DOM
+                                // antes de ejecutar nuestro código. Esto es más seguro que setTimeout.
+                                $nextTick(() => {
+                                    console.log('DOM actualizado, re-inicializando el timer para lote {{ $lote['id'] }}');
+                                    init(); // Llama a init de nuevo para leer el nuevo valor
+                                });
+                            })" x-show="isValid && timeRemaining !== '00:00'" x-cloak>
+                            <p
+                                class="flex justify-between items-center bg-casa-black w-full p-1 h-11    border-casa-black text-casa-base px-6 text-sm  ">
+                                Tiempo restante:
+                                <span x-text="timeRemaining" class="text-white font-extrabold"></span>
+                            </p>
+                        </div>
                     @endif
-
-
-
 
 
 

@@ -29,6 +29,7 @@ class Modal extends Component
 
 
   public $qr;
+  public $destacado;
 
   public $historial;
 
@@ -271,6 +272,7 @@ class Modal extends Component
     }
     if ($this->method == "update" || $this->method == "view") {
       $this->lote = Lote::find($this->id);
+      $this->destacado = $this->lote->destacado;
       $this->comitente_id =  $this->lote->comitente_id;
       $this->comitente = $this->lote->comitente?->alias?->nombre . " - " . $this->lote->comitente?->nombre  . " " . $this->lote->comitente?->apellido;
 
@@ -469,6 +471,7 @@ class Modal extends Component
 
       $this->lote->titulo = $this->titulo;
       $this->lote->descripcion = $this->descripcion;
+      $this->lote->destacado = $this->destacado;
 
 
 

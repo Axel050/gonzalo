@@ -1,8 +1,6 @@
 <div class="flex flex-col justify-center items-center hvh w-full  pt-0  ">
 
 
-    <x-counter-header />
-
 
     <article class="bg-red-00 flex idden  w-full justify-center flex-col mt-10 mb-8">
         <svg fill="#fff" class="w-[262px] h-[47px] mx-auto mb-2">

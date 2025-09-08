@@ -20,12 +20,19 @@
     @livewireStyles
 
     <style>
+        .swiper-destacados .swiper-wrapper {
+            /* overflow: hidden; */
+
+            /* background-color: blue; */
+
+        }
+
         .swiper-subastas .swiper-slide {
             /* background-color: gray; */
             width: fit-content;
         }
 
-            {}
+
 
         .swiper-home-subastas .swiper-wrapper {
             /* background-color: yellow; */
@@ -49,11 +56,13 @@
     <div class="flex flex-col bg-casa-base  " x-data="{ openSide: true }" x-cloak>
 
 
-        {{-- <div class="transition-all duration-500  overflow-y-auto w-full   "> --}}
 
 
-        <nav
-            class=" sticky top-0 z-50  flex  w-full -200 justify-between py-4 px-24  text-gray-800  border-b  border-gray-700 shadow-lg h-30 items-center hover:bg-casa-base   transition-colors duration-1000 ease-in-out">
+        <nav x-data="{ scrolled: false }" @scroll.window="scrolled = window.pageYOffset > 50"
+            :class="{ 'opacity-35 ': scrolled, 'bg-transparent': !scrolled }"
+            class=" sticky top-0 z-50  flex  w-full -200 justify-between py-4 px-24  text-gray-800  border-b  border-gray-700 shadow-lg h-30 items-center hover:bg-casa-base   transition-all duration-1000 ease-in-out hover:opacity-100 ">
+
+
 
 
 
@@ -171,7 +180,7 @@
 
         <!-- Page Content -->
 
-
+        @livewire('counter-header')
 
         {{-- <main class=" bg-gray-900  px-4 lg:px-6  "> --}}
         {{-- bg-[repeating-linear-gradient(45deg,currentColor_0,currentColor_1px,transparent_1px,transparent_5px)] --}}

@@ -42,8 +42,21 @@ document.addEventListener('DOMContentLoaded', () => {
     },
   });
 
+  // const swiperD = new Swiper('.swiper-destacados', {
+  //   // Optional parameters
 
-  document.querySelectorAll('.swiper-home-subastas').forEach((el, index) => {
+  //   slidesPerView: 3,
+  //   spaceBetween: 30,
+  //   centerInsufficientSlides: true,
+  //   loop: true,
+  //   autoplay: { delay: 2000 },
+  //   modules: [Autoplay],
+  // });
+
+  document.querySelectorAll('.swiper-destacados').forEach((el, index) => {
+
+    const slides = el.querySelectorAll('.swiper-slide').length;
+
     new Swiper(el, {
       slidesPerView: 2,
       spaceBetween: 30,
@@ -51,7 +64,38 @@ document.addEventListener('DOMContentLoaded', () => {
       loop: true,
       autoplay: { delay: 2000 },
       breakpoints: {
-        420: { slidesPerView: 3, spaceBetween: 50 },
+        420: {
+          slidesPerView: 3,
+          spaceBetween: 50,
+          loop: slides > 3 ? true : false,
+          autoplay: slides > 3 ? { delay: 2000 } : false,
+        },
+      },
+      modules: [Autoplay],
+
+    });
+  });
+
+
+
+  document.querySelectorAll('.swiper-home-subastas').forEach((el, index) => {
+
+    const slides = el.querySelectorAll('.swiper-slide').length;
+    // autoplay: { delay: 2000 },
+
+    new Swiper(el, {
+      slidesPerView: 2,
+      spaceBetween: 30,
+      centerInsufficientSlides: true,
+      loop: true,
+      autoplay: { delay: 2000 },
+      breakpoints: {
+        420: {
+          slidesPerView: 3,
+          spaceBetween: 50,
+          loop: slides > 3 ? true : false,
+          autoplay: slides > 3 ? { delay: 2000 } : false,
+        },
       },
       modules: [Autoplay],
 
@@ -60,13 +104,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   document.querySelectorAll('.swiper-subastas').forEach((el, index) => {
+
+    const slides = el.querySelectorAll('.swiper-slide').length;
+
     new Swiper(el, {
       slidesPerView: 1,
       spaceBetween: 30,
+      centerInsufficientSlides: true,
       loop: true,
       autoplay: { delay: 3000 },
       breakpoints: {
-        420: { slidesPerView: 3, spaceBetween: 32 },
+        420: {
+          loop: slides > 3 ? true : false,
+          slidesPerView: 3, spaceBetween: 32
+        },
       },
       modules: [Autoplay],
     });

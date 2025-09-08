@@ -10,6 +10,7 @@ use App\Models\Puja;
 use App\Models\Subasta;
 use App\Services\MPService;
 use App\Services\SubastaService;
+use Carbon\Carbon;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use MercadoPago\Client\Payment\PaymentRefundClient;
@@ -26,6 +27,7 @@ class Subastas extends Component
   public $error = null;
   public $subastaEstado = "11";
   public $subastas;
+  public $subastasProx;
 
   // #[On('echo:subasta.{subasta.id},SubastaEstadoActualizado')]
   // #[On('echo:my-channel.{subasta.id},SubastaEstadoActualizado')]
@@ -76,22 +78,12 @@ class Subastas extends Component
     info("mount ");
     $this->subastaService = $subastaService;
     $this->subasta = $subasta;
+    $now = now();
 
 
     $this->subastas = Subasta::whereIn('estado', ["activa", "enpuja"])->get();
 
-
-    $this->monedas = Moneda::all();
-
-    $now = now();
-    if ($this->subasta->estado === 'activa' && $now->between($this->subasta->fecha_inicio, $this->subasta->fecha_fin)) {
-      $this->loadLotes();
-    } elseif ($this->subasta->estado === 'enpuja') {
-      $this->loadLotes();
-    } else {
-      info("mount444 ");
-      $this->lotes = [];
-    }
+    $this->subastasProx = Subasta::where('fecha_inicio', '>=', Carbon::now())->get();
   }
 
   public function loadLotes()

@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Enums\SubastaEstados;
 use App\Jobs\ActivarLotes;
 use App\Jobs\DesactivarLotesExpirados;
 use App\Models\Garantia;
@@ -17,21 +18,16 @@ use MercadoPago\Client\Payment\PaymentRefundClient;
 use MercadoPago\MercadoPagoConfig;
 
 
-class LotesActivos extends Component
+class LotesPasados extends Component
 {
-
-
-  #[Url]
+  #[Url()]
   public $searchParam = ''; //
-
-
-  protected $subastaService;
-
-  public $te;
-
   public $noSearch;
   public $search;
   public $filtered;
+
+  protected $subastaService;
+
   public $monedas;
   public Subasta $subasta;
   public $lotes = [];
@@ -81,27 +77,19 @@ class LotesActivos extends Component
     return $this->monedas->firstWhere('id', $id)?->signo ?? '';
   }
 
-  public function aaa()
-  {
-
-    $this->dispatch('saved');
-  }
-
-
 
   public function mount(Subasta $subasta, SubastaService $subastaService)
   {
-    info("mount ");
-
-    // info(["porametro " => $this->searchParam]);
+    info("mountxxxaaa ");
     $this->subastaService = $subastaService;
     $this->subasta = $subasta;
 
     $this->monedas = Moneda::all();
 
-
     $now = now();
-    if ($this->subasta->estado === 'activa' && $now->between($this->subasta->fecha_inicio, $this->subasta->fecha_fin)) {
+    // if ($this->estado === SubastaEstados::INACTIVA && $now->lessThan($this->fecha_inicio)) {
+    // if ($this->subasta->estado === 'inactiva' && $now->between($this->subasta->fecha_inicio, $this->subasta->fecha_fin)) {
+    if ($this->subasta->estado === SubastaEstados::FINALIZADA && $now->greaterThan($this->subasta->fecha_fin)) {
       if ($this->searchParam) {
         $this->filtrar($this->searchParam, $subastaService);
         $this->search = $this->searchParam;
@@ -109,42 +97,28 @@ class LotesActivos extends Component
       } else {
         $this->loadLotes();
       }
-    } elseif ($this->subasta->estado === 'enpuja') {
-      $this->loadLotes();
     } else {
-      info("mount444 ");
+      info("mount444 8888");
       $this->lotes = [];
     }
   }
 
   public function loadLotes()
   {
+    info("lotesClassxxx");
     try {
+      info("lotesClass");
 
-      info(["lotesClassLODAAAAAAAAAA11111111111111111111111"]);
-      $this->lotes = $this->subastaService?->getLotesActivos($this->subasta)?->toArray();
-      // info(["lotesClassLODAAAAAAAAAA" => $this->lotes]);
-
+      $this->lotes = $this->subastaService?->getLotesPasados($this->subasta)?->toArray();
+      info(["lotesCl8888ass" => $this->lotes]);
       $this->error = null;
     } catch (\Exception $e) {
-
       // info(["error" => $this-}>lotes]);
-      info(["errorrrr99999999999999999999999999999999" => $e->getMessage()]);
+      info(["errorrrr" => $e->getMessage()]);
       $this->lotes = [];
       $this->error = $e->getMessage();
     }
   }
-
-  public function todos(SubastaService $subastaService)
-  {
-    $this->subastaService = $subastaService;
-    $this->loadLotes();
-    $this->filtered = null;
-    $this->searchParam = null;
-    $this->dispatch("clearSearch");
-  }
-
-
 
   #[On(['buscarLotes'])]
   public function filtrar($search, SubastaService $subastaService)
@@ -153,7 +127,7 @@ class LotesActivos extends Component
     $this->search = is_string($search) ? trim($search) : '';
 
     // Siempre obtener TODOS los lotes frescos del servicio para buscar desde cero
-    $todosLosLotes = $subastaService?->getLotesActivos($this->subasta)?->toArray() ?? [];
+    $todosLosLotes = $subastaService?->getLotesPasados($this->subasta)?->toArray() ?? [];
 
     // Si no hay término de búsqueda, mostrar todos los lotes
     if (empty($this->search)) {
@@ -189,6 +163,14 @@ class LotesActivos extends Component
     ]);
   }
 
+  public function todos(SubastaService $subastaService)
+  {
+    $this->subastaService = $subastaService;
+    $this->loadLotes();
+    $this->filtered = null;
+    $this->searchParam = null;
+    $this->dispatch("clearSearch");
+  }
 
 
   // #[On('echo:subasta.{subasta.id},PujaRealizada')]
@@ -233,6 +215,6 @@ class LotesActivos extends Component
   public function render()
   {
 
-    return view('livewire.lotes-activos');
+    return view('livewire.lotes-pasados');
   }
 }

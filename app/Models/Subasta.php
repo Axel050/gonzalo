@@ -67,14 +67,82 @@ class Subasta extends Model implements Auditable
 
   // New7-4
   // info(["ContratosS" => $this->contratos->toArray()]);
+  public function lotesActivosDestacados()
+  {
+    $query = Lote::query()
+      ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
+      ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
+      ->where('contratos.subasta_id', $this->id)
+      ->where('lotes.estado', LotesEstados::EN_SUBASTA)
+      ->where('contrato_lotes.estado', 'activo')
+      ->where('lotes.destacado', true) // Filtro añadido
+      ->where(function ($query) {
+        $query
+          ->whereNull('contrato_lotes.tiempo_post_subasta_fin')
+          ->orWhere('contrato_lotes.tiempo_post_subasta_fin', '>=', now());
+      })
+      ->select(
+        'lotes.id',
+        'lotes.titulo',
+        'lotes.foto1',
+        'lotes.descripcion',
+        'lotes.valuacion',
+        'lotes.ultimo_contrato',
+        'lotes.estado as lote_estado',
+        'contrato_lotes.moneda_id',
+        'contrato_lotes.precio_base',
+        'contrato_lotes.tiempo_post_subasta_fin',
+        'contrato_lotes.estado as contrato_lote_estado',
+        'contrato_lotes.id as contrato_lote_id',
+      );
+
+    try {
+      $results = $query->get();
+    } catch (\Exception $e) {
+      info(["Error en lotesDestacados" => $e->getMessage()]);
+      throw $e;
+    }
+
+    return $query;
+  }
+
+  public function lotesActivosDestacadosFoto()
+  {
+    $query = Lote::query()
+      ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
+      ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
+      ->where('contratos.subasta_id', $this->id)
+      ->where('lotes.estado', LotesEstados::EN_SUBASTA)
+      ->where('contrato_lotes.estado', 'activo')
+      ->where('lotes.destacado', true) // Filtro añadido
+      ->where(function ($query) {
+        $query
+          ->whereNull('contrato_lotes.tiempo_post_subasta_fin')
+          ->orWhere('contrato_lotes.tiempo_post_subasta_fin', '>=', now());
+      })
+      ->select(
+        'lotes.id',
+        'lotes.titulo',
+        'lotes.foto1',
+      );
+
+    try {
+      $results = $query->get();
+    } catch (\Exception $e) {
+      info(["Error en lotesDestacados" => $e->getMessage()]);
+      throw $e;
+    }
+
+    return $query;
+  }
+
+
+
+
   public function lotesActivos()
   {
 
-    // if (!$this->isActiva()) {
-    //   return [];
-    // }
 
-    // info(["LOTESACTIVOS" => now()]);
     $query = Lote::query()
       ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
       ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
@@ -156,5 +224,274 @@ class Subasta extends Model implements Auditable
     }
 
     return $this->lotesActivos()->exists();
+  }
+
+
+  public function lotesProximos()
+  {
+
+    $query = Lote::query()
+      ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
+      ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
+      ->where('contratos.subasta_id', $this->id)
+      ->where('lotes.estado', LotesEstados::ASIGNADO)
+      ->where('contrato_lotes.estado', 'activo')
+      ->select(
+        'lotes.id',
+        'lotes.titulo',
+        'lotes.foto1',
+        'lotes.descripcion',
+        'lotes.valuacion',
+        'lotes.ultimo_contrato',
+        'lotes.estado as lote_estado',
+        'contrato_lotes.moneda_id',
+        'contrato_lotes.precio_base',
+        'contrato_lotes.estado as contrato_lote_estado',
+        'contrato_lotes.id as contrato_lote_id',
+
+      );
+
+    try {
+      $results = $query->get();
+      // info(["Lotes activoss" => $results->toArray()]);
+    } catch (\Exception $e) {
+      info(["Error en lotesProximos" => $e->getMessage()]);
+      throw $e;
+    }
+
+    return $query;
+  }
+
+  public function lotesProximosDestacados()
+  {
+
+    $query = Lote::query()
+      ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
+      ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
+      ->where('contratos.subasta_id', $this->id)
+      ->where('lotes.estado', LotesEstados::ASIGNADO)
+      ->where('contrato_lotes.estado', 'activo')
+      ->where('lotes.destacado', true) // Filtro añadido
+      ->select(
+        'lotes.id',
+        'lotes.titulo',
+        'lotes.foto1',
+        'lotes.descripcion',
+        'lotes.valuacion',
+        'lotes.ultimo_contrato',
+        'lotes.estado as lote_estado',
+        'contrato_lotes.moneda_id',
+        'contrato_lotes.precio_base',
+        'contrato_lotes.estado as contrato_lote_estado',
+        'contrato_lotes.id as contrato_lote_id',
+
+      );
+
+    try {
+      $results = $query->get();
+      // info(["Lotes activoss" => $results->toArray()]);
+    } catch (\Exception $e) {
+      info(["Error en lotesProximos" => $e->getMessage()]);
+      throw $e;
+    }
+
+    return $query;
+  }
+
+
+  public function lotesProximosDestacadosFoto()
+  {
+
+    $query = Lote::query()
+      ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
+      ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
+      ->where('contratos.subasta_id', $this->id)
+      ->where('lotes.estado', LotesEstados::ASIGNADO)
+      ->where('contrato_lotes.estado', 'activo')
+      ->where('lotes.destacado', true) // Filtro añadido
+      ->select(
+        'lotes.id',
+        'lotes.titulo',
+        'lotes.foto1',
+      );
+
+    try {
+      $results = $query->get();
+      // info(["Lotes activoss" => $results->toArray()]);
+    } catch (\Exception $e) {
+      info(["Error en lotesProximos" => $e->getMessage()]);
+      throw $e;
+    }
+
+    return $query;
+  }
+
+
+
+
+  public function isProxima()
+  {
+    $now = now();
+
+
+    if ($this->estado === SubastaEstados::INACTIVA && $now->lessThan($this->fecha_inicio)) {
+      return true;
+    }
+
+
+    if ($this->estado === SubastaEstados::PAUSADA) {
+      return false;
+    }
+
+
+    return $this->lotesProximos()->exists();
+  }
+
+
+
+  public function lotesPasados()
+  {
+    info("AGREGAR ESTADO FINALIZADO A ESTADO LOTE ");
+    info("llllllllllllll");
+    $query = Lote::query()
+      ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
+      ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
+      ->where('contratos.subasta_id', $this->id)
+      // ->where('lotes.ultimo_contrato', 'contratos.id')
+      ->whereColumn('contratos.id', 'lotes.ultimo_contrato')
+      ->whereIn('lotes.estado', [
+        LotesEstados::VENDIDO,
+        LotesEstados::DEVUELTO,
+        LotesEstados::STANDBY,
+        LotesEstados::DISPONIBLE
+      ])
+      // ->where('contrato_lotes.estado', 'activo')
+      ->select(
+        'lotes.id',
+        'lotes.titulo',
+        'lotes.foto1',
+        'lotes.descripcion',
+        'lotes.valuacion',
+        'lotes.ultimo_contrato',
+        'lotes.estado as lote_estado',
+        'contrato_lotes.moneda_id',
+        'contrato_lotes.precio_base',
+        'contrato_lotes.estado as contrato_lote_estado',
+        'contrato_lotes.id as contrato_lote_id',
+      );
+
+    try {
+      $results = $query->get();
+      info(["123456789" => $results]);
+    } catch (\Exception $e) {
+      info(["Error en lotesPasados" => $e->getMessage()]);
+      throw $e;
+    }
+
+    return $query;
+  }
+
+  public function lotesPasadosDestacados()
+  {
+    info("AGREGAR ESTADO FINALIZADO A ESTADO LOTE ");
+
+    $query = Lote::query()
+      ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
+      ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
+      ->where('contratos.subasta_id', $this->id)
+      // ->where('lotes.ultimo_contrato', 'contratos.id')
+      ->whereColumn('contratos.id', 'lotes.ultimo_contrato')
+      ->whereIn('lotes.estado', [
+        LotesEstados::VENDIDO,
+        LotesEstados::DEVUELTO,
+        LotesEstados::STANDBY,
+        LotesEstados::DISPONIBLE
+      ])
+      ->where('lotes.destacado', true) // Filtro añadido
+      // ->where('contrato_lotes.estado', 'activo')
+      ->select(
+        'lotes.id',
+        'lotes.titulo',
+        'lotes.foto1',
+        'lotes.descripcion',
+        'lotes.valuacion',
+        'lotes.ultimo_contrato',
+        'lotes.estado as lote_estado',
+        'contrato_lotes.moneda_id',
+        'contrato_lotes.precio_base',
+        'contrato_lotes.estado as contrato_lote_estado',
+        'contrato_lotes.id as contrato_lote_id',
+      );
+
+    try {
+      $results = $query->get();
+      info(["LotesPasadosDestacados" => $results]);
+    } catch (\Exception $e) {
+      info(["Error en lotesPasados" => $e->getMessage()]);
+      throw $e;
+    }
+
+    return $query;
+  }
+
+
+  public function lotesPasados2()
+  {
+
+    $query = Lote::query()
+      ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
+      ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
+      ->where('contratos.subasta_id', $this->id)
+      ->whereIn('lotes.estado', [
+        LotesEstados::VENDIDO,
+        LotesEstados::DEVUELTO,
+        LotesEstados::STANDBY,
+        LotesEstados::DISPONIBLE
+      ])
+      ->where('contrato_lotes.estado', 'activo')
+      ->select(
+        'lotes.id',
+        'lotes.titulo',
+        'lotes.foto1',
+        'lotes.descripcion',
+        'lotes.valuacion',
+        'lotes.ultimo_contrato',
+        'lotes.estado as lote_estado',
+        'contrato_lotes.moneda_id',
+        'contrato_lotes.precio_base',
+        'contrato_lotes.estado as contrato_lote_estado',
+        'contrato_lotes.id as contrato_lote_id',
+      );
+
+    try {
+      $results = $query->get();
+      info(["Lotes activoss" => $results->toArray()]);
+    } catch (\Exception $e) {
+      info(["Error en lotesPasados" => $e->getMessage()]);
+      throw $e;
+    }
+
+    return $query;
+  }
+
+
+
+
+  public function isPasada()
+  {
+    $now = now();
+
+
+    if ($this->estado === SubastaEstados::FINALIZADA && $now->greaterThan($this->fecha_fin)) {
+      return true;
+    }
+
+
+    if ($this->estado === SubastaEstados::PAUSADA) {
+      return false;
+    }
+
+
+    return $this->lotesPasados()->exists();
   }
 }

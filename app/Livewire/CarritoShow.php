@@ -15,6 +15,7 @@ use Livewire\Component;
 class CarritoShow extends Component
 {
   public array $fraccion_min = [];
+  public array $ofertas = [];
 
 
   public $adquirente;
@@ -98,39 +99,46 @@ class CarritoShow extends Component
 
   public function registrarPuja(PujaService $pujaService, $loteId)
   {
-    info("CARRITO-SHOW  registrarPuja");
 
     try {
       info("CARRITO-SHOW  registrarPuja TRY");
+      // dd($this->ofertas[$loteId]);
+
 
       $fraccion = $this->fraccion_min[$loteId] ?? null;
+      $oferta = $this->ofertas[$loteId] ?? null;
+
+
+
 
       // ✅ Validación: debe ser un entero positivo
-      if (!is_numeric($fraccion) || intval($fraccion) != $fraccion || $fraccion < 1) {
-        $this->addError('puja.' . $loteId, 'Monto invalido.');
+      if (!is_numeric($oferta) || intval($oferta) != $oferta || $oferta <  1 || $oferta < $fraccion || $oferta < 1) {
+        $this->addError('puja.' . $loteId, 'Oferta invalida.');
         // $this->fraccion_min[$loteId] = $this->adquirente?->carrito?->lotes?->firstWhere('id', $loteId)?->fraccion_min;
-        $this->fraccion_min[$loteId] = $this->lotes->firstWhere('id', $loteId)?->fraccion_min;
+        // $this->fraccion_min[$loteId] = $this->lotes->firstWhere('id', $loteId)?->fraccion_min;
         return;
       }
+
 
 
 
       $result = $pujaService->registrarPuja(
         $this->adquirente?->id,
         $loteId,
-        $fraccion
+        $oferta
       );
 
       session()->flash('success', 'Puja registrada correctamente.');
       $this->pujado = true;
       $this->ultimaOferta = $result['message']['monto_final'];
-      $this->fraccion_min[$loteId] = $this->lotes->firstWhere('id', $loteId)?->fraccion_min;
+      // $this->fraccion_min[$loteId] = $this->lotes->firstWhere('id', $loteId)?->fraccion_min;
+      $this->ofertas[$loteId] = "";
     } catch (ModelNotFoundException | InvalidArgumentException | DomainException $e) {
       $this->addError('puja.' . $loteId, $e->getMessage());
       info('Error en Livewire::registrarPujaxxxx', ['exception' => $e]);
     } catch (\Exception $e) {
       info('Error en Livewire::registrarPuja', ['exception' => $e]);
-      $this->addError('puja.' . $loteId, 'Error interno al registrar la puja.');
+      $this->addError('puja.' . $loteId, 'Error al pujar.');
     }
   }
 

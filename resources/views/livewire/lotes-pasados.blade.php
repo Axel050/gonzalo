@@ -1,13 +1,16 @@
 <div class="flex flex-col justify-center items-center hvh w-full  pt-0  text-casa-black">
 
 
-    <div class="mt-10">
+
+
+    <div class="mt-5">
 
         @livewire('buscador', ['subasta_id' => $subasta->id, 'search' => $search])
 
     </div>
 
-    {{-- @dump($te) --}}
+
+
 
 
     {{-- @role('adquirente') --}}
@@ -17,11 +20,6 @@
                 !auth()->user()?->hasRole('adquirente'))
 
 
-
-            {{-- <divfset
-                class="grid [grid-template-columns:repeat(auto-fit,minmax(394px,1fr))] max-w-[1440px]  px-20 mt-10 gap-12 place-content-center justify-center"> --}}
-
-            {{-- <div class="grid grid-cols-3 px-20 mt-10 gap-12 place-content-center justify-center"> --}}
             <div class=" bg-casa-black flex  border rounded-full  w-2xl  mx-auto justify-between pl-3 pr-1 py-0.5 items-center mt-5 border-casa-black col-span-3"
                 wire:show="filtered">
 
@@ -46,30 +44,15 @@
 
             </div>
 
+
             <div class="flex flex-wrap x-20 mt-10 gap-12 place-content-center justify-center max-w-[1440px]">
-
-
-
-
-
-
-                {{-- @if (isset($lotes) && count($lotes)) --}}
-                {{-- @if (isset($lotes) && count($lotes)) --}}
-                {{-- @foreach ($lotes as $lote) --}}
-
 
                 @forelse ($lotes as $lote)
                     <div
                         class=" bg-casa-base-2 bas flex flex-col p-6 gap-y-1 border border-casa-black w-[394px]  min-w-[300px]">
 
                         <div class="flex justify-between items-center">
-                            <p class="font-bold text-3xl w-full  mr-3">{{ $lote['titulo'] }}</p>
-
-                            @if ($lote['tienePujas'])
-                                <x-hammer />
-                            @else
-                                <x-hammer-fix />
-                            @endif
+                            <p class="font-bold text-3xl w-full   mr-3">{{ $lote['titulo'] }}</p>
                             {{-- <x-hammer /> --}}
                         </div>
 
@@ -95,16 +78,20 @@
 
 
 
-
-
-                        <a href="{{ route('lotes.show', $lote['id']) }}"
-                            class="hover:text-casa-black bg-casa-black text-gray-50  hover:bg-casa-base  border border-black rounded-full px-4 flex items-center justify-between  py-2  w-full  text-xl font-bold mb-2 ">
-                            Ver detalle
-                            <svg class="size-8 ">
-                                <use xlink:href="#arrow-right"></use>
-                            </svg>
-                        </a>
-
+                        @if ($lote['estado_lote'] == 'vendido')
+                            <a
+                                class=" bg-red-800 text-gray-50   border border-black rounded-full px-4 flex  justify-center  py-2  w-full  text-xl font-bold mb-2 ">
+                                VENDIDO
+                            </a>
+                        @else
+                            <a href="{{ route('lotes.show', $lote['id']) }}"
+                                class="hover:text-casa-black bg-casa-black text-gray-50  hover:bg-casa-base  border border-black rounded-full px-4 flex items-center justify-between  py-2  w-full  text-xl font-bold mb-2 ">
+                                Ver detalle
+                                <svg class="size-8 ">
+                                    <use xlink:href="#arrow-right"></use>
+                                </svg>
+                            </a>
+                        @endif
 
 
 
@@ -119,8 +106,6 @@
                         <p>¡Sin lotes en esta subasta!</p>
                     </div>
                 @endforelse
-                {{-- @else --}}
-                {{-- @endif --}}
 
             </div>
         @else

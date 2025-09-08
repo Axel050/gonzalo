@@ -7,7 +7,6 @@
     {{-- @dump(config('services.mercadopago.host') . '/success') --}}
 
 
-    <x-counter-header />
 
 
     {{--  --}}
@@ -37,13 +36,42 @@
                             stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
                     </svg></button>
 
-                <figure class="bg-range-200 w-150">
 
-                    <img :src="records[currentIndex].image"
-                        class="size-111  object-contain transition-all duration-500 ease-in-out b-blue-300 mx-auto"
-                        x-transition:enter="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
-                        x-transition:leave="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90">
+
+
+                <figure class="bg-oange-200 w-150 flex justify-center items-center relative">
+                    <!-- Contenedor con el tamaño exacto de la imagen -->
+                    {{-- <div class="relative group size-111" wire:click="$set('modal_foto',records[currentIndex].image )"> --}}
+                    <div class="relative group size-111"
+                        x-on:click="
+        @this.set('modal_index', currentIndex);
+        @this.set('modal_foto', records[currentIndex].image);
+     ">
+                        <!-- Imagen -->
+                        <img :src="records[currentIndex].image"
+                            class="size-111 object-contain transition-all duration-500 ease-in-out mx-auto cursor-pointer"
+                            x-transition:enter="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90">
+
+                        <!-- Capa de superposición: solo aparece al hacer hover SOBRE la imagen -->
+                        <span
+                            class="absolute inset-0 bg-gray-800/60 text-casa-base-2 text-4xl font-bold 
+             flex justify-center items-center 
+             opacity-0 group-hover:opacity-100 transition-opacity duration-900
+             pointer-events-none cursor-pointer ">
+                            Agrandar
+                        </span>
+                    </div>
                 </figure>
+
+                @if ($modal_foto)
+                    {{-- <div class="min-h-screen min-w-screen  absolute inset-0"> --}}
+                    {{-- <x-modal-foto-detalle :img="$modal_foto" /> --}}
+                    <x-modal-foto-detalle :records="$records" :current-index="$modal_index" />
+                    {{-- </div> --}}
+                @endif
+
+
 
                 <button @click="next"
                     class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bgwhite/70 rounded-full px-2 py-1 hover:scale-105">
@@ -77,8 +105,15 @@
             <h2 class="font-helvetica font-bold text-[30px] leading-[1.4] tracking-normal  flex justify-between pr-2">
                 {{ ucfirst($lote->titulo) }}
                 <span>
-                    <x-hammer />
+                    @if ($lote->estado == 'en_subasta')
 
+                        @if ($lote->pujas()->exists())
+                            <x-hammer />
+                        @else
+                            <x-hammer-fix />
+                        @endif
+
+                    @endif
                 </span>
 
             </h2>
@@ -86,7 +121,25 @@
                 class="flex space-x-2 [&>li]:rounded-2xl [&>li]:border [&>li]:px-3 [&>li]:py-1.5 [&>li]:border-gray-600 [&>li]:text-sm my-2">
                 <li>{{ $lote->tipo?->nombre }}</li>
                 <li>Lote: {{ $lote->id }}</li>
-                <li>Subasta: objetos</li>
+
+
+                @php
+                    $route = match ($lote->estado) {
+                        'en_subasta' => 'subasta.lotes',
+                        'asignado' => 'subasta-proximas.lotes',
+                        default => 'subasta-pasadas.lotes',
+                    };
+                    // $route = match ($lote->estado) {
+                    //     'en_subasta' => route('subasta.lotes', $subasta->id),
+                    //     'asignado' => route('subasta-proximas.lotes', $subasta->id),
+                    //     default => route('subasta-pasadas.lotes', $subasta->id),
+                    // };
+                @endphp
+
+                <li>
+                    <a href="{{ route($route, $subasta->id) }}">Subasta: {{ $subasta->titulo }}</a>
+                </li>
+
 
             </ul>
 
@@ -143,8 +196,11 @@
             </ul>
 
             <p><span class="font-semibold mr-1 ">Base: </span> {{ $moneda }}{{ (int) $base }}</p>
-            <p class="font-bold mb-3"> <span class="mr-1">Oferta actual: </span>
-                {{ $moneda }}{{ (int) $ultimaOferta }}</p>
+
+            @if ($lote->estado == 'en_subasta')
+                <p class="font-bold mb-3"> <span class="mr-1">Oferta actual: </span>
+                    {{ $moneda }}{{ (int) $ultimaOferta }}</p>
+            @endif
 
             {{-- <audio controls controlsList="nodownload nofullscreen"  --}}
             @if ($url)
@@ -159,30 +215,65 @@
 
 
             @endif
+            {{-- @dump($lote->estado) --}}
+
+
 
 
             @role('adquirente')
                 <div class="flex  flex-col  relative pb-4">
-                    @if (auth()->user()?->adquirente?->estado_id == 1 ||
-                            auth()->user()?->adquirente?->garantia($lote->ultimoContrato?->subasta_id))
-                        <button
-                            class="bg-casa-black hover:bg-casa-black-h text-gray-50 rounded-full px-4 flex items-center justify-between gap-x-5 py-1 max-w-90 mt-4"
-                            wire:click="addCarrito">
-                            Ofertar
-                            <svg fill="#fff" class="size-8 ">
-                                <use xlink:href="#arrow-right"></use>
-                            </svg>
-                        </button>
-                    @else
+                    @if ($lote->estado == 'en_subasta')
+
+
+                        @if (auth()->user()?->adquirente?->estado_id == 1 ||
+                                auth()->user()?->adquirente?->garantia($lote->ultimoContrato?->subasta_id))
+                            @if (!$inCart)
+                                <button
+                                    class="bg-casa-black hover:bg-casa-base-2 text-casa-base hover:text-casa-black border border-casa-black rounded-full px-4 flex items-center justify-between gap-x-5 py-1 max-w-90 mt-4"
+                                    wire:click="addCarrito">
+                                    Agregar al carrito
+                                    <svg fill="#fff" class="size-8 ">
+                                        <use xlink:href="#arrow-right"></use>
+                                    </svg>
+                                </button>
+                            @else
+                                <a href="{{ route('pre-carrito') }}"
+                                    class="bg-casa-fondo hover:bg-casa-black hover:text-casa-base  text-casa-black border  border-casa-black rounded-full px-4 flex items-center justify-between gap-x-5 py-1 max-w-90 mt-4"
+                                    wire:click="addCarrito">
+                                    Agregado a tu carrito
+                                    <svg fill="#fff" class="size-8 ">
+                                        <use xlink:href="#arrow-right"></use>
+                                    </svg>
+                                </a>
+                            @endif
+                            <x-input-error for="puja" class="absolute -bottom-1 text-red-800  text-lg" />
+                            @if (session('message'))
+                                <div class="text-green-600 text-lg ">
+                                    {{ session('message') }}
+                                </div>
+                            @endif
+                        @else
+                            <button
+                                class="bg-casa-black hover:bg-casa-black-h text-gray-50 rounded-full px-4 flex items-center justify-between gap-x-5 py-1 max-w-90 mt-4">
+                                Registrate para ofertar
+                                <svg fill="#fff" class="size-8 ">
+                                    <use xlink:href="#arrow-right"></use>
+                                </svg>
+                            </button>
+                        @endif
+                    @elseif ($lote->estado != 'en_subasta' && $subasta->estado == 'finalizada')
                         <button
                             class="bg-casa-black hover:bg-casa-black-h text-gray-50 rounded-full px-4 flex items-center justify-between gap-x-5 py-1 max-w-90 mt-4">
-                            Registrate para ofertar
+                            Consultar
                             <svg fill="#fff" class="size-8 ">
                                 <use xlink:href="#arrow-right"></use>
                             </svg>
                         </button>
                     @endif
+
+
                 @endrole
+
             </div>
 
     </article>
@@ -191,141 +282,32 @@
 
 
 
+    {{-- $route --}}
+    <div class="mt-10">
 
-    <div class="w-5/6">
+        @livewire('buscador', ['subasta_id' => $subasta->id, 'route' => $route])
+
+        {{-- <x-buscador /> --}}
+
+    </div>
+
+    {{-- <div class="w-5/6">
 
         <x-buscador />
-    </div>
-
-    {{-- CARRUSEL --}} <div class="swiper2 bg-green-800 my-10 p-4 w-[90vw] hidden ">
-        <!-- Additional required wrapper -->
-        <div class="swiper2-wrapper bg-orange-400 p-2 w-200">
-            <!-- Slides -->
-            <div class="swiper2-slide bg-red-500 px-20 size-40">Slide 1</div>
-            <div class="swiper2-slide bg-blue-300 px-20 size-40">Slide 2</div>
-            <div class="swiper2-slide bg-yellow-300 px-20 size-40">Slide 3</div>
-            <div class="swiper2-slide bg-purple-300 px-20 size-40">Slide 4</div>
-            ...
-        </div>
-        <!-- If we need pagination -->
-        <div class="swiper2-pagination"></div>
-
-        <!-- If we need navigation buttons -->
-        <div class="swiper2-button-prev"></div>
-        <div class="swiper2-button-next"></div>
-
-        <!-- If we need scrollbar -->
-        <div class="swiper2-scrollbar"></div>
-    </div>
-
-
-
-    <div class="swiper hiden w-[90vw] px-20 mt-10">
-        <div class="swiper-wrapper">
-            {{-- <article class="flex  w-full px-12 gap-6 mt-18"> --}}
-
-
-            @for ($i = 0; $i < 5; $i++)
-                <div class="w-200 bg-casa-base-2 flex flex-col px-4 py-8 gap-y-4 border border-casa-black swiper-slide">
-
-                    <div class="flex gap-x-4">
-
-                        <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote->foto1) }}"
-                            class="size-36 obje " />
-
-
-                        <div class="flex flex-col bg-purple grow">
-
-                            <div class="flex items-center  mb-3">
-                                <p class="font-semibold text-xl w-full  ">Nombre de lote {{ $i }}</p>
-                                <x-hammer />
-                            </div>
-
-                            <p class="text-xl">Base: $1000</p>
-                            <p class="text-xl font-semibold">Oferta actual: $12.000</p>
-                        </div>
-                    </div>
-
-                    <div class="flex w-full g-green-300 justify-center px-8 items-center mt-4">
-                        <span
-                            class="text-4xl border rounded-full size-8 flex items-center pt-0 leading-0 p-2 justify-center border-gray-900">
-                            +
-                        </span>
-                        <button
-                            class="bg-casa-black hover:bg-casa-black-h text-gray-50 rounded-full px-4 flex items-center justify-between gap-x-5 py-1  w-full ml-4">
-                            Agregar al carrito
-                            <svg class="size-8 ">
-                                <use xlink:href="#arrow-right"></use>
-                            </svg>
-                        </button>
-                    </div>
-
-                </div>
-            @endfor
-
-
-            {{-- </article> --}}
-
-        </div>
-    </div>
+    </div> --}}
 
 
 
 
-    {{-- SUBSATAS ABIERTAS  --}}
 
 
-    <section class="flex flex-col mt-20">
-        <h2 class="text-center text-3xl font-bold ">subastas abiertas</h2>
-
-        <div class="swiper hiden w-[90vw] px-20 mt-10">
+    @livewire('destacados', ['subasta_id' => $subasta->id, 'route' => $route])
 
 
-            <div class="swiper-wrapper">
-                {{-- <article class="flex  w-full px-12 gap-6 mt-18"> --}}
-
-
-                @for ($i = 0; $i < 3; $i++)
-                    <div
-                        class="w-200 bg-casa-fndo-h flex flex-col px-4 py-8 gap-y-4 border border-casa-black swiper-slide">
-
-                        <div class="flex gap-x-4">
+    @livewire('subastas-abiertas')
 
 
 
-
-                            <div class="flex flex-col bg-purple grow">
-
-                                <div class="flex items-center  mb-3">
-                                    <p class="font-semibold text-3xl   w-full font-librecaslon ">Objetos
-                                        {{ $i }}</p>
-                                    <svg class="size-8 text-black">
-                                        <use xlink:href="#arrow-right"></use>
-                                    </svg>
-
-                                </div>
-
-                                <p class="text-xl">Abierta hasta el </p>
-                                <p class="text-xl font-bold">22 AGO | 21hs </p>
-
-                                <p class="text-xl mt-2">Lorem ipsum dolor sit amet consectetur. Vehicula adipiscing
-                                    pellentesque volutpat dui rhoncus neque urna. Sem et praesent gravida tortor proin
-                                    massa iaculis. </p>
-
-                            </div>
-                        </div>
-
-
-
-                    </div>
-                @endfor
-
-
-                {{-- </article> --}}
-
-            </div>
-        </div>
-    </section>
 
 
 
@@ -351,14 +333,6 @@
     {{--  --}}
     <article class="bg-cyan-950/35 rounded-2xl p-5 hidden lex lg:flex-row flex-col gap-x-2 relative mt-32">
 
-        <div class="bg-cyn-800 flex items-center justify-center bg-geen-100 p-1">
-            <figure class="lg:min-h-72  min-h-52 ">
-                <img class="lg:max-h-72 max-h-52 w-auto mx-auto "
-                    src="{{ Storage::url('imagenes/lotes/normal/' . $lote->foto1) }}" />
-
-            </figure>
-
-        </div>
 
 
 
@@ -368,28 +342,16 @@
 
 
 
-
-            <h1 class="lg:text-4xl text-2xl text-white mx-auto font-bold"> {{ $lote->titulo }} </h1>
-
-            <p class="text-gray-100 mt-4 text-lg">Lote : <b>{{ $id }}</b></p>
-            <p class="text-gray-100 mt-4 text-lg">Subasta : <b>{{ $lote->ultimoContrato?->subasta_id }}</b></p>
-            <p class="text-gray-100 mt-4 text-lg">Precio base : <b>{{ (int) $base }}</b></p>
-            <p class="text-gray-100 mt-2 text-lg">Precio actual : <b> {{ (int) $ultimaOferta }}</b></p>
-            {{-- <p class="text-gray-100 mt-2 text-lg">TIEMPO: <b> {{ $lote->ultimoConLote?->tiempo_post_subasta_fin }}</b> --}}
-            </p>
-
-
-
             @role('adquirente')
                 <div class="flex  flex-col  relative pb-4">
                     @if (auth()->user()?->adquirente?->estado_id == 1 ||
                             auth()->user()?->adquirente?->garantia($lote->ultimoContrato?->subasta_id))
                         {{-- @if ($own || $pujado)
-            <button
-                class="bg-green-400 px-4 py-2 rounded-2xl mx-auto text-white mt-8 font-bold text-xl cursor-not-allowed">
-                Tu oferta es la ultima
-            </button>
-        @else --}}
+                        <button
+                            class="bg-green-400 px-4 py-2 rounded-2xl mx-auto text-white mt-8 font-bold text-xl cursor-not-allowed">
+                            Tu oferta es la ultima
+                        </button>
+                    @else --}}
                         <button
                             class="bg-green-500 px-4 py-2 rounded-2xl mx-auto text-white mt-8 font-bold text-xl hover:bg-green-700"
                             {{-- wire:click.debounce.500ms="registrarPuja(1,500)" wire:loading.attr="disabled"
@@ -400,6 +362,10 @@
                             <span wire:click="addCarrito">Agregar al carrito para Pujar</span>
                             {{-- <span wire:loading wire:target="registrarPuja">Procesando...</span> --}}
                         </button>
+                        <div class="flex bg-red-300">
+
+                            <x-input-error for="puja" class="absolute bottom-0 text-red-600 " />
+                        </div>
                         {{-- @endif --}}
                     @else
                         <button wire:click="$set('method', 'noHabilitado')"
@@ -423,10 +389,10 @@
             @endrole
 
             {{-- @if (auth()->user()?->adquirente?->garantia(9))
-      <button
-          class="bg-green-300 px-4 py-2 rounded-2xl mx-auto text-white mt-8 font-bold text-xl hover:bg-green-500">
-          Pujar G</button>
-  @endif --}}
+                    <button
+                        class="bg-green-300 px-4 py-2 rounded-2xl mx-auto text-white mt-8 font-bold text-xl hover:bg-green-500">
+                        Pujar G</button>
+                @endif --}}
 
         </div>
 
@@ -455,6 +421,25 @@
         @endif
 
     </article>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
