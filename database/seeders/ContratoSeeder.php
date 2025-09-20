@@ -4,30 +4,33 @@ namespace Database\Seeders;
 
 use App\Models\Comitente;
 use App\Models\Contrato;
-use App\Models\Lote;
 use App\Models\Subasta;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class ContratoSeeder extends Seeder
 {
-  /**
-   * Run the database seeds.
-   */
   public function run(): void
   {
+    $subastas = Subasta::all();
     $comitentes = Comitente::take(5)->get();
 
+    foreach ($subastas as $subasta) {
+      foreach ($comitentes as $comitente) {
+        // Verificar si ya existe contrato para este comitente y subasta
+        $contratoExistente = Contrato::where('subasta_id', $subasta->id)
+          ->where('comitente_id', $comitente->id)
+          ->first();
 
-    for ($i = 0; $i < 5; $i++) {
-      Contrato::create([
-        'archivo_path' => 'contratos/contrato_' . ($i + 1) . '.pdf',
-        'fecha_firma' => now()->subDays(rand(1, 30)),
-        'comitente_id' => $comitentes->random()->id,
-        'subasta_id' => Subasta::inRandomOrder()->first()->id,
-        'descripcion' => "Descripcion test - " . $comitentes->random()->id,
-        // 'lote_id' => $lotes->random()->id, 
-      ]);
+        if (!$contratoExistente) {
+          Contrato::create([
+            'archivo_path'   => 'contratos/' . $subasta->titulo . '_' . $comitente->id . '.pdf',
+            'fecha_firma'    => now()->subDays(rand(1, 30)),
+            'comitente_id'   => $comitente->id,
+            'subasta_id'     => $subasta->id,
+            'descripcion'    => "Contrato para la subasta: " . $subasta->titulo,
+          ]);
+        }
+      }
     }
   }
 }

@@ -16,7 +16,7 @@ class PujaService
 {
 
 
-  public function registrarPuja(int $adquirenteId, int $loteId, int $monto): array
+  public function registrarPuja(int $adquirenteId, int $loteId, int $monto, int $ultimoMontoVisto): array
   {
     info("registrar PUJA SERVICE");
 
@@ -95,12 +95,18 @@ class PujaService
     if ($lote->getPujaFinal()?->adquirente_id == $adquirenteId) {
       throw new DomainException('Tu oferta es la última');
     }
-    // info(" PUJA SERVICE ULTIMO MONTO");
 
     $ultimoMonto = Puja::where('lote_id', $lote->id)
       ->where('subasta_id', $subasta->id)
       ->orderByDesc('id')
       ->value('monto') ?? 0;
+
+    info([" PUJA SERVICE ULTIMO MONTO" => $ultimoMonto]);
+    info([" PUJA SERVICE ULTIMO MONTO visto" => $ultimoMontoVisto]);
+
+    if ($ultimoMonto !== $ultimoMontoVisto) {
+      throw new DomainException('El monto ha cambiado');
+    }
 
     $montoFinal = $ultimoMonto + $monto;
 

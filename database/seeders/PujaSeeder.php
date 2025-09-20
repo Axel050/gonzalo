@@ -8,6 +8,7 @@ use App\Models\Puja;
 use App\Models\Subasta;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class PujaSeeder extends Seeder
 {
@@ -16,62 +17,56 @@ class PujaSeeder extends Seeder
    */
   public function run()
   {
-    info("RUNNNNNNNNN");
+
+    DB::table('pujas')->truncate();
+
+
     $lotes = Lote::whereIn('estado', ['vendido', 'en_subasta'])
       ->whereNotNull('ultimo_contrato')
-      // ->with(['ultimoConLote.contrato.subasta']) // Cargar la relación ultimoConLote, su contrato y subast
       ->get();
 
-    info(["seedeeeree" => $lotes->toArray()]);
-    info("FORRRRR");
     foreach ($lotes as $lote) {
-      info("FORRRRRIMNNNNNN");
       // Obtener el subasta_id desde el ultimo_contrato
-
-      $l = Lote::find(4);
-
-      info([
-        "casi lote ids" => $lotes->pluck("id"),
-        "casi lote 111" => $l->ultimoConLote,
-        "casi lote 222" => $l->ultimoConLote->contrato->subasta_id,
-      ]);
-
-      // $subasta_id = $lote->ultimoConLote->contrato->subasta_id ?? null;
       $subasta_id = $lote->ultimoConLote?->contrato?->subasta_id;
 
-      info(
-        [
-          "casi lote id" => $lote->id,
-          "casi ote->ultimo_contrato," => $lote->ultimo_contrato,
-          "casi ote->ultimoConLote" => $lote->ultimoConLote,
-          "casi lote SUBASTA ID  " => $subasta_id,
-        ]
-      );
-
-
-      info("zzzzz");
       if (!$subasta_id) {
         continue; // Saltar si no hay subasta asociada
       }
 
-      // Obtener adquirentes aleatorios
-      $adquirentes = Adquirente::inRandomOrder()->take(rand(2, 5))->get(); // 2 a 5 adquirentes por lote
+      // Determinar si el lote debe tener pujas según su estado
+      $crearPujas = false;
+      if ($lote->estado === 'vendido') {
+        $crearPujas = true; // Siempre crear pujas para lotes vendidos
+      } elseif ($lote->estado === 'en_subasta') {
+        // Solo algunos lotes en_subasta tendrán pujas (por ejemplo, 50% de probabilidad)
+        $crearPujas = rand(0, 1) === 1;
+      }
 
-      // Establecer un monto base inicial
-      $monto_base = $lote->ultimoConLote->precio_base ?? rand(100, 1000); // Usar precio_base o un valor aleatorio
+      if ($crearPujas) {
+        // Obtener adquirentes aleatorios
+        $numAdquirentes = ($lote->estado === 'vendido') ? rand(1, 5) : rand(0, 5); // Vendido: 1-5, en_subasta: 0-5
+        $adquirentes = Adquirente::inRandomOrder()->take($numAdquirentes)->get();
 
-      info("aaaaaaaaaaaxxxxxxxxxxxxxxxxxxxa");
-      foreach ($adquirentes as $index => $adquirente) {
-        // Incrementar el monto en cada puja (por ejemplo, 10% más cada vez)
-        $monto = $monto_base * (1 + ($index * 0.1));
-        info("aaaaaaaaaaaaaaaaaaaaa");
-        Puja::create([
-          'lote_id' => $lote->id,
-          'adquirente_id' => $adquirente->id,
-          'subasta_id' => $subasta_id,
-          'monto' => round($monto, 2),
-          'created_at' => now()->addSeconds($index * 10), // Simular pujas en diferentes momentos
-        ]);
+        // Si es vendido y no hay adquirentes, forzar al menos uno
+        if ($lote->estado === 'vendido' && $adquirentes->isEmpty()) {
+          $adquirentes = Adquirente::inRandomOrder()->take(1)->get();
+        }
+
+        // Establecer un monto base inicial
+        $monto_base = $lote->ultimoConLote->precio_base ?? rand(100, 1000);
+
+        foreach ($adquirentes as $index => $adquirente) {
+          // Incrementar el monto en cada puja (por ejemplo, 10% más cada vez)
+          $monto = $monto_base * (1 + ($index * 0.1));
+
+          Puja::create([
+            'lote_id' => $lote->id,
+            'adquirente_id' => $adquirente->id,
+            'subasta_id' => $subasta_id,
+            'monto' => round($monto, 2),
+            'created_at' => now()->addSeconds($index * 10), // Simular pujas en diferentes momentos
+          ]);
+        }
       }
     }
   }

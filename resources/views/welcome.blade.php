@@ -5,16 +5,20 @@
 
 
 
-        <svg class="w-[701px] h-42  mt-20">
+        <svg class="w-[701px] h-42  mt-20 lg:block  hidden">
             <use xlink:href="#real"></use>
         </svg>
 
-        <h2 class="text-3xl font-bold mt-15">Cada objeto tiene una historia.</h2>
-        <h3 class="text-3xl font-bold">Encontra la tuya.</h3>
+        <svg class="w-[273px] h-35  mt-20 lg:hidden block">
+            <use xlink:href="#real-mb"></use>
+        </svg>
+
+        <h2 class="lg:text-3xl text-lg  font-bold mt-15">Cada objeto tiene una historia.</h2>
+        <h3 class="lg:text-3xl text-lg  font-bold">Encontra la tuya.</h3>
 
         @livewire('subastas-abiertas')
 
-        <div class="mt-0 bg-red-00 w-4/5">
+        <div class="mt-0 lg:w-4/5 w-full">
             @livewire('buscador', ['todas' => true, 'from' => 'home'])
         </div>
 
@@ -26,21 +30,22 @@
 
 
         @if (count($subastasProx))
-            <div class="flex flex-col   w-full items-center lg:p-24 brder-1 border-accent mt-  b-purple-500">
-                <p class="text-3xl font-bold ">próximas subastas</p>
+            <div class="flex flex-col   w-full items-center lg:p-24 lg:mt-0 mt-10  ">
+                <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4 mb-4 lg:mb-8">próximas
+                    subastas
+                </p>
 
-                <div class="swiper-home-subastas hiden  x-20  w-full g-red-300  bg-ed-300 overflow-x-hidden">
+                <div class="swiper-home-subastas     w-full  lg:overflow-x-hidden lg:px-0 px-4">
 
-                    <div class="swiper-wrapper  bg-orange-00 ">
+                    <div class="swiper-wrapper  flex lg:flex-row flex-col">
                         @foreach ($subastasProx as $item)
                             <a href="{{ route('subasta-proximas.lotes', $item->id) }}"
-                                class="flex flex-col bg-casa-black text-casa-base-2 p-6 mt-8 swiper-slide">
+                                class="flex flex-col bg-casa-black text-casa-base-2 lg:p-6 p-4 mb-6 swiper-slide">
 
 
+                                <div class="flex justify-between items-center lg:mb-4 mb-2">
 
-                                <div class="flex justify-between items-center mb-4">
-
-                                    <p class="text-2xl  lg:text-[40px] font-librecaslon leading-[40px]">
+                                    <p class="text-[26px]  lg:text-[40px] font-librecaslon leading-[40px] ">
                                         {{ $item->titulo }}
                                     </p>
 
@@ -68,7 +73,7 @@
                                     <b></b>
                                 </p> --}}
 
-                                <div class="flex justify-between">
+                                <div class="flex justify-between lg:text-xl text-sm">
 
                                     <div class="flex flex-col mb-1.5">
                                         <p>Desde el</p>
@@ -86,14 +91,11 @@
 
                                 </div>
 
-
-
-                                <p class="text-xl">Lorem ipsum dolor sit amet consectetur. Vehicula adipiscing
+                                <p class="">Lorem ipsum dolor sit amet consectetur. Vehicula adipiscing
                                     pellentesque
                                     volutpat dui
                                     rhoncus neque
                                     urna. Sem et praesent gravida tortor proin massa iaculis. </p>
-
 
                             </a>
                         @endforeach
@@ -105,19 +107,21 @@
 
 
         @if (count($subastasFin))
-            <div class="flex flex-col   w-full items-center lg:p-24 brder-1 border-accent mt-  g-purple-500">
-                <p class="text-3xl font-bold ">subastas pasadas</p>
+            <div class="flex flex-col   w-full items-center lg:p-24 lg:pt-0 lg:mt-0 mt-10 ">
+                <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4 mb-4 lg:mb-8">subastas
+                    pasadas</p>
 
-                <div class="swiper-home-subastas hiden  x-20  w-full g-red-300  bg-ed-300 overflow-x-hidden">
+                <div class="swiper-home-subastas     w-full  lg:overflow-x-hidden lg:px-0 px-4">
 
-                    <div class="swiper-wrapper  bg-orange-00 ">
+                    <div class="swiper-wrapper  flex lg:flex-row flex-col">
+
                         @foreach ($subastasFin as $item)
                             <a href="{{ route('subasta-pasadas.lotes', $item->id) }}"
-                                class="flex flex-col bg-casa-black text-casa-base-2 p-6 mt-8 swiper-slide">
+                                class="flex flex-col bg-casa-base-2 text-casa-black p-6 mb-6 swiper-slide border border-casa-black/50">
 
 
 
-                                <div class="flex justify-between items-center mb-4">
+                                <div class="flex justify-between items-center lg:mb-4 mb-2">
 
                                     <p class="text-2xl  lg:text-[40px] font-librecaslon leading-[40px]">
                                         {{ $item->titulo }}
@@ -185,28 +189,36 @@
 
 
 
-        <div class="flex flex-col bg-casa-base-2 w-full items-center p-24 border-y-1 border-accent mt-8 ">
-            <svg class="w-120 h-30 ">
+        <div
+            class="flex flex-col bg-casa-base-2 w-full lg:items-center lg:px-24 lg:py-24 px-4 py-11   border-y-1 border-accent mt-8 ">
+
+            <svg class="w-120 h-30 lg:block hidden ">
                 <use xlink:href="#primera-vez"></use>
             </svg>
 
-            <p class="text-3xl font-bold mt-7">Así funciona: </p>
+            <h3 class="lg:hidden block text-[37px]  leading-[39px] font-sans ">
+                ¿Primera vez en una subasta?
+            </h3>
 
-            <p class="text-xl font-bold mt-7">Ingresá:</p>
-            <p class="text-xl  mt-1">Para poder ofertar necesitás abonar un seguro reembolsable.</p>
-            <p class="text-xl  ">Si no comprás, te lo devolvemos.</p>
+            <p class="lg:text-3xl text-lg font-bold lg:mt-7 mt-5">Así funciona: </p>
 
-            <p class="text-xl font-bold mt-7">Ofertá: </p>
-            <p class="text-xl  mt-1">Si al terminar la subasta nadie más ofrece, el producto es tuyo.</p>
-            <p class="text-xl  ">Si alguien más ofertó al final de la subasta, ténes 2 minutos más para pujar.
+            <p class="lg:text-xl text-sm font-bold lg:mt-7 mt-6">Ingresá:</p>
+            <p class="lg:text-xl text-sm  mt-1">Para poder ofertar necesitás abonar un seguro reembolsable.</p>
+            <p class="lg:text-xl text-sm  ">Si no comprás, te lo devolvemos.</p>
+
+            <p class="lg:text-xl text-sm font-bold lg:mt-7 mt-6">Ofertá: </p>
+            <p class="lg:text-xl text-smtext-xl  mt-1">Si al terminar la subasta nadie más ofrece, el producto es tuyo.
+            </p>
+            <p class="lg:text-xl text-smtext-xl  ">Si alguien más ofertó al final de la subasta, ténes 2 minutos más
+                para pujar.
             </p>
 
-            <p class="text-xl font-bold mt-7">No te muevas de tu casa: </p>
-            <p class="text-xl  mt-1">Todo es online: mirás, ofertás y pagás desde donde estés.</p>
-            <p class="text-xl  ">Si ganás, coordinamos la entrega con vos</p>
+            <p class="lg:text-xl text-sm font-bold lg:mt-7 mt-6">No te muevas de tu casa: </p>
+            <p class="lg:text-xl text-sm  mt-1">Todo es online: mirás, ofertás y pagás desde donde estés.</p>
+            <p class="lg:text-xl text-sm  ">Si ganás, coordinamos la entrega con vos</p>
 
-            <a href=""
-                class=" bg-casa-black rounded-4xl flex  items-center px-4 py-1 mx-auto text-casa-base mt-8 text-xl font-bold ">
+            <a href="{{ route('adquirentes.create') }}"
+                class=" bg-casa-black rounded-4xl flex  items-center px-4 py-1 mx-auto text-casa-base mt-8 lg:text-xl text-sm font-bold  lg:w-fit w-full lg:justify-center justify-between">
                 Registrarme
                 <svg fill="#fff" class="size-7  ml-6 shrink-0 self-start">
                     <use xlink:href="#arrow-right"></use>

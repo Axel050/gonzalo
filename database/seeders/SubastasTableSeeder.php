@@ -6,8 +6,10 @@ use App\Enums\SubastaEstados;
 use Faker\Factory;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Arr;
+use Illuminate\Support\Arr;;
+
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 
 class SubastasTableSeeder extends Seeder
 {
@@ -16,22 +18,113 @@ class SubastasTableSeeder extends Seeder
    */
   public function run(): void
   {
-    $faker = Factory::create();
 
-    foreach (range(1, 6) as $index) {
-      DB::table('subastas')->insert([
-        // 'numero_subasta' => $index,
-        'titulo' => $faker->sentence(3),
-        'descripcion' => $faker->sentence(10),
-        'comision' => $faker->randomFloat(2, 10, 25),
-        'fecha_inicio' => $faker->dateTimeBetween('-1 months', 'now'),
-        'fecha_fin' => $faker->dateTimeBetween('now', '+1 months'),
-        'tiempo_post_subasta' => $faker->numberBetween(1, 24),
-        'estado' => Arr::random(SubastaEstados::all()),
-        'garantia' => $faker->numberBetween(100, 2000),
-        'created_at' => now(),
-        'updated_at' => now()
-      ]);
+
+    try {
+      $subastas = [
+        [
+          'titulo' => 'Cuadros',
+          'descripcion' => 'A curated set of 19th-century oak furniture, including a dining table and chairs.',
+          'comision' => 15,
+          'fecha_inicio' => '2025-06-15 10:00:00',
+          'fecha_fin' => '2025-07-15 18:00:00',
+          'tiempo_post_subasta' => 2,
+          'estado' => 'finalizada',
+          'garantia' => 500,
+          'created_at' => Carbon::now(),
+          'updated_at' => Carbon::now(),
+        ],
+        [
+          'titulo' => 'Relojes',
+          'descripcion' => 'A rare 1970s Rolex Submariner in excellent condition with original box.',
+          'comision' => 20,
+          'fecha_inicio' => '2025-06-20 09:00:00',
+          'fecha_fin' => '2025-08-20 20:00:00',
+          'tiempo_post_subasta' => 2,
+          'estado' => 'finalizada',
+          'garantia' => 1000,
+          'created_at' => Carbon::now(),
+          'updated_at' => Carbon::now(),
+        ],
+        [
+          'titulo' => 'Varios',
+          'descripcion' => 'Abstract acrylic painting by a rising contemporary artist, vibrant colors.',
+          'comision' => 15,
+          'fecha_inicio' => '2025-08-01 14:00:00',
+          'fecha_fin' => '2025-09-01 16:00:00',
+          'tiempo_post_subasta' => 2,
+          'estado' => 'finalizada',
+          'garantia' => 300,
+          'created_at' => Carbon::now(),
+          'updated_at' => Carbon::now(),
+        ],
+        [
+          'titulo' => 'Cuadros 2',
+          'descripcion' => 'Fully restored 1965 Ford Mustang, red with white interior, low mileage.',
+          'comision' => 20,
+          'fecha_inicio' => '2025-08-25 12:00:00',
+          'fecha_fin' => '2025-09-25 12:00:00',
+          'tiempo_post_subasta' => 3,
+          'estado' => 'activa',
+          'garantia' => 1500,
+          'created_at' => Carbon::now(),
+          'updated_at' => Carbon::now(),
+        ],
+        [
+          'titulo' => 'Muebles',
+          'descripcion' => 'Set of 50 rare coins from the 18th and 19th centuries, certified authentic.',
+          'comision' => 20,
+          'fecha_inicio' => '2025-08-05 08:00:00',
+          'fecha_fin' => '2025-10-05 17:00:00',
+          'tiempo_post_subasta' => 2,
+          'estado' => 'activa',
+          'garantia' => 800,
+          'created_at' => Carbon::now(),
+          'updated_at' => Carbon::now(),
+        ],
+        [
+          'titulo' => 'Vinos',
+          'descripcion' => 'Collection of 12 bottles of aged Bordeaux wines from top vineyards.',
+          'comision' => 20,
+          'fecha_inicio' => '2025-09-10 11:00:00',
+          'fecha_fin' => '2025-09-19 19:00:00',
+          'tiempo_post_subasta' => 2,
+          'estado' => 'inactiva',
+          'garantia' => 600,
+          'created_at' => Carbon::now(),
+          'updated_at' => Carbon::now(),
+        ],
+        [
+          'titulo' => 'Discos',
+          'descripcion' => 'First edition of a classic novel, signed by the author, in pristine condition.',
+          'comision' => 20,
+          'fecha_inicio' => '2025-10-03 15:00:00',
+          'fecha_fin' => '2025-10-12 15:00:00',
+          'tiempo_post_subasta' => 2,
+          'estado' => 'inactiva',
+          'garantia' => 200,
+          'created_at' => Carbon::now(),
+          'updated_at' => Carbon::now(),
+        ],
+        [
+          'titulo' => 'Esculturas',
+          'descripcion' => 'Gold and diamond necklace with matching earrings, crafted by a renowned designer.',
+          'comision' => 19,
+          'fecha_inicio' => '2025-08-30 13:00:00',
+          'fecha_fin' => '2025-09-30 21:00:00',
+          'tiempo_post_subasta' => 2,
+          'estado' => 'activa',
+          'garantia' => 1200,
+          'created_at' => Carbon::now(),
+          'updated_at' => Carbon::now(),
+        ],
+      ];
+
+      DB::table('subastas')->insert($subastas);
+
+      echo "8 subastas creadas exitosamente en la tabla 'subastas'.";
+    } catch (\Exception $e) {
+      echo "Error al crear las subastas: " . $e->getMessage();
     }
   }
 }

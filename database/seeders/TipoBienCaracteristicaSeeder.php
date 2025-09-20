@@ -19,11 +19,11 @@ class TipoBienCaracteristicaSeeder extends Seeder
 
     // Relacionar tipos de bien con características
     $relaciones = [
-      'Pintura' => ['Título', 'Autor', 'Técnica', 'Medidas', 'Estado', 'Firma'],
-      'Escultura' => ['Título', 'Artista', 'Material', 'Medidas', 'Peso', 'Época'],
-      'Libro' => ['Título', 'Autor', 'Editorial', 'Año de publicación', 'ISBN'],
-      'Objeto' => ['Título', 'Descripción', 'Época', 'Estado', 'Firma'],
-      'Vinilo' => ['Audio']
+      'Pintura' => ['Autor', 'Técnica', 'Medidas', 'Estado', 'Firma'],
+      'Escultura' => ['Artista', 'Material', 'Medidas', 'Peso', 'Época'],
+      'Libro' => ['Autor', 'Editorial', 'Año de publicación', 'ISBN'],
+      'Objeto' => ['Descripción', 'Época', 'Estado', 'Firma'],
+      'Vinilo' => ['Audio', 'Artista']
     ];
 
     foreach ($relaciones as $tipoBienNombre => $caracteristicas) {

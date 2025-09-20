@@ -2,7 +2,7 @@
     @click.outside="open = false" x :class="{ ' block idden lock transition-all duration-1000': !openSide }">
 
 
-    <div class="flex   justify-start items-center py-0.5 pl-2 borde rounded-2xl   hover:bg-casa-fondo-h"
+    <div class="flex   justify-start items-center py-0.5 pl-2 borde rounded-sm   hover:bg-casa-fondo-h"
         :class="{ 'bg-casa-fondo-h rounded-b-none border border-gray-600 border-b-0': open }">
 
         <span class="ml-2 mr-2    truncate text-sm lg:text-base text-gray-800 ">
@@ -16,19 +16,20 @@
     </div>
 
 
-    <div class="flex flex-col  absolute botton-1.5 right-0   wfull  text-gray-500 pl-2 gap-y-1 pr-2 rounded-lg rounded-tr-none border border-gray-500 bg-casa-fondo-h"
-        x-show="open" x-transition:enter="transition ease-out duration-300"
-        x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100"
-        x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100"
-        x-transition:leave-end="transform opacity-0 scale-95">
+    <div class="flex flex-col  absolute botton-1.5 right-0     text-gray-500 px-4 gap-y-1  rounded-sm rounded-tr-none border border-gray-500 bg-casa-fondo-h transition-all duration-1000 ease-in-out "
+        x-show="open" {{-- transition:enter.duration.500ms x-transition:leave.duration.400ms --}}>
 
-        <div class="border-l-2 ml-1 my-2 px-1 border-gray-400 w-full flex flex-col">
-            <p class="font-medium text-sm text-gray-600 p-1  truncte ">{{ Auth::user()->email }}</p>
+        <div class=" my-2 px-1 border-gray-400 w-full flex flex-col ">
+            <p class="font-medium text-sm text-gray-600 p-1  truncte mb-2 ">{{ Auth::user()->email }}</p>
 
+            <a href="{{ route('adquirentes.perfil') }}"
+                class="ilex items-center   hover:text-gray-200 hover:font-bold  hover:bg-casa-black  mb-2 text-gray-800 mt-1 rounded-full px-4 py-1 border border-casa-black">
+                Perfil
+            </a>
 
             @role(['admin', 'super-admin'])
                 <a href="{{ url('/dashboard') }}"
-                    class="ilex items-center p-1  hover:text-gray-200 hover:font-bold  hover:bg-casa-black rounded-lg mb-2 text-gray-800 mt-1">
+                    class="ilex items-center   hover:text-gray-200 hover:font-bold  hover:bg-casa-black  mb-2 text-gray-800 mt-1 rounded-full px-4 py-1 border border-casa-black">
                     Dashboard
                 </a>
             @endrole
@@ -41,13 +42,13 @@
                 @csrf
 
                 <a href="{{ route('logout') }}"
-                    class="flex items-center p-1  hover:text-gray-200 hover:font-bold  hover:bg-casa-black rounded-lg mb-2 text-gray-800"
+                    class="flex items-center p-1   hover:bg-casa-base-2  mb-2 text-casa-base hover:text-casa-black border border-casa-black px-4 py-1 rounded-full bg-casa-black text-nowrap"
                     @click.prevent="$root.submit();">
 
                     <svg fill="currentColor" class="size-7 ">
                         <use xlink:href="#exit"></use>
                     </svg>
-                    Salir
+                    Cerrar sesión
                 </a>
             </form>
         </div>

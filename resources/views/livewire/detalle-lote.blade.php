@@ -3,14 +3,19 @@
     @if ($method == 'noHabilitado')
         @livewire('modal-no-habilitado-pujar', ['subasta' => $lote->ultimoContrato?->subasta_id, 'adquirente' => $adquirente->id, 'lote' => $lote_id], key('modal-contrato-lotes-'))
     @endif
-    {{-- @dump($method) --}}
-    {{-- @dump(config('services.mercadopago.host') . '/success') --}}
-
 
 
 
     {{--  --}}
-    <article class="b-white flex idden p-4 mt-20 g-blue-600  shadow-lg rounded-2xl mb-10">
+    {{-- <article class=" flex lg:flex-row flex-col p-4 mt-20 g-blue-600  shadow-lg rounded-2xl mb-10 bg-green-100"> --}}
+    <article
+        class=" grid lg:grid-cols-2 grid-cols-1 p-4 lg:mt-20 mt-10 g-blue-600  shadow-lg rounded-2xl mb-10 lg:w-auto w-full">
+
+
+
+
+
+
         <div x-data="{
             records: @js($records),
             currentIndex: 0,
@@ -23,11 +28,13 @@
             goTo(index) {
                 this.currentIndex = index;
             }
-        }" class="flex flex-col items-center ">
+        }"
+            class="flex flex-col items-center  col-start-1  lg:row-start-1 lg:row-end-4 row-start-2">
+
             {{-- Imagen principal --}}
-            <div class="relative w-full flex justify-center bg-yllow-300 max-w-150 g-yellow-300">
+            <div class="relative w-full flex justify-center  max-w-150 ">
                 <button @click="prev"
-                    class="absolute left-0 top-1/2 -translate-y-1/2 z-10  rounded-full px-2 py-1 hover:scale-105">
+                    class="absolute lg:inline-block  hidden left-0 top-1/2 -translate-y-1/2 z-10  rounded-full px-2 py-1 hover:scale-105">
                     <svg class="rotate-180" width="39" height="67" viewBox="0 0 39 67" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path d="M2.26917 65.5L36.7307 33.5L2.26918 1.5" stroke="#262626" stroke-width="3"
@@ -39,42 +46,38 @@
 
 
 
-                <figure class="bg-oange-200 w-150 flex justify-center items-center relative">
+                <figure class=" lg:w-150 w-full flex justify-center items-center relative">
                     <!-- Contenedor con el tamaño exacto de la imagen -->
                     {{-- <div class="relative group size-111" wire:click="$set('modal_foto',records[currentIndex].image )"> --}}
-                    <div class="relative group size-111"
+                    <div class="relative group lg:size-111 w-full"
                         x-on:click="
-        @this.set('modal_index', currentIndex);
-        @this.set('modal_foto', records[currentIndex].image);
-     ">
+                        @this.set('modal_index', currentIndex);
+                        @this.set('modal_foto', records[currentIndex].image);
+                    ">
                         <!-- Imagen -->
                         <img :src="records[currentIndex].image"
-                            class="size-111 object-contain transition-all duration-500 ease-in-out mx-auto cursor-pointer"
+                            class="lg:size-111 w-full lg:max-h-none max-h-[160px] object-contain transition-all duration-500 ease-in-out mx-auto cursor-pointer lg:mt-0 mt-2"
                             x-transition:enter="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                             x-transition:leave="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90">
 
                         <!-- Capa de superposición: solo aparece al hacer hover SOBRE la imagen -->
                         <span
                             class="absolute inset-0 bg-gray-800/60 text-casa-base-2 text-4xl font-bold 
-             flex justify-center items-center 
-             opacity-0 group-hover:opacity-100 transition-opacity duration-900
-             pointer-events-none cursor-pointer ">
+                                      flex justify-center items-center  opacity-0 group-hover:opacity-100 transition-opacity duration-900
+                                      pointer-events-none cursor-pointer ">
                             Agrandar
                         </span>
                     </div>
                 </figure>
 
                 @if ($modal_foto)
-                    {{-- <div class="min-h-screen min-w-screen  absolute inset-0"> --}}
-                    {{-- <x-modal-foto-detalle :img="$modal_foto" /> --}}
                     <x-modal-foto-detalle :records="$records" :current-index="$modal_index" />
-                    {{-- </div> --}}
                 @endif
 
 
 
                 <button @click="next"
-                    class="absolute right-0 top-1/2 -translate-y-1/2 z-10 bgwhite/70 rounded-full px-2 py-1 hover:scale-105">
+                    class="absolute lg:inline-block hidden right-0 top-1/2 -translate-y-1/2 z-10 bgwhite/70 rounded-full px-2 py-1 hover:scale-105">
 
                     <svg width="39" height="67" viewBox="0 0 39 67" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -87,7 +90,7 @@
             </div>
 
             {{-- Miniaturas --}}
-            <div class="flex gap-2 mt-4">
+            <div class="hidden lg:flex gap-2 mt-4">
                 <template x-for="(record, index) in records" :key="index">
                     <img :src="record.thumb ?? record.image" @click="goTo(index)"
                         class="w-20 h-20 object-contain cursor-pointer border-2 rounded-md transition-all duration-300 "
@@ -96,13 +99,23 @@
                 </template>
             </div>
 
+            <!-- Botones circulares en Mobile -->
+            <div class="flex lg:hidden gap-2 mt-4">
+                <template x-for="(record, index) in records" :key="index">
+                    <button @click="goTo(index)" class="w-3 h-3 rounded-full transition-all duration-300 mr-2"
+                        :class="index === currentIndex ? 'bg-casa-black scale-125' : 'bg-gray-300 hover:bg-gray-400'">
+                    </button>
+                </template>
+            </div>
+
         </div>
 
 
 
         {{-- SECOND --}}
-        <div class="flex flex-col ml-18 pt-4 pl-2  g-red-300 max-w-150">
-            <h2 class="font-helvetica font-bold text-[30px] leading-[1.4] tracking-normal  flex justify-between pr-2">
+        <div class="flex flex-col lg:ml-18 pt-4 pl-2  g-red-300 max-w-150  lg:col-start-2   lg:row-end-2 row-start-1">
+            <h2
+                class="font-helvetica font-bold lg:text-[30px] text-lg lg:leading-[1.4] tracking-normal   justify-between pr-2  flex">
                 {{ ucfirst($lote->titulo) }}
                 <span>
                     @if ($lote->estado == 'en_subasta')
@@ -118,7 +131,7 @@
 
             </h2>
             <ul
-                class="flex space-x-2 [&>li]:rounded-2xl [&>li]:border [&>li]:px-3 [&>li]:py-1.5 [&>li]:border-gray-600 [&>li]:text-sm my-2">
+                class="flex space-x-2 [&>li]:rounded-2xl [&>li]:border [&>li]:px-3 [&>li]:lg:py-1.5 [&>li]:py-0.5 [&>li]:border-gray-600 [&>li]:text-sm my-2 lg:text-sm text-xs ">
                 <li>{{ $lote->tipo?->nombre }}</li>
                 <li>Lote: {{ $lote->id }}</li>
 
@@ -129,11 +142,6 @@
                         'asignado' => 'subasta-proximas.lotes',
                         default => 'subasta-pasadas.lotes',
                     };
-                    // $route = match ($lote->estado) {
-                    //     'en_subasta' => route('subasta.lotes', $subasta->id),
-                    //     'asignado' => route('subasta-proximas.lotes', $subasta->id),
-                    //     default => route('subasta-pasadas.lotes', $subasta->id),
-                    // };
                 @endphp
 
                 <li>
@@ -142,11 +150,17 @@
 
 
             </ul>
+        </div>
+
+        <div
+            class="flex flex-col lg:ml-18 pt-4 pl-2  g-red-300 max-w-150  lg:col-start-2  lg:row-start-2 lg:row-end-3 row-start-3">
 
 
-            <p class="text-lg"><span class="font-semibold">Descripción:</span> {{ $lote->descripcion }}.</p>
 
-            <ul class="text-sm my-2 flex flex-col">
+            <p class="lg:text-lg text-sm lg:order-1 order-2"><span class="font-semibold">Descripción:</span>
+                {{ $lote->descripcion }}.</p>
+
+            <ul class="text-sm my-2 flex flex-col lg:order-2 order-3">
 
                 {{--  --}}
                 @if (!empty($caracteristicas) && (is_array($caracteristicas) || is_object($caracteristicas)))
@@ -169,12 +183,10 @@
                                 }
                             @endphp
 
-
-
                             {{-- <audio controls class="h-6 text-xs my-0 w-full border border-gray-400 rounded-lg"
-                                    wire:key="audio-{{ $item->id }}-{{ md5($url) }}">
-                                    @if ($exists)
-                                        <source src="{{ $url }}?t={{ time() }}"  --}}
+                                            wire:key="audio-{{ $item->id }}-{{ md5($url) }}">
+                                            @if ($exists)
+                                                <source src="{{ $url }}?t={{ time() }}"  --}}
                             {{-- type="{{ pathinfo($formData[$item->id], PATHINFO_EXTENSION) === 'mp3' ? 'audio/mpeg' : 'audio/wav' }}">> --}}
                             {{-- @endif
                                     
@@ -190,22 +202,21 @@
                 @endif
 
 
-
-
                 {{--  --}}
             </ul>
 
-            <p><span class="font-semibold mr-1 ">Base: </span> {{ $moneda }}{{ (int) $base }}</p>
+            <p class="lg:order-3 order-4 "><span class="font-semibold mr-1 ">Base: </span>
+                {{ $moneda }}{{ (int) $base }}
+            </p>
 
             @if ($lote->estado == 'en_subasta')
-                <p class="font-bold mb-3"> <span class="mr-1">Oferta actual: </span>
+                <p class="font-bold mb-3 lg:order-4 order-5"> <span class="mr-1">Oferta actual: </span>
                     {{ $moneda }}{{ (int) $ultimaOferta }}</p>
             @endif
 
-            {{-- <audio controls controlsList="nodownload nofullscreen"  --}}
             @if ($url)
                 <audio controls controlslist=" nodownload noplaybackrate volume"
-                    class="h-9 text-xs w-full border border-gray-400 rounded-full my-1 audiodetalle max-w-90">
+                    class="h-9 text-xs w-full border border-gray-400 rounded-full mb-2 mt-2 audiodetalle max-w-90 lg:order-5 order-1 ">
                     @if ($exists)
                         <source class="bg-yellow-400 text-blue-500" src="{{ $url }}?t={{ time() }}">
                     @endif
@@ -221,7 +232,7 @@
 
 
             @role('adquirente')
-                <div class="flex  flex-col  relative pb-4">
+                <div class="flex  flex-col  relative pb-4 order-8">
                     @if ($lote->estado == 'en_subasta')
 
 
@@ -283,7 +294,7 @@
 
 
     {{-- $route --}}
-    <div class="mt-10">
+    <div class="lg:mt-10 mt-6">
 
         @livewire('buscador', ['subasta_id' => $subasta->id, 'route' => $route])
 
@@ -331,7 +342,7 @@
 
 
     {{--  --}}
-    <article class="bg-cyan-950/35 rounded-2xl p-5 hidden lex lg:flex-row flex-col gap-x-2 relative mt-32">
+    <article class="bg-cyan-950/35 rounded-2xl p-5 hidden lex lg:flex-row flex-col gap-x-2 relative lg:mt-32 mt-10">
 
 
 

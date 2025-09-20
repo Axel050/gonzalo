@@ -1,17 +1,20 @@
-<div class="flex flex-col   w-full items-center p-10 rder-1 border-accent mt-8   g-blue-500 ">
-    <p class="text-3xl font-bold  ">subastas abiertas</p>
+<div class="flex flex-col   w-full items-center lg:p-24   mt-8  ">
+    <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4 mb-4 lg:mb-8">subastas abiertas</p>
 
-    <div class="swiper-home-subastas hiden    w-full g-red-300  g-red-300 overflow-x-hidden flex justify-center ">
 
-        <div class="swiper-wrapper      g-blue-300  ">
+
+    <div class="swiper-home-subastas     w-full  lg:overflow-x-hidden lg:px-0 px-4">
+
+        <div class="swiper-wrapper  flex lg:flex-row flex-col">
 
             @foreach ($subastasAct as $subA)
-                {{-- @for ($i = 0; $i < 2; $i++) --}}
                 <a href="{{ route('subasta.lotes', $subA->id) }}"
-                    class="flex flex-col  -h p-6 mt-8 swiper-slide border-1 border-casa-black">
+                    class="flex flex-col   lg:p-6 p-4 mb-6 swiper-slide border-1 border-casa-black">
 
-                    <div class="flex justify-between items-center mb-4">
-                        <p class="text-[40px] font-librecaslon leading-[40px]">{{ $subA->titulo }} </p>
+
+                    <div class="flex justify-between items-center lg:mb-4 mb-2">
+
+                        <p class="text-[26px]  lg:text-[40px] font-librecaslon leading-[40px]">{{ $subA->titulo }} </p>
                         <svg fill="#fff" class="size-8  ml-8 shrink-0 self-start">
                             <use xlink:href="#arrow-right"></use>
                         </svg>
@@ -23,8 +26,6 @@
                         $mes = Str::upper($fecha->translatedFormat('M')); // AGO
                         $hora = $fecha->format('H'); // 11
                     @endphp
-
-
 
                     <div class="flex flex-col">
                         <p>Hasta el</p>

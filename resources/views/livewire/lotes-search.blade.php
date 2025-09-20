@@ -24,7 +24,7 @@
 
             {{-- <div class="grid grid-cols-3 px-20 mt-10 gap-12 place-content-center justify-center"> --}}
 
-            <div class=" bg-casa-black flex  border rounded-full  w-2xl  mx-auto  pl-3 pr-1 py-0.5 items-center mt-5 border-casa-black col-span-3 {{ $existFrom ? 'justify-between' : 'justify-center' }} "
+            <div class=" bg-casa-black flex  border rounded-full  lg:w-2xl  w-[95%]  mx-auto pl-3 pr-1 py-0.5 items-center lg:mt-5 mt-1 border-casa-black  {{ $existFrom ? 'justify-between' : 'justify-center' }} "
                 wire:show="filtered">
                 {{-- @dump($existFrom) --}}
                 <p class="text-nowrap text-casa-base-2 ml-2">Resultados: <span class="ml-1">{{ $filtered }}</span>
@@ -35,7 +35,7 @@
                     <a href="{{ route($from) }}"
                         class="bg-casa-base-2 hover:bg-casa-black-h hover:text-casa-base border border-casa-base  text-casa-black rounded-full px-4 flex items-center justify-between  py-0.5 w-fit">
                         Volver a {{ $from }}
-                        <span class="text-xl leading-0 ml-8">X</span>
+                        <span class="text-xl leading-0 lg:ml-8 ml-5">X</span>
                     </a>
                 @endif
 
@@ -51,11 +51,10 @@
 
             </div>
 
-            <div class="flex flex-wrap x-20 mt-10 gap-12 place-content-center justify-center max-w-[1440px]">
 
 
 
-
+            <div class="flex flex-wrap  mt-10 lg:gap-12 gap-2 place-content-center justify-center max-w-[1440px]">
 
 
                 {{-- @if (isset($lotes) && count($lotes)) --}}
@@ -65,10 +64,11 @@
 
                 @forelse ($lotes as $lote)
                     <div
-                        class=" bg-casa-base-2 bas flex flex-col p-6 gap-y-1 border border-casa-black w-[394px]  min-w-[300px]">
+                        class=" bg-casa-base-2 bas flex flex-col lg:p-6 p-2 gap-y-1 lg:border border-casa-black lg:w-[394px]  lg:min-w-[300px] w-[44%] relative">
 
                         <div class="flex justify-between items-center">
-                            <p class="font-bold text-3xl w-full  mr-3">{{ $lote['titulo'] }}</p>
+
+                            <p class="font-bold lg:text-3xl text-sm w-full  mr-3">{{ $lote['titulo'] }}</p>
 
                             @if ($lote['tipo'] == 'activo')
                                 @if ($lote['puja_actual'] > 0)
@@ -82,34 +82,37 @@
 
                         <div class="flex gap-x-4 justify-center my-2">
 
-                            {{-- <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote->foto1) }}" class="size-36 obje " /> --}}
-                            <img src="{{ Storage::url('imagenes/lotes/normal/' . $lote['foto1']) }}"
-                                class="size-49  obje " />
+                            <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote['foto1']) }}"
+                                class="lg:size-49 size-20  " />
 
                         </div>
 
 
-                        <p class="text-xl mb-2">{{ $lote['descripcion'] }}. </p>
+                        <p class="text-xl mb-2 lg:block hidden lg:order-3">{{ $lote['descripcion'] }}. </p>
 
 
+                        {{-- @dump($lote['base']) --}}
 
                         @php
                             $signo;
                         @endphp
-                        <p class="text-xl  mt-auto">Base:
+                        <p class="lg:text-xl text-sm  mt-auto lg:order-4 order-3">Base:
                             {{ $this->getMonedaSigno($lote['moneda_id']) }}{{ $lote['base'] }}</p>
-                        <p class="text-xl font-semibold mb-3">Oferta
-                            actual:
-                            {{ $this->getMonedaSigno($lote['moneda_id']) }}{{ $lote['puja_actual'] ?? 0 }}</p>
+
+                        @if ($lote['tipo'] == 'activo')
+                            <p class="lg:text-xl text-sm font-semibold lg:mb-3 lg:order-5 order-4">
+                                <span class="lg:inline-block hidden ">Oferta actual: </span>
+                                <span class="lg:hidden ">Actual: </span>
+                                {{ $this->getMonedaSigno($lote['moneda_id']) }}{{ $lote['puja_actual'] ?? 0 }}
+                            </p>
+                        @else
+                            <p class="text-xl font-semibold h-3"></p>
+                        @endif
 
 
 
-                        {{-- @dump($lote['id']) --}}
-                        {{-- @dump($lote['lote_id']) --}}
-
-                        {{-- <a href="{{ route('lotes.show', $lote['lote_id']) }}" --}}
                         <a href="{{ route('lotes.show', $lote['lote_id']) }}"
-                            class="hover:text-casa-black bg-casa-black text-gray-50  hover:bg-casa-base  border border-black rounded-full px-4 flex items-center justify-between  py-2  w-full  text-xl font-bold mb-2 ">
+                            class="hover:text-casa-black bg-casa-black text-gray-50  hover:bg-casa-base  border border-black rounded-full px-4 lg:flex items-center justify-between  py-2  w-full  text-xl font-bold mb-2  hidden  order-6">
                             Ver detalle
                             <svg class="size-8 ">
                                 <use xlink:href="#arrow-right"></use>

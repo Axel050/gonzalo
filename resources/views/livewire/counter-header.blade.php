@@ -1,31 +1,58 @@
-<div class="w-full bg-casa-black flex  text-white pt-4 pb-8  justify-between px-20 items-center">
+<div class="w-full bg-casa-black flex  lg:flex-row flex-col text-white pt-4 lg:pb-8 pb-10  justify-between lg:px-24 px-4 items-center relative"
+    x-data="{ open: true }">
 
 
-    <div class="flex flex-col ">
-        <p class="text-[43px] leading-[47px] font-librecaslon mb-1">{{ $last->titulo ?? 'Objeto' }}</p>
-        <p class="text-3xl font-semibold">Termina el</p>
-        <p class="text-3xl font-semibold">
-            {{ str_replace('.', '', mb_strtoupper($fechaFin->translatedFormat('d M | H:i'))) }}hs</p>
+    <div class="flex lg:flex-col flex-row lg:items-start  justify-between w-full  items-center ">
+
+        <p class="lg:text-[43px] lg:leading-[47px] text-[26px]  font-librecaslon mb-1">{{ $last->titulo ?? 'Objeto' }}
+        </p>
+
+        <div class="flex lg:flex-col flex-row gap-x-2">
+            <p class="lg:text-3xl text-xs font-semibold">Termina el</p>
+            <p class="lg:text-3xl text-xs font-semibold">
+                {{ str_replace('.', '', mb_strtoupper($fechaFin->translatedFormat('d M | H:i'))) }}</p>
+        </div>
+
     </div>
 
 
-    <div class="flex items-center">
-        <p class="text-lg mr-6">Faltan</p>
-        <div class="flex flex-col items-center justify-center ">
-            <p id="dias" class="text-[120px] leading-[120px]">00</p>
-            <p class="text-3xl font-bold ">dias</p>
+    {{-- <div class="flex  items-center g-blue-200 lg:justify-end  justify-between w-full"
+        x-show="open || window.innerWidth >= 1024" x-transition:enter="transition ease-out duration-700"
+        x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100"
+        x-transition:leave="transition ease-in duration-700" x-transition:leave-start="transform opacity-100 scale-100"
+        x-transition:leave-end="transform opacity-0 scale-95"> --}}
+    <div class="flex  items-center g-blue-200 lg:justify-end  justify-between w-full"
+        x-show="open || window.innerWidth >= 1024" x-transition:enter.duration.500ms x-transition:leave.duration.400ms>
+
+        <p class="lg:text-lg text-xs mr-6">Faltan</p>
+
+        <div class="flex">
+            <div class="flex flex-col items-center  justify-center ">
+                <p id="dias" class="lg:text-[120px] text-[50px] lg:leading-[120px] leading-[50px]">00</p>
+                <p class="lg:text-3xl  text-xs font-bold ">dias</p>
+            </div>
+            <p class="lg:text-[120px] text-[50px] lg: self-start mx-1 lg:leading-[120px] leading-[50px] animate-pulse">
+                :</p>
+            <div class="flex flex-col items-center justify-center">
+                <p id="horas" class="lg:text-[120px] text-[50px] lg:leading-[120px] leading-[50px]">00</p>
+                <p class="lg:text-3xl  text-xs font-bold">horas</p>
+            </div>
+            <p class="lg:text-[120px] text-[50px] lg: self-start mx-1 lg:leading-[120px] leading-[50px] animate-pulse">
+                :</p>
+            <div class="flex flex-col items-center justify-center">
+                <p id="minutos" class="lg:text-[120px] text-[50px] lg:leading-[120px]  leading-[50px]">00</p>
+                <p class="lg:text-3xl  text-xs font-bold">minutos</p>
+            </div>
         </div>
-        <p class="text-[120px]  self-start mx-1 leading-[120px] animate-pulse"> :</p>
-        <div class="flex flex-col items-center justify-center">
-            <p id="horas" class="text-[120px] leading-[120px]">00</p>
-            <p class="text-3xl font-bold">horas</p>
-        </div>
-        <p class="text-[120px]  self-start mx-1 leading-[120px] animate-pulse"> :</p>
-        <div class="flex flex-col items-center justify-center">
-            <p id="minutos" class="text-[120px] leading-[120px]">00</p>
-            <p class="text-3xl font-bold">minutos</p>
-        </div>
+
     </div>
+
+    <button class="text-white absolute lg:hidden bottom-3 left-1/2  py-2" @click="open = ! open">
+
+        <svg fill="#fff" class="w-4 h-2.5" :class="{ 'rotate-180 ': !open }">
+            <use xlink:href="#arrow-up"></use>
+        </svg>
+    </button>
 </div>
 
 

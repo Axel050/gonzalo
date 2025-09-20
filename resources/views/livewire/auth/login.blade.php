@@ -36,6 +36,10 @@
         <div class="flex items-center justify-end">
             <flux:button variant="primary" type="submit" class="w-full">{{ __('Ingresar') }}</flux:button>
         </div>
+
+        <div class="flex items-center justify-end bg-casa-base-2 rounded-lg hover:bg-casa-base">
+            <a href="{{ route('adquirentes.create') }}" class="w-full text-center py-1.5">¿ Primera vez ?</a>
+        </div>
     </form>
 
     @if (Route::has('register'))

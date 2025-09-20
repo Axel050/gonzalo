@@ -93,6 +93,15 @@ class CarritoService
       throw new InvalidArgumentException('Lote no especificado');
     }
 
+
+    $lote = Lote::find($loteId);
+
+    $adquirenteEsGanador = $lote?->getPujaFinal()?->adquirente_id == $adquirenteId;
+
+    if ($adquirenteEsGanador) {
+      throw new InvalidArgumentException("Tu oferta es la ultima, no puedes quitar.");
+    }
+
     $carrito = Carrito::where('adquirente_id', $adquirenteId)
       ->where('estado', 'activo')
       ->firstOr(function () {

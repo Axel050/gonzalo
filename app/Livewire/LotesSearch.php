@@ -61,6 +61,7 @@ class LotesSearch extends Component
     // IDs
 
     if ($this->search) {
+      info("MOUNT///////");
       $this->filtrar();
     }
 
@@ -72,99 +73,113 @@ class LotesSearch extends Component
   }
 
 
-
   #[On(['buscarLotes'])]
-  public function filtrar($search = null,)
+  public function filtrar($search = null)
   {
-
-
-
     if ($search) {
       $this->search = $search;
       $this->searchParam = $search;
     }
 
-    $subastasProx = Subasta::where('fecha_inicio', '>=', Carbon::now())->get();
-    $subastasAct = Subasta::whereIn('estado', ["activa", "enpuja"])->get();
-    $idsSubastasProx = $subastasProx->pluck('id');
-    $idsSubastasAct  = $subastasAct->pluck('id');
+    // Tipos de subastas
+    $idsSubastasAct  = Subasta::whereIn('estado', ["activa", "enpuja"])->pluck('id');
+    $idsSubastasProx = Subasta::where('fecha_inicio', '>=', Carbon::now())->pluck('id');
+    $idsSubastasFin  = Subasta::where('estado', "finalizada")->pluck('id');
 
-    $lotesActivos = Lote::query()
-      ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
-      ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
-      ->leftJoin(DB::raw('(
-        SELECT p1.lote_id, p1.monto as puja_actual
-        FROM pujas p1
-        INNER JOIN (
-            SELECT lote_id, MAX(id) as max_id
-            FROM pujas
-            GROUP BY lote_id
-        ) p2 ON p1.lote_id = p2.lote_id AND p1.id = p2.max_id
-    ) as p'), 'lotes.id', '=', 'p.lote_id')
-      ->whereIn('contratos.subasta_id', $idsSubastasAct)
-      ->where('lotes.estado', LotesEstados::EN_SUBASTA)
-      ->where('contrato_lotes.estado', 'activo')
-      ->when($this->search, function ($query) {
-        $query->where(function ($q) {
-          $q->where('lotes.titulo', 'like', '%' . $this->search . '%')
-            ->orWhere('lotes.descripcion', 'like', '%' . $this->search . '%');
+
+    // Función genérica para obtener lotes
+    $getLotes = function ($idsSubastas, $estadoLote, $tipo) {
+      return Lote::query()
+        ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
+        ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
+        ->leftJoin(DB::raw('(
+                SELECT p1.lote_id, p1.monto as puja_actual
+                FROM pujas p1
+                INNER JOIN (
+                    SELECT lote_id, MAX(id) as max_id
+                    FROM pujas
+                    GROUP BY lote_id
+                ) p2 ON p1.lote_id = p2.lote_id AND p1.id = p2.max_id
+            ) as p'), 'lotes.id', '=', 'p.lote_id')
+        ->whereIn('contratos.subasta_id', $idsSubastas)
+        // ->where('lotes.estado', $estadoLote)
+        ->where('contrato_lotes.estado', 'activo')
+        ->when($this->search, function ($q) {
+          $q->where(function ($q2) {
+            $q2->where('lotes.titulo', 'like', '%' . $this->search . '%')
+              ->orWhere('lotes.descripcion', 'like', '%' . $this->search . '%');
+          });
+        })
+        ->select(
+          'lotes.id as lote_id',
+          'lotes.titulo',
+          'lotes.descripcion',
+          'lotes.foto1',
+          'lotes.valuacion',
+          'lotes.estado as lote_estado',
+          'contrato_lotes.precio_base as base',
+          'contrato_lotes.moneda_id',
+          'contrato_lotes.estado as contrato_lote_estado',
+          'contrato_lotes.id as contrato_lote_id',
+          'contratos.subasta_id',
+          'p.puja_actual'
+        )
+        ->get()
+        ->map(function ($lote) use ($tipo) {
+          $lote->tipo = $tipo;
+          return $lote;
         });
-      })
-      ->select(
-        'lotes.id as lote_id',
-        'lotes.titulo',
-        'lotes.descripcion',
-        'lotes.foto1',
-        'lotes.valuacion',
-        'lotes.estado as lote_estado',
-        'contrato_lotes.precio_base as base',   // 👈 Selección explícita
-        'contrato_lotes.moneda_id',
-        'contrato_lotes.estado as contrato_lote_estado',
-        'contrato_lotes.id as contrato_lote_id',
-        'contratos.subasta_id',
-        'p.puja_actual'
-      )
-      ->get()
-      ->map(function ($lote) {
-        $lote->tipo = 'activo';
-        return $lote;
-      });
+    };
 
+    // Lotes por tipo
+    $lotesActivos     = $getLotes($idsSubastasAct,  LotesEstados::EN_SUBASTA, 'activo');
+    $lotesProximos    = $getLotes($idsSubastasProx, LotesEstados::ASIGNADO, 'proximo');
+    $lotesFinalizados = $getLotes($idsSubastasFin,  LotesEstados::DISPONIBLE, 'finalizado');
 
+    // Unimos y ordenamos
+    // $this->lotes = $lotesActivos
+    //   ->merge($lotesProximos)
+    //   ->merge($lotesFinalizados)
+    //   ->sortBy(function ($lote) {
+    //     return $lote->tipo === 'activo' ? 0 : ($lote->tipo === 'proximo' ? 1 : 2);
+    //   })
+    //   ->values();
 
-    // Lotes Próximos
-    $lotesProximos = Lote::query()
-      ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
-      ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
-      ->whereIn('contratos.subasta_id', $idsSubastasProx)
-      ->where('lotes.estado', LotesEstados::ASIGNADO)
-      ->where('contrato_lotes.estado', 'activo')
-      ->when($this->search, function ($q) {
-        $q->where(function ($q2) {
-          $q2->where('lotes.titulo', 'like', '%' . $this->search . '%')
-            ->orWhere('lotes.descripcion', 'like', '%' . $this->search . '%');
-        });
-      })
-      ->select('lotes.*', 'contrato_lotes.*', 'contratos.subasta_id')
-      ->get()
-      ->map(function ($item) {
-        $item->tipo = 'proximo';
-        return $item;
-      });
+    $totalActivos     = $lotesActivos->count();
+    $totalProximos    = $lotesProximos->count();
+    $totalFinalizados = $lotesFinalizados->count();
 
-    // Unimos todo en una sola colección
-    $lotes = $lotesActivos->merge($lotesProximos);
+    // $this->lotes = $lotesActivos
+    //   ->merge($lotesProximos)
+    //   ->merge($lotesFinalizados)
+    //   ->sortBy(fn($lote) => $lote->tipo === 'activo' ? 0 : ($lote->tipo === 'proximo' ? 1 : 2))
+    //   ->values();
 
-    // Ordenamos: primero activos, luego próximos
-    $this->lotes = $lotes->sortBy(function ($lote) {
-      return $lote->tipo === 'activo' ? 0 : 1;
-    })->values();
+    $merged = collect($lotesActivos)
+      ->merge($lotesProximos)
+      ->merge($lotesFinalizados)
+      ->sortBy(fn($lote) => $lote->tipo === 'activo' ? 0 : ($lote->tipo === 'proximo' ? 1 : 2))
+      ->values();
+
+    // ahora sí contamos bien
+    $this->filtered = $merged->count();
+
+    // Livewire-friendly: pasamos a array solo al final
+    $this->lotes = $merged->toArray();
+
+    info([
+      'Activos' => count($lotesActivos),
+      'Próximos' => count($lotesProximos),
+      'Finalizados' => count($lotesFinalizados),
+      'Total Final' => $this->filtered
+    ]);
+
 
 
     $this->filtered  = count($this->lotes);
-
-    // info(["333333" => $this->lotes]);
   }
+
+
 
 
 

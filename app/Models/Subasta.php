@@ -413,6 +413,41 @@ class Subasta extends Model implements Auditable
         'lotes.id',
         'lotes.titulo',
         'lotes.foto1',
+      );
+
+    try {
+      $results = $query->get();
+      info(["LotesPasadosDestacados" => $results]);
+    } catch (\Exception $e) {
+      info(["Error en lotesPasados" => $e->getMessage()]);
+      throw $e;
+    }
+
+    return $query;
+  }
+
+  public function lotesPasadosDestacadosFoto()
+  {
+    info("AGREGAR ESTADO FINALIZADO A ESTADO LOTE ");
+
+    $query = Lote::query()
+      ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
+      ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
+      ->where('contratos.subasta_id', $this->id)
+      // ->where('lotes.ultimo_contrato', 'contratos.id')
+      ->whereColumn('contratos.id', 'lotes.ultimo_contrato')
+      ->whereIn('lotes.estado', [
+        LotesEstados::VENDIDO,
+        LotesEstados::DEVUELTO,
+        LotesEstados::STANDBY,
+        LotesEstados::DISPONIBLE
+      ])
+      ->where('lotes.destacado', true) // Filtro añadido
+      // ->where('contrato_lotes.estado', 'activo')
+      ->select(
+        'lotes.id',
+        'lotes.titulo',
+        'lotes.foto1',
         'lotes.descripcion',
         'lotes.valuacion',
         'lotes.ultimo_contrato',
@@ -433,6 +468,7 @@ class Subasta extends Model implements Auditable
 
     return $query;
   }
+
 
 
   public function lotesPasados2()

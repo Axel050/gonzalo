@@ -42,16 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
   });
 
-  // const swiperD = new Swiper('.swiper-destacados', {
-  //   // Optional parameters
 
-  //   slidesPerView: 3,
-  //   spaceBetween: 30,
-  //   centerInsufficientSlides: true,
-  //   loop: true,
-  //   autoplay: { delay: 2000 },
-  //   modules: [Autoplay],
-  // });
 
   document.querySelectorAll('.swiper-destacados').forEach((el, index) => {
 
@@ -59,13 +50,36 @@ document.addEventListener('DOMContentLoaded', () => {
 
     new Swiper(el, {
       slidesPerView: 2,
-      spaceBetween: 30,
+      spaceBetween: 15,
       centerInsufficientSlides: true,
       loop: true,
       autoplay: { delay: 2000 },
       breakpoints: {
         420: {
           slidesPerView: 3,
+          spaceBetween: 50,
+          loop: slides > 3 ? true : false,
+          autoplay: slides > 3 ? { delay: 2000 } : false,
+        },
+      },
+      modules: [Autoplay],
+
+    });
+  });
+
+  document.querySelectorAll('.swiper-destacados-img').forEach((el, index) => {
+
+    const slides = el.querySelectorAll('.swiper-slide').length;
+
+    new Swiper(el, {
+      slidesPerView: 3,
+      spaceBetween: 15,
+      centerInsufficientSlides: true,
+      loop: true,
+      autoplay: { delay: 2000 },
+      breakpoints: {
+        420: {
+          slidesPerView: 4,
           spaceBetween: 50,
           loop: slides > 3 ? true : false,
           autoplay: slides > 3 ? { delay: 2000 } : false,
@@ -83,23 +97,34 @@ document.addEventListener('DOMContentLoaded', () => {
     const slides = el.querySelectorAll('.swiper-slide').length;
     // autoplay: { delay: 2000 },
 
-    new Swiper(el, {
-      slidesPerView: 2,
-      spaceBetween: 30,
-      centerInsufficientSlides: true,
-      loop: true,
-      autoplay: { delay: 2000 },
-      breakpoints: {
-        420: {
-          slidesPerView: 3,
-          spaceBetween: 50,
-          loop: slides > 3 ? true : false,
-          autoplay: slides > 3 ? { delay: 2000 } : false,
-        },
-      },
-      modules: [Autoplay],
 
-    });
+    if (window.innerWidth >= 1024) {
+      console.log("INNNEEEE")
+      new Swiper(el, {
+        slidesPerView: 1,
+
+        centerInsufficientSlides: true,
+
+
+        breakpoints: {
+          420: {
+            slidesPerView: 3,
+            spaceBetween: 50,
+            loop: slides > 3 ? true : false,
+            autoplay: slides > 3 ? { delay: 2000 } : false,
+          },
+        },
+        modules: [Autoplay],
+
+      });
+    }
+    else {
+      console.log("MOBILE ")
+      // En móvil quitamos clases de Swiper para que se vea como flex-col
+      el.classList.remove("swiper-home-subastas");
+      el.classList.remove("swiper-container");
+      el.classList.add("flex", "flex-col");
+    }
   });
 
 

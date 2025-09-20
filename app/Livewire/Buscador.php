@@ -7,6 +7,7 @@ use Livewire\Attributes\On;
 use Livewire\Component;
 
 
+
 class Buscador extends Component
 {
   public $subasta_id;
@@ -16,6 +17,17 @@ class Buscador extends Component
   public $abiertas;
   public $view;
   public $from;
+
+  protected $rules = [
+    'search' => 'required|min:3'
+  ];
+
+  protected $messages = [
+    'search.min' => 'La búsqueda debe tener más de 2 caracteres.',
+    'search.required' => 'El campo de búsqueda no puede estar vacío.',
+  ];
+
+
 
 
   #[On(['clearSearch'])]
@@ -28,6 +40,7 @@ class Buscador extends Component
   public function buscarLotes()
   {
 
+    $this->validate();
     // Viene de Detalle Lote
     if ($this->route) {
       return redirect()->route($this->route,  [
@@ -43,7 +56,7 @@ class Buscador extends Component
         'from' => $this->from,      // este irá como query string: ?search=valor        
       ]);
     }
-
+    // @livewire('buscador', ['todas' => true, 'from' => 'home'])
 
     $this->dispatch('buscarLotes', $this->search);
   }

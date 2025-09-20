@@ -2,141 +2,43 @@
 
 namespace App\Livewire;
 
-use App\Jobs\ActivarLotes;
-use App\Jobs\DesactivarLotesExpirados;
-use App\Models\Garantia;
-use App\Models\Moneda;
-use App\Models\Puja;
+
 use App\Models\Subasta;
-use App\Services\MPService;
-use App\Services\SubastaService;
 use Carbon\Carbon;
-use Livewire\Attributes\On;
+
 use Livewire\Component;
-use MercadoPago\Client\Payment\PaymentRefundClient;
-use MercadoPago\MercadoPagoConfig;
+
 
 
 class Subastas extends Component
 {
-  protected $subastaService;
 
-  public $monedas;
-  public Subasta $subasta;
-  public $lotes = [];
-  public $error = null;
-  public $subastaEstado = "11";
   public $subastas;
   public $subastasProx;
+  public $subastasFin;
 
-  // #[On('echo:subasta.{subasta.id},SubastaEstadoActualizado')]
-  // #[On('echo:my-channel.{subasta.id},SubastaEstadoActualizado')]
 
-  #[On('echo:my-channel,SubastaEstadoActualizado')]
-  public function actualizarEstado($event)
+
+  public function mount()
   {
-    // Si cambio manual en la BD estdo lote , y disparao el even , actualizar sin refresh OK  
-
-    // $this->subastaEstado = $event['estado'];
-    // $this->lotes = $event['lotes'];
-    // if ($this->subastaEstado === 'inactiva') {
-    //     $this->error = 'La subasta ha finalizado';
-    // }
-
-
-    $this->loadLotes();
-    // $this->test = "22";
-    info("REVERT  XXXX");
-    // info(["lotes " => $event['lotes']]);
-    // info(["subata estado " => $event['estado']]);
-    // dd("aaaa");
-
-  }
-
-  public function activar()
-  {
-    info("ACTIVAR");
-    $job = new ActivarLotes();
-    $job->handle();
-  }
-
-  public function job()
-  {
-    $job = new DesactivarLotesExpirados();
-    $job->handle();
-  }
-
-
-  public function getMonedaSigno($id)
-  {
-    return $this->monedas->firstWhere('id', $id)?->signo ?? '';
-  }
-
-
-  public function mount(Subasta $subasta, SubastaService $subastaService)
-  {
-    info("mount ");
-    $this->subastaService = $subastaService;
-    $this->subasta = $subasta;
-    $now = now();
-
 
     $this->subastas = Subasta::whereIn('estado', ["activa", "enpuja"])->get();
 
     $this->subastasProx = Subasta::where('fecha_inicio', '>=', Carbon::now())->get();
-  }
 
-  public function loadLotes()
-  {
-    try {
-      info("lotesClass");
 
-      $this->lotes = $this->subastaService?->getLotesActivos($this->subasta)?->toArray();
-      // info(["lotesClass" => $this->lotes]);
-      $this->error = null;
-    } catch (\Exception $e) {
-      // info(["error" => $this-}>lotes]);
-      info(["errorrrr" => $e->getMessage()]);
-      $this->lotes = [];
-      $this->error = $e->getMessage();
-    }
+    $this->subastasFin = Subasta::whereIn('estado', ["finalizada"])->get();
+
+    info([
+      "subasta" => count($this->subastas),
+      "subastaProx" => count($this->subastasProx),
+      "subastaFIN" => count($this->subastasFin),
+    ]);
   }
 
 
 
-  // #[On('echo:subasta.{subasta.id},PujaRealizada')]
-  // public function actualizarLote($event)
-  // {
-  //   foreach ($this->lotes as &$lote) {
-  //     if ($lote['id'] == $event['lote_id']) {
-  //       $lote['puja_actual'] = $event['monto'];
-  //       $lote['tiempo_post_subasta_fin'] = $event['tiempo_post_subasta_fin'];
-  //       $lote['estado'] = $event['estado'];
-  //       break;
-  //     }
-  //   }
-  // }
 
-  public function mp(MPService $mpService)
-  {
-    $preference = $mpService->crearPreferencia("Deposito", 1, 300, 5, 6);
-
-    // info(["PPPP" => $preference]);
-  }
-
-
-
-  public function crearDevolucion(MPService $mpService)
-  {
-    info("CREEEEE");
-    try {
-      $de = $mpService->crearDevolucion(21);
-      //code...
-    } catch (\Throwable $th) {
-      //throw $th;
-      info(["EERRROORRR"  => $th]);
-    }
-  }
 
 
   public function render()

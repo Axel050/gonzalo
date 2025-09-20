@@ -1,51 +1,46 @@
-<footer class=" text-white  mt-20 g-red-300 flex flex-col">
-
-
+<footer class=" text-white  mt-20 g-red-300 flex flex-col ">
 
 
     <div
-        class="relative flex flex-col bg-casa-fondo w-5/6 mx-auto justify-center px-20  pb-8 pt-2  h-58  text-casa-black border border-casa-black  z-10">
-        <h2 class="text-[64px] font-librecaslon">¿Tenés algo para vender?</h2>
+        class="relative flex flex-col bg-casa-fondo lg:w-5/6 w-full mx-auto justify-center lg:px-20 px-4  lg:pb-8 lg:pt-2  lg:h-58  text-casa-black border border-casa-black  z-10 py-8">
 
-        <div class="flex  justify-between ">
+        <h2 class="lg:text-[64px] text-[37px] lg:leading-26 leading-9 font-librecaslon text-center">¿Tenés algo para
+            vender?</h2>
 
-            <div class="flex flex-col text-xl">
+        <div class="flex  justify-between lg:flex-row flex-col lg:mt-0 mt-5 ">
+            http://127.0.0.1:8000/login
+            <div class="flex flex-col lg:text-xl text-sm">
                 <p>Completá el formulario, contanos qué querés rematar y lo evaluamos sin compromiso.</p>
                 <p>Podés vender objetos únicos, antiguos, en desuso o con valor histórico o práctico.</p>
             </div>
 
-            <button
-                class="bg-casa-black hover:bg-transparent hover:text-black text-gray-50 rounded-full px-4 flex items-center justify-between gap-x-5 py-1  border border-gray-800 text-nowrap text-xl font-bold h-fit self-start ">
+            <a href="{{ route('comitentes.create') }}"
+                class="bg-casa-black hover:bg-transparent hover:text-black text-gray-50 rounded-full px-4 flex items-center justify-between gap-x-5 py-1  border border-gray-800 text-nowrap lg:text-xl text-sm font-bold h-fit self-start  lg:w-fit w-full lg:mt-0 mt-5">
                 Quiero tasar
                 <svg fill="#fff" class="size-8  ml-8">
                     <use xlink:href="#arrow-right"></use>
                 </svg>
-            </button>
+            </a>
 
         </div>
     </div>
 
-
-
-    <div class="relative flex flex-col bg-casa-black -mt-29 ">
-
-
-
-
+    <div class="relative flex flex-col bg-casa-black lg:-mt-29 ">
 
         <div
-            class="flex flex-col bg-casa-black w-5/6 mx-auto justify-center px-20 pb-8 pt-2  h-58 mt-50 border border-x-casa-fondo-h">
-            <h2 class="text-[64px] font-librecaslon">¿Tenés alguna duda?</h2>
+            class="flex flex-col bg-casa-black lg:w-5/6 w-full mx-auto justify-center  lg:px-20 px-4  lg:pb-8 lg:pt-2  lg:h-58 lg:mt-50 lg:border border-b-1 border-x-casa-fondo-h py-8">
+            <h2 class="lg:text-[64px] text-[37px] lg:leading-26 leading-9 font-librecaslon text-center">¿Tenés alguna
+                duda?</h2>
 
-            <div class="flex  justify-between ">
+            <div class="flex  justify-between lg:flex-row flex-col lg:mt-0 mt-5 ">
 
-                <div class="flex flex-col text-xl">
+                <div class="flex flex-col lg:text-xl text-sm">
                     <p>Lorem ipsum dolor sit amet consectetur. Arcu sagittis ornare aliquet morbi justo. </p>
                     <p>Fringilla egestas nunc nulla eros sed nulla tristique.</p>
                 </div>
 
                 <button
-                    class="bg-casa-fondo hover:bg-transparent hover:text-white text-casa-black rounded-full px-4 flex items-center justify-between gap-x-5 py-1  border border-casa-fondo-h text-nowrap text-xl font-bold h-fit self-start ">
+                    class="bg-casa-fondo hover:bg-transparent hover:text-white text-casa-black rounded-full px-4 flex items-center justify-between gap-x-5 py-1  border border-casa-fondo-h text-nowrap text-xl font-bold h-fit self-start lg:w-fit w-full lg:mt-0 mt-5">
                     Contactanos
                     <svg fill="#fff" class="size-8  ml-8">
                         <use xlink:href="#arrow-right"></use>
@@ -56,89 +51,72 @@
         </div>
 
 
+        <div class="grid lg:grid-cols-4 grid-cols-2   lg:py-15  py-8 lg:pb-10 lg:pt-20  lg:px-24 px-4 items-center">
 
+            <div class="col-span-1 order-1">
 
-        <div class="flex flex-col ">
-
-            <div class=" my-20 py-12 grid grid-cols-5   px-20 ">
-
-                <a href="{{ route('home') }}" class=" hover:scale-105  mx-auto">
-                    <svg fill="#fff" class="w-59 h-7 ">
+                <a href="{{ route('home') }}" class=" over:scale-105">
+                    <svg fill="#fff" class="w-59  h-7  lg:flex hidden">
                         <use xlink:href="#casa-icon"></use>
                     </svg>
+
+                    <svg fill="#ffffff" class="w-28  h-5  lg:hidden flex  text-white">
+                        <use xlink:href="#casa-icon-mb"></use>
+                    </svg>
                 </a>
-
-
-                <ul class=" mx-auto space-y-4">
-                    <li><a href=""
-                            class="border border-casa-fondo-h rounded-full px-3 py-1 hover:bg-casa-black hover:text-casa-fondo-h">Comitentes</a>
-                    </li>
-                    <li><a href=""
-                            class="border border-casa-fondo-h rounded-full px-3 py-1 hover:bg-casa-black hover:text-casa-fondo-h">Adquirentes</a>
-                    </li>
-                    <li><a href=""
-                            class="border border-casa-fondo-h rounded-full px-3 py-1 hover:bg-casa-black hover:text-casa-fondo-h">Subastas</a>
-                    </li>
-
-                </ul>
-
-                <ul class="space-y-3">
-                    <li>Próximas subastas</li>
-                    <li>Objetos </li>
-                    <li>Vinilos </li>
-                    <li>Arte </li>
-                </ul>
-
-                <ul class="space-y-3">
-                    <li>¿Primera vez en un subasta? </li>
-                    <li>¿Qué opinan de casablanca.ar? </li>
-                    <li>¿Tenés algo para vender? </li>
-                    <li>¿Tenés alguna duda?</li>
-                </ul>
-
-                <ul class="flex  gap-3">
-                    <li>
-                        <a href="">
-                            <svg class="size-8  ">
-                                <use xlink:href="#instagram-foo"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <svg class="size-8  ">
-                                <use xlink:href="#whtz-foo"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="">
-                            <svg class="size-8  ">
-                                <use xlink:href="#mail-foo"></use>
-                            </svg>
-                        </a>
-                    </li>
-
-                </ul>
-
-
-
-
-
             </div>
 
+            <ul
+                class=" lg:mx-auto space-x-4 flex lg:flex-row  flex-col  lg:order-2  order-3 gap-y-2 space-y-2  text-sm col-span-2 items-start lg:mt-0 mt-3">
+                <li><a href="{{ route('subastas') }}"
+                        class="border border-casa-fondo-h rounded-full px-3 py-1 hover:bg-casa-black hover:text-casa-fondo-h">Subastas</a>
+                </li>
+                <li>
+                    <a href="{{ route('adquirentes.create') }}"
+                        class="border border-casa-fondo-h rounded-full px-3 py-1 hover:bg-casa-black hover:text-casa-fondo-h">¿Primera
+                        vez?</a>
+                </li>
+                <li><a href="{{ route('comitentes.create') }}"
+                        class="border border-casa-fondo-h rounded-full px-3 py-1 hover:bg-casa-black hover:text-casa-fondo-h">¿Tenés
+                        algo para vender?</a>
+                </li>
+            </ul>
 
 
+            <ul class="flex  gap-3 col-span-1   justify-end lg:order-3  order-2">
+                <li>
+                    <a href="">
+                        <svg class="size-8  ">
+                            <use xlink:href="#instagram-foo"></use>
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <svg class="size-8  ">
+                            <use xlink:href="#whtz-foo"></use>
+                        </svg>
+                    </a>
+                </li>
+                <li>
+                    <a href="">
+                        <svg class="size-8  ">
+                            <use xlink:href="#mail-foo"></use>
+                        </svg>
+                    </a>
+                </li>
+            </ul>
 
         </div>
     </div>
-    {{-- </div> --}}
 
-    <div class="flex  w-full justify-between text-casa-fondo-h py-6 px-20 border-t-2 border-casa-base-2  bg-casa-black">
+
+    <div
+        class="flex  lg:flex-row flex-col w-full lg:justify-between   text-casa-fondo-h py-6 lg:px-24 px-4 border-t-2 border-casa-base-2  bg-casa-black  pb-10 text-start">
         <p>&copy; 2025 Creado por casablanca.ar</p>
-        <p>&copy; Diseñado por <a href="https://www.crabbystudio.com/" target="_blank" class="underline"> Crabby
-                Studio</a></p>
-
+        <p>&copy; Diseñado por
+            <a href="https://www.crabbystudio.com/" target="_blank" class="underline"> CrabbyStudio</a>
+        </p>
     </div>
 
 

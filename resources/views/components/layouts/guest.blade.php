@@ -59,19 +59,17 @@
 
 
         <nav x-data="{ scrolled: false }" @scroll.window="scrolled = window.pageYOffset > 50"
-            :class="{ 'opacity-35 ': scrolled, 'bg-transparent': !scrolled }"
-            class=" sticky top-0 z-50  flex  w-full -200 justify-between py-4 px-24  text-gray-800  border-b  border-gray-700 shadow-lg h-30 items-center hover:bg-casa-base   transition-all duration-1000 ease-in-out hover:opacity-100 ">
+            :class="{ 'opacity-20 ': scrolled, 'bg-transparent': !scrolled }"
+            class=" sticky top-0 z-50  flex  w-full -200 justify-between py-4 lg:px-24 px-4  text-gray-800  border-b  border-gray-700 shadow-lg lg:h-30 h-16 items-center hover:bg-casa-base   transition-all duration-1000 ease-in-out hover:opacity-100 ">
 
 
 
 
 
 
-            <div class="flex">
+            <div class="lg:flex hidden">
 
-
-
-                <div class="flex gap-4 text-gray-300">
+                <div class="flex  gap-4 text-gray-300 ">
 
                     <a href="" class="over:scale-105">
                         <svg fill="#fff" class="size-8 ">
@@ -94,45 +92,37 @@
                 </div>
 
 
-
                 <a href="{{ route('subastas') }}"
-                    class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black text-black ml-8 mr-4 h-fit">
+                    class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black text-black ml-8 mr-4 h-fit ">
                     Subastas
                 </a>
 
-                <a href=""
+                <a href="{{ route('adquirentes.create') }}"
                     class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black text-black h-fit">
                     ¿Primera vez?
                 </a>
 
-
-
             </div>
-            {{-- <div class="flex gap-4 text-gray-300">
-                  
-                    <a href="{{ route('adquirentes.create') }}"
-                        class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal bg-cyan-800">
-                        Adquirentes
-                    </a>
-                    <a href="{{ route('comitentes.create') }}"
-                        class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal bg-cyan-800">
-                        Comitentes
-                    </a> --}}
 
 
-            {{-- </div> --}}
+
 
 
             <a href="{{ route('home') }}" class=" over:scale-105">
-                <svg fill="#fff" class="w-59 h-7 ">
+                <svg fill="#fff" class="w-59  h-7  lg:flex hidden">
                     <use xlink:href="#casa-icon"></use>
+                </svg>
+
+                <svg fill="#fff" class="w-28  h-5  lg:hidden flex">
+                    <use xlink:href="#casa-icon-mb"></use>
                 </svg>
             </a>
 
 
-            <div class="flex">
-                <a href=""
-                    class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black mr-8 text-black  h-fit">
+            <div class="lg:flex hidden">
+
+                <a href="{{ route('comitentes.create') }}"
+                    class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black mr-8 text-black  h-fit lg:flex hidden">
                     ¿Tenés algo para vender?
                 </a>
 
@@ -143,12 +133,6 @@
                 @auth
 
 
-                    {{-- @unlessrole('adquirente')
-                            <a href="{{ url('/dashboard') }}"
-                                class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border txt-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal mr-8 bg-cyan-800 text-gray-300">
-                                Dashboard
-                            </a>
-                        @endunlessrole --}}
 
 
 
@@ -173,6 +157,10 @@
                 @endauth
             </div>
 
+            <div class="lg:hidden flex">
+                <x-dropdownlogfront-mb />
+
+            </div>
 
             {{-- </div> --}}
 
@@ -180,7 +168,7 @@
 
         <!-- Page Content -->
 
-        @livewire('counter-header')
+        {{-- @livewire('counter-header') --}}
 
         {{-- <main class=" bg-gray-900  px-4 lg:px-6  "> --}}
         {{-- bg-[repeating-linear-gradient(45deg,currentColor_0,currentColor_1px,transparent_1px,transparent_5px)] --}}
@@ -192,9 +180,11 @@
 
         {{-- </div> --}}
 
+        {{-- Route::get('/adquirentes/crear', [AdquirenteController::class, "create"])->name('adquirentes.create'); --}}
+        @if (!request()->routeIs('adquirentes.create', 'comitentes.create'))
+            <x-footer />
+        @endif
 
-
-        <x-footer />
     </div>
 
     @livewireScripts
