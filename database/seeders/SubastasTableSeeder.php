@@ -23,7 +23,7 @@ class SubastasTableSeeder extends Seeder
     try {
       $subastas = [
         [
-          'titulo' => 'Cuadros',
+          'titulo' => 'cuadros',
           'descripcion' => 'A curated set of 19th-century oak furniture, including a dining table and chairs.',
           'comision' => 15,
           'fecha_inicio' => '2025-06-15 10:00:00',
@@ -35,7 +35,7 @@ class SubastasTableSeeder extends Seeder
           'updated_at' => Carbon::now(),
         ],
         [
-          'titulo' => 'Relojes',
+          'titulo' => 'relojes',
           'descripcion' => 'A rare 1970s Rolex Submariner in excellent condition with original box.',
           'comision' => 20,
           'fecha_inicio' => '2025-06-20 09:00:00',
@@ -47,7 +47,7 @@ class SubastasTableSeeder extends Seeder
           'updated_at' => Carbon::now(),
         ],
         [
-          'titulo' => 'Varios',
+          'titulo' => 'varios',
           'descripcion' => 'Abstract acrylic painting by a rising contemporary artist, vibrant colors.',
           'comision' => 15,
           'fecha_inicio' => '2025-08-01 14:00:00',
@@ -59,7 +59,7 @@ class SubastasTableSeeder extends Seeder
           'updated_at' => Carbon::now(),
         ],
         [
-          'titulo' => 'Cuadros 2',
+          'titulo' => 'cuadros 2',
           'descripcion' => 'Fully restored 1965 Ford Mustang, red with white interior, low mileage.',
           'comision' => 20,
           'fecha_inicio' => '2025-08-25 12:00:00',
@@ -71,7 +71,7 @@ class SubastasTableSeeder extends Seeder
           'updated_at' => Carbon::now(),
         ],
         [
-          'titulo' => 'Muebles',
+          'titulo' => 'muebles',
           'descripcion' => 'Set of 50 rare coins from the 18th and 19th centuries, certified authentic.',
           'comision' => 20,
           'fecha_inicio' => '2025-08-05 08:00:00',
@@ -83,7 +83,7 @@ class SubastasTableSeeder extends Seeder
           'updated_at' => Carbon::now(),
         ],
         [
-          'titulo' => 'Vinos',
+          'titulo' => 'vinos',
           'descripcion' => 'Collection of 12 bottles of aged Bordeaux wines from top vineyards.',
           'comision' => 20,
           'fecha_inicio' => '2025-09-10 11:00:00',
@@ -95,7 +95,7 @@ class SubastasTableSeeder extends Seeder
           'updated_at' => Carbon::now(),
         ],
         [
-          'titulo' => 'Discos',
+          'titulo' => 'discos',
           'descripcion' => 'First edition of a classic novel, signed by the author, in pristine condition.',
           'comision' => 20,
           'fecha_inicio' => '2025-10-03 15:00:00',
@@ -107,7 +107,7 @@ class SubastasTableSeeder extends Seeder
           'updated_at' => Carbon::now(),
         ],
         [
-          'titulo' => 'Esculturas',
+          'titulo' => 'esculturas',
           'descripcion' => 'Gold and diamond necklace with matching earrings, crafted by a renowned designer.',
           'comision' => 19,
           'fecha_inicio' => '2025-08-30 13:00:00',
