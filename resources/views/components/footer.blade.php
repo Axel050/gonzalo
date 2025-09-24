@@ -8,7 +8,6 @@
             vender?</h2>
 
         <div class="flex  justify-between lg:flex-row flex-col lg:mt-0 mt-5 ">
-            http://127.0.0.1:8000/login
             <div class="flex flex-col lg:text-xl text-sm">
                 <p>Completá el formulario, contanos qué querés rematar y lo evaluamos sin compromiso.</p>
                 <p>Podés vender objetos únicos, antiguos, en desuso o con valor histórico o práctico.</p>

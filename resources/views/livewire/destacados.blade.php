@@ -15,10 +15,10 @@
 
                 <a href="{{ route('lotes.show', $des['id']) }}" class="absolute inset-0 lg:hidden z-10"></a>
 
-                <div class="flex lg:flex-row flex-col gap-x-4">
+                <div class="flex lg:flex-row flex-col gap-x-4 ">
 
                     {{-- <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $des['foto']) }}" class="size-36 obje " /> --}}
-                    <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $des['foto']) }}" class="size-36 obje " />
+                    <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $des['foto']) }}" class="size-36 mx-auto" />
 
                     {{-- <p class="font-semibold lg:text-xl text-sm  w-full  block lg:hidden ">{{ $des['titulo'] }} </p> --}}
 

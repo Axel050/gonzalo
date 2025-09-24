@@ -25,7 +25,7 @@
             </div>
 
             <div class= 'items-start  lg:w-60 w-full lg:mx-auto  '>
-                <label class="w-full text-start text-casa-black  text-base  font-bold">Apellido</label>
+                <label class="w-full text-start text-casca-black  text-base  font-bold">Apellido</label>
                 <div class="relative w-full mt-1">
                     <input wire:model="apellido"
                         class = 'lg:w-60  rounded-full border border-casa-black w-full text-gray-800 px-3  text-sm  py-1 lg:text-lg'
@@ -139,7 +139,12 @@
 
             <button type="submit"
                 class="bg-casa-black  text-casa-base mx-auto px-4 py-1 rounded-3xl mt-3 w-full lg:col-span-2 flex justify-between items-center lg:text-xl text-sm font-bold">
-                Enviar</button>
+                <span>Enviar</span>
+
+                <svg fill="#fff" class="lg:size-8 size-7 ">
+                    <use xlink:href="#arrow-right"></use>
+                </svg>
+            </button>
 
 
         </form>

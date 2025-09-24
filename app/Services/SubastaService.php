@@ -7,7 +7,52 @@ use App\Models\Subasta;
 class SubastaService
 {
 
-  public function getLotesActivos(Subasta $subasta)
+
+
+  public function getLotesActivos(Subasta $subasta, bool $conCaracteristicas = false)
+  {
+    if (!$subasta->isActiva()) {
+      throw new \Exception('Subasta no activa', 403);
+    }
+
+    $query = $subasta->lotesActivos();
+
+    // Si se piden características, se hace eager load
+    if ($conCaracteristicas) {
+      $query->with('valoresCaracteristicas');
+    }
+
+    return $query->get()->map(function ($lote) use ($subasta, $conCaracteristicas) {
+      $data = [
+        'id' => $lote->id,
+        'titulo' => $lote->titulo,
+        'foto' => $lote->foto1,
+        'descripcion' => $lote->descripcion,
+        'precio_base' => $lote->precio_base,
+        'puja_actual' => $lote->pujas->first()?->monto,
+        'tiempo_post_subasta_fin' => $lote->tiempo_post_subasta_fin,
+        'estado' => $lote->isActivoEnSubasta($subasta->id) ? 'activo' : 'inactivo',
+        'moneda_id' => $lote->moneda_id,
+        'tienePujas' => $lote->pujas()->exists(),
+      ];
+
+      if ($conCaracteristicas) {
+        // Ya están cargadas en memoria, no hace consultas extra
+        $data['caracteristicas'] = $lote->valoresCaracteristicas->pluck('valor');
+      }
+
+      return $data;
+    });
+  }
+
+
+
+
+
+
+
+
+  public function getLotesActivosaaa(Subasta $subasta)
   {
 
 
@@ -29,6 +74,7 @@ class SubastaService
         'estado' => $lote->isActivoEnSubasta($subasta->id) ? 'activo' : 'inactivo',
         'moneda_id' => $lote->moneda_id,
         'tienePujas' => $lote->pujas()->exists(),
+        "caracteristicas" => $lote->valoresCaracteristicas()->pluck('valor')
       ];
     });
   }
@@ -65,17 +111,23 @@ class SubastaService
 
 
 
-  public function getLotesProximos(Subasta $subasta)
+  public function getLotesProximos(Subasta $subasta, bool $conCaracteristicas = false)
   {
-
 
     if (!$subasta->isProxima()) {
       throw new \Exception('Subasta no disponible', 403);
     }
-    info("pasosoo");
 
-    return $subasta->lotesProximos()->get()->map(function ($lote) use ($subasta) {
-      return [
+    $query = $subasta->lotesProximos();
+
+    // Si se piden características, se hace eager load
+    if ($conCaracteristicas) {
+      $query->with('valoresCaracteristicas');
+    }
+
+
+    return $query->get()->map(function ($lote) use ($subasta, $conCaracteristicas) {
+      $data = [
         'id' => $lote->id,
         'titulo' => $lote->titulo,
         'foto' => $lote->foto1,
@@ -86,6 +138,13 @@ class SubastaService
         'estado' => $lote->isActivoEnSubasta($subasta->id) ? 'activo' : 'inactivo',
         'moneda_id' => $lote->moneda_id,
       ];
+
+      if ($conCaracteristicas) {
+        // Ya están cargadas en memoria, no hace consultas extra
+        $data['caracteristicas'] = $lote->valoresCaracteristicas->pluck('valor');
+      }
+
+      return $data;
     });
   }
 
@@ -118,17 +177,24 @@ class SubastaService
 
 
 
-  public function getLotesPasados(Subasta $subasta)
+  public function getLotesPasados(Subasta $subasta, bool $conCaracteristicas = false)
   {
 
-    info("PASADOS SERVIVE ");
     if (!$subasta->isPasada()) {
       throw new \Exception('Subasta no disponible', 403);
     }
-    info("pasosoo");
 
-    return $subasta->lotesPasados()->get()->map(function ($lote) use ($subasta) {
-      return [
+    $query = $subasta->lotesPasados();
+
+    // Si se piden características, se hace eager load
+    if ($conCaracteristicas) {
+      $query->with('valoresCaracteristicas');
+    }
+
+
+
+    return $query->get()->map(function ($lote) use ($subasta, $conCaracteristicas) {
+      $data = [
         'id' => $lote->id,
         'titulo' => $lote->titulo,
         'foto' => $lote->foto1,
@@ -140,6 +206,13 @@ class SubastaService
         'moneda_id' => $lote->moneda_id,
         'estado_lote' => $lote->lote_estado,
       ];
+
+      if ($conCaracteristicas) {
+        // Ya están cargadas en memoria, no hace consultas extra
+        $data['caracteristicas'] = $lote->valoresCaracteristicas->pluck('valor');
+      }
+
+      return $data;
     });
   }
 

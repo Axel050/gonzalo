@@ -128,7 +128,7 @@ class LotesProximos extends Component
     $this->search = is_string($search) ? trim($search) : '';
 
     // Siempre obtener TODOS los lotes frescos del servicio para buscar desde cero
-    $todosLosLotes = $subastaService?->getLotesProximos($this->subasta)?->toArray() ?? [];
+    $todosLosLotes = $subastaService?->getLotesProximos($this->subasta, true)?->toArray() ?? [];
 
     // Si no hay término de búsqueda, mostrar todos los lotes
     if (empty($this->search)) {
@@ -139,10 +139,24 @@ class LotesProximos extends Component
 
     // Filtrar desde TODOS los lotes, no desde los ya filtrados
     $searchLower = strtolower($this->search);
+    // $filteredLotes = collect($todosLosLotes)->filter(function ($lote) use ($searchLower) {
+    //   return str_contains(strtolower($lote['titulo'] ?? ''), $searchLower)
+    //     || str_contains(strtolower($lote['descripcion'] ?? ''), $searchLower);
+    // })->values()->toArray();
+
     $filteredLotes = collect($todosLosLotes)->filter(function ($lote) use ($searchLower) {
-      return str_contains(strtolower($lote['titulo'] ?? ''), $searchLower)
-        || str_contains(strtolower($lote['descripcion'] ?? ''), $searchLower);
+      $tituloMatch = str_contains(strtolower($lote['titulo'] ?? ''), $searchLower);
+      $descripcionMatch = str_contains(strtolower($lote['descripcion'] ?? ''), $searchLower);
+
+      // Buscar en características
+      $caracteristicasMatch = collect($lote['caracteristicas'] ?? [])
+        ->contains(function ($valor) use ($searchLower) {
+          return str_contains(strtolower($valor), $searchLower);
+        });
+
+      return $tituloMatch || $descripcionMatch || $caracteristicasMatch;
     })->values()->toArray();
+
 
     // Si hay coincidencias, mostrar solo los filtrados
     if (!empty($filteredLotes)) {

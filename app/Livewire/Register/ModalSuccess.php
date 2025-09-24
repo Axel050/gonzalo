@@ -8,7 +8,8 @@ use Livewire\Component;
 
 class ModalSuccess extends Component
 {
-  public $pas, $mail;
+  public $pas, $mail, $from;
+
 
   public function close()
   {

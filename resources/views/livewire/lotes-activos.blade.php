@@ -20,14 +20,14 @@
 
 
                 <button wire:click="todos"
-                    class="bg-casa-base-2 hover:bg-casa-black-h hover:text-casa-base border border-casa-base  text-casa-black rounded-full px-4 flex items-center justify-between  py-0.5 w-fit">
+                    class="bg-casa-base-2 hover:bg-casa-black-h hover:text-casa-base border border-casa-base  text-casa-black rounded-full px-4 flex items-center justify-between  py-0.5 w-fit lg:ml-20 ml-4">
                     Ver todos los lotes
                     <span class="text-xl leading-0 ml-8">X</span>
                 </button>
             </div>
 
 
-            <div class=" bg-casa-black flex  border rounded-full  w-fit  mx-auto justify-center  py-1 items-center mt-5 border-casa-black col-span-3 text-casa-base-2  px-14 text-lg"
+            <div class=" bg-casa-black flex  border rounded-full  w-fit  mx-auto justify-center  py-2 items-center mt-5 border-casa-black col-span-3 text-casa-base-2  lg:px-20 px-5 lg:text-xl text-lg"
                 wire:show="noSearch">
                 <button wire:click="$set('noSearch',false)">¡Sin resultados para <b>"{{ $search }}"</b>! <span
                         class="text-xl leading-0 ml-8 cursor-pointer">X</span></button>

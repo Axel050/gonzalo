@@ -8,23 +8,25 @@ use Illuminate\Database\Seeder;
 
 class MonedaSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
-    {
-        $tipo = [
-            [
-                'titulo' => 'Peso',                
-            ],
-            [
-                'titulo' => 'Dolar',                
-            ],
-            
-        ];
+  /**
+   * Run the database seeds.
+   */
+  public function run(): void
+  {
+    $tipo = [
+      [
+        'titulo' => 'Peso',
+        'signo' => '$'
+      ],
+      [
+        'titulo' => 'Dolar',
+        'signo' => 'U$S'
+      ],
 
-        foreach ($tipo as $tipo) {
-            Moneda::create($tipo);
-        }
+    ];
+
+    foreach ($tipo as $tipo) {
+      Moneda::create($tipo);
     }
+  }
 }

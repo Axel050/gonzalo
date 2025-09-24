@@ -3,15 +3,14 @@
 namespace Database\Seeders;
 
 use App\Enums\LotesEstados;
-use App\Models\Comitente;
+use App\Enums\SubastaEstados;
 use App\Models\Contrato;
 use App\Models\ContratoLote;
 use App\Models\Lote;
 use App\Models\Moneda;
 use App\Models\Subasta;
-
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Arr;
+
 
 class ContratoLoteSeeder extends Seeder
 {
@@ -20,8 +19,6 @@ class ContratoLoteSeeder extends Seeder
    */
   public function run(): void
   {
-
-
 
 
 
@@ -41,7 +38,7 @@ class ContratoLoteSeeder extends Seeder
 
     foreach ($lotes as $item) {
       // Decidir aleatoriamente cuántos contratos tendrá este lote (1 a 3)
-      $numContratos = rand(1, 3); // Por ejemplo, entre 1 y 3 contratos
+      $numContratos = rand(1, 2); // Por ejemplo, entre 1 y 3 contratos
 
       if (!$item->foto1) {
         $numContratos = 1;
@@ -49,7 +46,7 @@ class ContratoLoteSeeder extends Seeder
       // Seleccionar contratos aleatorios sin repetición
       $contratosAsignados = $contratos->random(min($numContratos, $contratos->count()));
 
-      info(["contratos asfinados" => $contratosAsignados]);
+      // info(["contratos asfinados" => $contratosAsignados]);
       // Crear registros en ContratoLote para cada contrato asignado
       foreach ($contratosAsignados as $contrato) {
         ContratoLote::updateOrCreate(
@@ -65,19 +62,35 @@ class ContratoLoteSeeder extends Seeder
       }
     }
 
+
     // Actualizar ultimo_contrato para cada Lote
     foreach ($lotes as $lote) {
-      // Encontrar el contrato más reciente asociado al lote en contrato_lotes
-      $ultimoContrato = ContratoLote::where('lote_id', $lote->id)
-        ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
-        ->orderBy('contratos.fecha_firma', 'desc')
-        ->value('contrato_lotes.contrato_id');
 
-      // Actualizar el campo ultimo_contrato
+      $ultimoContrato = Contrato::where('id', $lote->ultimo_contrato)->value("subasta_id");
+
       if ($ultimoContrato) {
-        $lote->update([
-          'ultimo_contrato' => $ultimoContrato,
-        ]);
+
+        // SI ES PROXIMA SUB 
+        $sub_id = $lote->ultimoContrato?->subasta_id;
+        $sub = Subasta::find($ultimoContrato);
+
+        $estado = match ($sub->estado) {
+          SubastaEstados::INACTIVA => LotesEstados::ASIGNADO,
+          SubastaEstados::ACTIVA, SubastaEstados::ENPUJA => LotesEstados::EN_SUBASTA,
+          SubastaEstados::FINALIZADA => $lote->pujas()->exists()
+            ? LotesEstados::VENDIDO
+            : ($lote->estado === LotesEstados::STANDBY ? LotesEstados::STANDBY : LotesEstados::DISPONIBLE),
+          default => $lote->estado, // si no cambia
+        };
+
+        info(["Subasta estado" => $sub->estado]);
+        info([" Estado" => $estado]);
+        $lote->update(['estado' => $estado]);
+
+
+        // $lote->update([
+        //   'ultimo_contrato' => $ultimoContrato,
+        // ]);
       } else {
         $this->command->warn("Lote ID {$lote->id} no tiene contratos asociados. ultimo_contrato queda como null.");
       }

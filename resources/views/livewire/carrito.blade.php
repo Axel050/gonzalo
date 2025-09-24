@@ -225,6 +225,9 @@
 
         </div>
 
+
+
+
         <div class="flex flex-col  lg:p-12 p-4 border border-casa-black lg:mx-0 mx-3 lg:self-stretch ">
             <h3 class="font-bold lg:text-3xl   text-lg mb-4">Resumen</h3>
             <p class="lg:text-xl text-sm font-semibold">Lorem ipsum</p>

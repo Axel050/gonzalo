@@ -28,7 +28,7 @@ class AdquirentesSeeder extends Seeder
         'user' => [
           'name' => 'Lucas Fernández',
           'email' => 'lucas.fernandez@example.com',
-          'password' => bcrypt('password123'),
+          'password' => bcrypt('12345678'),
         ]
       ],
       [
@@ -43,7 +43,7 @@ class AdquirentesSeeder extends Seeder
         'user' => [
           'name' => 'Laura García',
           'email' => 'laura.garcia@example.com',
-          'password' => bcrypt('password456'),
+          'password' => bcrypt('12345678'),
         ]
       ],
       [
@@ -58,7 +58,7 @@ class AdquirentesSeeder extends Seeder
         'user' => [
           'name' => 'Martín Pérez',
           'email' => 'martin.perez@example.com',
-          'password' => bcrypt('password789'),
+          'password' => bcrypt('12345678'),
         ]
       ],
       [
@@ -73,7 +73,7 @@ class AdquirentesSeeder extends Seeder
         'user' => [
           'name' => 'Sofía Ramírez',
           'email' => 'sofia.ramirez@example.com',
-          'password' => bcrypt('password101'),
+          'password' => bcrypt('12345678'),
         ]
       ],
       [

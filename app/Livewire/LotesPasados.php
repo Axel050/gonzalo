@@ -127,7 +127,7 @@ class LotesPasados extends Component
     $this->search = is_string($search) ? trim($search) : '';
 
     // Siempre obtener TODOS los lotes frescos del servicio para buscar desde cero
-    $todosLosLotes = $subastaService?->getLotesPasados($this->subasta)?->toArray() ?? [];
+    $todosLosLotes = $subastaService?->getLotesPasados($this->subasta, true)?->toArray() ?? [];
 
     // Si no hay término de búsqueda, mostrar todos los lotes
     if (empty($this->search)) {
@@ -138,10 +138,20 @@ class LotesPasados extends Component
 
     // Filtrar desde TODOS los lotes, no desde los ya filtrados
     $searchLower = strtolower($this->search);
+
     $filteredLotes = collect($todosLosLotes)->filter(function ($lote) use ($searchLower) {
-      return str_contains(strtolower($lote['titulo'] ?? ''), $searchLower)
-        || str_contains(strtolower($lote['descripcion'] ?? ''), $searchLower);
+      $tituloMatch = str_contains(strtolower($lote['titulo'] ?? ''), $searchLower);
+      $descripcionMatch = str_contains(strtolower($lote['descripcion'] ?? ''), $searchLower);
+
+      // Buscar en características
+      $caracteristicasMatch = collect($lote['caracteristicas'] ?? [])
+        ->contains(function ($valor) use ($searchLower) {
+          return str_contains(strtolower($valor), $searchLower);
+        });
+
+      return $tituloMatch || $descripcionMatch || $caracteristicasMatch;
     })->values()->toArray();
+
 
     // Si hay coincidencias, mostrar solo los filtrados
     if (!empty($filteredLotes)) {
@@ -170,41 +180,6 @@ class LotesPasados extends Component
     $this->filtered = null;
     $this->searchParam = null;
     $this->dispatch("clearSearch");
-  }
-
-
-  // #[On('echo:subasta.{subasta.id},PujaRealizada')]
-  // public function actualizarLote($event)
-  // {
-  //   foreach ($this->lotes as &$lote) {
-  //     if ($lote['id'] == $event['lote_id']) {
-  //       $lote['puja_actual'] = $event['monto'];
-  //       $lote['tiempo_post_subasta_fin'] = $event['tiempo_post_subasta_fin'];
-  //       $lote['estado'] = $event['estado'];
-  //       break;
-  //     }
-  //   }
-  // }
-
-  public function mp(MPService $mpService)
-  {
-    $preference = $mpService->crearPreferencia("Deposito", 1, 300, 5, 6);
-
-    // info(["PPPP" => $preference]);
-  }
-
-
-
-  public function crearDevolucion(MPService $mpService)
-  {
-    info("CREEEEE");
-    try {
-      $de = $mpService->crearDevolucion(21);
-      //code...
-    } catch (\Throwable $th) {
-      //throw $th;
-      info(["EERRROORRR"  => $th]);
-    }
   }
 
 

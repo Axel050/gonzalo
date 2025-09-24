@@ -73,12 +73,12 @@
                         Subastas
                     </a>
 
-                    <a href=""
+                    <a href="{{ route('adquirentes.create') }}"
                         class=" text-sm border rounded-full px-3 py-1 border-black text-black h-fit w-fit">
                         ¿Primera vez?
                     </a>
 
-                    <a href=""
+                    <a href="{{ route('comitentes.create') }}"
                         class=" text-sm border rounded-full px-3 py-1 border-black mr-8 text-black  h-fit  w-fit">
                         ¿Tenés algo para vender?
                     </a>

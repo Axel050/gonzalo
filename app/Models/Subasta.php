@@ -149,6 +149,7 @@ class Subasta extends Model implements Auditable
       ->where('contratos.subasta_id', $this->id)
       ->where('lotes.estado', LotesEstados::EN_SUBASTA)
       ->where('contrato_lotes.estado', 'activo')
+      ->whereColumn('lotes.ultimo_contrato', 'contratos.id')
       ->where(function ($query) {
         $query
           ->whereNull('contrato_lotes.tiempo_post_subasta_fin')
@@ -161,6 +162,7 @@ class Subasta extends Model implements Auditable
         'lotes.foto1',
         'lotes.descripcion',
         'lotes.valuacion',
+        'lotes.tipo_bien_id',
         'lotes.ultimo_contrato',
         'lotes.estado as lote_estado',
         'contrato_lotes.moneda_id',
@@ -187,24 +189,7 @@ class Subasta extends Model implements Auditable
     return $query;
   }
 
-  public function lotesActivos2()
-  {
-    info(["Contratos lotesacticoa" => $this->contratos->toArray()]);
 
-
-    return $this->contratos()
-      ->join('contrato_lotes', 'contratos.id', '=', 'contrato_lotes.contrato_id')
-      ->join('lotes', 'contrato_lotes.lote_id', '=', 'lotes.id')
-      ->where('contrato_lotes.estado', 'activo')
-      // ->where(function ($query) {
-      //   $query->whereNull('contrato_lotes.tiempo_post_subasta_fin')
-      //     ->orWhere('contrato_lotes.tiempo_post_subasta_fin', '>=', now());
-      // })
-      ->select('lotes.*', 'contrato_lotes.precio_base', 'contrato_lotes.tiempo_post_subasta_fin', 'contrato_lotes.estado')
-      ->with(['pujas' => function ($query) {
-        $query->orderByDesc('id')->first();
-      }]);
-  }
 
   public function isActiva()
   {
@@ -236,6 +221,7 @@ class Subasta extends Model implements Auditable
       ->where('contratos.subasta_id', $this->id)
       ->where('lotes.estado', LotesEstados::ASIGNADO)
       ->where('contrato_lotes.estado', 'activo')
+      ->whereColumn('lotes.ultimo_contrato', 'contratos.id')
       ->select(
         'lotes.id',
         'lotes.titulo',
@@ -272,6 +258,7 @@ class Subasta extends Model implements Auditable
       ->where('lotes.estado', LotesEstados::ASIGNADO)
       ->where('contrato_lotes.estado', 'activo')
       ->where('lotes.destacado', true) // Filtro añadido
+      ->whereColumn('lotes.ultimo_contrato', 'contratos.id')
       ->select(
         'lotes.id',
         'lotes.titulo',
@@ -309,10 +296,12 @@ class Subasta extends Model implements Auditable
       ->where('lotes.estado', LotesEstados::ASIGNADO)
       ->where('contrato_lotes.estado', 'activo')
       ->where('lotes.destacado', true) // Filtro añadido
+      ->whereColumn('lotes.ultimo_contrato', 'contratos.id')
       ->select(
         'lotes.id',
         'lotes.titulo',
         'lotes.foto1',
+        'lotes.ultimo_contrato',
       );
 
     try {
@@ -365,6 +354,7 @@ class Subasta extends Model implements Auditable
         LotesEstados::STANDBY,
         LotesEstados::DISPONIBLE
       ])
+      ->whereColumn('lotes.ultimo_contrato', 'contratos.id')
       // ->where('contrato_lotes.estado', 'activo')
       ->select(
         'lotes.id',
@@ -408,7 +398,7 @@ class Subasta extends Model implements Auditable
         LotesEstados::DISPONIBLE
       ])
       ->where('lotes.destacado', true) // Filtro añadido
-      // ->where('contrato_lotes.estado', 'activo')
+      ->whereColumn('lotes.ultimo_contrato', 'contratos.id')
       ->select(
         'lotes.id',
         'lotes.titulo',

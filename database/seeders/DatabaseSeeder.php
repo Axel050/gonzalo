@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
     $this->call(AdquirentesSeeder::class);
     $this->call(AutorizadosSeeder::class);
     $this->call(MonedaSeeder::class);
+
     // $this->call(DeparatamentoPersonalSeeder::class);
 
     $this->call(PersonalSeeder::class);

@@ -29,7 +29,6 @@ class LoteSeeder extends Seeder
     // Rehabilitar claves foráneas
     DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-
     $comitentes = Comitente::all();
     $tiposBien  = TiposBien::all();
     $monedas    = Moneda::all();
@@ -48,13 +47,6 @@ class LoteSeeder extends Seeder
         continue;
       }
 
-      // Determine lot state based on subasta state
-      $estadoLote = match ($subasta->estado) {
-        'activa', 'enpuja' => LotesEstados::EN_SUBASTA,
-        'finalizada'       => Arr::random([LotesEstados::DISPONIBLE, 'vendido']),
-        'inactiva'         => 'asignado',
-        default            => LotesEstados::STANDBY,
-      };
 
       // Reset counter for each unique subasta title
       $numLotes = 4;
@@ -65,8 +57,8 @@ class LoteSeeder extends Seeder
 
         $estadoLote = match ($subasta->estado) {
           'activa', 'enpuja' => LotesEstados::EN_SUBASTA,
-          'finalizada'       => Arr::random([LotesEstados::DISPONIBLE, 'vendido']),
-          'inactiva'         => 'asignado',
+          'finalizada'       => Arr::random([LotesEstados::STANDBY, LotesEstados::VENDIDO]),
+          'inactiva'         => LotesEstados::ASIGNADO,
           default            => LotesEstados::STANDBY,
         };
 
@@ -74,9 +66,10 @@ class LoteSeeder extends Seeder
         $imagen = "{$subastaTitulo}{$contador}" . ".jpg";
         $imagen2 = "{$subastaTitulo}{$contador2}" . ".jpg";
 
-
         // Pick a random contract from the current subasta's contracts
-        $selectedContract = $relatedContratos->random();
+        // $selectedContract = $relatedContratos->random();
+        // Siempre tomar el contrato con ID más alto (el más reciente)
+        $selectedContract = $relatedContratos->sortByDesc('id')->first();
 
         $lote = Lote::create([
           'titulo'          => $titulo,
@@ -91,6 +84,7 @@ class LoteSeeder extends Seeder
           'estado'          => $estadoLote,
           'destacado' =>  rand(0, 3) >= 1,
         ]);
+
 
         // Pivot coherente: only with the selected contract
         ContratoLote::updateOrCreate(

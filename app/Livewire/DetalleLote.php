@@ -141,7 +141,7 @@ class DetalleLote extends Component
 
 
     $this->moneda = $this->lote?->moneda;
-    $this->loadLotes();
+    // $this->loadLotes();
 
     if ($this->moneda) {
       $this->moneda = Moneda::find($this->moneda)->value("signo");
@@ -220,9 +220,12 @@ class DetalleLote extends Component
 
 
 
-    info("caracteristicas");
+
+
+
+    // info("caracteristicas");
     $this->caracteristicas =  $this->lote->tipo->caracteristicas()->get();
-    info($this->caracteristicas);
+    // info(["caracteristicas" => $this->caracteristicas->toArray()]);
     $this->formData = [];
     foreach ($this->caracteristicas as $caracteristica) {
       $this->formData[$caracteristica->id] = '';
@@ -232,12 +235,16 @@ class DetalleLote extends Component
         $valorCaracteristica = $this->lote->valoresCaracteristicas()
           ->where('caracteristica_id', $caracteristica->id)
           ->first();
+        // info(["vañor" => $valorCaracteristica]);
         if ($valorCaracteristica) {
           $this->formData[$caracteristica->id] = $valorCaracteristica->valor;
         }
       }
     }
   }
+
+
+
 
 
 

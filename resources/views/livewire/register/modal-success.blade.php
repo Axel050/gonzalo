@@ -4,15 +4,21 @@
 
     <div
         class = ' border  border-gray-500   md:max-w-xl  lg:w-[40%] w-[90%] x-auto  z-50  shadow-gray-400 shadow-md max-h-[95%] 
-                                                    transition delay-150 duration-300 ease-in-out  rounded-2xl  hover:scale-110'>
+                                                    transition delay-150 duration-300 ease-in-out  rounded-2xl  hover:lg:scale-110 hover:scale-105'>
 
         <div
-            class=" py-9 text-gray-700  text-start rounded-xl ml-0 flex flex-col bg-green-500 justify-center items-center">
-            <h2 class="text-white text-2xl text-center font-bold">¡Registro exitoso!</h2>
+            class=" py-9 text-gray-700  text-start rounded-xl ml-0 flex flex-col bg-casa-base-2 justify-center items-center">
+            <h2 class="text-casa-black text-2xl text-center font-bold">¡Registro exitoso!</h2>
 
-            <div class="flex text-white justify-center mt-12 gap-10">
-                <button class="bg-cyan-900  rounded-2xl px-3 py-1 hover:bg-cyan-950" wire:click="close">Login</button>
-                <button class="bg-orange-900  rounded-2xl px-3 py-1 hover:bg-orange-950" wire:click="home">Home</button>
+            <div class="flex text-casa-black justify-center mt-12 gap-10">
+                @if ($from)
+                    <button
+                        class="bg-casa-base  rounded-2xl px-6 py-1 hover:bg-casa-black border border-casa-black hover:text-casa-base"
+                        wire:click="close">Login</button>
+                @endif
+                <button
+                    class="bg-casa-black  rounded-2xl px-6 py-1 hover:bg-casa-base hover:text-casa-black border border-casa-black text-casa-base"
+                    wire:click="home">Ir a inicio</button>
 
             </div>
         </div>
