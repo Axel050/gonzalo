@@ -320,7 +320,7 @@
             <div class="flex flex-col bg-casa-black px-5 py-10 font-semibold text-casa-base my-30 gap-y-8">
 
                 <h2 class="bg-casa-black lg:px-15  mx-auto lg:text-3xl text-xl">
-                    ¡Agrega lotes para empear apujar!</h2>
+                    ¡Agrega lotes para empezar a pujar!</h2>
                 <a href="{{ route('subastas') }}"
                     class="bg-casa-base-2 text-casa-black text-xl px-8 py-2 rounded-full w-fit mx-auto text-center">Subastas</a>
             </div>

@@ -64,9 +64,9 @@
 
                 @forelse ($lotes as $lote)
                     <div
-                        class=" bg-casa-base-2 bas flex flex-col lg:p-6 p-2 gap-y-1 lg:border border-casa-black lg:w-[394px]  lg:min-w-[300px] w-[44%] relative">
+                        class=" bg-casa-base-2 bas flex flex-col lg:p-6 p-2 gap-y-1 lg:border border-casa-black lg:w-[394px]  lg:min-w-[300px] min-w-[44%] relative">
 
-                        <div class="flex justify-between items-center">
+                        <div class="flex justify-between items-center ">
 
                             <p class="font-bold lg:text-3xl text-sm w-full  mr-3">{{ $lote['titulo'] }}</p>
 

@@ -104,6 +104,7 @@ class LotesSearch extends Component
         ->whereIn('contratos.subasta_id', $idsSubastas)
         // ->where('lotes.estado', $estadoLote)
         ->where('contrato_lotes.estado', 'activo')
+        ->whereColumn('lotes.ultimo_contrato', 'contratos.id')
         ->when($this->search, function ($q) {
           $q->where(function ($q2) {
             $q2->where('lotes.titulo', 'like', '%' . $this->search . '%')
