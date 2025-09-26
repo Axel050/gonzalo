@@ -1,20 +1,15 @@
 <div class="flex flex-col justify-center items-center hvh w-full  pt-0 ">
 
     @if ($method == 'noHabilitado')
-        @livewire('modal-no-habilitado-pujar', ['subasta' => $lote->ultimoContrato?->subasta_id, 'adquirente' => $adquirente->id, 'lote' => $lote_id], key('modal-contrato-lotes-'))
+        @livewire('modal-no-habilitado-pujar', ['subasta' => $lote->ultimoContrato?->subasta_id, 'adquirente' => $adquirente->id, 'lote' => $lote_id])
     @endif
-
 
 
     {{--  --}}
     {{-- <article class=" flex lg:flex-row flex-col p-4 mt-20 g-blue-600  shadow-lg rounded-2xl mb-10 bg-green-100"> --}}
+
     <article
         class=" grid lg:grid-cols-2 grid-cols-1 p-4 lg:mt-20 mt-10 g-blue-600  shadow-lg rounded-2xl mb-10 lg:w-auto w-full">
-
-
-
-
-
 
         <div x-data="{
             records: @js($records),
@@ -109,7 +104,6 @@
             </div>
 
         </div>
-
 
 
         {{-- SECOND --}}
@@ -242,7 +236,7 @@
                                 <button
                                     class="bg-casa-black hover:bg-casa-base-2 text-casa-base hover:text-casa-black border border-casa-black rounded-full px-4 flex items-center justify-between gap-x-5 py-1 max-w-90 mt-4"
                                     wire:click="addCarrito">
-                                    Agregar al carrito
+                                    Hace click para ofertar
                                     <svg fill="#fff" class="size-8 ">
                                         <use xlink:href="#arrow-right"></use>
                                     </svg>
@@ -251,7 +245,7 @@
                                 <a href="{{ route('pre-carrito') }}"
                                     class="bg-casa-fondo hover:bg-casa-black hover:text-casa-base  text-casa-black border  border-casa-black rounded-full px-4 flex items-center justify-between gap-x-5 py-1 max-w-90 mt-4"
                                     wire:click="addCarrito">
-                                    Agregado a tu carrito
+                                    Ver tus lotes
                                     <svg fill="#fff" class="size-8 ">
                                         <use xlink:href="#arrow-right"></use>
                                     </svg>
@@ -264,12 +258,18 @@
                                 </div>
                             @endif
                         @else
+                            {{-- NOT DEPOSITO --}}
                             <button
-                                class="bg-casa-black hover:bg-casa-black-h text-gray-50 rounded-full px-4 flex items-center justify-between gap-x-5 py-1 max-w-90 mt-4">
-                                Registrate para ofertar
+                                class="bg-casa-black hover:bg-casa-black-h text-gray-50 rounded-full px-4 flex items-center justify-between gap-x-5 py-1 max-w-90 mt-4"
+                                wire:click="$set('method','noHabilitado')">
+
+                                {{-- Registrate para ofertar --}}
+                                Hace click para ofertar
+
                                 <svg fill="#fff" class="size-8 ">
                                     <use xlink:href="#arrow-right"></use>
                                 </svg>
+
                             </button>
                         @endif
                     @elseif ($lote->estado != 'en_subasta' && $subasta->estado == 'finalizada')

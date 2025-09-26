@@ -19,10 +19,11 @@ class MPService
   }
 
 
-  public function crearPreferencia($title, $quantity, $price, $adquirente = null, $subasta = null, $lote = null)
+  public function crearPreferencia($title, $quantity, $price, $adquirente = null, $subasta = null, $lote = null, $route = null)
   {
 
     info(["SUUBASTA   " => $subasta, "ADQUIRENTE " => $adquirente]);
+    info(["SUUBASTA   MP " => $route]);
     // $garantiaExistente = Garantia::where('adquirente_id', $adquirenteId)
     //   ->where('subasta_id', $subastaId)
     //   ->first();
@@ -50,7 +51,8 @@ class MPService
         ]
       ],
       "back_urls" => [
-        "success" => config('services.mercadopago.host') . "/success",
+        // "success" => config('services.mercadopago.host') . "/success",
+        "success" => config('services.mercadopago.host') . $route,
         "failure" => config('services.mercadopago.host') . "/failure",
         "pending" => config('services.mercadopago.host') . "/pending"
       ],

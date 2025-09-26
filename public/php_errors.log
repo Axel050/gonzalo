@@ -1,0 +1,1 @@
+[26-Sep-2025 11:36:46 America/Argentina/Buenos_Aires] PHP Fatal error:  Maximum execution time of 30 seconds exceeded in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Routing\Redirector.php on line 9

@@ -157,7 +157,17 @@
                 @endauth
             </div>
 
+
+
             <div class="lg:hidden flex">
+                @role('adquirente')
+                    <a href="{{ route('pre-carrito') }}" class=" px-2 rounded  mr-1">
+                        <svg fill="#fff" class="size-8">
+                            <use xlink:href="#cart"></use>
+                        </svg>
+                    </a>
+                @endrole
+
                 <x-dropdownlogfront-mb />
 
             </div>
@@ -168,7 +178,7 @@
 
         <!-- Page Content -->
 
-        @livewire('counter-header')
+        {{-- @livewire('counter-header') --}}
 
         {{-- <main class=" bg-gray-900  px-4 lg:px-6  "> --}}
         {{-- bg-[repeating-linear-gradient(45deg,currentColor_0,currentColor_1px,transparent_1px,transparent_5px)] --}}

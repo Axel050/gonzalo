@@ -91,7 +91,8 @@
 
                                 </div>
 
-                                <p class="">Lorem ipsum dolor sit amet consectetur. Vehicula adipiscing
+                                <p class="lg:text-xl text-sm">Lorem ipsum dolor sit amet consectetur. Vehicula
+                                    adipiscing
                                     pellentesque
                                     volutpat dui
                                     rhoncus neque

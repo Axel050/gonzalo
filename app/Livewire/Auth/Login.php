@@ -67,7 +67,7 @@ class Login extends Component
     // $user = $request->user();
     if ($user->hasRole('adquirente')) {
       // session()->forget('url.intended');
-      $this->redirectIntended(default: route('adquirentes.perfil', absolute: false), navigate: false);
+      $this->redirectIntended(default: route('home', absolute: false), navigate: false);
     } else {
       $this->redirectIntended(default: route('dashboard', absolute: false), navigate: true);
     }

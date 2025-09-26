@@ -40,13 +40,13 @@
                         </svg>
                     </p>
 
-                    @role('adquirente')
+                    {{-- @role('adquirente')
                         <a href="{{ route('pre-carrito') }}" class=" px-2 rounded    pt-1">
                             <svg fill="#fff" class="size-7">
                                 <use xlink:href="#cart"></use>
                             </svg>
                         </a>
-                    @endrole
+                    @endrole --}}
 
                     @role(['admin', 'super-admin'])
                         <a href="{{ url('/dashboard') }}"

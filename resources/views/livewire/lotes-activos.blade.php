@@ -20,31 +20,32 @@
 
 
                 <button wire:click="todos"
-                    class="bg-casa-base-2 hover:bg-casa-black-h hover:text-casa-base border border-casa-base  text-casa-black rounded-full px-4 flex items-center justify-between  py-0.5 w-fit lg:ml-20 ml-4">
+                    class="bg-casa-base-2 hover:bg-casa-black-h hover:text-casa-base border border-casa-base  text-casa-black rounded-full px-4 flex items-center justify-between  py-0.5 w-fit sm:ml-20 ml-4">
                     Ver todos los lotes
                     <span class="text-xl leading-0 ml-8">X</span>
                 </button>
             </div>
 
 
-            <div class=" bg-casa-black flex  border rounded-full  w-fit  mx-auto justify-center  py-2 items-center mt-5 border-casa-black col-span-3 text-casa-base-2  lg:px-20 px-5 lg:text-xl text-lg"
+            <div class=" bg-casa-black flex  border rounded-full  w-fit  mx-auto justify-center  py-2 items-center mt-5 border-casa-black col-span-3 text-casa-base-2  sm:px-20 px-5 sm:text-xl text-lg"
                 wire:show="noSearch">
                 <button wire:click="$set('noSearch',false)">¡Sin resultados para <b>"{{ $search }}"</b>! <span
                         class="text-xl leading-0 ml-8 cursor-pointer">X</span></button>
 
             </div>
 
-            <div class="flex flex-wrap  mt-10 lg:gap-12 gap-2 place-content-center justify-center max-w-[1440px]">
+            <div
+                class="flex flex-wrap  mt-10 sm:gap-8 md:gap-10 lg:gap-12  gap-2 place-content-center justify-center max-w-[1440px]">
 
 
 
 
                 @forelse ($lotes as $lote)
                     <div
-                        class=" bg-casa-base-2 bas flex flex-col lg:p-6 p-2 gap-y-1 lg:border border-casa-black lg:w-[394px]  lg:min-w-[300px] min-w-[44%] relative">
+                        class=" bg-casa-base-2 bas flex flex-col sm:p-6 p-2 gap-y-1 sm:border border-casa-black sm:w-[394px]  sm:min-w-[350px] md:min-w-[380px] min-w-[44%] relative">
 
-                        <div class="flex justify-between items-center lg:order-1 order-2">
-                            <p class="font-bold lg:text-3xl text-sm w-full  mr-3">{{ $lote['titulo'] }}</p>
+                        <div class="flex justify-between items-center sm:order-1 order-2">
+                            <p class="font-bold sm:text-3xl text-sm w-full  mr-3">{{ $lote['titulo'] }}</p>
 
                             @if ($lote['tienePujas'])
                                 <x-hammer />
@@ -54,34 +55,34 @@
 
                         </div>
 
-                        <div class="flex gap-x-4 justify-center my-2 lg:order-2 order-1">
+                        <div class="flex gap-x-4 justify-center my-2 sm:order-2 order-1">
 
                             <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote['foto']) }}"
-                                class="lg:size-49 size-20  " />
+                                class="sm:size-49 size-20  " />
 
                         </div>
 
 
-                        <p class="text-xl mb-2 lg:block hidden lg:order-3">{{ $lote['descripcion'] }}. </p>
+                        <p class="text-xl mb-2 sm:block hidden sm:order-3">{{ $lote['descripcion'] }}. </p>
 
                         @php
                             $signo;
                         @endphp
-                        <p class="lg:text-xl text-sm  mt-auto lg:order-4 order-3">Base:
+                        <p class="sm:text-xl text-sm  mt-auto sm:order-4 order-3">Base:
                             {{ $this->getMonedaSigno($lote['moneda_id']) }}{{ $lote['precio_base'] }}</p>
-                        <p class="lg:text-xl text-sm font-semibold lg:mb-3 lg:order-5 order-4">
-                            <span class="lg:inline-block hidden ">Oferta actual: </span>
-                            <span class="lg:hidden ">Actual: </span>
+                        <p class="sm:text-xl text-sm font-semibold sm:mb-3 sm:order-5 order-4">
+                            <span class="sm:inline-block hidden ">Oferta actual: </span>
+                            <span class="sm:hidden ">Actual: </span>
                             {{ $this->getMonedaSigno($lote['moneda_id']) }}{{ $lote['puja_actual'] ?? 0 }}
                         </p>
 
 
 
-                        <a href="{{ route('lotes.show', $lote['id']) }}" class="absolute inset-0 lg:hidden z-10"></a>
+                        <a href="{{ route('lotes.show', $lote['id']) }}" class="absolute inset-0 sm:hidden z-10"></a>
 
                         <a href="{{ route('lotes.show', $lote['id']) }}"
-                            class="hover:text-casa-black bg-casa-black text-gray-50  hover:bg-casa-base  border border-black rounded-full px-4 lg:flex items-center justify-between  py-2  w-full  text-xl font-bold mb-2  hidden  order-6">
-                            <span class="lg:inline-block hidden">Ver detalle</span>
+                            class="hover:text-casa-black bg-casa-black text-gray-50  hover:bg-casa-base  border border-black rounded-full px-4 sm:flex items-center justify-between  py-2  w-full  text-xl font-bold mb-2  hidden  order-6">
+                            <span class="sm:inline-block hidden">Ver detalle</span>
                             <svg class="size-8 ">
                                 <use xlink:href="#arrow-right"></use>
                             </svg>

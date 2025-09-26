@@ -19,7 +19,10 @@ class DetalleLote extends Component
   protected $subastaService;
   public $destacados;
   public $modal_foto;
+  // public $modal_foto;
   public $modal_index = 0;
+
+  public $modal_ofertar;
 
 
   public $id;

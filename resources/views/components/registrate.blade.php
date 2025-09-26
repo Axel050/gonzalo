@@ -1,7 +1,6 @@
 <article
     class="g-red-500 flex idden  lg:w-5/6 w-full  lg:justify-center justify-start flex-col lg:mt-10 mt-6 mb-8 mx-auto lg:px-12 lg:py-12 px-6 py-10  bg-casa-fondo-h border border-casa-black">
-    <h2 class=" font-bold lgtext-3xl  text-xl lg:text-center text-start">Registrate para poder
-        ofertar</h2>
+    <h2 class=" font-bold lgtext-3xl  text-xl lg:text-center text-start">¿Como puedo ofertar?</h2>
 
     <div
         class="     lg:grid lg:grid-cols-3 grid-cols-1     w-6/6  mx-auto justify-between lg:pl-3 lg:pr-1 py-1 items-start lg:mt-5 mt-4 border-casa-black lg:text-xl text-sm gap-8 ">
@@ -32,7 +31,8 @@
 
 
     <button
-        class="bg-casa-black hover:bg-transparent hover:text-casa-black border border-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  py-1  col-span-3 mx-auto mt-5 lg:text-xl font-semibold text-sm lg:w-fit lg w-full">
+        class="bg-casa-black hover:bg-transparent hover:text-casa-black border border-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  py-1  col-span-3 mx-auto mt-5 lg:text-xl font-semibold text-sm lg:w-fit lg w-full"
+        wire:click="mp">
         Quiero entrar
         <svg class="size-7 ml-5">
             <use xlink:href="#arrow-right"></use>

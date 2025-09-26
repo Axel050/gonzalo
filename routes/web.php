@@ -144,8 +144,8 @@ Route::get('/subastas/{subasta}/lotes', [AdquirenteController::class, 'getLotes'
 Route::get(
   '/success',
   function () {
-    // return redirect()->route('lotes.show', ['id' => 123]);
-    return "<h1> SUCEESS</h1>";
+    return redirect()->route('lotes.show', ['id' => 17]);
+    // return "<h1> SUCEESS</h1>";
   }
 );
 
