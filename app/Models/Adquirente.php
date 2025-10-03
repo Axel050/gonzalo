@@ -30,7 +30,6 @@ class Adquirente extends Model implements Auditable
   ];
 
 
-
   public function carrito()
   {
     return $this->hasOne(Carrito::class);
@@ -64,5 +63,24 @@ class Adquirente extends Model implements Auditable
       ->where('subasta_id', $subasta_id)
       ->where('estado', 'pagado')
       ->exists();
+  }
+
+
+  public function lotesVendidosEnCarrito()
+  {
+    return $this->hasOne(Carrito::class)
+      ->with(['lotes' => function ($query) {
+        $query->whereHas('subastas', function ($subQuery) {
+          $subQuery->where('estado', 'vendido');
+        });
+      }]);
+  }
+
+  public function garantiaMonto(int $subasta_id): int
+  {
+    return (int) $this->garantias()
+      ->where('subasta_id', $subasta_id)
+      ->where('estado', 'pagado')
+      ->value('monto') ?? 0;
   }
 }

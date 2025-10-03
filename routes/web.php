@@ -112,9 +112,9 @@ Route::get('/lotes/{id}', function ($id) {
   return view('detalle-lotes', compact("id"));
 })->name('lotes.show')->middleware(['auth']);;
 
-Route::get('/pre-carrito', function () {
-  return view('pre-carrito');
-})->name('pre-carrito')->middleware(['auth']);
+Route::get('/pantalla-pujas', function () {
+  return view('pantalla-pujas');
+})->name('pantalla-pujas')->middleware(['auth']);
 
 Route::get('/carrito', function () {
   return view('carrito');

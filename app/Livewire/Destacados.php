@@ -20,7 +20,9 @@ class Destacados extends Component
   public $monedas;
   public $lote;
   public $destacados;
+  public $from;
   protected $subastaService;
+  // protected $subastaService;
   // protected $subastaService;
 
 
@@ -40,6 +42,7 @@ class Destacados extends Component
   {
     try {
       info("lotesClass");
+      info(["lotesClass5555" => $this->from]);
 
       // match ($this->route) {
       //   'en_subasta' => 'subasta.lotes',
@@ -47,17 +50,26 @@ class Destacados extends Component
       //   default => 'subasta-pasadas.lotes'
       // };
 
+      if ($this->from == "home") {
+        $this->destacados = $this->subastaService?->getLotesActivosDestacadosHome()->toArray();
+        info(["HOME" => $this->destacados]);
+      } else {
+        # code...
 
-      // $this->destacados = $this->subastaService?->getLotesActivosDestacados($this->subasta)?->toArray();
-      $metodo = match ($this->route) {
-        'subasta-proximas.lotes'   => 'getLotesProximosDestacados',
-        'subasta-pasadas.lotes'      => 'getLotesPasadosDestacados',
-        default => 'getLotesActivosDestacados',
-      };
 
-      $this->destacados = $this->subastaService?->{$metodo}($this->subasta)?->toArray();
+        // $this->destacados = $this->subastaService?->getLotesActivosDestacados($this->subasta)?->toArray();
+        $metodo = match ($this->route) {
+          'subasta-proximas.lotes'   => 'getLotesProximosDestacados',
+          'subasta-pasadas.lotes'      => 'getLotesPasadosDestacados',
+          default => 'getLotesActivosDestacados',
+        };
 
-      // info(["desssLIVE" => $this->destacados]);
+        $this->destacados = $this->subastaService?->{$metodo}($this->subasta)?->toArray();
+
+        // $this->destacados = $this->subastaService?->{$metodo}()?->toArray();
+
+        info(["desssLIVE" => $this->destacados]);
+      }
       // info(["lotesClass" => $this->destacados]);
       // $this->error = null;
     } catch (\Exception $e) {

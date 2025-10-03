@@ -125,7 +125,7 @@
 
             </h2>
             <ul
-                class="flex space-x-2 [&>li]:rounded-2xl [&>li]:border [&>li]:px-3 [&>li]:lg:py-1.5 [&>li]:py-0.5 [&>li]:border-gray-600 [&>li]:text-sm my-2 lg:text-sm text-xs ">
+                class="flex space-x-2 [&>li]:rounded-2xl  [&>li]:px-3 [&>li]:lg:py-1.5 [&>li]:py-0.5  [&>li]:text-sm my-2 lg:text-sm text-xs font-semibold">
                 <li>{{ $lote->tipo?->nombre }}</li>
                 <li>Lote: {{ $lote->id }}</li>
 
@@ -138,8 +138,9 @@
                     };
                 @endphp
 
-                <li>
-                    <a href="{{ route($route, $subasta->id) }}">Subasta: {{ $subasta->titulo }}</a>
+                <li class="border border-gray-600">
+                    <a href="{{ route($route, $subasta->id) }}" title="Ir a subasta muebles">Subasta:
+                        {{ $subasta->titulo }}</a>
                 </li>
 
 
@@ -242,7 +243,7 @@
                                     </svg>
                                 </button>
                             @else
-                                <a href="{{ route('pre-carrito') }}"
+                                <a href="{{ route('pantalla-pujas') }}"
                                     class="bg-casa-fondo hover:bg-casa-black hover:text-casa-base  text-casa-black border  border-casa-black rounded-full px-4 flex items-center justify-between gap-x-5 py-1 max-w-90 mt-4"
                                     wire:click="addCarrito">
                                     Ver tus lotes
@@ -252,7 +253,23 @@
                                 </a>
                             @endif
                             <x-input-error for="puja" class="absolute -bottom-1 text-red-800  text-lg" />
-                            @if (session('message'))
+
+
+                            <div x-data="{ message: '', redirect: '', delay: 2000 }"
+                                x-on:show-message-and-redirect.window="
+        message = $event.detail.message;
+        redirect = $event.detail.redirect;
+        delay = $event.detail.delay ?? 2000;
+
+        setTimeout(() => {
+            window.location.href = redirect;
+        }, delay);
+    ">
+                                <span x-text="message" class="text-green-600 font-semibold"></span>
+                            </div>
+
+
+                            @if (session('show-message-and-redirect'))
                                 <div class="text-green-600 text-lg ">
                                     {{ session('message') }}
                                 </div>
@@ -294,7 +311,7 @@
 
 
     {{-- $route --}}
-    <div class="lg:mt-10 mt-6">
+    <div class="lg:mt-10 mt-6  lg:w-fit w-full">
 
         @livewire('buscador', ['subasta_id' => $subasta->id, 'route' => $route])
 

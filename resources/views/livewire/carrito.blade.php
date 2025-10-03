@@ -45,13 +45,13 @@
                                 <li
                                     class="lg:px-3 px-2 lg:py-2 py-0.5 rounded-full border border-casa-black lg:text-sm text-xs w-fit">
                                     <a href="{{ route('lotes.show', $lote['id']) }}">
-                                        Lote: 29
+                                        Lote: {{ $lote['id'] }}
                                     </a>
                                 </li>
                                 <li
                                     class="lg:px-3 px-2 lg:py-2 py-0.5 rounded-full border border-casa-black lg:text-sm text-xs w-fit">
                                     <a href="{{ route('lotes.show', $lote['id']) }}">
-                                        Subasta: Objetos
+                                        Subasta: {{ $lote->ultimoContrato?->subasta?->titulo }}
                                     </a>
                                 </li>
                             </ul>
@@ -61,145 +61,14 @@
                                 class="font-bold lg:text-xl text-sm w-full  my-1 ">{{ $lote['titulo'] }}</a>
 
                             @php
-                                $actual =
-                                    optional($lote->getPujaFinal())->monto !== null
-                                        ? (int) $lote->getPujaFinal()->monto
-                                        : 0;
-
-                                if (is_int($actual)) {
-                                    $actual = number_format($actual, 0, ',', '.');
-                                }
-
-                                $signo = $this->getMonedaSigno($lote->moneda);
+                                // $signo = $this->getMonedaSigno($lote->moneda);
                             @endphp
 
 
 
 
-                            <p class="lg:text-xl text-sm font-bold mb-3"> {{ $signo }}{{ $actual }}
-                            </p>
-
-                            {{-- </div> --}}
-
-
-
-                        </div>
-
-
-                        <p
-                            class="text-center text-casa-black   border border-black rounded-full px-4   py-2    lg:text-xl text-sm  mb-2 font-bold  lg:w-fit w-full h-fit self-center  lg:col-span-1 col-span-3 self">
-                            El lote es tuyo
-                        </p>
-
-
-
-
-
-                    </div>
-                    <div
-                        class="w-full bg-casa-base-2  grid lg:grid-cols-4 grid-cols-3 lg:p-6 p-4 gap-y-1 lg:border border-casa-black justify-between">
-
-
-                        <div class="flex gap-x-4 justify-center  lg:size-34 size-20 col-span-1">
-                            <img src="{{ Storage::url('imagenes/lotes/normal/' . $lote->foto1) }}" class="w-full   " />
-                        </div>
-
-
-                        <div class="flex flex-col justify-center col-span-2">
-
-                            <ul class="flex lg:flex-row flex-col lg:gap-3 gap-2 text-sm">
-                                <li
-                                    class="lg:px-3 px-2 lg:py-2 py-0.5 rounded-full border border-casa-black lg:text-sm text-xs w-fit">
-                                    Lote: 29
-                                </li>
-                                <li
-                                    class="lg:px-3 px-2 lg:py-2 py-0.5 rounded-full border border-casa-black lg:text-sm text-xs w-fit">
-                                    Subasta: Objetos</li>
-                            </ul>
-
-
-                            <a href="{{ route('lotes.show', $lote['id']) }}"
-                                class="font-bold lg:text-xl text-sm w-full  my-1 ">{{ $lote['titulo'] }}</a>
-
-                            @php
-                                $actual =
-                                    optional($lote->getPujaFinal())->monto !== null
-                                        ? (int) $lote->getPujaFinal()->monto
-                                        : 0;
-
-                                if (is_int($actual)) {
-                                    $actual = number_format($actual, 0, ',', '.');
-                                }
-
-                                $signo = $this->getMonedaSigno($lote->moneda);
-                            @endphp
-
-
-
-
-                            <p class="lg:text-xl text-sm font-bold mb-3"> {{ $signo }}{{ $actual }}
-                            </p>
-
-                            {{-- </div> --}}
-
-
-
-                        </div>
-
-
-                        <p
-                            class="text-center text-casa-black   border border-black rounded-full px-4   py-2    lg:text-xl text-sm  mb-2 font-bold  lg:w-fit w-full h-fit self-center  lg:col-span-1 col-span-3 self">
-                            El lote es tuyo
-                        </p>
-
-
-
-
-
-                    </div>
-
-                    <div
-                        class="w-full bg-casa-base-2  grid idden lg:grid-cols-4 grid-cols-3 lg:p-6 p-4 gap-y-1 border border-casa-black justify-between">
-
-
-                        <div class="flex gap-x-4 justify-center  lg:size-34 size-20 col-span-1">
-                            <img src="{{ Storage::url('imagenes/lotes/normal/' . $lote->foto1) }}" class="w-full   " />
-                        </div>
-
-
-                        <div class="flex flex-col justify-center col-span-2">
-
-                            <ul class="flex lg:flex-row flex-col lg:gap-3 gap-2 text-sm">
-                                <li
-                                    class="lg:px-3 px-2 lg:py-2 py-0.5 rounded-full border border-casa-black lg:text-sm text-xs w-fit">
-                                    Lote: 29
-                                </li>
-                                <li
-                                    class="lg:px-3 px-2 lg:py-2 py-0.5 rounded-full border border-casa-black lg:text-sm text-xs w-fit">
-                                    Subasta: Objetos</li>
-                            </ul>
-
-
-                            <a href="{{ route('lotes.show', $lote['id']) }}"
-                                class="font-bold lg:text-xl text-sm w-full  my-1 ">{{ $lote['titulo'] }}</a>
-
-                            @php
-                                $actual =
-                                    optional($lote->getPujaFinal())->monto !== null
-                                        ? (int) $lote->getPujaFinal()->monto
-                                        : 0;
-
-                                if (is_int($actual)) {
-                                    $actual = number_format($actual, 0, ',', '.');
-                                }
-
-                                $signo = $this->getMonedaSigno($lote->moneda);
-                            @endphp
-
-
-
-
-                            <p class="lg:text-xl text-sm font-bold mb-3"> {{ $signo }}{{ $actual }}
+                            <p class="lg:text-xl text-sm font-bold mb-3">
+                                {{ $lote->moneda_signo }}{{ number_format($lote->monto_actual, 0, ',', '.') }}
                             </p>
 
                             {{-- </div> --}}
@@ -233,14 +102,30 @@
             <p class="lg:text-xl text-sm font-semibold">Lorem ipsum</p>
             <p class="lg:text-xl text-sm mb-3">Vehicula adipiscing pellentesque volutpat dui rhoncus neque urna</p>
 
-            <p class="lg:text-xl text-sm mb-3 flex justify-between border-t border-casa-black pt-1 mt-1">Seña
-                <b>-$2000</b>
-            </p>
+
+
+            <p class="lg:text-xl text-sm mb-0 flex justify-between border-t border-casa-black pt-1 mt-1">Seña</p>
+
+            <ul class=" ml-2">
+
+                {{-- @dump('DEBO CORROBAR EL ULTIMA PUJA ; NO SOLO QU ESTE DENRO DE L CARRITO DEL ADQUIERENTE Y SEA ESTADO VENDIDO ') --}}
+
+                @foreach ($garantiasAplicadas as $gar)
+                    <li class="flex justify-between">subasta: {{ $gar['subasta_titulo'] }}
+                        <span>{{ $gar['monto'] }}</span>
+                    </li>
+                @endforeach
+
+            </ul>
+            <b class="ml-auto">-$ {{ $descuentoGarantias }}</b>
+
+
             <p class="lg:text-xl text-sm mb-3 flex justify-between border-t border-casa-black pt-1">Lotes
-                <b>$100000</b>
+                <b>$ {{ $totalLotes }}</b>
             </p>
 
-            <p class="lg:text-3xl text-lg mb-3 flex justify-between border-t border-casa-black pt-1">Total <b>$1000</b>
+            <p class="lg:text-3xl text-lg mb-3 flex justify-between border-t border-casa-black pt-1">Total
+                <b>$ {{ $totalCarrito }}</b>
             </p>
 
 

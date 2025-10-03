@@ -20,34 +20,31 @@ class PujaRealizada implements ShouldBroadcast
   /**
    * Create a new event instance.
    */
-  public $subasta;
-  public $estado;
-  public $lotes;
+
   public $loteId;
   public $monto;
+  public $ultimoAdquirente;
+  public $signo;
 
-  public function __construct($loteId = null, $monto = null)
+
+  public function __construct($loteId = null, $monto = null, $puja = null, $ultimoAdquirente = null, $signo = null)
   {
     $this->loteId = $loteId;
     $this->monto = $monto;
+    $this->ultimoAdquirente = $ultimoAdquirente;
+    $this->signo = $signo;
   }
   /**
    * Get the channels the event should broadcast on.
    *
    * @return array<int, \Illuminate\Broadcasting\Channel>
    */
-  public function broadcastOn2(): array
-  {
-    return [
-      new PrivateChannel('channel-name'),
-    ];
-  }
+
 
   public function broadcastOn(): array
   {
     info("ENVENTO  PUJA");
     return [
-      // new Channel('my-channel' . 9),
       new Channel('my-channel'),
       // new Channel('subasta.' . $this->subasta->id),
     ];
@@ -59,18 +56,9 @@ class PujaRealizada implements ShouldBroadcast
     return [
       'loteId' => $this->loteId,
       'monto' => $this->monto,
+      'ultimoAdquirente' => $this->ultimoAdquirente,
+      'signo' => $this->signo,
+
     ];
   }
-  //   info("ENVEN WWW");
-  //   return [
-  //     'subasta_id' => $this->subasta->id,
-  //     'estado' => $this->estado,
-  //     'lotes' => $this->lotes,
-  //   ];
-  //   // return [
-  //   //   'subasta_id' => $this->subasta->id,
-  //   //   'estado' => $this->estado,
-  //   //   'lotes' => $this->lotes,
-  //   // ];
-  // }
 }

@@ -80,13 +80,20 @@ class DetalleLote extends Component
   public function addCarrito(CarritoService $carritoService)
   {
     try {
-      info("addddd");
+
       $carritoService->agregar(
         $this->adquirente->id,
         $this->lote->id
       );
-      session()->flash('message', 'Se agregó correctamente al carrito.');
+
       $this->inCart = true;
+
+      $this->dispatch(
+        'show-message-and-redirect',
+        message: 'Agregado a tus lotes con éxito.',
+        redirect: route('pantalla-pujas'),
+        delay: 2000
+      );
     } catch (ModelNotFoundException | InvalidArgumentException | DomainException $e) {
       $this->addError('puja', $e->getMessage());
       info("EERORO ADDD");

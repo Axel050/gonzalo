@@ -1,6 +1,6 @@
 <div class="flex flex-col justify-center items-center hvh w-full  pt-0  ">
 
-    <div class="mt-10 lg:w-5/6  w-full">
+    <div class="mt-10   w-full max-w-7xl">
         @livewire('buscador', ['todas' => true, 'from' => 'subastas'])
     </div>
 
@@ -8,7 +8,7 @@
     {{-- @if (auth()->user())
         @if (auth()->user()?->adquirente?->estado_id == 1 || auth()->user()?->adquirente?->garantia($subasta->id) || !auth()->user()?->hasRole('adquirente')) --}}
 
-    <div class="flex flex-col lg:px-20 px-4 mt-10 gap-8 lg:w-5/6 w-full ">
+    <div class="flex flex-col  px-4 mt-10 gap-8  w-full max-w-7xl">
 
         {{-- @if (isset($lotes) && count($lotes)) --}}
         @foreach ($subastas as $sub)

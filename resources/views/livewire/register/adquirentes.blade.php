@@ -1,4 +1,4 @@
-<div class="flex  flex-col  items-center  w-full ">
+<div class="flex  flex-col  items-center  w-full  lg:min-h-[95vh] ">
 
     @if ($method)
         @livewire('register.modal-success', ['pas' => $pasP, 'mail' => $mailP, 'from' => 'adquirentes'])
@@ -188,7 +188,7 @@
 
 
     <div
-        class="flex  lg:flex-row flex-col w-full lg:justify-between   text-casa-fondo-h pt-6 lg:pb-6 pb-10 lg:px-24 px-4  border-casa-base-2  bg-casa-black   text-start mt-12">
+        class="flex  lg:flex-row flex-col w-full lg:justify-between   text-casa-fondo-h pt-6 lg:pb-6 pb-10 lg:px-24 px-4  border-casa-base-2  bg-casa-black   text-start  lg:mt-auto mt-12">
         <p>&copy; 2025 Creado por casablanca.ar</p>
         <p>&copy; Diseñado por
             <a href="https://www.crabbystudio.com/" target="_blank" class="underline"> CrabbyStudio</a>

@@ -25,7 +25,7 @@
 
 
         @if ($last)
-            @livewire('destacados', ['subasta_id' => $last->id, 'titulo' => true])
+            @livewire('destacados', ['subasta_id' => $last->id, 'titulo' => true, 'from' => 'home'])
         @endif
 
 

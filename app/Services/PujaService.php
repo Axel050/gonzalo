@@ -6,6 +6,7 @@ use App\Enums\LotesEstados;
 use App\Events\PujaRealizada;
 use App\Models\Adquirente;
 use App\Models\Lote;
+use App\Models\Moneda;
 use App\Models\Puja;
 use App\Models\Subasta;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -18,8 +19,6 @@ class PujaService
 
   public function registrarPuja(int $adquirenteId, int $loteId, int $monto, int $ultimoMontoVisto): array
   {
-    info("registrar PUJA SERVICE");
-
 
 
     if (!$adquirenteId) {
@@ -39,8 +38,10 @@ class PujaService
       throw new DomainException('Lote no disponible');
     }
 
-    if ($lote->fraccion_min > $monto) {
-      throw new DomainException('Monto insuficiente');
+    if (($lote->fraccion_min + $ultimoMontoVisto)  > $monto) {
+      $tot = $lote->fraccion_min + $ultimoMontoVisto;
+      throw new DomainException('Monto minino : ' .  number_format($tot, 0, ',', '.'));
+      // throw new DomainException('Monto minino : ' . );
     }
 
     $subasta = Subasta::find($lote->ultimoContrato?->subasta_id);
@@ -91,8 +92,8 @@ class PujaService
       throw new DomainException('Lote inactivo');
     }
 
-    // info(" PUJA FINAL");
-    if ($lote->getPujaFinal()?->adquirente_id == $adquirenteId) {
+    $ultimoAdquirente = $lote->getPujaFinal()?->adquirente_id;
+    if ($ultimoAdquirente == $adquirenteId) {
       throw new DomainException('Tu oferta es la última');
     }
 
@@ -101,14 +102,15 @@ class PujaService
       ->orderByDesc('id')
       ->value('monto') ?? 0;
 
-    info([" PUJA SERVICE ULTIMO MONTO" => $ultimoMonto]);
-    info([" PUJA SERVICE ULTIMO MONTO visto" => $ultimoMontoVisto]);
+    // info([" PUJA SERVICE ULTIMO MONTO" => $ultimoMonto]);
+    // info([" PUJA SERVICE ULTIMO MONTO visto" => $ultimoMontoVisto]);
 
     if ($ultimoMonto !== $ultimoMontoVisto) {
       throw new DomainException('El monto ha cambiado');
     }
 
-    $montoFinal = $ultimoMonto + $monto;
+    // $montoFinal = $ultimoMonto + $monto;
+    $montoFinal =  $monto;
 
     // info(" PUJA SERVICE PUJA_CREATE");
     $puja = Puja::create([
@@ -124,8 +126,11 @@ class PujaService
       ]);
     }
 
+
+    $signo = Moneda::find($lote->moneda)?->signo;
+
     // info("ANTES EVENT");
-    event(new PujaRealizada($lote->id, $montoFinal, $puja->id));
+    event(new PujaRealizada($lote->id, $montoFinal, $puja->id, $ultimoAdquirente, $signo));
 
     // info("DESPUES EVENT");
     return [

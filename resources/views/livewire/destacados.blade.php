@@ -2,8 +2,16 @@
 
     @if ($titulo)
         <h2 class="lg:text-[40px] text-[26px] font-librecaslon w-full  lg:text-center text-start mb-2">
-            {{ $subasta->titulo }}</h2>
+            @if ($from == 'home')
+                Lotes destacados
+            @else
+                {{ $subasta->titulo }}
+            @endif
+        </h2>
     @endif
+
+
+
 
     <div class="swiper-wrapper g-red-200  p-1 pr-0 ">
 

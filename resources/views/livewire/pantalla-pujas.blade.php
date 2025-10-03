@@ -2,7 +2,7 @@
 
     {{-- @dump('VER OPCION PONER MODAL PARA MENJEAR PUJAS Y OFERTAS ') --}}
 
-    <article class="bg-red-00 flex  w-full lg:justify-center justify-start flex-col mt-10 lg:mb-8 mb-4 lg:px-0 px-4">
+    {{-- <article class="bg-red-00 flex  w-full lg:justify-center justify-start flex-col mt-10 lg:mb-8 mb-4 lg:px-0 px-4">
         <svg fill="#fff" class="w-[247px] h-[47px] mx-auto mb-2 lg:block hidden">
             <use xlink:href="#tuslotes"></use>
         </svg>
@@ -16,7 +16,7 @@
         <p class=" lg:text-3xl text-sm lg:text-center text-start">Vehicula adipiscing pellentesque volutpat
             dui rhoncus neque urna.</p>
 
-    </article>
+    </article> --}}
 
 
 
@@ -41,6 +41,9 @@
                     $subastaActiva = \Carbon\Carbon::parse(
                         $lote->ultimoConLote?->tiempo_post_subasta_fin ?? $lote->ultimoContrato?->subasta->fecha_fin,
                     )->gte(now());
+
+                    // $de = $actual + $lote['fraccion_min'];
+
                 @endphp
 
 
@@ -56,7 +59,7 @@
                             <button class=" -mt-3 -mr-3 h-fit disabled:opacity-30 disabled:cursor-not-allowed"
                                 wire:click="quitar({{ $lote['id'] }})"
                                 title="{{ $adquirenteEsGanador ? 'No puedes quitar, tu oferta es la ultima' : 'Quitar del carrito' }}"
-                                @disabled($adquirenteEsGanador)>
+                                {{-- @disabled($adquirenteEsGanador) --}}>
                                 <svg class="size-8 ">
                                     <use xlink:href="#trash"></use>
                                 </svg>
@@ -69,7 +72,7 @@
 
                             <div class="flex  lg:py-4 py-3 lg:w-full w-20 justify-center ">
                                 <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote->foto1) }}"
-                                    class="lg:size-49 size-20 " />
+                                    {{-- class="lg:size-49 size-20 "  --}} class=" size-20 " />
                             </div>
 
                             <div class="flex flex-col   w-full lg:pl-0 pl-2 ">
@@ -193,18 +196,46 @@
                                     </a>
                                 @endif
 
+                                {{-- <h2
+                                    class="text-casa-black border border-black rounded-full px-4 lg:py-2 py-1 w-full lg:text-xl text-sm font-bold text-center  block  lg:order-10 order-9 relative">
+
+                                    <span
+                                        class="relative z-10">¡{{ $subastaActiva ? 'Tu puja es la última' : '¡Ganaste este lote!' }}</span>
+                                </h2> --}}
                                 <h2
-                                    class="text-casa-black border border-black rounded-full px-4 lg:py-2 py-1 w-full lg:text-xl text-sm font-bold text-center  block  lg:order-10 order-9">
-                                    {{ $subastaActiva ? 'Tu puja es la última' : 'El lote es tuyo' }}
+                                    class="text-casa-blak border border-black rounded-full px-4 lg:py-2 py-1 w-full lg:text-xl text-sm font-bold text-center block lg:order-10 order-9 relative @if (!$subastaActiva) animate-reverse-pulse @endif">
+                                    <span>
+                                        {{ $subastaActiva ? 'Tu puja es la última' : '¡Ganaste este lote!' }}
+                                    </span>
+
                                 </h2>
                             @else
                                 @if ($subastaActiva)
                                     <div class="flex flex-col lg:gap-3 gap-2">
 
-                                        <input type="number"
-                                            class="bg-base border border-casa-black text-casa-black rounded-full px-4 lg:py-2 py-1 w-full lg:text-xl text-sm font-semibold "
-                                            placeholder="Tu oferta" wire:model.defer="ofertas.{{ $lote->id }}" />
 
+                                        <div class="flex bg-base border border-casa-black text-casa-black rounded-full px-4 lg:text-xl text-sm font-semibold focus-within:border-casa-black focus-within:ring-1 focus-within:ring-casa-black transition"
+                                            x-data="{
+                                                valor: @entangle('ofertas.' . $lote->id),
+                                                formatNumber() {
+                                                    // Solo mantener dígitos
+                                                    let num = this.valor?.toString().replace(/\D/g, '') || '0';
+                                                    // Aplicar formato con puntos
+                                                    this.valor = num ? parseInt(num, 10).toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.') : '';
+                                                },
+                                                get valorLimpio() {
+                                                    // Devuelve valor limpio como número entero
+                                                    let clean = this.valor?.toString().replace(/\D/g, '') || '0';
+                                                    return parseInt(clean, 10).toString(); // Elimina ceros a la izquierda y asegura un número
+                                                }
+                                            }" x-init="$watch('valor', () => formatNumber());
+                                            formatNumber()"
+                                            x-on:input="formatNumber(); $wire.set('ofertas.{{ $lote->id }}', valorLimpio, true)">
+                                            <span class="mr-1 py-2">{{ $signo }}</span>
+                                            <input type="text"
+                                                class="lg:py-2 py-1 w-full outline-none bg-transparent"
+                                                placeholder="Tu oferta" x-model="valor" pattern="[0-9.]*">
+                                        </div>
 
                                         <button
                                             class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  lg:py-2 py-1  w-full  lg:text-xl text-sm font-bold   "
@@ -331,6 +362,8 @@
 
 
 
+
+    @livewire('destacados-pantalla-pujas')
 
 
 

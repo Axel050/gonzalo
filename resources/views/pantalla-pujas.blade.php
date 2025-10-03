@@ -3,7 +3,8 @@
         Detalles
     </x-slot>
 
-    @livewire('carrito-show')
+    @livewire('pantalla-pujas')
+
 
 
 </x-layouts.guest>

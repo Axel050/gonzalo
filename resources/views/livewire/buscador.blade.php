@@ -1,4 +1,4 @@
-<article class="flex  w-full lg:justify-center flex-col  mb-8 px-4">
+<article class="flex  w-full lg:justify-center flex-col  mb-8 px-4 ">
 
     @if ($from != 'home')
 
@@ -13,19 +13,26 @@
                 {{ $subasta_bus->titulo }}
             @endif
         </h2>
-        <h3
-            class="font-helvetica font-semibold lg:text-3xl text-sm leading-[1] tracking-normal lg:text-center text-start mt-4 mb-2 ">
-            Otros
-            lotes
-        </h3>
-        <p class="lg:text-center text-start lg:text-3xl text-sm ">Vehicula adipiscing pellentesque volutpat dui rhoncus
-            neque urna.
+
+
+        @if ($route)
+            <a href="{{ route('subasta.lotes', $subasta_id) }}"
+                class="font-helvetica font-semibold lg:text-xl text-sm  tracking-normal lg:text-center text-start mt-4 mb-2  flex border rounded-full px-4 justify-between lg:mx-auto py-1 border-casa-black items-center hover:bg-casa-base-2 w-fit ">
+                <span>Ver todos los lotes</span>
+                <svg class="lg:size-8 size-5 ml-15">
+                    <use xlink:href="#arrow-right"></use>
+                </svg>
+
+            </a>
+        @endif
+        <p class="lg:text-center text-start lg:text-3xl text-sm ">Podés buscar tus lotes por título, característica,
+            artista, material, época, etc.
         </p>
 
     @endif
 
     <div
-        class=" g-blue-200 flex border rounded-full  w-6/6  mx-auto justify-between pl-3 pr-1 py-1 items-center mt-5 border-casa-black">
+        class=" g-blue-200 flex border rounded-full  w-6/6  mx-auto justify-between pl-3 pr-1 py-1 items-center lg:mt-5 mt-3 border-casa-black">
 
         <div class="flex items-center">
             <svg fill="#fff" class="lg:size-8  size-6 ">

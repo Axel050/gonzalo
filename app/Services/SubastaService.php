@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Enums\LotesEstados;
+use App\Models\Lote;
 use App\Models\Subasta;
 
 class SubastaService
@@ -80,6 +82,85 @@ class SubastaService
   }
 
 
+  public function getLotesActivosDestacadosHome()
+  {
+
+
+    $query = Lote::query()
+      ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
+      ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
+      ->where('lotes.estado', LotesEstados::EN_SUBASTA)
+      ->where('contrato_lotes.estado', 'activo')
+      ->where('lotes.destacado', true) // Filtro añadido
+      ->where(function ($query) {
+        $query
+          ->whereNull('contrato_lotes.tiempo_post_subasta_fin')
+          ->orWhere('contrato_lotes.tiempo_post_subasta_fin', '>=', now());
+      })
+      ->whereColumn('lotes.ultimo_contrato', 'contratos.id')
+      ->select(
+        'lotes.id',
+        'lotes.titulo',
+        'lotes.foto1',
+        'lotes.ultimo_contrato',
+        'lotes.estado as lote_estado',
+        'contrato_lotes.moneda_id',
+        'contrato_lotes.precio_base',
+        'contrato_lotes.estado as contrato_lote_estado',
+        'contrato_lotes.id as contrato_lote_id',
+      );
+
+
+    return $query->get()->map(function ($lote) {
+      return [
+        'id' => $lote->id,
+        'titulo' => $lote->titulo,
+        'foto' => $lote->foto1,
+        'precio_base' => $lote->precio_base,
+        'puja_actual' => $lote->pujas->first()?->monto,
+        'moneda_id' => $lote->moneda_id,
+        'tienePujas' => $lote->pujas()->exists(),
+        'estado_lote' => $lote->lote_estado,
+      ];
+    });
+  }
+
+  public function getLotesActivosDestacadosHomeFoto()
+  {
+
+
+    $query = Lote::query()
+      ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
+      ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
+      ->where('lotes.estado', LotesEstados::EN_SUBASTA)
+      ->where('contrato_lotes.estado', 'activo')
+      ->where('lotes.destacado', true) // Filtro añadido
+      ->where(function ($query) {
+        $query
+          ->whereNull('contrato_lotes.tiempo_post_subasta_fin')
+          ->orWhere('contrato_lotes.tiempo_post_subasta_fin', '>=', now());
+      })
+      ->whereColumn('lotes.ultimo_contrato', 'contratos.id')
+      ->select(
+        'lotes.id',
+        'lotes.titulo',
+        'lotes.foto1',
+        'lotes.ultimo_contrato',
+        'lotes.estado as lote_estado',
+        'contrato_lotes.estado as contrato_lote_estado',
+        'contrato_lotes.id as contrato_lote_id',
+      );
+
+
+    return $query->get()->map(function ($lote) {
+      return [
+        'id' => $lote->id,
+        'foto' => $lote->foto1,
+      ];
+    });
+  }
+
+
   public function getLotesActivosDestacados(Subasta $subasta)
   {
 
@@ -90,6 +171,7 @@ class SubastaService
       throw new \Exception('Subasta no activa', 403);
     }
     // info("pasosoo");
+
 
     return $subasta->lotesActivosDestacados()->get()->map(function ($lote) use ($subasta) {
       return [

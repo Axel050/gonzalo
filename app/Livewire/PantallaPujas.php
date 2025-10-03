@@ -12,7 +12,7 @@ use InvalidArgumentException;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-class CarritoShow extends Component
+class PantallaPujas extends Component
 {
   public array $fraccion_min = [];
   public array $ofertas = [];
@@ -42,13 +42,27 @@ class CarritoShow extends Component
     $this->dispatch('lotes-updated');
   }
 
+
+
   #[On('echo:my-channel,PujaRealizada')]
   public function test($event)
   {
-    info("PEJA REEEEEE");
-    $this->lotes  = $this->adquirente?->carrito?->lotes;
-    $this->dispatch('lotes-updated');
+    $id = $event["loteId"];
+    if (isset($this->lotes)) {
+      $lote = $this->lotes->firstWhere('id', $id);
+      if ($lote) {
+        $fra = $lote->fraccion_min;
+        $this->ofertas[$id] = $event["monto"] + $fra;
+        $this->dispatch('lotes-updated');
+      }
+    }
+
+    // $this->lotes  = $this->adquirente?->carrito?->lotes;
+    // $this->dispatch('lotes-updated');
   }
+
+
+
 
 
 
@@ -93,6 +107,15 @@ class CarritoShow extends Component
     $this->modal = $loteId;
   }
 
+  public function formatOffer($value, $loteId)
+  {
+    info("oooooooofeee");
+    // dd("ad8a");
+    // Limpiar el valor eliminando caracteres no numéricos
+    $cleanValue = preg_replace('/[^0-9]/', '', $value);
+    // Formatear con separadores de miles en español
+    $this->ofertas[$loteId] = number_format((int) $cleanValue, 0, ',', '.');
+  }
 
   public function mount()
   {
@@ -101,20 +124,32 @@ class CarritoShow extends Component
     $this->adquirente = Adquirente::where("user_id", $user->id)->first();
     $this->adquirente_id = $this->adquirente?->id;
     $this->lotes  = $this->adquirente?->carrito?->lotes;
-    // info("lotes SHOW" . $this->lotes);
+    info("lotes SHOW" . $this->lotes);
     $this->monedas = Moneda::all();
 
     if ($this->lotes) {
       foreach ($this->lotes as $lote) {
         $this->fraccion_min[$lote->id] = $lote->fraccion_min;
+        $actual = optional($lote->getPujaFinal())->monto !== null ? (int) $lote->getPujaFinal()->monto : 0;
+        // $this->ofertas[$lote->id] = number_format($actual + $lote->fraccion_min, 0, ',', '.');
+        $this->ofertas[$lote->id] = $actual + $lote->fraccion_min;
       }
     }
   }
 
 
+  // public function registrarPuja(PujaService $pujaService, $loteId, $ultimoMontoVisto, $monto = null)
+  // {
+
+
+
+  //   // $this->ofertas[$loteId] = 12222;
+  // }
   #[On('registrarPujaModal')]
   public function registrarPuja(PujaService $pujaService, $loteId, $ultimoMontoVisto, $monto = null)
   {
+
+    // $this->ofertas[$loteId] = 12222;
     try {
 
 
@@ -123,28 +158,43 @@ class CarritoShow extends Component
       if ($monto) {
         $oferta = $monto;
       } else {
-        $oferta = $this->ofertas[$loteId] ?? null;
+        $oferta = $this->ofertas[$loteId]   ?? null;
       }
 
+      $totalMin = $fraccion + $ultimoMontoVisto;
 
+
+      $valorLimpio = str_replace('.', '', $this->ofertas[$loteId]);
+
+      // info([
+      //   "SHIOW" => $ultimoMontoVisto,
+      //   "oferta" => $oferta,
+      //   "totla" => $totalMin,
+      //   "valorLimpio" => $valorLimpio,
+
+      // ]);
 
 
       // ✅ Validación: debe ser un entero positivo
-      if (!is_numeric($oferta) || intval($oferta) != $oferta || $oferta <  1 || $oferta < $fraccion || $oferta < 1) {
+      // if ($oferta < $totalMin) {
+      // if (!is_numeric($valorLimpio) || intval($valorLimpio) != $valorLimpio || $valorLimpio <  1 || $valorLimpio < $totalMin) {
+      if (!is_numeric($valorLimpio) || intval($valorLimpio) != $valorLimpio || $valorLimpio <  1) {
         $this->addError('puja.' . $loteId, 'Oferta invalida.');
-        $this->dispatch('error-puja', loteId: $loteId, mensaje: 'Oferta inválida');
-        // $this->fraccion_min[$loteId] = $this->adquirente?->carrito?->lotes?->firstWhere('id', $loteId)?->fraccion_min;
-        // $this->fraccion_min[$loteId] = $this->lotes->firstWhere('id', $loteId)?->fraccion_min;
+        // $this->ofertas[$loteId] = 122;
+        info(["aaaa" => $this->ofertas[$loteId]]);
+        // $this->dispatch('error-puja', loteId: $loteId, mensaje: 'Oferta inválida');
+        $this->ofertas[$loteId] = $totalMin;
         return;
       }
+      // dd($totalMin);
+      // info(["SHIOW" => $ultimoMontoVisto]);
 
-      info(["SHIOW" => $ultimoMontoVisto]);
 
 
       $result = $pujaService->registrarPuja(
         $this->adquirente?->id,
         $loteId,
-        $oferta,
+        $valorLimpio,
         $ultimoMontoVisto
       );
 
@@ -155,28 +205,29 @@ class CarritoShow extends Component
       // $this->fraccion_min[$loteId] = $this->lotes->firstWhere('id', $loteId)?->fraccion_min;
       $this->ofertas[$loteId] = "";
     } catch (ModelNotFoundException | InvalidArgumentException | DomainException $e) {
+
+      $this->ofertas[$loteId] = $totalMin;
       $this->addError('puja.' . $loteId, $e->getMessage());
-      $this->dispatch('error-puja', loteId: $loteId, mensaje: $e->getMessage());
+      // $this->dispatch('error-puja', loteId: $loteId, mensaje: $e->getMessage());
       info('Error en Livewire::registrarPujaxxxx', ['exception' => $e]);
     } catch (\Exception $e) {
+      $this->ofertas[$loteId] = $totalMin;
       info('Error en Livewire::registrarPuja', ['exception' => $e]);
       $this->addError('puja.' . $loteId, 'Error al pujar.');
-      $this->dispatch('error-puja', loteId: $loteId, mensaje: "error al pujar");
+      // $this->dispatch('error-puja', loteId: $loteId, mensaje: "error al pujar");
     }
   }
 
 
 
 
+  // public function quitar(CarritoService $carritoService, int $loteId)
+  // {
+  //   $this->addError('quitar.' . $loteId, 'Tu oferta es la ultima.');
+  // }
   public function quitar(CarritoService $carritoService, int $loteId)
   {
-    $this->addError('quitar.' . $loteId, 'Tu oferta es la ultima.');
-  }
-  public function quitar2(CarritoService $carritoService, int $loteId)
-  {
 
-    $this->addError('quitarx.' . $loteId, 'quitarxquitarx al pujar.');
-    $this->addError('quitarx.' . $loteId, 'Adqaed8a8d8ed8aeuirente no especificadaao.');
     if (!$this->adquirente) {
       $this->addError('quitar.' . $loteId, 'Adquirente no especificadaao.');
       return;
@@ -190,9 +241,9 @@ class CarritoShow extends Component
 
       $this->lotes  = $this->adquirente?->carrito?->lotes;
     } catch (ModelNotFoundException | InvalidArgumentException $e) {
-      // $this->addError('quitar.' . $loteId, $e->getMessage());
-      $this->addError('quitar.15', $e->getMessage());
-      info(["lote id " => $loteId]);
+      $this->addError('quitar.' . $loteId, $e->getMessage());
+      // $this->addError('quitar.19', $e->getMessage());
+      // info(["lote id " => $loteId]);
       info('Error en Livxxxxewire::quitar', ['exception' => $e->getMessage()]);
     } catch (\Exception $e) {
       info('Error en Livewire::quitar', ['exception' => $e->getMessage()]);
@@ -203,6 +254,6 @@ class CarritoShow extends Component
 
   public function render()
   {
-    return view('livewire.carrito-show');
+    return view('livewire.pantalla-pujas');
   }
 }

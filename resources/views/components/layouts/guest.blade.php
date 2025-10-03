@@ -142,8 +142,9 @@
                     </div>
 
                     @role('adquirente')
-                        <a href="{{ route('pre-carrito') }}" class=" px-2 rounded  hover:scale-105  pt-1">
-                            <svg fill="#fff" class="size-8">
+                        <a href="{{ route('pantalla-pujas') }}" class=" px-2 rounded  hover:scale-105  pt-1"
+                            title="Pantalla pujas">
+                            <svg fill="#000" class="size-8">
                                 <use xlink:href="#cart"></use>
                             </svg>
                         </a>
@@ -161,7 +162,7 @@
 
             <div class="lg:hidden flex">
                 @role('adquirente')
-                    <a href="{{ route('pre-carrito') }}" class=" px-2 rounded  mr-1">
+                    <a href="{{ route('pantalla-pujas') }}" class=" px-2 rounded  mr-1" title="Pantalla pujas">
                         <svg fill="#fff" class="size-8">
                             <use xlink:href="#cart"></use>
                         </svg>
@@ -184,9 +185,12 @@
         {{-- bg-[repeating-linear-gradient(45deg,currentColor_0,currentColor_1px,transparent_1px,transparent_5px)] --}}
         {{-- <main class="   bgred-500 h-[calc(100dvh-48px)]" style="min-height: calc(100dvh - 48px); "> --}}
         {{-- <main class="   bgred-500 h-dvh" style="min-height: calc(100dvh - 48px); "> --}}
-        <main class="   bgred-500 -dvh">
+        <main class="    -dvh ">
             {{ $slot }}
         </main>
+
+        @livewire('notificaciones')
+
 
         {{-- </div> --}}
 

@@ -74,10 +74,10 @@ class LoteSeeder extends Seeder
         $lote = Lote::create([
           'titulo'          => $titulo,
           'descripcion'     => "Lote {$contador} de la subasta {$subastaTitulo}",
-          'valuacion'       => rand(5000, 20000),
+          'valuacion'       => (round(rand(5000, 20000) / 100) * 100),
           'foto1'           => $imagen,
           'foto2'           => $imagen2,
-          'fraccion_min'    => rand(500, 2000),
+          'fraccion_min'    => (round(rand(500, 2000) / 100) * 100),
           'tipo_bien_id'    => $tiposBien->random()->id ?? null,
           'comitente_id'    => $comitentes->random()->id ?? null,
           'ultimo_contrato' => $selectedContract->id, // 🔒 Fixed to a contract of THIS subasta
@@ -89,7 +89,7 @@ class LoteSeeder extends Seeder
         // Pivot coherente: only with the selected contract
         ContratoLote::updateOrCreate(
           ['contrato_id' => $selectedContract->id, 'lote_id' => $lote->id],
-          ['precio_base' => rand(1000, 9500), 'moneda_id' => $monedas->random()->id ?? 1]
+          ['precio_base' => (round(rand(1000, 9500) / 100) * 100), 'moneda_id' => $monedas->random()->id ?? 1]
         );
 
         $contador++;

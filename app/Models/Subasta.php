@@ -81,6 +81,7 @@ class Subasta extends Model implements Auditable
           ->whereNull('contrato_lotes.tiempo_post_subasta_fin')
           ->orWhere('contrato_lotes.tiempo_post_subasta_fin', '>=', now());
       })
+      ->whereColumn('lotes.ultimo_contrato', 'contratos.id')
       ->select(
         'lotes.id',
         'lotes.titulo',
@@ -120,6 +121,7 @@ class Subasta extends Model implements Auditable
           ->whereNull('contrato_lotes.tiempo_post_subasta_fin')
           ->orWhere('contrato_lotes.tiempo_post_subasta_fin', '>=', now());
       })
+      ->whereColumn('lotes.ultimo_contrato', 'contratos.id')
       ->select(
         'lotes.id',
         'lotes.titulo',

@@ -178,4 +178,17 @@ class Lote extends Model implements Auditable
 
     return $contratoLote->isActivo();
   }
+
+
+  public function getMontoActualAttribute()
+  {
+    return optional($this->getPujaFinal())->monto ?? 0;
+  }
+
+  public function getMonedaSignoAttribute()
+  {
+    // Si ya tenés relación con Moneda, usala:
+    $moneda = Moneda::find($this->moneda);
+    return $moneda?->signo ?? '';
+  }
 }

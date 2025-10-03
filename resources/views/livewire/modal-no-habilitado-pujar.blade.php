@@ -21,7 +21,7 @@
             <div class="flex flex-col   lg:px-4 mb-3">
                 <h3 class="font-bold lg:text-center text-start lg:mb-1 mb-0.5">Ingresá.</h3>
                 <p class="text-pretty lg:text-center text-start">Para poder ofertar necesitás abonar un seguro
-                    reembolsable.
+                    reembolsable de <b class="lg:text-[22px] text-base ">${{ $subasta->garantia }}</b>.
                     Si no comprás,
                     te lo
                     devolvemos.</p>
@@ -52,7 +52,7 @@
             <button
                 class="bg-casa-black hover:bg-transparent hover:text-casa-black border border-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  py-1  col-span-3 mx-auto  lg:text-xl font-semibold text-sm lg:w-fit  w-full lg:order-2"
                 wire:click="mp">
-                Quiero entrar
+                Quiero ofertar
                 <svg class="size-7 ml-5">
                     <use xlink:href="#arrow-right"></use>
                 </svg>

@@ -4,7 +4,8 @@
         @livewire('register.modal-success')
     @endif
 
-    <div class="flex flex-col bg-casa-base-2 lg:p-8 p-4 border border-casa-black text-casa-black  lg:mt-[50px] mt-8 ">
+    <div
+        class="flex flex-col bg-casa-base-2 lg:p-8 p-4 border border-casa-black text-casa-black  lg:mt-[50px] mt-8  lg:mb-8">
 
         <h1 class="lg:text-3xl text-lg   font-bold  mb-4 text-start">Registrate</h1>
         <h2 class="font-bold lg:text-xl text-sm">Comitentes</h2>
@@ -153,7 +154,7 @@
 
 
     <div
-        class="flex  lg:flex-row flex-col w-full lg:justify-between   text-casa-fondo-h pt-6 lg:pb-6 pb-10 lg:px-24 px-4  border-casa-base-2  bg-casa-black   text-start mt-12">
+        class="flex  lg:flex-row flex-col w-full lg:justify-between   text-casa-fondo-h pt-6 lg:pb-6 pb-10 lg:px-24 px-4  border-casa-base-2  bg-casa-black   text-start lg:mt-auto  mt-12 ">
         <p>&copy; 2025 Creado por casablanca.ar</p>
         <p>&copy; Diseñado por
             <a href="https://www.crabbystudio.com/" target="_blank" class="underline"> CrabbyStudio</a>

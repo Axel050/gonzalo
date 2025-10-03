@@ -56,6 +56,45 @@
   --animate-fade-out-scale: fade-out-scale;
 
 
+  @keyframes reverse-pulse {
+
+    100% {
+      background-color: #202020;
+      color: #f6f2ee;
+      transform: scale(1);
+    }
+
+    75% {
+      background-color: #262626;
+      color: #ede7e1;
+      transform: scale(1.01);
+    }
+
+
+    50% {
+      background-color: #ede7e1;
+      color: #000000;
+    }
+
+    25% {
+      background-color: #ede7e1;
+      transform: scale(1.01);
+    }
+
+    0% {
+      background-color: #ede7e1;
+      transform: scale(1);
+    }
+
+
+
+  }
+
+  --animate-reverse-pulse: reverse-pulse 2.2s infinite ease-in-out alternate;
+
+
+  --hammer-animate': ' hammer 0.8s infinite ease-in-out';
+
 
   @keyframes hammer {
 

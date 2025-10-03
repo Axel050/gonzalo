@@ -67,6 +67,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  document.querySelectorAll('.swiper-destacados-pujas').forEach((el, index) => {
+
+    const slides = el.querySelectorAll('.swiper-slide').length;
+
+    new Swiper(el, {
+      slidesPerView: 3,
+      spaceBetween: 15,
+      centerInsufficientSlides: true,
+      loop: true,
+      autoplay: { delay: 2000 },
+      breakpoints: {
+        420: {
+          slidesPerView: 5,
+          spaceBetween: 50,
+          loop: slides > 3 ? true : false,
+          autoplay: slides > 3 ? { delay: 2000 } : false,
+        },
+      },
+      modules: [Autoplay],
+
+    });
+  });
+
+
+
   document.querySelectorAll('.swiper-destacados-img').forEach((el, index) => {
 
     const slides = el.querySelectorAll('.swiper-slide').length;
