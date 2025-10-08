@@ -16,21 +16,27 @@
         <h2 class="lg:text-3xl text-lg  font-bold mt-15">Cada objeto tiene una historia.</h2>
         <h3 class="lg:text-3xl text-lg  font-bold">Encontra la tuya.</h3>
 
-        @livewire('subastas-abiertas')
+        <div class="w-full mt-15 mb-0">
 
-        <div class="mt-0 lg:w-4/5 w-full">
+            @livewire('subastas-abiertas')
+        </div>
+
+        <div class="mt-0 lg:w-4/5 w-full ">
             @livewire('buscador', ['todas' => true, 'from' => 'home'])
         </div>
 
 
 
         @if ($last)
-            @livewire('destacados', ['subasta_id' => $last->id, 'titulo' => true, 'from' => 'home'])
+            <div class="pb-16 pt-20 lg:px-24 overflow-x-hidden  w-full">
+
+                @livewire('destacados', ['subasta_id' => $last->id, 'titulo' => true, 'from' => 'home'])
+            </div>
         @endif
 
 
         @if (count($subastasProx))
-            <div class="flex flex-col   w-full items-center lg:p-24 lg:mt-0 mt-10  ">
+            <div class="flex flex-col   w-full   items-center lg:pb-24 lg:px-24 lg:mt-0  mt-10 ">
                 <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4 mb-4 lg:mb-8">próximas
                     subastas
                 </p>
@@ -108,11 +114,11 @@
 
 
         @if (count($subastasFin))
-            <div class="flex flex-col   w-full items-center lg:p-24 lg:pt-0 lg:mt-0 mt-10 ">
+            <div class="flex flex-col   w-full   items-center lg:pb-24 lg:px-24 lg:mt-0  mt-10 ">
                 <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4 mb-4 lg:mb-8">subastas
                     pasadas</p>
 
-                <div class="swiper-home-subastas     w-full  lg:overflow-x-hidden lg:px-0 px-4">
+                <div class="swiper-home-subastas     w-full  lg:overflow-x-hidden lg:px-0 px-4 ">
 
                     <div class="swiper-wrapper  flex lg:flex-row flex-col">
 

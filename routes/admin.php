@@ -50,6 +50,13 @@ Route::get("/auditoria", function () {
 })->name("auditoria")->can("auditoria-ver");
 
 
+
+Route::get("/ordenes", function () {
+  return view('admin.ordenes');
+})->name("ordenes");
+// ->can("ordenes-ver");
+
+
 // AUX
 Route::get("/aux/condicion-iva", function () {
   return view('admin.auxiliares.condicion-iva');

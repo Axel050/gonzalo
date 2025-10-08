@@ -83,4 +83,9 @@ class Adquirente extends Model implements Auditable
       ->where('estado', 'pagado')
       ->value('monto') ?? 0;
   }
+
+  public function ordenes()
+  {
+    return $this->hasMany(Orden::class);
+  }
 }

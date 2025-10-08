@@ -409,7 +409,7 @@ class Subasta extends Model implements Auditable
 
     try {
       $results = $query->get();
-      info(["LotesPasadosDestacados" => $results]);
+      // info(["LotesPasadosDestacados" => $results]);
     } catch (\Exception $e) {
       info(["Error en lotesPasados" => $e->getMessage()]);
       throw $e;
@@ -452,7 +452,7 @@ class Subasta extends Model implements Auditable
 
     try {
       $results = $query->get();
-      info(["LotesPasadosDestacados" => $results]);
+      // info(["LotesPasadosDestacados" => $results]);
     } catch (\Exception $e) {
       info(["Error en lotesPasados" => $e->getMessage()]);
       throw $e;

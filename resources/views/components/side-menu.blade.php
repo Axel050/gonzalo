@@ -176,6 +176,17 @@
         @endcan
 
 
+        {{-- @can('ordenes-ver') --}}
+        <x-li-single :active="Request::is('admin/ordenes')" route="admin.ordenes">
+
+            <svg class="size-6">
+                <use xlink:href="#order"></use>
+            </svg>
+            <span class="ml-1 ">Ordenes</span>
+        </x-li-single>
+        {{-- @endcan --}}
+
+
 
 
 

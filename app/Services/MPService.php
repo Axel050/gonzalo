@@ -22,25 +22,10 @@ class MPService
   public function crearPreferencia($title, $quantity, $price, $adquirente = null, $subasta = null, $lote = null, $route = null)
   {
 
-    info(["SUUBASTA   " => $subasta, "ADQUIRENTE " => $adquirente]);
-    info(["SUUBASTA   MP " => $route]);
-    // $garantiaExistente = Garantia::where('adquirente_id', $adquirenteId)
-    //   ->where('subasta_id', $subastaId)
-    //   ->first();
-
-    // if ($garantiaExistente) {
-    //   if ($garantiaExistente->estado === 'pagado') {
-    //     Log::warning("Ya existe una garantía pagada para adquirente_id: {$adquirenteId}, subasta_id: {$subastaId}");
-    //     throw new \Exception("Ya existe una garantía pagada para esta subasta y adquirente.");
-    //   } else {
-    //     Log::info("Garantía existente en estado '{$garantiaExistente->estado}' para adquirente_id: {$adquirenteId}, subasta_id: {$subastaId}. Procediendo con preferencia.");
-    //     // Opcional: Actualizar payment_id o dejar que la notificación lo haga
-    //   }
-    // }
-
+    // info(["SUUBASTA   " => $subasta, "ADQUIRENTE " => $adquirente]);
+    // info(["SUUBASTA   MP " => $route]);
 
     $client = new PreferenceClient();
-
 
     $preference = $client->create([
       "items" => [
@@ -65,6 +50,38 @@ class MPService
     ]);
     info(["preferece" => $preference]);
     info(["preferece INIIIII" => $preference->init_point]);
+
+    return $preference;
+  }
+
+  public function crearPreferenciaOrden($adquirente, $subasta, $orden)
+  {
+
+
+    $client = new PreferenceClient();
+
+
+    $preference = $client->create([
+      "items" => [
+        [
+          "title" => "Orden #{$orden->id} - Subasta: {$subasta->titulo}",
+          "quantity" => 1,
+          "unit_price" => (float) $orden->total_neto,
+        ]
+      ],
+      "back_urls" => [
+        // "success" => $route,
+        "success" => config('services.mercadopago.host') . "/success",
+        "failure" => config('services.mercadopago.host') . "/failure",
+        "pending" => config('services.mercadopago.host') . "/pending"
+      ],
+      "notification_url" => config('services.mercadopago.host') . "/api/notification",
+      "external_reference" => json_encode([
+        "orden_id" => $orden->id,
+        "adquirente_id" => $adquirente->id,
+        "subasta_id" => $subasta->id
+      ])
+    ]);
 
     return $preference;
   }

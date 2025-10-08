@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Adquirente;
+use App\Models\Lote;
 use App\Models\Moneda;
 use App\Services\CarritoService;
 use App\Services\PujaService;
@@ -34,6 +35,7 @@ class PantallaPujas extends Component
   public $pujado;
   public $monedas;
 
+  public $tieneOrdenes;
 
   #[On('echo:my-channel,SubastaEstado')]
   public function test2()
@@ -71,7 +73,7 @@ class PantallaPujas extends Component
   {
     info("TERMINOoooooooo " . $loteId);
     $this->lotes  = $this->adquirente?->carrito?->lotes;
-    info("lotes SHOW" . $this->lotes);
+    // info("lotes SHOW" . $this->lotes);
 
     if ($this->lotes) {
       foreach ($this->lotes as $lote) {
@@ -124,7 +126,7 @@ class PantallaPujas extends Component
     $this->adquirente = Adquirente::where("user_id", $user->id)->first();
     $this->adquirente_id = $this->adquirente?->id;
     $this->lotes  = $this->adquirente?->carrito?->lotes;
-    info("lotes SHOW" . $this->lotes);
+    // info("lotes SHOW" . $this->lotes);
     $this->monedas = Moneda::all();
 
     if ($this->lotes) {
@@ -132,9 +134,17 @@ class PantallaPujas extends Component
         $this->fraccion_min[$lote->id] = $lote->fraccion_min;
         $actual = optional($lote->getPujaFinal())->monto !== null ? (int) $lote->getPujaFinal()->monto : 0;
         // $this->ofertas[$lote->id] = number_format($actual + $lote->fraccion_min, 0, ',', '.');
-        $this->ofertas[$lote->id] = $actual + $lote->fraccion_min;
+        if (!$actual) {
+          $this->ofertas[$lote->id] = $lote->precio_base;
+        } else {
+          # code...
+          $this->ofertas[$lote->id] = $actual + $lote->fraccion_min;
+        }
       }
     }
+
+
+    $this->tieneOrdenes = $this->adquirente->ordenes()->where("estado", "pendiente")->exists();
   }
 
 
@@ -205,8 +215,14 @@ class PantallaPujas extends Component
       // $this->fraccion_min[$loteId] = $this->lotes->firstWhere('id', $loteId)?->fraccion_min;
       $this->ofertas[$loteId] = "";
     } catch (ModelNotFoundException | InvalidArgumentException | DomainException $e) {
+      if ($ultimoMontoVisto == 0) {
+        $base = Lote::find($loteId)->precio_base;
+        $this->ofertas[$loteId] = $base;
+      } else {
+        # code...
+        $this->ofertas[$loteId] = $totalMin;
+      }
 
-      $this->ofertas[$loteId] = $totalMin;
       $this->addError('puja.' . $loteId, $e->getMessage());
       // $this->dispatch('error-puja', loteId: $loteId, mensaje: $e->getMessage());
       info('Error en Livewire::registrarPujaxxxx', ['exception' => $e]);

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\LotesEstados;
+use App\Enums\OrdenesEstados;
 use App\Livewire\LotesActivos;
 use App\Models\Adquirente;
 use App\Models\Garantia;
 use App\Models\Lote;
+use App\Models\Orden;
 use App\Models\Subasta;
 use App\Services\AdquirenteService;
 use App\Services\AdquirenteServiceService;
@@ -30,9 +33,247 @@ class MPController extends Controller
   /**
    * Display a listing of the resource.
    */
-
   public function notification(Request $request)
   {
+    $data = $request->all();
+    info("📩 Notificación recibida: ", $data);
+
+    if (!isset($data['topic']) || $data['topic'] !== 'payment' || !isset($data['id'])) {
+      return response('Ignored', 200);
+    }
+
+    $paymentId = $data['id'];
+
+    MercadoPagoConfig::setAccessToken(config('services.mercadopago.token'));
+    $paymentClient = new PaymentClient();
+    $payment = $paymentClient->get($paymentId);
+
+    info(["✅ Payment info" => $payment]);
+
+    $externalRef = json_decode($payment->external_reference ?? '{}', true);
+
+    // Detectamos qué tipo de pago es
+    if (isset($externalRef['adquire']) && isset($externalRef['subasta']) && !isset($externalRef['orden_id'])) {
+      $this->procesarGarantia($payment, $externalRef);
+    } elseif (isset($externalRef['orden_id'])) {
+      $this->procesarOrden($payment, $externalRef);
+    } else {
+      info("⚠️ External reference sin tipo definido: ", $externalRef);
+    }
+
+    return response('OK', 200);
+  }
+
+  private function procesarGarantia($payment, $externalRef)
+  {
+    $adquirenteId = $externalRef['adquire'] ?? null;
+    $subastaId = $externalRef['subasta'] ?? null;
+    $montoPago = $payment->transaction_amount ?? 0;
+
+    if (!$adquirenteId || !$subastaId) {
+      info("⚠️ External reference incompleto para garantía");
+      return;
+    }
+
+    $garantia = Garantia::where('adquirente_id', $adquirenteId)
+      ->where('subasta_id', $subastaId)
+      ->first();
+
+    if (!$garantia) {
+      if (in_array($payment->status, ['pending', 'in_process', 'approved'])) {
+        $garantia = new Garantia([
+          'adquirente_id' => $adquirenteId,
+          'subasta_id' => $subastaId,
+          'monto' => $montoPago,
+          'estado' => $this->determinarEstado($payment->status),
+          'fecha' => now(),
+          'payment_id' => $payment->id,
+        ]);
+        $garantia->save();
+        info("💰 Nueva garantía creada (adq: $adquirenteId, sub: $subastaId)");
+      }
+    } else {
+      $nuevoEstado = $this->determinarEstado($payment->status, $garantia);
+      if ($garantia->estado !== $nuevoEstado) {
+        $garantia->update([
+          'estado' => $nuevoEstado,
+          'payment_id' => $garantia->payment_id ?? $payment->id,
+        ]);
+        info("🔄 Garantía {$garantia->id} actualizada a {$nuevoEstado}");
+      }
+    }
+  }
+
+
+
+  private function procesarOrden($payment, $externalRef)
+  {
+    $ordenId = $externalRef['orden_id'] ?? null;
+    info("999999999999999999999999999999999999999999");
+    if (!$ordenId) {
+      info("⚠️ Sin orden_id en external_reference");
+      return;
+    }
+
+    $orden = Orden::with('lotes.lote')->find($ordenId);
+
+    if (!$orden) {
+      info("❌ Orden no encontrada (ID: {$ordenId})");
+      return;
+    }
+
+    // 🔹 Determinar nuevo estado de la orden según Mercado Pago
+    $nuevoEstado = match ($payment->status) {
+      'approved' => OrdenesEstados::PAGADA,
+      'pending', 'in_process' => OrdenesEstados::PENDIENTE,
+      'rejected', 'cancelled' => OrdenesEstados::RECHAZADA,
+      default => $orden->estado,
+    };
+
+    // 🔹 Actualizar la orden
+    $orden->update([
+      'estado' => $nuevoEstado,
+      'fecha_pago' => $nuevoEstado === OrdenesEstados::PAGADA ? now() : null,
+      'payment_id' => $payment->id,
+    ]);
+
+    info("🧾 Orden {$orden->id} actualizada a estado {$nuevoEstado}");
+
+    // 🔹 Si la orden fue pagada, marcar los lotes como "pagados"
+    if ($nuevoEstado === OrdenesEstados::PAGADA) {
+      foreach ($orden->lotes as $ordenLote) {
+        $lote = $ordenLote->lote;
+
+        if ($lote && $lote->estado !== LotesEstados::PAGADO) {
+          $lote->estado = LotesEstados::PAGADO;
+          $lote->save();
+
+          info("✅ Lote ID {$lote->id} marcado como 'PAGADO' (Orden #{$orden->id})");
+        }
+      }
+      // 🔹 Enviar el mail al adquirente
+      // $email = $orden->adquirente->user->email ?? null;
+
+      // if ($email) {
+      //   Mail::to($email)->queue(new OrdenPagadaMail($orden));
+      //   info("📧 Email de confirmación enviado a {$email} (Orden #{$orden->id})");
+      // }
+
+
+      //       Mail::to($this->contrato->comitente?->mail)->send(new ContratoEmail($data)); ////ASI USO EN ONTRATOS VER MEJORAR CON COLAS CREO 
+    }
+
+    // 🔸 Si el pago fue rechazado, podés revertir el estado de los lotes
+    if ($nuevoEstado === OrdenesEstados::RECHAZADA) {
+      foreach ($orden->lotes as $ordenLote) {
+        $lote = $ordenLote->lote;
+        if ($lote && $lote->estado === LotesEstados::VENDIDO) {
+          $lote->estado = LotesEstados::STANDBY; // o DISPONIBLE si querés reactivarlo
+          $lote->save();
+
+          info("🔄 Lote ID {$lote->id} devuelto a 'STANDBY' por rechazo de pago");
+        }
+      }
+    }
+  }
+
+
+  private function procesarOrden33($payment, $externalRef)
+  {
+    $ordenId = $externalRef['orden_id'] ?? null;
+
+    if (!$ordenId) {
+      info("⚠️ Sin orden_id en external_reference");
+      return;
+    }
+
+    $orden = Orden::with('lotes.lote')->find($ordenId);
+
+    if (!$orden) {
+      info("❌ Orden no encontrada (ID: {$ordenId})");
+      return;
+    }
+
+
+    $nuevoEstado = match ($payment->status) {
+      'approved' => OrdenesEstados::PAGADA,
+      'pending', 'in_process' => OrdenesEstados::PENDIENTE,
+      'rejected', 'cancelled' => OrdenesEstados::RECHAZADA,
+      default => $orden->estado,
+    };
+
+    $orden->update([
+      'estado' => $nuevoEstado,
+      'fecha_pago' => $nuevoEstado === 'pagada' ? now() : null,
+      'payment_id' => $payment->id,
+    ]);
+
+    info("🧾 Orden {$orden->id} actualizada a estado {$nuevoEstado}");
+
+    // 🔹 Si la orden fue pagada, marcamos los lotes como "pagados"
+    if ($nuevoEstado === 'pagada') {
+      foreach ($orden->lotes as $ordenLote) {
+        $lote = $ordenLote->lote;
+
+        if ($lote && $lote->estado !== 'pagado') {
+          $lote->estado = 'pagado';
+          $lote->save();
+
+          info("✅ Lote ID {$lote->id} marcado como 'pagado' (Orden #{$orden->id})");
+        }
+      }
+    }
+
+    // 🔸 Si el pago fue rechazado, podrías revertir el estado si querés:
+    if ($nuevoEstado === 'rechazada') {
+      foreach ($orden->lotes as $ordenLote) {
+        $lote = $ordenLote->lote;
+        if ($lote && $lote->estado === 'vendido') {
+          $lote->estado = 'pendiente_pago';
+          $lote->save();
+          info("🔄 Lote ID {$lote->id} devuelto a 'pendiente_pago' por rechazo de pago");
+        }
+      }
+    }
+  }
+
+
+  private function procesarOrden2($payment, $externalRef)
+  {
+    $ordenId = $externalRef['orden_id'] ?? null;
+
+    if (!$ordenId) {
+      info("⚠️ Sin orden_id en external_reference");
+      return;
+    }
+
+    $orden = Orden::find($ordenId);
+
+    if (!$orden) {
+      info("❌ Orden no encontrada (ID: {$ordenId})");
+      return;
+    }
+
+    $nuevoEstado = match ($payment->status) {
+      'approved' => 'pagada',
+      'pending', 'in_process' => 'pendiente',
+      'rejected', 'cancelled' => 'rechazada',
+      default => $orden->estado,
+    };
+
+    $orden->update([
+      'estado' => $nuevoEstado,
+      // 'fecha_pago' => $nuevoEstado === 'pagada' ? now() : null,
+      // 'payment_id' => $payment->id,
+    ]);
+
+    info("🧾 Orden {$orden->id} actualizada a estado {$nuevoEstado}");
+  }
+
+
+  public function notificatio4444n(Request $request)
+  {
+    info("zzzzzzzzzzzzzzzzzzzzzzzzzz - Notificación recibida: ");
     $data = $request->all();
     info("GGGOOONNN - Notificación recibida: ", $data);
 

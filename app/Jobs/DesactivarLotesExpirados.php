@@ -7,6 +7,8 @@ use App\Enums\SubastaEstados;
 use App\Events\SubastaEstado;
 use App\Models\Subasta;
 use App\Events\SubastaEstadoActualizado;
+use App\Models\Orden;
+use App\Models\OrdenLote;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -20,7 +22,7 @@ class DesactivarLotesExpirados implements ShouldQueue
 
   public function handle()
   {
-    // info("Iniciando NEW  job DesactivarLotesExpirados a las " . now()->toDateTimeString());
+    // info("aaaIniciando NEW  job DesactivarLotesExpirados a las " . now()->toDateTimeString());
 
     try {
       Subasta::whereIn('estado', [SubastaEstados::ACTIVA, SubastaEstados::ENPUJA])
@@ -60,7 +62,7 @@ class DesactivarLotesExpirados implements ShouldQueue
                 // Validar tiempo_post_subasta
                 if (!is_int($subasta->tiempo_post_subasta) || $subasta->tiempo_post_subasta <= 0) {
                   info("Error: tiempo_post_subasta no es un entero válido para subasta ID: {$subasta->id}, usando valor por defecto (5 minutos)");
-                  $minutos = 5;
+                  $minutos = 3;
                 } else {
                   $minutos = $subasta->tiempo_post_subasta;
                 }
@@ -124,7 +126,12 @@ class DesactivarLotesExpirados implements ShouldQueue
               $subasta->update(['estado' => SubastaEstados::ENPUJA]);
             } elseif (!$hasActiveLotes && $subasta->estado !== 'inactiva') {
               info("Desactivando subasta ID: {$subasta->id}");
+              info("ADFFFFFFFF5555");
               $subasta->update(['estado' => SubastaEstados::FINALIZADA]);
+              info("ADFFFFFFFF");
+
+              $this->crearOrdenesParaSubastaFinalizada($subasta);
+              info("ADFFFFFFF222222222F");
             }
           });
 
@@ -140,5 +147,101 @@ class DesactivarLotesExpirados implements ShouldQueue
       info("Error en job DesactivarLotesExpirados: " . $e->getMessage());
       throw $e;
     }
+  }
+
+
+
+
+  // MÉTODO ACTUALIZADO: Crea órdenes con descuento = monto de garantía
+  private function crearOrdenesParaSubastaFinalizada(Subasta $subasta)
+  {
+
+    info("CREARRRRRR");
+    // Obtener todos los lotes VENDIDO de esta subasta
+    $lotesVendidos = $subasta->lotes()
+      ->where('estado', LotesEstados::VENDIDO)
+      ->with('pujas') // Para obtener la puja ganadora
+      ->get();
+
+    if ($lotesVendidos->isEmpty()) {
+      info("No hay lotes vendidos en subasta ID: {$subasta->id}");
+      return;
+    }
+
+    DB::transaction(function () use ($lotesVendidos, $subasta) {
+      // Agrupar lotes por adquirente_id (ganador)
+      $lotesPorAdquirente = $lotesVendidos->groupBy(function ($lote) use ($subasta) {
+        // Puja ganadora: la más reciente por created_at
+        $pujaGanadora = $lote->pujas()
+          ->where('subasta_id', $subasta->id)
+          ->latest('created_at')
+          ->first();
+
+        return $pujaGanadora ? $pujaGanadora->adquirente_id : null;
+      })->reject(function ($group, $adquirenteId) {
+        return is_null($adquirenteId); // Ignorar si no hay puja
+      });
+
+      foreach ($lotesPorAdquirente as $adquirenteId => $lotesDelAdquirente) {
+        // Obtener el adquirente
+        $adquirente = \App\Models\Adquirente::find($adquirenteId);
+        if (!$adquirente) {
+          info("Advertencia: Adquirente ID {$adquirenteId} no encontrado");
+          continue;
+        }
+
+        // Calcular total (suma de precios finales)
+        $total = 0;
+        $ordenLotesData = [];
+        foreach ($lotesDelAdquirente as $lote) {
+          $pujaGanadora = $lote->pujas()
+            ->where('subasta_id', $subasta->id)
+            ->latest('created_at')
+            ->first();
+
+          if (!$pujaGanadora) {
+            info("Advertencia: No se encontró puja ganadora para lote ID: {$lote->id}");
+            continue;
+          }
+
+          $precioFinal = $pujaGanadora->monto; // Asumiendo 'monto' en pujas
+          $total += $precioFinal;
+
+          $ordenLotesData[] = [
+            'orden_id' => null, // Se asignará después
+            'lote_id' => $lote->id,
+            'precio_final' => $precioFinal,
+            'created_at' => now(),
+            'updated_at' => now(),
+          ];
+        }
+
+        if (empty($ordenLotesData)) {
+          continue;
+        }
+
+        // NUEVA LÓGICA: Descuento = monto de garantía pagada para esta subasta
+        $montoDescuento = $adquirente->garantiaMonto($subasta->id); // Retorna int del monto pagado, o 0
+        // Opcional: Limitar descuento al total: $montoDescuento = min($montoDescuento, $total);
+
+        // Crear Orden con descuento como monto fijo
+        $orden = Orden::create([
+          'adquirente_id' => $adquirenteId,
+          'subasta_id' => $subasta->id,
+          'total' => $total,
+          'descuento' => $montoDescuento, // Monto directo de la garantía (ej. 1000)
+          'estado' => 'pendiente',
+        ]);
+
+        // Asignar orden_id a los datos y crear OrdenLotes
+        foreach ($ordenLotesData as &$data) {
+          $data['orden_id'] = $orden->id;
+        }
+        OrdenLote::insert($ordenLotesData);
+
+        $totalNeto = $total - $montoDescuento;
+        info("Creada orden ID: {$orden->id} para adquirente ID: {$adquirenteId} con total: {$total}, descuento (garantía): {$montoDescuento}, total neto: {$totalNeto} en subasta ID: {$subasta->id}");
+      }
+    });
   }
 }

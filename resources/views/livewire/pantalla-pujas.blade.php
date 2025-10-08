@@ -72,7 +72,7 @@
 
                             <div class="flex  lg:py-4 py-3 lg:w-full w-20 justify-center ">
                                 <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote->foto1) }}"
-                                    {{-- class="lg:size-49 size-20 "  --}} class=" size-20 " />
+                                    class="lg:size-49 size-20 " {{-- class=" size-20 " --}} />
                             </div>
 
                             <div class="flex flex-col   w-full lg:pl-0 pl-2 ">
@@ -332,21 +332,22 @@
                 </div>
             @endforeach
 
+            @if ($tieneOrdenes)
+                <div class="flex lg:flex-row flex-col gap-3 w-full  mt-4 px-4">
 
-            <div class="flex lg:flex-row flex-col gap-3 w-full  mt-4 px-4">
+                    <p class="lg:text-3xl font-bold text-sm lg:w-1/2 lg:text-start text-center w-full">Tenés lotes para
+                        pagar en tu carrito</p>
 
-                <p class="lg:text-3xl font-bold text-sm lg:w-1/2 lg:text-start text-center w-full">Tenés lotes para
-                    pagar en tu carrito</p>
+                    <a href="{{ route('carrito') }}"
+                        class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  lg:py-2 py-1 lg:text-xl text-sm font-bold  lg:w-1/2 w-full">
+                        Ver tu carrito
+                        <svg class="lg:size-8 size-6 ">
+                            <use xlink:href="#arrow-right"></use>
+                        </svg>
+                    </a>
 
-                <a href="{{ route('carrito') }}"
-                    class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  lg:py-2 py-1 lg:text-xl text-sm font-bold  lg:w-1/2 w-full">
-                    Ver tu carrito
-                    <svg class="lg:size-8 size-6 ">
-                        <use xlink:href="#arrow-right"></use>
-                    </svg>
-                </a>
-
-            </div>
+                </div>
+            @endif
         @else
             <div class="flex flex-col bg-casa-black px-5 py-10 font-semibold text-casa-base my-30 gap-y-8">
 

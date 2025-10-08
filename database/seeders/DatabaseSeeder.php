@@ -57,6 +57,9 @@ class DatabaseSeeder extends Seeder
     $this->call(LoteSubastaSeeder::class);
 
     $this->call(ContratoLoteSeeder::class);
-    $this->call(PujaSeeder::class);
+    // $this->call(PujaSeeder::class);
+
+    // $this->call(OrdenSeeder::class,);
+    // $this->call(OrdenLoteSeeder::class,);
   }
 }

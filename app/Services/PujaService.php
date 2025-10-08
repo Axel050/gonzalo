@@ -38,7 +38,14 @@ class PujaService
       throw new DomainException('Lote no disponible');
     }
 
-    if (($lote->fraccion_min + $ultimoMontoVisto)  > $monto) {
+
+    if ($lote->pujas  && $lote->precio_base  > $monto) {
+      $tot = $lote->precio_base;
+      throw new DomainException('Monto mininoss : ' .  number_format($tot, 0, ',', '.'));
+    }
+
+
+    if (($lote->fraccion_min + $ultimoMontoVisto) > $monto) {
       $tot = $lote->fraccion_min + $ultimoMontoVisto;
       throw new DomainException('Monto minino : ' .  number_format($tot, 0, ',', '.'));
       // throw new DomainException('Monto minino : ' . );

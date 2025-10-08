@@ -36,4 +36,8 @@ Route::post('/carrito', [CarritoController::class, 'store'])->name('carrito.stor
 Route::post('/carrito/pujar', [CarritoController::class, 'pujar'])->name('carrito.pujar');
 
 Route::post('/notification', [MPController::class, 'notification']);
+
+
+
+// Route::post('/notification', [MPController::class, 'notificationOrden'])->name("orden.pago.success");
 // });

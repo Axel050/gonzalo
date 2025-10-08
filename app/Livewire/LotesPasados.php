@@ -110,7 +110,7 @@ class LotesPasados extends Component
       info("lotesClass");
 
       $this->lotes = $this->subastaService?->getLotesPasados($this->subasta)?->toArray();
-      info(["lotesCl8888ass" => $this->lotes]);
+      // info(["lotesCl8888ass" => $this->lotes]);
       $this->error = null;
     } catch (\Exception $e) {
       // info(["error" => $this-}>lotes]);

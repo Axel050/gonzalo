@@ -1,4 +1,7 @@
-<div class="swiper-destacados  g-green-200 w-ful w-[90vw] overflow-hidden pr-1 b-red-400">
+<div class="swiper-destacados   overflow-x-hidden w-full ">
+
+    {{-- <div class="flex flex-col   w-full   items-center lg:pb-24 lg:px-24 lg:mt-0  mt-10 "> --}}
+
 
     @if ($titulo)
         <h2 class="lg:text-[40px] text-[26px] font-librecaslon w-full  lg:text-center text-start mb-2">
@@ -13,7 +16,7 @@
 
 
 
-    <div class="swiper-wrapper g-red-200  p-1 pr-0 ">
+    <div class="swiper-wrapper ">
 
 
         @foreach ($destacados as $des)

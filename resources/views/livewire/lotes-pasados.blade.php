@@ -1,4 +1,4 @@
-<div class="flex flex-col justify-center items-center  w-full  pt-0  text-casa-black">
+<div class="flex flex-col justify-center items-center  w-full  pt-0  text-casa-black ">
 
 
 

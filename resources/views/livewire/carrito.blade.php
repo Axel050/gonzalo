@@ -35,40 +35,38 @@
 
 
                         <div class="flex gap-x-4 justify-center  lg:size-34 size-20 col-span-1">
-                            <img src="{{ Storage::url('imagenes/lotes/normal/' . $lote->foto1) }}" class="w-full   " />
+                            <img src="{{ Storage::url('imagenes/lotes/normal/' . $lote->lote->foto1) }}"
+                                class="w-full   " />
                         </div>
 
-
+                        {{-- @dump('CHGECK SINO HAY PUJA ; , VERIFICAR QUE SEA BASE , antes que fraccion') --}}
                         <div class="flex flex-col justify-center col-span-2">
 
                             <ul class="flex lg:flex-row flex-col lg:gap-3 gap-2 text-sm">
                                 <li
                                     class="lg:px-3 px-2 lg:py-2 py-0.5 rounded-full border border-casa-black lg:text-sm text-xs w-fit">
-                                    <a href="{{ route('lotes.show', $lote['id']) }}">
-                                        Lote: {{ $lote['id'] }}
+                                    <a href="{{ route('lotes.show', $lote->lote->id) }}">
+                                        Lote: {{ $lote->lote->id }}
                                     </a>
                                 </li>
                                 <li
                                     class="lg:px-3 px-2 lg:py-2 py-0.5 rounded-full border border-casa-black lg:text-sm text-xs w-fit">
-                                    <a href="{{ route('lotes.show', $lote['id']) }}">
-                                        Subasta: {{ $lote->ultimoContrato?->subasta?->titulo }}
+                                    <a
+                                        href="{{ route('subasta-pasadas.lotes', $lote->lote->ultimoContrato?->subasta?->id) }}">
+                                        Subasta: {{ $lote->lote->ultimoContrato?->subasta?->titulo }}
                                     </a>
                                 </li>
                             </ul>
 
 
                             <a href="{{ route('lotes.show', $lote['id']) }}"
-                                class="font-bold lg:text-xl text-sm w-full  my-1 ">{{ $lote['titulo'] }}</a>
-
-                            @php
-                                // $signo = $this->getMonedaSigno($lote->moneda);
-                            @endphp
+                                class="font-bold lg:text-xl text-sm w-full  my-1 ">{{ $lote->lote->titulo }}</a>
 
 
 
 
                             <p class="lg:text-xl text-sm font-bold mb-3">
-                                {{ $lote->moneda_signo }}{{ number_format($lote->monto_actual, 0, ',', '.') }}
+                                {{ $lote->lote->moneda_signo }}{{ number_format($lote->lote->monto_actual, 0, ',', '.') }}
                             </p>
 
                             {{-- </div> --}}
@@ -104,39 +102,57 @@
 
 
 
-            <p class="lg:text-xl text-sm mb-0 flex justify-between border-t border-casa-black pt-1 mt-1">Seña</p>
+            @foreach ($ordenes as $orden)
+                <div class="shadow-lg md:p-4 p-2 mb-6  ">
+                    <h3 class="md;text-2xl text-lg font-bold mb-2">
+                        Subasta: {{ $orden->subasta->titulo }}
+                    </h3>
+                    <p class="text-sm mb-3">Orden #{{ $orden->id }} - Estado: {{ ucfirst($orden->estado) }}</p>
 
-            <ul class=" ml-2">
+                    <ul class="mb-4">
+                        @foreach ($orden->lotes as $ol)
+                            <li class="flex justify-between">
+                                <span>Lote #{{ $ol->lote->id }} - {{ $ol->lote->titulo }}</span>
+                                <span>${{ number_format($ol->precio_final, 0, ',', '.') }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
 
-                {{-- @dump('DEBO CORROBAR EL ULTIMA PUJA ; NO SOLO QU ESTE DENRO DE L CARRITO DEL ADQUIERENTE Y SEA ESTADO VENDIDO ') --}}
+                    <p class="flex justify-between border-t border-gray-400 pt-2 font-bold">
+                        Subtotal
+                        <span>${{ number_format($orden->lotes->sum('precio_final'), 0, ',', '.') }}</span>
+                    </p>
 
-                @foreach ($garantiasAplicadas as $gar)
-                    <li class="flex justify-between">subasta: {{ $gar['subasta_titulo'] }}
-                        <span>{{ $gar['monto'] }}</span>
-                    </li>
-                @endforeach
+                    @php
+                        $garantia = collect($garantiasAplicadas)->firstWhere('subasta_id', $orden->subasta->id);
+                    @endphp
 
-            </ul>
-            <b class="ml-auto">-$ {{ $descuentoGarantias }}</b>
+                    @if ($garantia)
+                        <p class="flex justify-between text-sm">
+                            Deposito:
+                            {{-- {{ $garantia['subasta_titulo'] }} --}}
+                            <span>-${{ number_format($garantia['monto'], 0, ',', '.') }}</span>
+                        </p>
+                    @endif
+
+                    <p class="flex justify-between border-t border-black pt-2 text-xl font-bold">
+                        Total
+                        <span>
+                            ${{ number_format($orden->lotes->sum('precio_final') - ($garantia['monto'] ?? 0), 0, ',', '.') }}
+                        </span>
+                    </p>
+
+                    <button wire:click="mp({{ $orden->id }})"
+                        class="bg-casa-black text-white font-bold rounded-full px-4 py-2 mt-4 inline-flex items-center justify-center hover:bg-casa-base-2 hover:text-casa-black m:w-fit w-full ">
+                        Pagar esta subasta
+                        <svg class="size-5 ml-2">
+                            <use xlink:href="#arrow-right"></use>
+                        </svg>
+                    </button>
+                </div>
+            @endforeach
 
 
-            <p class="lg:text-xl text-sm mb-3 flex justify-between border-t border-casa-black pt-1">Lotes
-                <b>$ {{ $totalLotes }}</b>
-            </p>
-
-            <p class="lg:text-3xl text-lg mb-3 flex justify-between border-t border-casa-black pt-1">Total
-                <b>$ {{ $totalCarrito }}</b>
-            </p>
-
-
-
-            <a href="{{ route('carrito') }}"
-                class="bg-casa-black hover:bg-casa-base-2 border border-casa-black hover:text-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  py-2 lg:text-xl text-sm font-bold w-full mt-12 lg:mt-auto">
-                Pagar
-                <svg class="size-8 ">
-                    <use xlink:href="#arrow-right"></use>
-                </svg>
-            </a>
         </div>
 
 

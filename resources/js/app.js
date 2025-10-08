@@ -96,11 +96,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const slides = el.querySelectorAll('.swiper-slide').length;
 
+
     new Swiper(el, {
       slidesPerView: 3,
       spaceBetween: 15,
       centerInsufficientSlides: true,
-      loop: true,
+      loop: slides > 3 ? true : false,
       autoplay: { delay: 2000 },
       breakpoints: {
         420: {
@@ -123,22 +124,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // autoplay: { delay: 2000 },
 
 
-    if (window.innerWidth >= 1024) {
-      console.log("INNNEEEE")
+    if (window.innerWidth >= 640) {
+      console.log("INNNEEEEadd")
       new Swiper(el, {
-        slidesPerView: 1,
+        slidesPerView: 3,
 
         centerInsufficientSlides: true,
+        spaceBetween: 50,
+        loop: slides > 3 ? true : false,
+        autoplay: slides > 3 ? { delay: 2000 } : false,
 
 
-        breakpoints: {
-          420: {
-            slidesPerView: 3,
-            spaceBetween: 50,
-            loop: slides > 3 ? true : false,
-            autoplay: slides > 3 ? { delay: 2000 } : false,
-          },
-        },
+        // breakpoints: {
+        //   420: {
+        //     slidesPerView: 3,
+        //   },
+        // },
         modules: [Autoplay],
 
       });

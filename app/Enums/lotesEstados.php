@@ -9,6 +9,7 @@ class LotesEstados
   public const ASIGNADO = 'asignado';
   public const EN_SUBASTA = 'en_subasta';
   public const VENDIDO = 'vendido';
+  public const PAGADO = 'pagado';
   public const DEVUELTO = 'devuelto';
   public const STANDBY = 'standby';
 
@@ -25,6 +26,7 @@ class LotesEstados
       self::ASIGNADO,
       self::EN_SUBASTA,
       self::VENDIDO,
+      self::PAGADO,
       self::DEVUELTO,
       self::STANDBY,
     ];
@@ -43,6 +45,7 @@ class LotesEstados
       self::DISPONIBLE => 'Disponible',
       self::EN_SUBASTA => 'En Subasta',
       self::VENDIDO => 'Vendido',
+      self::PAGADO => 'Pagado',
       self::DEVUELTO => 'Devuelto',
       self::STANDBY => 'Standby',
       self::ASIGNADO => 'Asignado',

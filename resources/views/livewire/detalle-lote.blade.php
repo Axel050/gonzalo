@@ -328,11 +328,15 @@
 
 
 
+    <div class="pb-0 pt-18 lg:px-24 overflow-x-hidden  w-full">
+        @livewire('destacados', ['subasta_id' => $subasta->id, 'route' => $route])
+    </div>
 
-    @livewire('destacados', ['subasta_id' => $subasta->id, 'route' => $route])
 
+    {{-- <div class="-pb-10"> --}}
 
     @livewire('subastas-abiertas')
+    {{-- </div> --}}
 
 
 
