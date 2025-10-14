@@ -27,6 +27,7 @@ class LotesActivos extends Component
 
   protected $subastaService;
 
+  public $modalPago;
   public $adquirente;
   public $te;
 
@@ -229,19 +230,15 @@ class LotesActivos extends Component
   public function mp(MPService $mpService)
   {
 
-    // subastas / 5 / lotes
-    $route = "/subastas/" . $this->subasta->id . "/lotes";
-    // info(["ROUTE" => $route]);
 
-    // $subasta = Subasta::find($this->subasta);
 
-    // info([
-    //   "ANTES PREFERENCE LTOES ACTIVOS " => "aaa",
-    //   "subasta garantia" => $this->subasta->garantia,
-    //   "adquirente" => $this->adquirente->id,
-    //   "subasta" => $this->subasta->id,      
-    //   "rpute" => $route,
-    // ]);
+    $this->modalPago = 1;
+  }
+  public function mp2(MPService $mpService)
+  {
+
+
+    $route = "/subastas/" . $this->subasta->id . "/lotes";;
 
     $preference = $mpService->crearPreferencia("Garantia", 1, $this->subasta->garantia, $this->adquirente->id, $this->subasta->id, null,  $route);
 

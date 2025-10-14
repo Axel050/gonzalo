@@ -6,7 +6,8 @@
         </svg>
     </a>
 
-    <x-auth-header :title="__('Ingresa en tu cuenta')" :description="__('')" />
+    {{-- <x-auth-header :title="__('Ingresa en tu cuenta')" :description="__('')" /> --}}
+    <h2 class="text-casa-base-2 text-2xl text-start">Ingresa a tu cuenta</h2>
 
     <!-- Session Status -->
     <x-auth-session-status class="text-center" :status="session('status')" />
@@ -29,15 +30,17 @@
         </div>
 
         <!-- Remember Me -->
-        <div class=" z-10">
-            <flux:checkbox wire:model="remember" :label="__('Recordarme')" />
+        <div class=" z-10 text-casa-base-2  flex items-center">
+            {{-- <flux:checkbox wire:model="remember" :label="__('Recordarme')" /> --}}
+            <input type="checkbox" wire:model="remenber" class="size-5 mr-2" />
+            <label>Recordarme</label>
         </div>
 
         <div class="flex items-center justify-end">
             <flux:button variant="primary" type="submit" class="w-full">{{ __('Ingresar') }}</flux:button>
         </div>
 
-        <div class="flex items-center justify-end bg-casa-base-2 rounded-lg hover:bg-casa-base">
+        <div class="flex items-center justify-end bg-casa-base-2 rounded-lg hover:bg-casa-base w-fit px-4 mt-2">
             <a href="{{ route('adquirentes.create') }}" class="w-full text-center py-1.5">¿ Primera vez ?</a>
         </div>
     </form>

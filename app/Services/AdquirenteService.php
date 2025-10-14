@@ -80,7 +80,10 @@ class AdquirenteService
         // 'foto' => $filename,
         'user_id' => $user->id,
         // "condicion_iva_id" => $data['condicion_iva_id'],
-        "estado_id" =>  2,
+
+        // "estado_id" =>  2,//nuevo
+        "estado_id" =>  1, // habitual para purebas , y no tener que cambiar estado o pagar deposito(pidio GONZA)
+
       ]);
     }
 

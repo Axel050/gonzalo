@@ -2,7 +2,7 @@
 
     {{-- @dump('VER OPCION PONER MODAL PARA MENJEAR PUJAS Y OFERTAS ') --}}
 
-    {{-- <article class="bg-red-00 flex  w-full lg:justify-center justify-start flex-col mt-10 lg:mb-8 mb-4 lg:px-0 px-4">
+    <article class="bg-red-00 flex  w-full lg:justify-center justify-start flex-col mt-10 lg:mb-8 mb-4 lg:px-0 px-4">
         <svg fill="#fff" class="w-[247px] h-[47px] mx-auto mb-2 lg:block hidden">
             <use xlink:href="#tuslotes"></use>
         </svg>
@@ -13,10 +13,9 @@
             Estos son
             lotes que agregaste a tu carrito.
         </h3>
-        <p class=" lg:text-3xl text-sm lg:text-center text-start">Vehicula adipiscing pellentesque volutpat
-            dui rhoncus neque urna.</p>
+        <p class=" lg:text-3xl text-sm lg:text-center text-start">Desde aquí podrás pujar por los lotes que elegiste.</p>
 
-    </article> --}}
+    </article>
 
 
 

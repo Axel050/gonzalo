@@ -9,7 +9,7 @@
 
         <h1 class="lg:text-3xl text-lg   font-bold  mb-4 text-start">Registrate</h1>
         <h2 class="font-bold lg:text-xl text-sm">Comitentes</h2>
-        <p class="lg:text-xl text-sm">Registrate para poder ver las subastar tu bienes.</p>
+        <p class="lg:text-xl text-sm">Registrate para poder subastar tu bienes.</p>
 
 
         <form wire:submit.prevent="save" class="grid lg:grid-cols-2  grid-cols-1 gap-y-2 gap-x-8 mt-5 ">
@@ -52,7 +52,7 @@
                 <div class="relative w-full ">
                     <input wire:model="CUIT"
                         class = 'lg:w-60  rounded-full border border-casa-black w-full text-gray-800 px-3  text-sm  py-1 lg:text-lg'
-                        placeholder="30-2221155-0" />
+                        placeholder="3022211550" />
                     <x-input-error for="CUIT" class="top-full py-0 leading-[12px] text-red-500" />
                 </div>
             </div>
@@ -83,7 +83,7 @@
                 <div class="relative w-full ">
                     <input wire:model="banco "
                         class = 'lg:w-60  rounded-full border border-casa-black w-full text-gray-800 px-3  text-sm  py-1 lg:text-lg'
-                        placeholder="30-2221155-0" />
+                        placeholder="santander" />
                     <x-input-error for="banco" class="top-full py-0 leading-[12px] text-red-500" />
                 </div>
             </div>

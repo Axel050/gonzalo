@@ -125,9 +125,9 @@
 
             </h2>
             <ul
-                class="flex space-x-2 [&>li]:rounded-2xl  [&>li]:px-3 [&>li]:lg:py-1.5 [&>li]:py-0.5  [&>li]:text-sm my-2 lg:text-sm text-xs font-semibold">
-                <li>{{ $lote->tipo?->nombre }}</li>
-                <li>Lote: {{ $lote->id }}</li>
+                class="flex space-x-2 [&>li]:rounded-2xl  [&>li]:px-3 [&>li]:lg:py-1.5 [&>li]:py-0.5  [&>li]:tet-sm my-2 lg:text-base text-sm font-semibold">
+                <li class="">{{ $lote->tipo?->nombre }}</li>
+                <li class="">Lote: {{ $lote->id }}</li>
 
 
                 @php
@@ -139,7 +139,7 @@
                 @endphp
 
                 <li class="border border-gray-600">
-                    <a href="{{ route($route, $subasta->id) }}" title="Ir a subasta muebles">Subasta:
+                    <a href="{{ route($route, $subasta->id) }}" title="Ir a subasta {{ $subasta->titulo }}">Subasta:
                         {{ $subasta->titulo }}</a>
                 </li>
 

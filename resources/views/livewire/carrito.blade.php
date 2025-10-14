@@ -20,7 +20,9 @@
         </p>
     </article>
 
-
+    @if ($modalPago)
+        @livewire('modal-option-pago', ['orden' => $orden, 'subasta' => $subasta, 'adquirente' => $adquirente, 'from' => 'orden'])
+    @endif
 
     <div class="flex lg:flex-row flex-col lg:gap-8 gap-2  items-start   ">
 
@@ -103,7 +105,7 @@
 
 
             @foreach ($ordenes as $orden)
-                <div class="shadow-lg md:p-4 p-2 mb-6  ">
+                <div class="shadow-lg md:p-4 p-2 mb-6 relative ">
                     <h3 class="md;text-2xl text-lg font-bold mb-2">
                         Subasta: {{ $orden->subasta->titulo }}
                     </h3>
@@ -149,6 +151,9 @@
                             <use xlink:href="#arrow-right"></use>
                         </svg>
                     </button>
+
+                    <x-input-error for="monto" class="abslute -bottom-1 text-red-700  text-lg mt-2" />
+
                 </div>
             @endforeach
 

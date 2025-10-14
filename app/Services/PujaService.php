@@ -38,10 +38,16 @@ class PujaService
       throw new DomainException('Lote no disponible');
     }
 
-
-    if ($lote->pujas  && $lote->precio_base  > $monto) {
+    info([["PUJA555 " => count($lote->pujas)]]);
+    info([[
+      "precio base " => $lote->precio_base,
+      "monto " => $monto
+    ]]);
+    // if ($lote->pujas  && $lote->precio_base  > $monto) {
+    if ($lote->precio_base  > $monto && !count($lote->pujas)) {
+      info("ENTER");
       $tot = $lote->precio_base;
-      throw new DomainException('Monto mininoss : ' .  number_format($tot, 0, ',', '.'));
+      throw new DomainException('Monto mininosss : ' .  number_format($tot, 0, ',', '.'));
     }
 
 

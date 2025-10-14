@@ -97,10 +97,13 @@
                     Subastas
                 </a>
 
-                <a href="{{ route('adquirentes.create') }}"
-                    class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black text-black h-fit">
-                    ¿Primera vez?
-                </a>
+                @guest
+                    <a href="{{ route('adquirentes.create') }}"
+                        class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black text-black h-fit">
+                        ¿Primera vez?
+                    </a>
+                @endguest
+
 
             </div>
 
@@ -179,7 +182,7 @@
 
         <!-- Page Content -->
 
-        {{-- @livewire('counter-header') --}}
+        @livewire('counter-header')
 
         {{-- <main class=" bg-gray-900  px-4 lg:px-6  "> --}}
         {{-- bg-[repeating-linear-gradient(45deg,currentColor_0,currentColor_1px,transparent_1px,transparent_5px)] --}}

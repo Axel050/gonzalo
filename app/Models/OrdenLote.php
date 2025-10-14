@@ -9,7 +9,7 @@ class OrdenLote extends Model
 {
   use HasFactory;
 
-  protected $fillable = ['orden_id', 'lote_id', 'subasta_id', 'precio_final'];
+  protected $fillable = ['orden_id', 'lote_id', 'precio_final'];
 
   public function orden()
   {

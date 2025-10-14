@@ -56,16 +56,16 @@ class MPService
 
   public function crearPreferenciaOrden($adquirente, $subasta, $orden)
   {
-
-
+    // si monto es negativo  ,oosea desceunto mayor que precio lote , da error MP 
+    // info(["TOTAL  nnnnnn=" => (float) $orden->total_neto]);
     $client = new PreferenceClient();
-
-
+    // info("xxxxxxxxxxxxxxxxxxxxxx");
     $preference = $client->create([
       "items" => [
         [
           "title" => "Orden #{$orden->id} - Subasta: {$subasta->titulo}",
           "quantity" => 1,
+          // "unit_price" => 1111,
           "unit_price" => (float) $orden->total_neto,
         ]
       ],
@@ -83,6 +83,7 @@ class MPService
       ])
     ]);
 
+    info(["MP----adquirente " => $adquirente, "Subasta" => $subasta, "ordem" => $orden]);
     return $preference;
   }
 

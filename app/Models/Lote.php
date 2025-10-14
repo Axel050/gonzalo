@@ -108,6 +108,12 @@ class Lote extends Model implements Auditable
   }
 
 
+  public function getPrecioFinalAttribute()
+  {
+    $pujaFinal = $this->getPujaFinal();
+    return $pujaFinal ? $pujaFinal->monto : 0;
+  }
+
 
   // Relación con Subasta a través de LoteSubasta
   public function subastas()

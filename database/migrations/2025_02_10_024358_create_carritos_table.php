@@ -6,25 +6,25 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
-        Schema::create('carritos', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('adquirente_id')->constrained('adquirentes')->onDelete('cascade');  
-            $table->foreignId('subasta_id')->constrained('subastas')->onDelete('cascade');
-            $table->softDeletes();
-            $table->timestamps();
-        });
-    }
+  /**
+   * Run the migrations.
+   */
+  public function up(): void
+  {
+    Schema::create('carritos', function (Blueprint $table) {
+      $table->id();
+      $table->foreignId('adquirente_id')->constrained('adquirentes')->onDelete('cascade');
+      // $table->foreignId('subasta_id')->constrained('subastas')->onDelete('cascade');
+      $table->softDeletes();
+      $table->timestamps();
+    });
+  }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('carritos');
-    }
+  /**
+   * Reverse the migrations.
+   */
+  public function down(): void
+  {
+    Schema::dropIfExists('carritos');
+  }
 };

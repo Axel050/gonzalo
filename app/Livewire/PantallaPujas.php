@@ -40,7 +40,8 @@ class PantallaPujas extends Component
   #[On('echo:my-channel,SubastaEstado')]
   public function test2()
   {
-    $this->lotes  = $this->adquirente?->carrito?->lotes;
+    info("SIBASTA ESTADO");
+    $this->lotes  = $this->adquirente?->carrito?->lotesFiltrados;
     $this->dispatch('lotes-updated');
   }
 
@@ -72,7 +73,8 @@ class PantallaPujas extends Component
   public function expired($loteId)
   {
     info("TERMINOoooooooo " . $loteId);
-    $this->lotes  = $this->adquirente?->carrito?->lotes;
+    // $this->lotes  = $this->adquirente?->carrito?->lotes;
+    $this->lotes  = $this->adquirente?->carrito?->lotesFiltrados;
     // info("lotes SHOW" . $this->lotes);
 
     if ($this->lotes) {
@@ -125,7 +127,10 @@ class PantallaPujas extends Component
     $user  = auth()->user();
     $this->adquirente = Adquirente::where("user_id", $user->id)->first();
     $this->adquirente_id = $this->adquirente?->id;
-    $this->lotes  = $this->adquirente?->carrito?->lotes;
+
+    $this->lotes  = $this->adquirente?->carrito?->lotesFiltrados;
+
+
     // info("lotes SHOW" . $this->lotes);
     $this->monedas = Moneda::all();
 
@@ -217,9 +222,11 @@ class PantallaPujas extends Component
     } catch (ModelNotFoundException | InvalidArgumentException | DomainException $e) {
       if ($ultimoMontoVisto == 0) {
         $base = Lote::find($loteId)->precio_base;
+        info("IF ULUITMP = xxx");
         $this->ofertas[$loteId] = $base;
       } else {
         # code...
+        info("IF ULUITMP = xxxzzz");
         $this->ofertas[$loteId] = $totalMin;
       }
 

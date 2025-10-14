@@ -167,7 +167,7 @@ class DetalleLote extends Component
     if ($this->adquirente) {
 
       $carrito = Carrito::where(
-        ['adquirente_id' => $this->adquirente->id, 'estado' => 'activo']
+        ['adquirente_id' => $this->adquirente->id]
       )->first();
 
       $exists = false;

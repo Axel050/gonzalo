@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\CarritoLoteEstados;
 use App\Enums\LotesEstados;
 use App\Enums\OrdenesEstados;
 use App\Livewire\LotesActivos;
 use App\Models\Adquirente;
+use App\Models\CarritoLote;
 use App\Models\Garantia;
 use App\Models\Lote;
 use App\Models\Orden;
@@ -147,6 +149,19 @@ class MPController extends Controller
         if ($lote && $lote->estado !== LotesEstados::PAGADO) {
           $lote->estado = LotesEstados::PAGADO;
           $lote->save();
+
+          $carritoLote = CarritoLote::where('lote_id', $lote->id)
+            ->whereHas('carrito', fn($q) => $q->where('adquirente_id', $orden->adquirente_id))
+            ->where('estado', CarritoLoteEstados::EN_ORDEN) // Asumiendo que está en 'en_orden' antes del pago
+            ->first();
+
+          if ($carritoLote) {
+            $carritoLote->update(['estado' => CarritoLoteEstados::PAGADO]); // Ajusta 'pagado' al estado deseado (ej. enum o string)
+            info("✅ CarritoLote ID {$carritoLote->id} actualizado a 'pagado' para lote ID {$lote->id} (Orden #{$orden->id})");
+          } else {
+            info("⚠️ No se encontró CarritoLote para lote ID {$lote->id} y adquirente ID {$orden->adquirente_id}");
+          }
+
 
           info("✅ Lote ID {$lote->id} marcado como 'PAGADO' (Orden #{$orden->id})");
         }

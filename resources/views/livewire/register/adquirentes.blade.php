@@ -2,6 +2,7 @@
 
     @if ($method)
         @livewire('register.modal-success', ['pas' => $pasP, 'mail' => $mailP, 'from' => 'adquirentes'])
+        {{-- @livewire('register.modal-success', ['pas' => '12345678', 'mail' => 'test@example.com', 'from' => 'adquirentes']) --}}
     @endif
 
 

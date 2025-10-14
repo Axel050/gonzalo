@@ -35,7 +35,7 @@ class DepositoSeeder extends Seeder
 
       Garantia::create([
         'fecha' => $fechaDeposito,
-        'monto' => (round(rand(500, 10000) / 100) * 100),
+        'monto' => (round(rand(200, 1000) / 100) * 100),
         'estado' => $estado,
         'adquirente_id' => $adquirentes->random()->id, // Adquirente aleatorio
         'subasta_id' => $subastas->random()->id, // Subasta aleatoria

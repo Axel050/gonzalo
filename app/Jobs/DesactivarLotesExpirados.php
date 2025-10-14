@@ -2,11 +2,13 @@
 
 namespace App\Jobs;
 
+use App\Enums\CarritoLoteEstados;
 use App\Enums\LotesEstados;
 use App\Enums\SubastaEstados;
 use App\Events\SubastaEstado;
 use App\Models\Subasta;
 use App\Events\SubastaEstadoActualizado;
+use App\Models\CarritoLote;
 use App\Models\Orden;
 use App\Models\OrdenLote;
 use Illuminate\Bus\Queueable;
@@ -150,12 +152,9 @@ class DesactivarLotesExpirados implements ShouldQueue
   }
 
 
-
-
-  // MÉTODO ACTUALIZADO: Crea órdenes con descuento = monto de garantía
+  // MÉTODO ACTUALIZADO: Crea órdenes con descuento = monto de garantía + Actualiza CarritoLote
   private function crearOrdenesParaSubastaFinalizada(Subasta $subasta)
   {
-
     info("CREARRRRRR");
     // Obtener todos los lotes VENDIDO de esta subasta
     $lotesVendidos = $subasta->lotes()
@@ -169,13 +168,17 @@ class DesactivarLotesExpirados implements ShouldQueue
     }
 
     DB::transaction(function () use ($lotesVendidos, $subasta) {
+      // NUEVA LÓGICA: Primero, cerrar todos los CarritoLote de esta subasta (perdedores)
+      $carritoLotes = CarritoLote::where('subasta_id', $subasta->id)->get();
+      foreach ($carritoLotes as $item) {
+        $item->update(['estado' => CarritoLoteEstados::CERRADO]);
+      }
+      info("Cerrados todos los CarritoLote para subasta ID: {$subasta->id}");
+
       // Agrupar lotes por adquirente_id (ganador)
       $lotesPorAdquirente = $lotesVendidos->groupBy(function ($lote) use ($subasta) {
-        // Puja ganadora: la más reciente por created_at
-        $pujaGanadora = $lote->pujas()
-          ->where('subasta_id', $subasta->id)
-          ->latest('created_at')
-          ->first();
+        // Puja ganadora: la más reciente por id descendente (usando getPujaFinal)
+        $pujaGanadora = $lote->getPujaFinal();
 
         return $pujaGanadora ? $pujaGanadora->adquirente_id : null;
       })->reject(function ($group, $adquirenteId) {
@@ -190,21 +193,34 @@ class DesactivarLotesExpirados implements ShouldQueue
           continue;
         }
 
-        // Calcular total (suma de precios finales)
+        // NUEVA LÓGICA: Actualizar CarritoLote a 'adjudicado' para los ganadores
+        $carritoLotesGanadores = CarritoLote::where('subasta_id', $subasta->id)
+          ->whereHas('carrito', fn($q) => $q->where('adquirente_id', $adquirenteId))
+          ->whereIn('lote_id', $lotesDelAdquirente->pluck('id'))
+          ->get();
+
+        foreach ($carritoLotesGanadores as $item) {
+          $pujaFinal = $item->lote->getPujaFinal(); // Obtener la puja final del lote
+          if ($pujaFinal && $pujaFinal->adquirente_id === $adquirenteId) {
+            $item->update(['estado' => CarritoLoteEstados::ADJUDICADO]);
+            info("CarritoLote ID: {$item->id} actualizado a 'adjudicado' para lote ID: {$item->lote_id} (ganador: {$pujaFinal->adquirente_id})");
+          }
+        }
+
+        // Calcular total (suma de precios finales) - Ajustado para usar puja final
         $total = 0;
         $ordenLotesData = [];
         foreach ($lotesDelAdquirente as $lote) {
-          $pujaGanadora = $lote->pujas()
-            ->where('subasta_id', $subasta->id)
-            ->latest('created_at')
-            ->first();
+          $pujaGanadora = $lote->getPujaFinal(); // Usar el mismo método para consistencia
 
           if (!$pujaGanadora) {
-            info("Advertencia: No se encontró puja ganadora para lote ID: {$lote->id}");
+            info("Advertencia: No se encontró puja final para lote ID: {$lote->id}");
             continue;
           }
 
-          $precioFinal = $pujaGanadora->monto; // Asumiendo 'monto' en pujas
+          // Si Lote tiene accesor precio_final, úsalo: $precioFinal = $lote->precio_final;
+          // De lo contrario, usa monto de la puja final
+          $precioFinal = $pujaGanadora->monto;
           $total += $precioFinal;
 
           $ordenLotesData[] = [
@@ -238,6 +254,15 @@ class DesactivarLotesExpirados implements ShouldQueue
           $data['orden_id'] = $orden->id;
         }
         OrdenLote::insert($ordenLotesData);
+
+        // NUEVA LÓGICA: Actualizar CarritoLote a 'en_orden' después de crear la orden
+        foreach ($carritoLotesGanadores as $item) {
+          $pujaFinal = $item->lote->getPujaFinal();
+          if ($pujaFinal && $pujaFinal->adquirente_id === $adquirenteId) {
+            $item->update(['estado' => CarritoLoteEstados::EN_ORDEN]);
+            info("CarritoLote ID: {$item->id} actualizado a 'en_orden' para lote ID: {$item->lote_id} en orden ID: {$orden->id} (ganador: {$pujaFinal->adquirente_id})");
+          }
+        }
 
         $totalNeto = $total - $montoDescuento;
         info("Creada orden ID: {$orden->id} para adquirente ID: {$adquirenteId} con total: {$total}, descuento (garantía): {$montoDescuento}, total neto: {$totalNeto} en subasta ID: {$subasta->id}");

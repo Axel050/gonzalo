@@ -1,5 +1,7 @@
 @props([
     'monto' => '',
+    'subasta',
+    'adquirente',
 ])
 <article
     class="g-red-500 flex idden  lg:w-5/6 w-full  lg:justify-center justify-start flex-col lg:mt-10 mt-6 mb-8 mx-auto lg:px-12 lg:py-12 px-6 py-10  bg-casa-fondo-h border border-casa-black">
@@ -52,5 +54,11 @@
             <use xlink:href="#arrow-right"></use>
         </svg>
     </button> --}}
+
+
+
+    @if ($modalPago)
+        @livewire('modal-option-pago', ['orden' => $orden, 'subasta' => $subasta, 'adquirente' => $adquirente, 'from' => 'orden'])
+    @endif
 
 </article>

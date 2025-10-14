@@ -6,26 +6,28 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up(): void
-    {
-        Schema::create('carrito_lotes', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('carrito_id')->constrained('carritos')->onDelete('cascade'); 
-            $table->foreignId('lote_id')->constrained('lotes')->onDelete('cascade'); 
-            $table->decimal('ultima_oferta', 10, 2)->nullable();  
-            $table->softDeletes();
-            $table->timestamps();
-        });
-    }
+  /**
+   * Run the migrations.
+   */
+  public function up(): void
+  {
+    Schema::create('carrito_lotes', function (Blueprint $table) {
+      $table->id();
+      $table->foreignId('carrito_id')->constrained('carritos')->onDelete('cascade');
+      $table->foreignId('lote_id')->constrained('lotes')->onDelete('cascade');
+      // $table->decimal('ultima_oferta', 10, 2)->nullable();  
+      $table->foreignId('subasta_id')->constrained('subastas')->onDelete('cascade');
+      $table->string('estado')->default('activo');
+      $table->softDeletes();
+      $table->timestamps();
+    });
+  }
 
-    /**
-     * Reverse the migrations.
-     */
-    public function down(): void
-    {
-        Schema::dropIfExists('carrito_lotes');
-    }
+  /**
+   * Reverse the migrations.
+   */
+  public function down(): void
+  {
+    Schema::dropIfExists('carrito_lotes');
+  }
 };

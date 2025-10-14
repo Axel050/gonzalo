@@ -5,9 +5,7 @@ namespace App\Livewire;
 use App\Models\Adquirente;
 use App\Models\Moneda;
 use App\Models\Orden;
-use App\Services\CarritoService;
-use App\Services\MPService;
-use App\Services\PujaService;
+
 use DomainException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use InvalidArgumentException;
@@ -19,6 +17,7 @@ class Carrito extends Component
   public array $fraccion_min = [];
 
 
+  public $modalPago;
   public $adquirente;
   public $lotes;
   public $lote_id;
@@ -29,6 +28,9 @@ class Carrito extends Component
   public $ultimaOferta;
   public $pujado;
   public $monedas;
+
+  public $orden;
+  public $subasta;
 
   public $totalDepositos;
 
@@ -116,29 +118,39 @@ class Carrito extends Component
 
 
 
-  public function mp(MPService $mpService, $orden_id)
+  public function mp($orden_id)
   {
-    $orden = Orden::with('lotes.lote', 'subasta', 'adquirente')->findOrFail($orden_id);
+    $this->orden = Orden::with('lotes.lote', 'subasta', 'adquirente')->findOrFail($orden_id);
 
-    $adquirente = $orden->adquirente;
-    $subasta = $orden->subasta;
+    // $adquirente = $orden->adquirente;
+    $this->subasta = $this->orden->subasta;
 
 
+    if ($this->orden->total_neto < 0) {
+      info("into  eeeeeeeeeee");
+      $this->addError('monto', "Error en el monto de la orden.");
+      return;
+    }
+    info("into  passssss");
+    $this->modalPago = 1;
 
     // Creamos preferencia desde el servicio
-    $preference = $mpService->crearPreferenciaOrden(
-      $adquirente,
-      $subasta,
-      $orden,
-    );
+    // $preference = $mpService->crearPreferenciaOrden(
+    //   $adquirente,
+    //   $subasta,
+    //   $orden,
+    // );
 
+
+    info("xxxxxxxxxxxxxxxxxxxxxxx");
     // $preference = $mpService->crearPreferencia("Garantia", 1, $this->subasta->garantia, $this->adquirente->id, $this->subasta->id, null,  $route);
     // $preference = $mpService->crearPreferencia("Garantia", 1, $this->subasta->garantia, $this->adquirente->id, 66, null,  $route);
 
-    if ($preference) {
-      // $this->init = $preference->init_point;
-      return redirect()->away($preference->init_point);
-    }
+    // if ($preference) {
+    //   return redirect()->away($preference->init_point);
+    // }
+
+
     // info(
     // return redirect($preference['init_point']); // Redirige al checkout
   }

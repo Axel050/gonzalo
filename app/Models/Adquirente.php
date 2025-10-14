@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\CarritoLoteEstados;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use OwenIt\Auditing\Contracts\Auditable;
@@ -28,6 +29,17 @@ class Adquirente extends Model implements Auditable
     'banco',
     'alias_bancario',
   ];
+  public function lotesActivosOAdjudicadosOEnOrdenOCerrados()
+  {
+    return $this->carrito?->lotes()
+      ->wherePivotIn('estado', [
+        CarritoLoteEstados::ACTIVO,
+        CarritoLoteEstados::ADJUDICADO,
+        CarritoLoteEstados::EN_ORDEN,
+        "cerrado", // Asumiendo que existe este enum value
+      ])
+      ->get();
+  }
 
 
   public function carrito()

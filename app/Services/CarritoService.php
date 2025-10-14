@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Enums\CarritoLoteEstados;
 use App\Enums\LotesEstados;
 use App\Enums\SubastaEstados;
 use App\Events\SubastaEstado;
@@ -66,7 +67,7 @@ class CarritoService
 
     DB::transaction(function () use ($lote, $subasta, $adquirenteId) {
       $carrito = Carrito::firstOrCreate(
-        ['adquirente_id' => $adquirenteId, 'estado' => 'activo']
+        ['adquirente_id' => $adquirenteId]
       );
 
       $exists = $carrito->carritoLotes()->where('lote_id', $lote->id)->exists();
@@ -77,6 +78,7 @@ class CarritoService
       $carrito->carritoLotes()->create([
         'lote_id' => $lote->id,
         'subasta_id' => $subasta->id,
+        'estado' => CarritoLoteEstados::ACTIVO
       ]);
     });
   }
@@ -103,7 +105,6 @@ class CarritoService
     }
 
     $carrito = Carrito::where('adquirente_id', $adquirenteId)
-      ->where('estado', 'activo')
       ->firstOr(function () {
         throw new ModelNotFoundException("Carrito no encontrado", 404);
       });
