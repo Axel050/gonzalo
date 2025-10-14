@@ -19,7 +19,7 @@ class PujaService
 
   public function registrarPuja(int $adquirenteId, int $loteId, int $monto, int $ultimoMontoVisto): array
   {
-
+    info("pppppppuja servici");
 
     if (!$adquirenteId) {
       throw new InvalidArgumentException('Adquirente no especificado');
