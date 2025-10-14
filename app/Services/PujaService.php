@@ -142,7 +142,7 @@ class PujaService
 
     $signo = Moneda::find($lote->moneda)?->signo;
 
-    // info("ANTES EVENT");
+    info("ANTES EVENT pujarealizada");
     event(new PujaRealizada($lote->id, $montoFinal, $puja->id, $ultimoAdquirente, $signo));
 
     // info("DESPUES EVENT");
