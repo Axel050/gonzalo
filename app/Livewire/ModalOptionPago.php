@@ -35,13 +35,13 @@ class ModalOptionPago extends Component
   {
 
 
-    info(
-      [
-        "adquiernte" => $this->adquirente,
-        "subasta" => $this->subasta,
-        "orden" => $this->orden,
-      ]
-    );
+    // info(
+    //   [
+    //     "adquiernte" => $this->adquirente,
+    //     "subasta" => $this->subasta,
+    //     "orden" => $this->orden,
+    //   ]
+    // );
 
 
     if ($this->from === "orden") {

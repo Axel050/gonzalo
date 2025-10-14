@@ -50,7 +50,7 @@ class MPController extends Controller
     $paymentClient = new PaymentClient();
     $payment = $paymentClient->get($paymentId);
 
-    info(["✅ Payment info" => $payment]);
+    // info(["✅ Payment info" => $payment]);
 
     $externalRef = json_decode($payment->external_reference ?? '{}', true);
 
