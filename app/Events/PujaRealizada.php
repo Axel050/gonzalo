@@ -29,6 +29,7 @@ class PujaRealizada implements ShouldBroadcast
 
   public function __construct($loteId = null, $monto = null, $puja = null, $ultimoAdquirente = null, $signo = null)
   {
+    info("ENVENTO  PUJA COSNTRUC");
     $this->loteId = $loteId;
     $this->monto = $monto;
     $this->ultimoAdquirente = $ultimoAdquirente;
@@ -53,6 +54,8 @@ class PujaRealizada implements ShouldBroadcast
 
   public function broadcastWith()
   {
+    info("ENVENTO  PUJA with");
+
     return [
       'loteId' => $this->loteId,
       'monto' => $this->monto,
