@@ -27,7 +27,6 @@
 
                     <x-form-item label="Contrato" method="view" model="contrato_id" />
 
-
                     <x-form-item-area label="Descripcion" :method="$method" model="descripcion" />
 
                     <x-form-item label="Base" :method="$method" model="base" type="number" />

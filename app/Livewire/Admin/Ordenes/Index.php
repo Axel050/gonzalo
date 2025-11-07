@@ -48,7 +48,7 @@ class Index extends Component
   }
 
 
-  #[On(['depositoCreated', 'depositoUpdated', 'depositoDeleted'])]
+  #[On(['depositoCreated', 'ordenUpdated', 'depositoDeleted'])]
   public function mount()
   {
     if ($this->ids) {

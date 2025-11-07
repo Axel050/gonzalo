@@ -146,6 +146,7 @@ class PujaService
     event(new PujaRealizada($lote->id, $montoFinal, $puja->id, $ultimoAdquirente, $signo));
 
     info("DESPUES EVENT puja");
+
     return [
       'success' => true,
       'message' => [

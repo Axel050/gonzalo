@@ -35,6 +35,7 @@ class Modal extends Component
 
   public $comision = 20;
   public $garantia = 0;
+  public $envio = 0;
 
   public $titulo;
   public $descripcion;
@@ -57,6 +58,7 @@ class Modal extends Component
       'comision' => 'required|numeric|min:0',
       'tiempoPos' => 'required',
       'garantia' => 'required|numeric|min:1',
+      'envio' => 'numeric|min:0',
     ];
     if ($this->method == "update") {
       $rules["titulo"] = 'required|unique:subastas,titulo,' . $this->subasta->id;
@@ -70,6 +72,7 @@ class Modal extends Component
   protected function messages()
   {
     return [
+      "envio" => "Ingrese monto.",
       "titulo.required" => "Ingrese titulo.",
       "titulo.unique" => "Titulo existente.",
       "iniD.required" => "Ingrese  fecha inicio.",
@@ -126,6 +129,7 @@ class Modal extends Component
 
       $this->num =  $this->subasta->id;
       $this->titulo =  $this->subasta->titulo;
+      $this->envio =  $this->subasta->envio;
       $this->descripcion =  $this->subasta->descripcion;
 
       if ($this->subasta->comision !== null) {
@@ -174,6 +178,7 @@ class Modal extends Component
       "estado" => SubastaEstados::INACTIVA,
       "fecha_inicio" => $this->iniD . " " . $this->iniH,
       "fecha_fin" => $this->finD . " " . $this->finH,
+      "envio" => !empty($this->envio) ? $this->envio : 0
     ]);
 
     $this->dispatch('subastaCreated');
@@ -193,6 +198,8 @@ class Modal extends Component
       $this->subasta->descripcion = $this->descripcion;
       $this->subasta->comision = $this->comision;
       $this->subasta->tiempo_post_subasta = $this->tiempoPos;
+      // $this->subasta->envio = $this->envio ?? 0;
+      $this->subasta->envio = !empty($this->envio) ? $this->envio : 0;
 
 
       info(["ESTADO" => $this->subasta->estado]);

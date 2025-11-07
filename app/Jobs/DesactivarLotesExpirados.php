@@ -221,7 +221,9 @@ class DesactivarLotesExpirados implements ShouldQueue
           // Si Lote tiene accesor precio_final, úsalo: $precioFinal = $lote->precio_final;
           // De lo contrario, usa monto de la puja final
           $precioFinal = $pujaGanadora->monto;
+
           $total += $precioFinal;
+
 
           $ordenLotesData[] = [
             'orden_id' => null, // Se asignará después

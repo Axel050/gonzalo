@@ -18,12 +18,46 @@
 
 
                 {{--  --}}
-                <input type="hidden" wire:model="foto1" />
-                <x-form-item label="Subasta" method="view" model="subasta" />
-                <x-form-item label="Adquirente" method="view" model="adquirente" />
-                <x-form-item label="Estado" method="view" model="estado" />
-                <x-form-item label="Pago id" method="view" model="payment" />
-                <x-form-item label="Fecha pago" method="view" model="fecha" />
+                {{-- <input type="hidden" wire:model="foto1" /> --}}
+                <x-form-item label="Subasta" :method="$method" model="subasta" />
+                <x-form-item label="Adquirente" :method="$method" model="adquirente" />
+
+
+                {{-- <x-form-item label="Estado" :method="viw" model="estado" /> --}}
+
+
+                <x-form-item-sel label="Estado" :method="$method" model="estado" live="true">
+                    <option>Elija estado </option>
+                    @foreach ($estados as $item)
+                        <option value="{{ $item['value'] }}"> {{ $item['label'] }} </option>
+                    @endforeach
+                </x-form-item-sel>
+
+                @if ($estado == 'cancelada')
+                    <x-form-item-sel label="Motivo" :method="$method" model="motivo" live="true">
+                        <option>Elija motivo </option>
+                        @foreach ($motivos as $item)
+                            <option value="{{ $item['value'] }}"> {{ $item['label'] }} </option>
+                        @endforeach
+                    </x-form-item-sel>
+                @endif
+
+                @if ($motivo == 'otro')
+                    <x-form-item label="Otro" :method="$method" model="otroMotivo" />
+                @endif
+
+
+
+                <x-form-item label="Pago id" :method="$method" model="payment" />
+                <x-form-item label="Fecha pago" :method="$method" model="fecha" />
+
+                <x-form-item label="Envio" :method="$method" model="envio" live="true" type="number" />
+
+
+
+
+
+
 
 
                 <div class=" flex justify-center mx-auto col-span-4">
@@ -55,7 +89,9 @@
                                     <th>Precio</th>
                                     <th>Moneda</th>
                                     <th>Foto</th>
-                                    <th>Accion</th>
+                                    @if ($method == 'update')
+                                        <th>Accion</th>
+                                    @endif
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-300 text-gray-600  text-sm rounded-full">
@@ -79,21 +115,25 @@
                                             @endif
 
                                         </td>
-                                        <td>
-                                            <div class="flex justify-center  text-white text-xs">
 
-                                                <button
-                                                    class=" hover:text-gray-200  hover:bg-red-700 flex items-center py-0.5 bg-red-600 rounded-lg px-1 "
-                                                    wire:click="quitar({{ $item->lote->foto1 }})">
-                                                    <svg class="size-5 mr-0.5">
-                                                        <use xlink:href="#eliminar"></use>
-                                                    </svg>
-                                                    <span class="hidden lg:block">Quitar</span>
-                                                </button>
+                                        @if ($method == 'update')
+                                            <td>
+                                                <div class="flex justify-center  text-white text-xs">
+
+                                                    <button
+                                                        class=" hover:text-gray-200  hover:bg-red-700 flex items-center py-0.5 bg-red-600 rounded-lg px-1 "
+                                                        wire:click="quitar({{ $item->lote->id }})">
+                                                        <svg class="size-5 mr-0.5">
+                                                            <use xlink:href="#eliminar"></use>
+                                                        </svg>
+                                                        <span class="hidden lg:block">Quitar</span>
+
+                                                    </button>
 
 
-                                            </div>
-                                        </td>
+                                                </div>
+                                            </td>
+                                        @endif
                                     </tr>
                                 @endforeach
                                 <tr class="bg-gray-100  ">
@@ -103,8 +143,16 @@
                                 </tr>
                                 @if ($deposito)
                                     <tr class="bg-gray-100  ">
-                                        <td colspan="6" class="text-base font-semibold py-1 text-center">Depósito:
+                                        <td colspan="6" class="text-base font-semibold py-1 text-center">
+                                            Depósito:
                                             -${{ number_format($deposito, 0, ',', '.') }}</td>
+                                    </tr>
+                                @endif
+
+                                @if ($ordenSeleccionada->estado === 'pagada')
+                                    <tr class="bg-gray-100  ">
+                                        <td colspan="6" class="text-base font-semibold py-1 text-center">Envio:
+                                            ${{ number_format($envio, 0, ',', '.') }}</td>
                                     </tr>
                                 @endif
 
@@ -141,11 +189,13 @@
                     </button>
 
 
-                    {{-- <button
-                        class="bg-green-600 hover:bg-green-700 mt-4 rounded-lg px-2 lg:py-1 py-0.5 flex text-center items-center "
-                        wire:click="save">
-                        Guardar
-                    </button> --}}
+                    @if ($method == 'update')
+                        <button
+                            class="bg-green-600 hover:bg-green-700 mt-4 rounded-lg px-2 lg:py-1 py-0.5 flex text-center items-center "
+                            wire:click="update">
+                            Guardar
+                        </button>
+                    @endif
 
                 </div>
 

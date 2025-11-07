@@ -37,6 +37,7 @@ class MPController extends Controller
    */
   public function notification(Request $request)
   {
+    info("📩 Notificación recibida:22222222222222222222222222222222222222 ");
     $data = $request->all();
     info("📩 Notificación recibida: ", $data);
 
@@ -137,6 +138,8 @@ class MPController extends Controller
       'estado' => $nuevoEstado,
       'fecha_pago' => $nuevoEstado === OrdenesEstados::PAGADA ? now() : null,
       'payment_id' => $payment->id,
+      'envio_check' => $externalRef['conEnvio'] ?? 0,
+      'monto_envio' => $externalRef['montoEnvio'] ?? 0,
     ]);
 
     info("🧾 Orden {$orden->id} actualizada a estado {$nuevoEstado}");

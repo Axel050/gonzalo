@@ -21,7 +21,7 @@
     </article>
 
     @if ($modalPago)
-        @livewire('modal-option-pago', ['orden' => $orden, 'subasta' => $subasta, 'adquirente' => $adquirente, 'from' => 'orden'])
+        @livewire('modal-option-pago', ['orden' => $orden, 'subasta' => $subasta, 'adquirente' => $adquirente, 'from' => 'orden', 'conEnvio' => $conEnvio])
     @endif
 
     <div class="flex lg:flex-row flex-col lg:gap-8 gap-2  items-start   ">
@@ -136,11 +136,41 @@
                             <span>-${{ number_format($garantia['monto'], 0, ',', '.') }}</span>
                         </p>
                     @endif
+                    @if ($orden->subasta->envio)
+                        <div class="flex justify-between items-center mb-1 text-sm">
+                            <p class="flex items-center">Agregar Envio?
+                                <span class="ml-2">
+                                    <label>
+                                        Si
+                                        <input type="radio" name="envios.{{ $orden->id }}"
+                                            wire:model.live="envios.{{ $orden->id }}" value=1 class="size-4 ml-0" />
+                                    </label>
 
+                                    <label class="ml-3">
+                                        No
+                                        <input type="radio" name="envios.{{ $orden->id }}"
+                                            wire:model.live="envios.{{ $orden->id }}" value=0 class="size-4 ml-0" />
+                                    </label>
+                                </span>
+
+                            </p>
+
+                            ${{ $orden->subasta->envio }}
+                        </div>
+                    @endif
+
+                    @php
+                        $total = $orden->lotes->sum('precio_final') - ($garantia['monto'] ?? 0);
+                        // $total = $orden->lotes->sum('precio_final') - ($garantia['monto'] ?? 0);
+
+                        if ($envios[$orden->id]) {
+                            $total += $orden->subasta->envio;
+                        }
+                    @endphp
                     <p class="flex justify-between border-t border-black pt-2 text-xl font-bold">
                         Total
                         <span>
-                            ${{ number_format($orden->lotes->sum('precio_final') - ($garantia['monto'] ?? 0), 0, ',', '.') }}
+                            ${{ number_format($total, 0, ',', '.') }}
                         </span>
                     </p>
 

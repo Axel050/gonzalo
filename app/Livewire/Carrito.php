@@ -16,6 +16,8 @@ class Carrito extends Component
 {
   public array $fraccion_min = [];
 
+  public array $envios = [];
+
 
   public $modalPago;
   public $adquirente;
@@ -36,6 +38,8 @@ class Carrito extends Component
 
 
   public $total;
+  public $conEnvio = 0;
+  // public $envio_check = 0;
 
 
 
@@ -64,6 +68,11 @@ class Carrito extends Component
       ->with('subasta', 'lotes.lote.ultimoContrato') // Ya no 'lotes.subasta'
       ->get();
 
+    foreach ($this->ordenes as $orden) {
+      // $this->fraccion_min[$lote->id] = $lote->fraccion_min;
+      $this->envios[$orden->id] = 0;
+    }
+    info($this->envios);
     if (!$this->ordenes || $this->ordenes->isEmpty()) {
       $this->totalLotes = 0;
       $this->totalCarrito = 0;
@@ -120,6 +129,7 @@ class Carrito extends Component
 
   public function mp($orden_id)
   {
+    info("into  iiiiiiiiiiii");
     $this->orden = Orden::with('lotes.lote', 'subasta', 'adquirente')->findOrFail($orden_id);
 
     // $adquirente = $orden->adquirente;
@@ -127,11 +137,12 @@ class Carrito extends Component
 
 
     if ($this->orden->total_neto < 0) {
-      info("into  eeeeeeeeeee");
       $this->addError('monto', "Error en el monto de la orden.");
       return;
     }
     info("into  passssss");
+
+    $this->conEnvio = $this->envios[$orden_id] ? 1 : 0;
     $this->modalPago = 1;
 
     // Creamos preferencia desde el servicio
@@ -155,7 +166,10 @@ class Carrito extends Component
     // return redirect($preference['init_point']); // Redirige al checkout
   }
 
-
+  public function updatedEnvioCheck($value)
+  {
+    // dd($value);
+  }
   public function render()
   {
     return view('livewire.carrito');

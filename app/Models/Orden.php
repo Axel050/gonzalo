@@ -5,12 +5,17 @@ namespace App\Models;
 use App\Enums\OrdenesEstados;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use OwenIt\Auditing\Contracts\Auditable;
 
-class Orden extends Model
+class Orden extends Model implements Auditable
 {
   use HasFactory;
+  use SoftDeletes;
+  use \OwenIt\Auditing\Auditable;
 
-  protected $fillable = ['adquirente_id', 'total', 'descuento', 'estado', 'payment_id', 'fecha_pago', 'subasta_id'];
+
+  protected $fillable = ['adquirente_id', 'total', 'descuento', 'estado', 'payment_id', 'fecha_pago', 'subasta_id', 'monto_envio', 'envio_check', 'motivo', 'otro'];
 
   public function adquirente()
   {

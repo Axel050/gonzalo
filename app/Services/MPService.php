@@ -24,6 +24,7 @@ class MPService
 
     // info(["SUUBASTA   " => $subasta, "ADQUIRENTE " => $adquirente]);
     // info(["SUUBASTA   MP " => $route]);
+    // info(["SUUBASTA   MPppppppppppppppppp " => 333]);
 
     $client = new PreferenceClient();
 
@@ -45,7 +46,8 @@ class MPService
 
       "external_reference" => [
         "adquire" => $adquirente,
-        "subasta" => $subasta
+        "subasta" => $subasta,
+
       ]
     ]);
     info(["preferece" => $preference]);
@@ -54,12 +56,14 @@ class MPService
     return $preference;
   }
 
-  public function crearPreferenciaOrden($adquirente, $subasta, $orden)
+  public function crearPreferenciaOrden($adquirente, $subasta, $orden, $route = null, $conEnvio = null, $montoEnvio = null)
   {
     // si monto es negativo  ,oosea desceunto mayor que precio lote , da error MP 
     // info(["TOTAL  nnnnnn=" => (float) $orden->total_neto]);
+    info("rrrrrrrrrrrrrrrrrrrrrrrr");
     $client = new PreferenceClient();
-    // info("xxxxxxxxxxxxxxxxxxxxxx");
+    info(["conENVIO" => $conEnvio]);
+    info(["montoENVIO" => $montoEnvio]);
     $preference = $client->create([
       "items" => [
         [
@@ -79,11 +83,14 @@ class MPService
       "external_reference" => json_encode([
         "orden_id" => $orden->id,
         "adquirente_id" => $adquirente->id,
-        "subasta_id" => $subasta->id
+        "subasta_id" => $subasta->id,
+        "conEnvio" => $conEnvio,
+        "montoEnvio" => $montoEnvio,
       ])
     ]);
 
     info(["MP----adquirente " => $adquirente, "Subasta" => $subasta, "ordem" => $orden]);
+    info(["MP----prefeeeee " => $preference]);
     return $preference;
   }
 

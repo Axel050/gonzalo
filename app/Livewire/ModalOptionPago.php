@@ -14,6 +14,9 @@ class ModalOptionPago extends Component
 
   public $monto;
 
+  public $conEnvio;
+  public $montoEnvio;
+
   public $route;
   public $from;
 
@@ -23,7 +26,13 @@ class ModalOptionPago extends Component
   public function mount()
   {
     if ($this->from === "orden") {
+
       $this->monto = $this->orden->total_neto;
+      if ($this->conEnvio) {
+        $this->montoEnvio = $this->orden->subasta?->envio;
+        $this->monto += $this->montoEnvio;
+      }
+      info($this->orden->toArray());
     } else {
       $this->monto = $this->subasta->garantia;
     }
@@ -45,7 +54,7 @@ class ModalOptionPago extends Component
 
 
     if ($this->from === "orden") {
-      # code...
+      info("INTO ORDEN IFffff ");
       $route = "/subastas/";
 
       // Creamos preferencia desde el servicio
@@ -53,9 +62,12 @@ class ModalOptionPago extends Component
         $this->adquirente,
         $this->subasta,
         $this->orden,
-        $route
+        $route,
+        $this->conEnvio,
+        $this->montoEnvio
       );
     } else {
+      info("INTO ORDEN elsssssssssss ");
       $route = "/subastas/" . $this->subasta->id . "/lotes";
       $preference = $mpService->crearPreferencia("Garantia", 1, $this->subasta->garantia, $this->adquirente->id, $this->subasta->id, null,  $route);
     }

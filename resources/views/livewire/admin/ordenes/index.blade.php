@@ -2,7 +2,7 @@
 
     <x-action-message on="depositoCreated" class="absolute  top-0 right-0 z-50 green-action ">Deposito creado con
         exitó.</x-action-message>
-    <x-action-message on="depositoUpdated" class="absolute  top-0 right-0 z-50 orange-action">Deposito actualizado con
+    <x-action-message on="ordenUpdated" class="absolute  top-0 right-0 z-50 orange-action">Orden actualizada con
         exitó.</x-action-message>
     <x-action-message on="depositoDeleted" class="absolute  top-0 right-0 z-50 red-action">Deposito eliminado con
         exitó.</x-action-message>
@@ -56,7 +56,7 @@
 
             </div>
 
-
+            {{-- 
             <button
                 class="border border-green-800 hover:text-gray-200 hover:bg-green-700 bg-green-600 px-2 py-0.5 rounded-lg text-white text-sm h-7 place-self-center flex items-center gap-x-2 cursor-pointer"
                 wire:click="option('save')">
@@ -66,7 +66,7 @@
                 <span>
                     Agregar
                 </span>
-            </button>
+            </button> --}}
 
 
         </div>
@@ -150,18 +150,32 @@
 
                                         <td>{{ $dep->payment_id }}</td>
 
-                                        <td class="!text-center text-white">
+
+                                        <td class="!text-center text-white ">
+
+                                            <div class="flex justify-center  gap-x-4 text-white text-xs mx-auto ">
+
+                                                <button
+                                                    class=" hover:text-gray-200  hover:bg-green-800 flex items-center py-0.5 bg-green-700 rounded-lg px-1 cursor-pointer"
+                                                    wire:click="option('view',{{ $dep->id }})" title="Ver">
+                                                    <svg class="size-5 ">
+                                                        <use xlink:href="#ver"></use>
+                                                    </svg>
+                                                    <span class="hidden lg:block ml-1">Ver</span>
+                                                </button>
 
 
-                                            <button
-                                                class=" hover:text-gray-200  hover:bg-green-800 flex items-center py-0.5 bg-green-700 rounded-lg px-1 cursor-pointer"
-                                                wire:click="option('view',{{ $dep->id }})" title="Ver">
-                                                <svg class="size-5 ">
-                                                    <use xlink:href="#ver"></use>
-                                                </svg>
-                                                <span class="hidden lg:block ml-1">Ver</span>
-                                            </button>
+                                                <button
+                                                    class=" hover:text-gray-200  hover:bg-orange-800 flex items-center py-0.5 bg-orange-700 rounded-lg px-1 cursor-pointer"
+                                                    wire:click="option('update',{{ $dep->id }})" title="Ver">
+                                                    <svg class="size-5 ">
+                                                        <use xlink:href="#editar"></use>
+                                                    </svg>
+                                                    <span class="hidden lg:block ml-1">Editar</span>
+                                                </button>
 
+
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach

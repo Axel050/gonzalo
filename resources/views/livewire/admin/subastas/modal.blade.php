@@ -8,7 +8,7 @@
             </h2>
 
             <form
-                class="bg-red-80  w-full  flex flex-col gap-2 lg:text-lg  text-base lg:px-4 px-2 text-gray-200  [&>div]:flex
+                class="bg-red-80  w-full  grid lg:grid-cols-2 grid-cols-1  gap-2 lg:text-lg  text-base lg:px-4 px-2 text-gray-200  [&>div]:flex
                             [&>div]:flex-col  [&>div]:justify-center pt-4 max-h-[85vh] overflow-y-auto"
                 wire:submit={{ $method }}>
 
@@ -29,8 +29,10 @@
                     <x-form-item label="Garantia" :method="$method" model="garantia" type="number" step="1"
                         min=0 />
 
+                    <x-form-item label="Envio" :method="$method" model="envio" type="number" step="1" min=0 />
 
-                    <div class="items-start  lg:w-auto w-[85%] mx-auto ">
+
+                    <div class="items-start  lg:w-auto w-[85%] mx-auto mb-1">
                         <label class="w-full text-start text-gray-500  leading-[16px] text-base">Inicio </label>
                         <div class="relative w-full ">
                             <input type="date" wire:model="iniD"
@@ -39,12 +41,12 @@
                             <input type="time" wire:model="iniH"
                                 class ="h-6 rounded-md border border-gray-400 w-20 text-gray-500 pl-1 text-sm bg-gray-100"
                                 @disabled($method === 'view') />
-                            <x-input-error for="iniD" class="relative top-full py-0 leading-[12px]" />
-                            <x-input-error for="iniH" class="relative top-full py-0 leading-[12px]" />
+                            <x-input-error for="iniH" class="absolute top-full py-0 leading-[12px]" />
+                            <x-input-error for="iniD" class="absolute top-full py-0 leading-[12px]" />
                         </div>
                     </div>
 
-                    <div class="items-start  lg:w-auto w-[85%] mx-auto ">
+                    <div class="items-start  lg:w-auto w-[85%] mx-auto relative mb-1">
                         <label class="w-full text-start text-gray-500  leading-[16px] text-base">Fin </label>
                         <div class="relative w-full ">
                             <input type="date" wire:model="finD"
@@ -53,8 +55,8 @@
                             <input type="time" wire:model="finH"
                                 class ="h-6 rounded-md border border-gray-400 w-20 text-gray-500 pl-1 text-sm bg-gray-100"
                                 @disabled($method === 'view') />
-                            <x-input-error for="finD" class="relative top-full py-0 leading-[12px]" />
-                            <x-input-error for="finH" class="relative top-full py-0 leading-[12px]" />
+                            <x-input-error for="finD" class="absolute top-full py-0 leading-[12px]" />
+                            <x-input-error for="finH" class="absolute top-full py-0 leading-[12px]" />
                         </div>
                     </div>
 
@@ -101,7 +103,7 @@
 
                 @endif
 
-                <div class="flex !flex-row gap-6 justify-center lg:text-base text-sm">
+                <div class="flex !flex-row gap-6 justify-center lg:text-base text-sm lg:col-span-2 lg:mt-2">
                     <button type="button"
                         class="bg-orange-600 hover:bg-orange-700 mt-4 rounded-lg px-2 lg:py-1 py-0.5 "
                         wire:click="$parent.$set('method',false)">
