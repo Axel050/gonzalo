@@ -47,7 +47,8 @@ class Modal extends Component
         'required',
         Rule::unique('contratos')->where(function ($query) {
           return $query->where('comitente_id', $this->comitente_id)
-            ->where('subasta_id', $this->subasta_id);
+            ->where('subasta_id', $this->subasta_id)
+            ->whereNull('deleted_at');
         })->ignore(
           $this->contrato->id ?? 0
         ),

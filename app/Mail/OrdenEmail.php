@@ -8,6 +8,8 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Address;
+
 
 class OrdenEmail extends Mailable
 {
@@ -21,7 +23,7 @@ class OrdenEmail extends Mailable
   public function __construct($data)
   {
     $this->data = $data;
-    info(["data mail " => $data]);
+    // info(["data mail " => $data]);
   }
 
   /**
@@ -30,7 +32,8 @@ class OrdenEmail extends Mailable
   public function envelope(): Envelope
   {
     return new Envelope(
-      from: 'info@casablanca.ar',
+      // from: 'info@casablanca.ar',
+      from: new Address('info@casablanca.ar', 'CASABLANCA'),
       subject: 'Orden',
     );
   }

@@ -239,9 +239,9 @@
                         - Monedas
                     </x-li-single-aux>
 
-                    <x-li-single-aux :active="Request::is('admin/aux/estado-lotes')" route="admin.estado-lotes">
+                    {{-- <x-li-single-aux :active="Request::is('admin/aux/estado-lotes')" route="admin.estado-lotes">
                         - Estado lotes
-                    </x-li-single-aux>
+                    </x-li-single-aux> --}}
 
 
                 </ul>

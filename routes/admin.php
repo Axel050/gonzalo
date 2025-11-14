@@ -79,9 +79,9 @@ Route::get("/aux/monedas", function () {
   return view('admin.auxiliares.monedas');
 })->name("monedas")->can("auxiliares-ver");
 
-Route::get("/aux/estado-lotes", function () {
-  return view('admin.auxiliares.estado-lotes');
-})->name("estado-lotes")->can("auxiliares-ver");
+// Route::get("/aux/estado-lotes", function () {
+//   return view('admin.auxiliares.estado-lotes');
+// })->name("estado-lotes")->can("auxiliares-ver");
 
 Route::get("/", function () {
   return view('admin.index');

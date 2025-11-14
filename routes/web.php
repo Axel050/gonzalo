@@ -8,11 +8,14 @@ use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use App\Mail\ContratoEmail;
+use App\Mail\OrdenEmail;
 use Illuminate\Support\Facades\Route;
 use App\Mail\TestEmail;
+use App\Models\Adquirente;
 use App\Models\Contrato;
 use App\Models\ContratoLote;
 use App\Models\Lote;
+use App\Models\Orden;
 use App\Models\Subasta;
 use Illuminate\Support\Carbon;
 
@@ -78,6 +81,23 @@ Route::get('/test-mail', function () {
 
 
   return (new ContratoEmail($data))->render();
+});
+
+
+Route::get('/test-mail-orden/{ordenId}/{adquirenteId}', function ($ordenId, $adquirenteId) {
+
+  $orden = Orden::with(['lotes.lote', 'lotes.moneda', 'subasta'])->findOrFail($ordenId);
+  $adquirente = Adquirente::findOrFail($adquirenteId);
+
+  $fakeData = [
+    'message' => "Creación",
+    'lotes' => $orden->lotes,
+    'adquirente' => $adquirente,
+    "orden" => $orden,
+    "subasta" => $orden->subasta,
+  ];
+
+  return new OrdenEmail($fakeData); // Se renderiza directamente en el navegador
 });
 
 // dd("TTTTEEST EL POST ; CREAR UN FORMULARIO CON PSOT ; SIMPLE PARA ASFGURA EL CSRF TOKEN");

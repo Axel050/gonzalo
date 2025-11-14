@@ -33,9 +33,14 @@ class LotesProximos extends Component
   public $lotes = [];
   public $error = null;
   public $subastaEstado = "11";
+  public $modal;
 
   // #[On('echo:subasta.{subasta.id},SubastaEstadoActualizado')]
   // #[On('echo:my-channel.{subasta.id},SubastaEstadoActualizado')]
+  public function continuar()
+  {
+    return redirect()->route('subasta.lotes', $this->subasta->id);
+  }
 
   #[On('echo:my-channel,SubastaEstadoActualizado')]
   public function actualizarEstado($event)
@@ -49,9 +54,16 @@ class LotesProximos extends Component
     // }
 
 
+
+    info("REVERT  XXXX PROX ANTES LOAD");
+
     $this->loadLotes();
+
+    if ($this->subasta->estado == SubastaEstados::ACTIVA) {
+      $this->modal = 1;
+    }
     // $this->test = "22";
-    info("REVERT  XXXX");
+    info("REVERT  XXXX PROX");
     // info(["lotes " => $event['lotes']]);
     // info(["subata estado " => $event['estado']]);
     // dd("aaaa");
@@ -111,6 +123,8 @@ class LotesProximos extends Component
 
       $this->lotes = $this->subastaService?->getLotesProximos($this->subasta)?->toArray();
       info(["lotesCl8888ass" => $this->lotes]);
+      $this->lotes = $this->lotes ?? collect();
+      info(["lotesCl8888ass33333" => $this->lotes]);
       $this->error = null;
     } catch (\Exception $e) {
       // info(["error" => $this-}>lotes]);
