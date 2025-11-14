@@ -146,7 +146,8 @@
                             <div class="relative w-full">
                                 <input type={{ $typePass }} wire:model="password"
                                     class="lg:w-60 h-6 rounded-md border border-gray-400 w-full text-gray-500 bg-gray-100 pl-2 text-sm"
-                                    @disabled($method === 'view') />
+                                    @disabled($method === 'view') name="new-password" autocomplete="new-password" />
+
                                 <x-input-error for="password"
                                     class="absotule top-full py-0 leading-[12px] text-red-500" />
                             </div>

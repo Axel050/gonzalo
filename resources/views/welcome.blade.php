@@ -97,12 +97,7 @@
 
                                 </div>
 
-                                <p class="lg:text-xl text-sm">Lorem ipsum dolor sit amet consectetur. Vehicula
-                                    adipiscing
-                                    pellentesque
-                                    volutpat dui
-                                    rhoncus neque
-                                    urna. Sem et praesent gravida tortor proin massa iaculis. </p>
+                                <p class="lg:text-xl text-sm">{{ $item->descripcion }} </p>
 
                             </a>
                         @endforeach
@@ -120,7 +115,7 @@
 
                 <div class="swiper-home-subastas     w-full  lg:overflow-x-hidden lg:px-0 px-4 ">
 
-                    <div class="swiper-wrapper  flex lg:flex-row flex-col">
+                    <div class="swiper-wrapper  flex lg:flex-row flex-col  itm">
 
                         @foreach ($subastasFin as $item)
                             <a href="{{ route('subasta-pasadas.lotes', $item->id) }}"
@@ -178,11 +173,7 @@
 
 
 
-                                <p class="text-xl">Lorem ipsum dolor sit amet consectetur. Vehicula adipiscing
-                                    pellentesque
-                                    volutpat dui
-                                    rhoncus neque
-                                    urna. Sem et praesent gravida tortor proin massa iaculis. </p>
+                                <p class="text-xl">{{ $item->descripcion }}</p>
 
 
                             </a>

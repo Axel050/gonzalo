@@ -8,6 +8,7 @@ use App\Enums\SubastaEstados;
 use App\Events\SubastaEstado;
 use App\Models\Subasta;
 use App\Events\SubastaEstadoActualizado;
+use App\Mail\OrdenEmail;
 use App\Models\CarritoLote;
 use App\Models\Orden;
 use App\Models\OrdenLote;
@@ -17,6 +18,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class DesactivarLotesExpirados implements ShouldQueue
 {
@@ -249,15 +251,42 @@ class DesactivarLotesExpirados implements ShouldQueue
           'total' => $total,
           'descuento' => $montoDescuento, // Monto directo de la garantía (ej. 1000)
           'estado' => 'pendiente',
+          'monto_envio' => $subasta->envio,
         ]);
 
         // Asignar orden_id a los datos y crear OrdenLotes
         foreach ($ordenLotesData as &$data) {
           $data['orden_id'] = $orden->id;
         }
+
         OrdenLote::insert($ordenLotesData);
 
-        // NUEVA LÓGICA: Actualizar CarritoLote a 'en_orden' después de crear la orden
+        // $contratoLotes = ContratoLote::where('contrato_id', $this->contrato->id)->get();
+        $dataMail = [
+          'message' => "Creación",
+          'lotes' => $orden->lotes,
+          'adquirente' => $adquirente,
+          "orden" => $orden,
+          "subasta" => $orden->subasta,
+        ];
+
+        info(["data mail JOB " => $dataMail]);
+        info(["ANTES MAIL mail JOB "]);
+
+        try {
+          Mail::to($adquirente->user?->email)->send(new OrdenEmail($dataMail));
+        } catch (\Exception $e) {
+          // Log del error para debugging, sin detener el job
+          info('Error al enviar OrdenEmail en job DesactivarLotesExpirados: ' . $e->getMessage(), [
+            'adquirente_id' => $adquirente->id ?? null,
+            'orden_id' => $dataMail['id'] ?? null, // Ajusta según tus datos
+            'trace' => $e->getTraceAsString(),
+          ]);
+          // Opcional: Si quieres notificar de otra forma (ej. Slack, DB flag), agrégalo aquí
+          // Pero el job continúa ejecutándose
+        }
+
+        info("PASO MAILL  WWWWWW");        // NUEVA LÓGICA: Actualizar CarritoLote a 'en_orden' después de crear la orden
         foreach ($carritoLotesGanadores as $item) {
           $pujaFinal = $item->lote->getPujaFinal();
           if ($pujaFinal && $pujaFinal->adquirente_id === $adquirenteId) {

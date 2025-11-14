@@ -34,9 +34,7 @@
                         <b>{{ $dia }} de {{ $mes }} | {{ $hora }}hs</b>
                     </div>
 
-                    <p class="text-xl">Lorem ipsum dolor sit amet consectetur. Vehicula adipiscing
-                        pellentesque volutpat dui rhoncus neque urna. Sem et praesent gravida tortor proin
-                        massa iaculis. </p>
+                    <p class="text-xl">{{ $subA->descripcion }} </p>
                 </a>
                 {{-- @endfor --}}
             @endforeach

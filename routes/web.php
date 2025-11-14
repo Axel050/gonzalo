@@ -138,6 +138,9 @@ Route::get('/subastas/buscador/lotes', [AdquirenteController::class, 'getLotesSe
 Route::get('/subastas/{subasta}/lotes', [AdquirenteController::class, 'getLotes'])->name('subasta.lotes')->middleware(['auth']);
 
 
+Route::get('/terminos', function () {
+  return view('terminos');
+})->name('terminos');
 
 
 // MP

@@ -17,6 +17,7 @@ class Comitentes extends Component
   public $banco, $numero_cuenta, $CBU, $alias_bancario, $observaciones, $foto;
   public $g_recaptcha_response;
   public $method;
+  public $terminos;
   public function mount() {}
 
   protected function rules()
@@ -28,7 +29,8 @@ class Comitentes extends Component
       'telefono' => 'required',
       'mail' => 'required|email|unique:comitentes,mail',
       'domicilio' => 'required',
-      'CUIT' => 'unique:comitentes,CUIT'
+      'CUIT' => 'unique:comitentes,CUIT',
+      'terminos' => 'accepted'
     ];
 
     if (!$this->g_recaptcha_response) {
@@ -58,6 +60,7 @@ class Comitentes extends Component
       "numero_cuenta.required" => "Ingrese numero de cuenta.",
       "domicilio.required" => "Ingrese domicilio.",
       "g_recaptcha_response" => "Corfirme que no es un robot.",
+      "terminos" => "Acepte términos y condiciones.",
 
     ];
   }

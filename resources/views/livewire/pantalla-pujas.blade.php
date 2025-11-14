@@ -184,15 +184,26 @@
                                     {{ $subastaActiva ? 'Tu puja es la última' : 'El lote es tuyo' }}
                                 </h2> --}}
 
+                                    @if ($lote->ultimoContrato?->subasta->estado == 'finalizada')
+                                        <a href="{{ route('carrito') }}"
+                                            class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  lg:py-2 py-1  w-full  lg:text-xl text-sm font-bold order-10 lg:mt-2  lg:order-11 ">
+                                            Pagar
+                                            <svg class="lg:size-8  size-6">
+                                                <use xlink:href="#arrow-right"></use>
+                                            </svg>
 
-                                    <a href="{{ route('carrito') }}"
-                                        class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  lg:py-2 py-1  w-full  lg:text-xl text-sm font-bold order-10 lg:mt-2  lg:order-11 ">
-                                        Pagar
-                                        <svg class="lg:size-8  size-6 ">
-                                            <use xlink:href="#arrow-right"></use>
-                                        </svg>
+                                        </a>
+                                    @else
+                                        <span
+                                            class="bg-casa-black  border border-casa-black  text-gray-50 rounded-full px-4 flex items-center justify-between  lg:py-2 py-1  w-full  lg:text-xl text-sm font-bold order-10 lg:mt-2  lg:order-11 ">
+                                            Preparando orden ...
+                                            <svg
+                                                class="lg:size-8  size-6  text-white animate-[spin_3s_linear_infinite]">
+                                                <use xlink:href="#loader"></use>
+                                            </svg>
 
-                                    </a>
+                                        </span>
+                                    @endif
                                 @endif
 
                                 {{-- <h2

@@ -26,6 +26,7 @@ class Adquirentes extends Component
   public $condicion_iva_id = 4;
   public $condiciones = [];
   public $method;
+  public $terminos;
 
   public $g_recaptcha_response;
 
@@ -50,7 +51,9 @@ class Adquirentes extends Component
       'mail' => 'required|email|unique:users,email',
       // 'CUIT' => 'unique:adquirentes,CUIT',
       'password' => 'required|string|confirmed|min:8',
+      'terminos' => 'accepted'
     ];
+
     if (!$this->g_recaptcha_response) {
       $rules['g_recaptcha_response'] = ['required', new RecaptchaRule()];
     }
@@ -77,6 +80,7 @@ class Adquirentes extends Component
       "password.required" => "Ingrese contraseña.",
       "password.min" => "Minimo 8 caracteres.",
       "g_recaptcha_response" => "Corfirme que no es un robot.",
+      "terminos" => "Acepte términos y condiciones.",
     ];
   }
 

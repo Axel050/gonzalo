@@ -70,7 +70,7 @@ class Carrito extends Component
 
     foreach ($this->ordenes as $orden) {
       // $this->fraccion_min[$lote->id] = $lote->fraccion_min;
-      $this->envios[$orden->id] = 0;
+      $this->envios[$orden->id] = $orden->monto_envio;
     }
     info($this->envios);
     if (!$this->ordenes || $this->ordenes->isEmpty()) {

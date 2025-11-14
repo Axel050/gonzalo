@@ -30,11 +30,9 @@
                         <p class="mb-2 lg:text-xl text-sm ">Abierta hasta el
                             <b>{{ $dia }} de {{ $mes }} | {{ $hora }}hs</b>
                         </p>
-                        <p class=" lg:text-xl text-sm"><b>Lorem ipsum dolor sit amet consectetur. Vehicula
-                                adipiscing.</b></p>
-                        <p class="lg:text-xl text-sm">Lorem ipsum dolor sit amet
-                            consectetur. Vehicula adipiscing pellentesque volutpat dui rhoncus neque urna. Sem et
-                            praesent gravida tortor proin massa iaculis. Lorem ipsum dolor sit amet consectetur. </p>
+                        {{-- <p class=" lg:text-xl text-sm"><b>Lorem ipsum dolor sit amet consectetur. Vehicula
+                                adipiscing.</b></p> --}}
+                        <p class="lg:text-xl text-sm">{{ $sub->descripcion }} </p>
                     </div>
 
                     <a href="{{ route('subasta.lotes', $sub->id) }}"
@@ -121,12 +119,10 @@
                             </div>
 
                         </div>
-                        <p class="lg:text-xl text-sm"><b>Lorem ipsum dolor sit amet consectetur. Vehicula
+                        {{-- <p class="lg:text-xl text-sm"><b>Lorem ipsum dolor sit amet consectetur. Vehicula
                                 adipiscing.</b>
-                        </p>
-                        <p class="lg:text-xl text-sm">Lorem ipsum dolor sit amet
-                            consectetur. Vehicula adipiscing pellentesque volutpat dui rhoncus neque urna. Sem et
-                            praesent gravida tortor proin massa iaculis. Lorem ipsum dolor sit amet consectetur. </p>
+                        </p> --}}
+                        <p class="lg:text-xl text-sm">{{ $subP->descripcion }}</p>
                     </div>
 
                     <a href="{{ route('subasta-proximas.lotes', $subP->id) }}"
@@ -200,12 +196,10 @@
                             </div>
 
                         </div>
-                        <p class="lg:text-xl text-sm "><b>Lorem ipsum dolor sit amet consectetur. Vehicula
+                        {{-- <p class="lg:text-xl text-sm "><b>Lorem ipsum dolor sit amet consectetur. Vehicula
                                 adipiscing.</b>
-                        </p>
-                        <p class="lg:text-xl text-sm ">Lorem ipsum dolor sit amet
-                            consectetur. Vehicula adipiscing pellentesque volutpat dui rhoncus neque urna. Sem et
-                            praesent gravida tortor proin massa iaculis. Lorem ipsum dolor sit amet consectetur. </p>
+                        </p> --}}
+                        <p class="lg:text-xl text-sm ">{{ $subF->descripcion }} </p>
                     </div>
                     <a href="{{ route('subasta-pasadas.lotes', $subF->id) }}"
                         class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-gray-50 rounded-full px-4 flex lg:relative absolute bottom-3  items-center justify-between  py-2  lg:w-70 w-[90%]  lg:text-xl text-sm font-bold h-fit">

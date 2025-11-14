@@ -138,24 +138,9 @@
                     @endif
                     @if ($orden->subasta->envio)
                         <div class="flex justify-between items-center mb-1 text-sm">
-                            <p class="flex items-center">Agregar Envio?
-                                <span class="ml-2">
-                                    <label>
-                                        Si
-                                        <input type="radio" name="envios.{{ $orden->id }}"
-                                            wire:model.live="envios.{{ $orden->id }}" value=1 class="size-4 ml-0" />
-                                    </label>
+                            <p class="flex items-center">Envio </p>
 
-                                    <label class="ml-3">
-                                        No
-                                        <input type="radio" name="envios.{{ $orden->id }}"
-                                            wire:model.live="envios.{{ $orden->id }}" value=0 class="size-4 ml-0" />
-                                    </label>
-                                </span>
-
-                            </p>
-
-                            ${{ $orden->subasta->envio }}
+                            ${{ $orden->monto_envio }}
                         </div>
                     @endif
 

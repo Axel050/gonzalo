@@ -130,6 +130,17 @@
                 </div>
             </div>
 
+            <div class= 'items-center   w-full lg:mx-auto  bg-red-00 lg:col-span-2 '>
+                <div class="relative w-full  flex items-center">
+                    <input type="checkbox" wire:model="terminos" class = 'lg:size-5 mr-2 '
+                        placeholder="alias.banco" />
+                    <label class="w-full text-start text-casa-black  text-base ">He leído y acepto <a
+                            href="{{ route('terminos') }}" class="font-semibold hover:font-bold underline">Términos y
+                            condiciones</a></label>
+                </div>
+                <x-input-error for="terminos" class="top-full py-0 leading-[12px] text-red-500" />
+            </div>
+
 
             <div wire:ignore class="relative mt-3 lg:col-span-2  mx-auto ">
                 <div id="g-recaptcha" class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.key') }}"

@@ -33,7 +33,7 @@ class Index extends Component
   public function option($method, $id = false)
   {
     if ($method == "delete" || $method == "update" || $method == "view") {
-      $cond = Garantia::find($id);
+      $cond = Orden::find($id);
       if (!$cond) {
         $this->dispatch('depositoNotExits');
       } else {
@@ -42,13 +42,13 @@ class Index extends Component
       }
     }
 
-    if ($method == "save") {
+    if ($method == "add") {
       $this->method = $method;
     }
   }
 
 
-  #[On(['depositoCreated', 'ordenUpdated', 'depositoDeleted'])]
+  #[On(['ordenCreated', 'ordenUpdated', 'depositoDeleted'])]
   public function mount()
   {
     if ($this->ids) {

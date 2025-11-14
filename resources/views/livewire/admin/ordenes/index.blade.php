@@ -1,6 +1,6 @@
 <div class="w-full py-5">
 
-    <x-action-message on="depositoCreated" class="absolute  top-0 right-0 z-50 green-action ">Deposito creado con
+    <x-action-message on="ordenCreated" class="absolute  top-0 right-0 z-50 green-action ">Orden creada con
         exitó.</x-action-message>
     <x-action-message on="ordenUpdated" class="absolute  top-0 right-0 z-50 orange-action">Orden actualizada con
         exitó.</x-action-message>
@@ -56,17 +56,17 @@
 
             </div>
 
-            {{-- 
+
             <button
                 class="border border-green-800 hover:text-gray-200 hover:bg-green-700 bg-green-600 px-2 py-0.5 rounded-lg text-white text-sm h-7 place-self-center flex items-center gap-x-2 cursor-pointer"
-                wire:click="option('save')">
+                wire:click="option('add')">
                 <svg class="size-5 mr-0.5">
                     <use xlink:href="#agregar"></use>
                 </svg>
                 <span>
                     Agregar
                 </span>
-            </button> --}}
+            </button>
 
 
         </div>
