@@ -18,6 +18,7 @@ use App\Models\Lote;
 use App\Models\Orden;
 use App\Models\Subasta;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Mail;
 
 Route::get('/test', function () {
   return view('livewire.auth.role-desactivated');
@@ -96,7 +97,7 @@ Route::get('/test-mail-orden/{ordenId}/{adquirenteId}', function ($ordenId, $adq
     "orden" => $orden,
     "subasta" => $orden->subasta,
   ];
-
+  mail::to($adquirente->user?->email)->send(new OrdenEmail($fakeData));
   return new OrdenEmail($fakeData); // Se renderiza directamente en el navegador
 });
 
