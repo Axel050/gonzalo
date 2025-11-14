@@ -86,7 +86,7 @@ Route::get('/test-mail', function () {
 
 Route::get('/test-mail-orden/{ordenId}/{adquirenteId}', function ($ordenId, $adquirenteId) {
 
-  $orden = Orden::with(['lotes.lote', 'lotes.moneda', 'subasta'])->findOrFail($ordenId);
+  $orden = Orden::with(['lotes.lote',  'subasta'])->findOrFail($ordenId);
   $adquirente = Adquirente::findOrFail($adquirenteId);
 
   $fakeData = [
