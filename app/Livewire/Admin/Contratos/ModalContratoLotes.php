@@ -163,12 +163,12 @@ class ModalContratoLotes extends Component
   {
     $this->validate();
 
-    $tituloExistsInTemp = array_search($this->titulo, array_column($this->tempLotes, 'titulo')) !== false;
-    if ($tituloExistsInTemp) {
-      $this->addError('titulo', 'El titulo ya está en la lista.');
-      return;
-    }
-    $this->resetErrorBag('titulo');
+    // $tituloExistsInTemp = array_search($this->titulo, array_column($this->tempLotes, 'titulo')) !== false;
+    // if ($tituloExistsInTemp) {
+    //   $this->addError('titulo', 'El titulo ya está en la lista.');
+    //   return;
+    // }
+    // $this->resetErrorBag('titulo');
 
     // $this->tempLotes[] = [
     array_unshift($this->tempLotes, [

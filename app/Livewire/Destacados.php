@@ -68,7 +68,7 @@ class Destacados extends Component
 
         // $this->destacados = $this->subastaService?->{$metodo}()?->toArray();
 
-        info(["desssLIVE" => $this->destacados]);
+        // info(["desssLIVE" => $this->destacados]);
       }
       // info(["lotesClass" => $this->destacados]);
       // $this->error = null;

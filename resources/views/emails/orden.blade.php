@@ -18,7 +18,7 @@
                     <tr style="font-size: 14px;">
                         <td>Adquirente: {{ $data['adquirente']['nombre'] }}</td>
                         {{-- <td>Fecha: {{ $data['fecha'] }}</td> --}}
-                        <td>Fecha: 88/88/11</td>
+                        {{-- <td>Fecha: 88/88/11</td> --}}
                         <td>Orden: {{ $data['orden']['id'] }}</td>
                         <td>Subasta: {{ $data['subasta']['id'] }} - {{ $data['subasta']['titulo'] }}</td>
                     </tr>
@@ -39,9 +39,9 @@
                             <th style="font-size: 14px; color: #333333; text-align: left; border: 1px solid #cccccc;">
                                 Descripción</th>
                             <th style="font-size: 14px; color: #333333; text-align: left; border: 1px solid #cccccc;">
-                                Precio</th>
+                                Foto</th>
                             <th style="font-size: 14px; color: #333333; text-align: left; border: 1px solid #cccccc;">
-                                Moneda</th>
+                                Precio</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -51,12 +51,32 @@
                                     {{ $item->lote?->titulo ?? 'Sin título' }}</td>
                                 <td style="font-size: 14px; color: #333333; border: 1px solid #cccccc; padding: 10px;">
                                     {{ $item->lote?->descripcion ?? 'Sin descripción' }}</td>
+                                <td style="border: 1px solid #cccccc; padding: 10px;">
+                                    <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $item->lote?->foto1) }}"
+                                        style="width:70px" />
+                                </td>
                                 <td style="font-size: 14px; color: #333333; border: 1px solid #cccccc; padding: 10px;">
-                                    {{ $item->precio_final ?? 'N/A' }}</td>
-                                <td style="font-size: 14px; color: #333333; border: 1px solid #cccccc; padding: 10px;">
-                                    {{ $item->moneda?->titulo ?? 'N/A' }}</td>
+                                    {{ $item->lote?->moneda_signo }} {{ $item->precio_final ?? 'N/A' }}</td>
                             </tr>
                         @endforeach
+                        @if ($data['orden']['monto_envio'] > 0)
+                            <tr>
+                                <td style="text-align: center" colspan="4">Envío:
+                                    ${{ $data['orden']['monto_envio'] }}
+                                </td>
+                            </tr>
+                        @endif
+
+                        @if ($data['orden']['descuento'] > 0)
+                            <tr>
+                                <td style="text-align: center" colspan="4">Depósito: $2555 </td>
+                            </tr>
+                        @endif
+
+                        <tr>
+                            <td style="text-align: center" colspan="4"><b>Total: ${{ $data['orden']['total'] }}</b>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </td>

@@ -42,6 +42,10 @@
             /* padding: 0; */
         }
 
+        .swiper-home-subastas .swiper-slide {
+            height: auto;
+        }
+
         .swiper-home-subastas .swiper-slide:last-child {
             margin-right: 0px !important;
         }

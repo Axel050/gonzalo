@@ -15,9 +15,9 @@
 
 
                 @if ($method == 'delete')
-                    <p class="text-center text-gray-600 lg:px-10 px-6"> Esta seguro de eliminar el contrato</p>
-                    <p class="text-center text-gray-600"><strong>"{{ $deposito->comitente?->nombre }}
-                            {{ $deposito->comitente?->apellido }}" </strong>?</p>
+                    <p class="text-center text-gray-600 lg:px-10 px-6 col-span-4"> Esta seguro de eliminar el lote
+                        <b>{{ $lote->id }}</b>?
+                    </p>
                 @else
                     <x-form-item label="Titulo" :method="$method" model="titulo" />
 
@@ -27,30 +27,8 @@
 
                     <x-form-item label="Contrato" method="view" model="contrato_id" />
 
-                    <x-form-item-area label="Descripcion" :method="$method" model="descripcion" />
 
-                    <x-form-item label="Base" :method="$method" model="base" type="number" />
-
-                    <x-form-item-sel label="Moneda" :method="$method" model="moneda_id">
-                        <option value="">Elija moneda </option>
-                        @foreach ($monedas as $mon)
-                            <option value="{{ $mon->id }}">
-                                {{ $mon->titulo }}
-                            </option>
-                        @endforeach
-                    </x-form-item-sel>
-
-                    <x-form-item label="Valuacion" :method="$method" model="valuacion" type="number" />
-
-                    <x-form-item label="Fraccion minima" :method="$method" model="fraccion_min" type="number" />
-
-                    <x-form-item-sel label="Estado" :method="$method" model="estado">
-                        <option>Elija estado </option>
-                        @foreach ($estados as $item)
-                            <option value="{{ $item['value'] }}"> {{ $item['label'] }} </option>
-                        @endforeach
-                    </x-form-item-sel>
-
+                    {{--  --}}
                     <x-form-item-sel label="Tipo de bien" :method="$method" model="tipo_bien_id" live="true">
                         <option>Elija tipo </option>
                         @foreach ($tipos as $tipo)
@@ -135,7 +113,7 @@
                                     model="formData.{{ $item->id }}">
                                     <option value="">Elija opción</option>
                                     @foreach ($item->opciones as $opt)
-                                        <option value={{ $opt->valor }}>{{ $opt->valor }}</option>
+                                        <option value="{{ $opt->valor }}">{{ $opt->valor }}</option>
                                     @endforeach
                                 </x-form-item-sel>
                             @else
@@ -144,6 +122,33 @@
                             @endif
                         @endforeach
                     @endif
+
+                    {{--  --}}
+
+                    <x-form-item-area label="Descripcion" :method="$method" model="descripcion" />
+
+                    <x-form-item label="Base" :method="$method" model="base" type="number" />
+
+                    <x-form-item-sel label="Moneda" :method="$method" model="moneda_id">
+                        <option value="">Elija moneda </option>
+                        @foreach ($monedas as $mon)
+                            <option value="{{ $mon->id }}">
+                                {{ $mon->titulo }}
+                            </option>
+                        @endforeach
+                    </x-form-item-sel>
+
+                    <x-form-item label="Valuacion" :method="$method" model="valuacion" type="number" />
+
+                    <x-form-item label="Fraccion minima" :method="$method" model="fraccion_min" type="number" />
+
+                    <x-form-item-sel label="Estado" :method="$method" model="estado">
+                        <option>Elija estado </option>
+                        @foreach ($estados as $item)
+                            <option value="{{ $item['value'] }}"> {{ $item['label'] }} </option>
+                        @endforeach
+                    </x-form-item-sel>
+
 
 
 

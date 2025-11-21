@@ -12,10 +12,28 @@
                       [&>div]:flex-col   pt-4 max-h-[85vh] overflow-y-auto">
 
                 @if ($method == 'delete')
-                    <p class="text-center text-gray-600 lg:px-10 px-6 col-span-2"> Esta seguro de eliminar el
-                        adquirente
-                        <strong>"{{ $nombre }} , {{ $apellido }}" </strong>?
-                    </p>
+
+                    <div class="relative col-span-3 flex flex-col justify-center items-center">
+
+                        <p class="text-center text-gray-600 lg:px-10 px-6 col-span-3"> Esta seguro de eliminar el
+                            adquirente
+                            <strong>"{{ $nombre }} , {{ $apellido }}" </strong>?
+                        </p>
+
+
+                        @error('tieneDatos')
+                            <div class ='flex items-center text-base text-red-600  '>
+
+                                <svg class="w-4 h-3.5 mr-1">
+                                    <use xlink:href="#error-icon"></use>
+                                </svg>
+                                <p class="lg:max-w-100 leading-[12px]">
+                                    {{ $message }}
+                                </p>
+                            </div>
+                        @enderror
+
+                    </div>
                 @else
                     <div class="col-span-3">
                         <x-form-item-foto label="" :method="$method" model="foto" :foto="$foto" w="150"

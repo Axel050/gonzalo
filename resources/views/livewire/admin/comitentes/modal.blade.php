@@ -1,6 +1,5 @@
 <x-modal class="lg:max-w-[80%] lg:w-auto ">
 
-
     <div class="bg-gray-200  pb-6 text-gray-700  text-start rounded-xl ml-0">
         <div class="flex  flex-col justify-center items-center  ">
             <h2 class="lg:text-2xl text-xl mb-2  w-full text-center py-1  border-b border-gray-300 text-white rounded-t-lg"
@@ -14,10 +13,24 @@
                 wire:submit={{ $method }}>
 
                 @if ($method == 'delete')
-                    <p class="text-center text-gray-600 lg:px-10 px-6 col-span-2"> Esta seguro de eliminar el
-                        comitente
-                        <strong>"{{ $nombre }} , {{ $apellido }}" </strong>?
-                    </p>
+                    <div class="relative col-span-3 flex flex-col justify-center items-center">
+                        <p class="text-center text-gray-600 lg:px-10 px-6 col-span-3"> Esta seguro de eliminar el
+                            comitente
+                            <strong>"{{ $nombre }} , {{ $apellido }}" </strong>?
+                        </p>
+
+                        @error('tieneContratos')
+                            <div class ='flex items-center text-base text-red-600'>
+                                <svg class="w-4 h-3.5 mr-1">
+                                    <use xlink:href="#error-icon"></use>
+                                </svg>
+                                <p class="lg:max-w-80 leading-[12px]">
+                                    {{ $message }}
+                                </p>
+                            </div>
+                        @enderror
+
+                    </div>
                 @else
                     <x-form-item label="Nombre" :method="$method" model="nombre" />
 

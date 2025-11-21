@@ -230,6 +230,15 @@ class Modal extends Component
     if (!$this->subasta) {
       $this->dispatch('subastaNotExits');
     } else {
+
+      $tieneContratos = $this->subasta->contratos()->withTrashed()->exists();
+
+      if ($tieneContratos) {
+        $this->addError('tieneContratos', 'Subasta con contratos  asociados');
+        return;
+      }
+
+
       $this->subasta->delete();
       $this->dispatch('subastaDeleted');
     }

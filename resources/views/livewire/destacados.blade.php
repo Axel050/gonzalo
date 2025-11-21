@@ -65,10 +65,10 @@
                 </div>
 
                 <div class="lg:flex hidden  w-full  justify-center px-8 items-center mt-4">
-                    <span
+                    {{-- <span
                         class="text-4xl border rounded-full size-8 flex items-center pt-0 leading-0 p-2 justify-center border-gray-900">
                         +
-                    </span>
+                    </span> --}}
 
 
                     <a href="{{ route('lotes.show', $des['id']) }}"

@@ -6,6 +6,7 @@ use App\Enums\CarritoLoteEstados;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Carrito extends Model
 {
   use HasFactory;

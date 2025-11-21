@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Adquirentes;
 
+use App\Enums\CarritoLoteEstados;
 use App\Models\Adquirente;
 use App\Models\AdquirentesAlias;
 use App\Models\CondicionIva;
@@ -372,6 +373,41 @@ class Modal extends Component
     if (!$this->adquirente) {
       $this->dispatch('adquirenteNotExits');
     } else {
+
+
+
+      // Dentro del método delete()
+
+      // check que pasa con los soft delettes , si los boramos al borrar al padre o  que 
+
+      if ($this->adquirente->carrito?->carritoLotes()->adjudicados()->exists()) {
+        $this->addError('tieneDatos', 'Adquirente  tiene lotes con estado:adjudicado en carrito.).');
+        return;
+      }
+
+      if ($this->adquirente->carrito?->carritoLotes()->enOrden()->exists()) {
+        $this->addError('tieneDatos', 'Adquirente  tiene lotes con estado:en_orden en carrito.');
+        return;
+      }
+
+
+      if ($this->adquirente->garantias()->withTrashed()->pagada()->exists()) {
+        $this->addError('tieneDatos', 'Adquirente con  garantías pagadas.');
+        return;
+      }
+
+      if ($this->adquirente->ordenes()->withTrashed()->exists()) {
+        $this->addError('tieneDatos', 'Adquirente con  ordenes asociadas.');
+        return;
+      }
+
+
+      $this->addError('tieneDatos', 'Nquirente porque tiene un carrito asociado.');
+      return;
+
+
+
+
 
       $this->adquirente->autorizados()->delete();
       $this->adquirente->user()->delete();

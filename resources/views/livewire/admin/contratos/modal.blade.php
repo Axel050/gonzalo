@@ -36,7 +36,10 @@
                                     <option value="">Elija comitente</option>
                                     @foreach ($comitentes as $com)
                                         <option value="{{ $com->id }}">
-                                            {{ $com->alias?->nombre }} - {{ $com->nombre }} {{ $com->apellido }}
+                                            @if ($com->alias)
+                                                {{ $com->alias->nombre }} -
+                                            @endif
+                                            {{ $com->nombre }} {{ $com->apellido }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -59,7 +62,7 @@
                             @endforeach
                         </x-form-item-sel>
 
-                        <x-form-item-area label="Descripcion" :method="$method" model="descripcion" />
+                        <x-form-item-area label="Descripcion contrato" :method="$method" model="descripcion" />
 
                         <x-form-item label="Fecha" :method="$method" model="fecha_firma" type="date" />
 

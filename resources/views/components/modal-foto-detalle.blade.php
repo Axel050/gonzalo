@@ -14,7 +14,7 @@
         @click="$dispatch('close-modal')">X</span>
 
     <div
-        class="relative max-w-[95%]    max-h-[90vh] rounded-lg shadow-xl   lg:inline-flex  grid   grid-cols-2  items-center border-6 border-gray-100 overflow-hidden p-4 bg-casa-base lg:gap-x-10 gap-x-20 gap-y-5">
+        class="relative max-w-[95%]    max-h-[90vh]  shadow-xl   lg:inline-flex  grid   grid-cols-2  items-center border-6 border-gray-100 overflow-hidden p-4 bg-casa-base lg:gap-x-10 gap-x-20 gap-y-5">
         <!-- Flecha izquierda -->
 
         <button x-show="records.length > 1" @click.stop="prev"
@@ -27,7 +27,7 @@
         </button>
 
         <img :src="records[currentIndex].image"
-            class="max-h-[90vh] w-auto rounded-lg mx-auto transition-all duration-300    col-span-2 lg:order-2 order-1">
+            class="max-h-[90vh] w-auto  mx-auto transition-all duration-300    col-span-2 lg:order-2 order-1">
 
         <!-- Flecha derecha -->
         <button x-show="records.length > 1" @click.stop="next"

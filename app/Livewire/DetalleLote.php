@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Enums\LotesEstados;
 use App\Models\Carrito;
 use App\Models\Lote;
 use App\Models\Moneda;
@@ -17,6 +18,7 @@ use Livewire\Component;
 class DetalleLote extends Component
 {
   protected $subastaService;
+  public $cantidadLotes;
   public $destacados;
   public $modal_foto;
   // public $modal_foto;
@@ -25,6 +27,7 @@ class DetalleLote extends Component
   public $modal_ofertar;
 
 
+  public $lotesPasadosIds;
   public $id;
   public $subasta;
   public $lote;
@@ -51,7 +54,72 @@ class DetalleLote extends Component
   public $moneda;
 
   public $inCart;
+  public $route;
 
+  // public function loteSiguiente()
+  public function loteSiguiente(SubastaService $subastaService)
+  {
+
+    $siguienteId = null;
+
+    try {
+      // 2. Corregido el error de sintaxis ($$ -> $)
+      switch ($this->lote->estado) {
+        case LotesEstados::EN_SUBASTA:
+          $siguienteId = $subastaService->getSiguienteLoteId($this->subasta, $this->lote->id);
+          break;
+
+        case LotesEstados::ASIGNADO:
+          $siguienteId = $subastaService->getSiguienteLoteIdProximos($this->subasta, $this->lote->id);
+          break;
+
+        case LotesEstados::STANDBY || LotesEstados::DISPONIBLE:
+          $siguienteId = $subastaService->getSiguienteLoteIdPasado($this->subasta, $this->lote->id);
+          break;
+      }
+    } catch (\Exception $e) {
+
+      error_log("Error al obtener el siguiente lote (Estado: {$this->lote->estado}): " . $e->getMessage());
+
+
+      $siguienteId = null;
+    }
+    if ($siguienteId) {
+      $this->redirectRoute('lotes.show', $siguienteId, navigate: true);
+    }
+  }
+
+  public function loteAnterior(SubastaService $subastaService)
+  {
+    $siguienteId = null;
+
+    try {
+      // 2. Corregido el error de sintaxis ($$ -> $)
+      switch ($this->lote->estado) {
+        case LotesEstados::EN_SUBASTA:
+          $siguienteId = $subastaService->getSiguienteLoteId($this->subasta, $this->lote->id);
+          break;
+
+        case LotesEstados::ASIGNADO:
+          $siguienteId = $subastaService->getSiguienteLoteIdProximos($this->subasta, $this->lote->id);
+          break;
+
+        case LotesEstados::STANDBY || LotesEstados::DISPONIBLE:
+          $siguienteId = $subastaService->getAnteriorLoteIdPasado($this->subasta, $this->lote->id);
+          break;
+      }
+    } catch (\Exception $e) {
+
+      error_log("Error al obtener el siguiente lote (Estado: {$this->lote->estado}): " . $e->getMessage());
+
+
+      $siguienteId = null;
+    }
+
+    if ($siguienteId) {
+      $this->redirectRoute('lotes.show', $siguienteId, navigate: true);
+    }
+  }
 
   // #[On('echo:my-channel.{subasta.id},SubastaEstadoActualizado')]
 
@@ -148,6 +216,40 @@ class DetalleLote extends Component
     $this->lote_id = $this->lote->id;
     $this->subasta_id = $this->subasta?->id;
 
+    $this->route = match ($this->lote->estado) {
+      'en_subasta' => 'subasta.lotes',
+      'asignado' => 'subasta-proximas.lotes',
+      default => 'subasta-pasadas.lotes',
+    };
+
+
+    try {
+
+      $canti = 0;
+      switch ($this->lote->estado) {
+        case LotesEstados::EN_SUBASTA:
+          $canti = $subastaService->getLotesActivosIds($this->subasta, $this->lote->id);
+          break;
+
+        case LotesEstados::ASIGNADO:
+          $canti = $subastaService->getLotesProximosIds($this->subasta, $this->lote->id);
+          break;
+
+        case LotesEstados::STANDBY || LotesEstados::DISPONIBLE:
+          $canti = $subastaService->getLotesPasadosIds($this->subasta, $this->lote->id);
+          break;
+      }
+
+
+
+
+      $this->cantidadLotes = count($canti);
+    } catch (\Exception $e) {
+      // Manejar la excepción lanzada desde getLotesPasadosIds (ej. 'Subasta no activa')
+
+      // Loguear el error para debugging
+      logger()->error("Error en detalleLote::mount: " . $e->getMessage(), ['subasta_id' => $this->subasta->id]);
+    }
 
 
     $this->moneda = $this->lote?->moneda;
@@ -245,12 +347,17 @@ class DetalleLote extends Component
         $valorCaracteristica = $this->lote->valoresCaracteristicas()
           ->where('caracteristica_id', $caracteristica->id)
           ->first();
-        // info(["vañor" => $valorCaracteristica]);
+
+        // dd($valorCaracteristica->valor, gettype($valorCaracteristica->valor));
+
+
         if ($valorCaracteristica) {
           $this->formData[$caracteristica->id] = $valorCaracteristica->valor;
         }
       }
     }
+
+    // info(["formData0000000000" => $this->formData]);
   }
 
 

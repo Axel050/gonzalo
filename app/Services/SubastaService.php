@@ -3,12 +3,62 @@
 namespace App\Services;
 
 use App\Enums\LotesEstados;
+use App\Models\EstadosLote;
 use App\Models\Lote;
 use App\Models\Subasta;
 
 class SubastaService
 {
 
+  // solo ids para detalle lote
+  public function getLotesActivosIds(Subasta $subasta)
+  {
+    if (!$subasta->isActiva()) {
+      throw new \Exception('Subasta no activa', 403);
+    }
+
+    return $subasta->lotesActivos()
+      ->orderBy('lotes.id')           // ← aquí sí puedes ordenar
+      ->pluck('lotes.id')             // ← solo los IDs
+      ->toArray();
+  }
+
+  public function getSiguienteLoteId(Subasta $subasta, int $loteId): ?int
+  {
+    // Trabajamos directamente con el Query Builder
+    $siguiente = $subasta->lotesActivos()
+      ->where('lotes.id', '>', $loteId)
+      ->orderBy('lotes.id')
+      ->value('lotes.id'); // → devuelve directamente el ID o null
+
+    // Si no hay siguiente → volvemos al primero (loop)
+    if (!$siguiente) {
+      $siguiente = $subasta->lotesActivos()
+        ->orderBy('lotes.id')
+        ->value('lotes.id');
+    }
+    // Si no hay siguiente → volvemos al primero (loop típico en subastas)
+    return $siguiente ?? $this->getLotesActivosIds($subasta)->value('lotes.id');
+  }
+
+
+  public function getAnteriorLoteId(Subasta $subasta, int $loteId): ?int
+  {
+    // Trabajamos directamente con el Query Builder
+    $siguiente = $subasta->lotesActivos()
+      ->where('lotes.id', '<', $loteId)
+      ->orderByDesc('lotes.id')
+      ->value('lotes.id'); // → devuelve directamente el ID o null
+
+    // Si no hay siguiente → volvemos al primero (loop)
+    if (!$siguiente) {
+      $siguiente = $subasta->lotesActivos()
+        ->orderByDesc('lotes.id', 'desc')
+        ->value('lotes.id');
+    }
+    // Si no hay siguiente → volvemos al primero (loop típico en subastas)
+    return $siguiente ?? $this->getLotesActivosIds($subasta)->value('lotes.id');
+  }
 
 
   public function getLotesActivos(Subasta $subasta, bool $conCaracteristicas = false)
@@ -231,6 +281,69 @@ class SubastaService
   }
 
 
+
+  // solo ids para detalle lote
+  public function getLotesProximosIds(Subasta $subasta)
+  {
+    if (!$subasta->isProxima()) {
+      throw new \Exception('Subasta no activa', 403);
+    }
+
+    return $subasta->lotesProximos()
+      ->where('lotes.estado', LotesEstados::ASIGNADO)
+      ->orderBy('lotes.id')           // ← aquí sí puedes ordenar
+      ->pluck('lotes.id')             // ← solo los IDs
+      ->toArray();
+  }
+
+  public function getSiguienteLoteIdProximos(Subasta $subasta, int $loteId): ?int
+  {
+
+    // Trabajamos directamente con el Query Builder
+    $siguiente = $subasta->lotesProximos()
+      ->where('lotes.id', '>', $loteId)
+      ->where('lotes.estado', LotesEstados::ASIGNADO)
+      ->orderBy('lotes.id')
+      ->value('lotes.id'); // → devuelve directamente el ID o null
+
+    // Si no hay siguiente → volvemos al primero (loop)
+    if (!$siguiente) {
+      $siguiente = $subasta->lotesProximos()
+        ->where('lotes.estado', LotesEstados::ASIGNADO)
+        ->orderBy('lotes.id')
+        ->value('lotes.id');
+    }
+    // Si no hay siguiente → volvemos al primero (loop típico en subastas)
+    return $siguiente ?? $this->getLotesProximosIds($subasta)->value('lotes.id');
+  }
+
+
+  public function getAnteriorLoteIdProximos(Subasta $subasta, int $loteId): ?int
+  {
+
+    // Trabajamos directamente con el Query Builder
+    $siguiente = $subasta->lotesProximos()
+      ->where('lotes.estado', LotesEstados::ASIGNADO)
+      ->where('lotes.id', '<', $loteId)
+      ->orderByDesc('lotes.id')
+      ->value('lotes.id'); // → devuelve directamente el ID o null
+
+    // Si no hay siguiente → volvemos al primero (loop)
+    if (!$siguiente) {
+      $siguiente = $subasta->lotesProximos()
+        ->where('lotes.estado', LotesEstados::ASIGNADO)
+        ->orderByDesc('lotes.id', 'desc')
+        ->value('lotes.id');
+    }
+    // Si no hay siguiente → volvemos al primero (loop típico en subastas)
+    return $siguiente ?? $this->getLotesProximosIds($subasta)->value('lotes.id');
+  }
+
+
+
+
+
+
   public function getLotesProximosDestacados(Subasta $subasta)
   {
 
@@ -298,6 +411,73 @@ class SubastaService
     });
   }
 
+
+
+  // solo ids para detalle lote
+  public function getLotesPasadosIds(Subasta $subasta)
+  {
+    if (!$subasta->isPasada()) {
+      throw new \Exception('Subasta no activa', 403);
+    }
+    $estadosAFiltrar = [
+      LotesEstados::STANDBY, // Asumo que tienes una constante para 'standby'
+      LotesEstados::DISPONIBLE // Asumo que tienes una constante para 'disponible'
+    ];
+    return $subasta->lotesPasados()
+      ->whereIn('lotes.estado', $estadosAFiltrar)
+      ->orderBy('lotes.id')           // ← aquí sí puedes ordenar
+      ->pluck('lotes.id')             // ← solo los IDs
+      ->toArray();
+  }
+
+  public function getSiguienteLoteIdPasado(Subasta $subasta, int $loteId): ?int
+  {
+    $estadosAFiltrar = [
+      LotesEstados::STANDBY,
+      LotesEstados::DISPONIBLE
+    ];
+    // Trabajamos directamente con el Query Builder
+    $siguiente = $subasta->lotesPasados()
+      ->where('lotes.id', '>', $loteId)
+      ->whereIn('lotes.estado', $estadosAFiltrar)
+      ->orderBy('lotes.id')
+      ->value('lotes.id'); // → devuelve directamente el ID o null
+
+    // Si no hay siguiente → volvemos al primero (loop)
+    if (!$siguiente) {
+      $siguiente = $subasta->lotesPasados()
+        ->whereIn('lotes.estado', $estadosAFiltrar)
+        ->orderBy('lotes.id')
+        ->value('lotes.id');
+    }
+    // Si no hay siguiente → volvemos al primero (loop típico en subastas)
+    return $siguiente ?? $this->getLotesPasadosIds($subasta)->value('lotes.id');
+  }
+
+
+  public function getAnteriorLoteIdPasado(Subasta $subasta, int $loteId): ?int
+  {
+    $estadosAFiltrar = [
+      LotesEstados::STANDBY,
+      LotesEstados::DISPONIBLE
+    ];
+    // Trabajamos directamente con el Query Builder
+    $siguiente = $subasta->lotesPasados()
+      ->whereIn('lotes.estado', $estadosAFiltrar)
+      ->where('lotes.id', '<', $loteId)
+      ->orderByDesc('lotes.id')
+      ->value('lotes.id'); // → devuelve directamente el ID o null
+
+    // Si no hay siguiente → volvemos al primero (loop)
+    if (!$siguiente) {
+      $siguiente = $subasta->lotesPasados()
+        ->whereIn('lotes.estado', $estadosAFiltrar)
+        ->orderByDesc('lotes.id', 'desc')
+        ->value('lotes.id');
+    }
+    // Si no hay siguiente → volvemos al primero (loop típico en subastas)
+    return $siguiente ?? $this->getLotesPasadosIds($subasta)->value('lotes.id');
+  }
 
 
 

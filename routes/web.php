@@ -97,7 +97,10 @@ Route::get('/test-mail-orden/{ordenId}/{adquirenteId}', function ($ordenId, $adq
     "orden" => $orden,
     "subasta" => $orden->subasta,
   ];
-  mail::to($adquirente->user?->email)->send(new OrdenEmail($fakeData));
+
+  if (app()->environment('production')) {
+    mail::to($adquirente->user?->email)->send(new OrdenEmail($fakeData));
+  }
   return new OrdenEmail($fakeData); // Se renderiza directamente en el navegador
 });
 
@@ -159,9 +162,13 @@ Route::get('/subastas/buscador/lotes', [AdquirenteController::class, 'getLotesSe
 Route::get('/subastas/{subasta}/lotes', [AdquirenteController::class, 'getLotes'])->name('subasta.lotes')->middleware(['auth']);
 
 
-Route::get('/terminos', function () {
-  return view('terminos');
-})->name('terminos');
+Route::get('/terminos-comitentes', function () {
+  return view('terminos-comitentes');
+})->name('terminos-comitentes');
+
+Route::get('/terminos-adquirentes', function () {
+  return view('terminos-adquirentes');
+})->name('terminos-adquirentes');
 
 
 // MP

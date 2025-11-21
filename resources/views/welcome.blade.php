@@ -115,11 +115,11 @@
 
                 <div class="swiper-home-subastas     w-full  lg:overflow-x-hidden lg:px-0 px-4 ">
 
-                    <div class="swiper-wrapper  flex lg:flex-row flex-col  itm">
+                    <div class="swiper-wrapper  flex lg:flex-row flex-col  ">
 
                         @foreach ($subastasFin as $item)
                             <a href="{{ route('subasta-pasadas.lotes', $item->id) }}"
-                                class="flex flex-col bg-casa-base-2 text-casa-black p-6 mb-6 swiper-slide border border-casa-black/50">
+                                class="flex flex-col bg-casa-base-2 text-casa-black p-6 mb-6 swiper-slide border border-casa-black/50 ">
 
 
 

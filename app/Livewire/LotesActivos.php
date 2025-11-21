@@ -124,7 +124,6 @@ class LotesActivos extends Component
   {
     try {
 
-      info(["lotesClassLODAAAAAAAAAA11111111111111111111111"]);
       $this->lotes = $this->subastaService?->getLotesActivos($this->subasta)?->toArray();
       // info(["lotesClassLODAAAAAAAAAA" => $this->lotes]);
 

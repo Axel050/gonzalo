@@ -13,8 +13,26 @@
                 wire:submit={{ $method }}>
 
                 @if ($method == 'delete')
-                    <p class="text-center text-gray-600 lg:px-10 px-6"> Esta seguro de eliminar la subasta</p>
-                    <p class="text-center text-gray-600"><strong>"{{ $subasta->id }}" </strong>?</p>
+                    <div class="relative col-span-2 flex flex-col justify-center items-center">
+
+                        <p class="text-center text-gray-600 lg:px-10 px-6 col-span-2"> Esta seguro de eliminar la subasta
+                            <strong>"{{ $subasta->id }}" </strong>?
+                        </p>
+
+
+                        @error('tieneContratos')
+                            <div class ='flex items-center text-base text-red-600  '>
+
+                                <svg class="w-4 h-3.5 mr-1">
+                                    <use xlink:href="#error-icon"></use>
+                                </svg>
+                                <p class="lg:max-w-80 leading-[12px]">
+                                    {{ $message }}
+                                </p>
+                            </div>
+                        @enderror
+
+                    </div>
                 @else
                     <x-form-item label="Numero" method="view" model="num" />
 

@@ -109,7 +109,7 @@ class Modal extends Component
     $this->resetErrorBag('foto1');
     try {
       $this->validate([
-        'foto1' => 'image|max:2000', // max:13000 limita el tamaño a 13 MB (en KB)
+        'foto1' => 'image|max:13000', // max:13000 limita el tamaño a 13 MB (en KB)
       ]);
     } catch (\Illuminate\Validation\ValidationException $e) {
       unlink($this->foto1->getRealPath());
@@ -124,7 +124,7 @@ class Modal extends Component
     $this->resetErrorBag('foto2');
     try {
       $this->validate([
-        'foto2' => 'image|max:2000', // max:13000 limita el tamaño a 13 MB (en KB)
+        'foto2' => 'image|max:13000', // max:13000 limita el tamaño a 13 MB (en KB)
       ]);
     } catch (\Illuminate\Validation\ValidationException $e) {
       unlink($this->foto2->getRealPath());
@@ -138,7 +138,7 @@ class Modal extends Component
     $this->resetErrorBag('foto3');
     try {
       $this->validate([
-        'foto3' => 'image|max:2000', // max:13000 limita el tamaño a 13 MB (en KB)
+        'foto3' => 'image|max:13000', // max:13000 limita el tamaño a 13 MB (en KB)
       ]);
     } catch (\Illuminate\Validation\ValidationException $e) {
       unlink($this->foto3->getRealPath());
@@ -152,7 +152,7 @@ class Modal extends Component
     $this->resetErrorBag('foto4');
     try {
       $this->validate([
-        'foto4' => 'image|max:2000', // max:13000 limita el tamaño a 13 MB (en KB)
+        'foto4' => 'image|max:13000', // max:13000 limita el tamaño a 13 MB (en KB)
       ]);
     } catch (\Illuminate\Validation\ValidationException $e) {
       unlink($this->foto4->getRealPath());
@@ -264,8 +264,8 @@ class Modal extends Component
     $this->monedas = Moneda::orderBy("titulo")->get();
 
     if ($this->method == "delete") {
-      $this->contrato = Contrato::find($this->id);
-      $this->id = $this->contrato->id;
+      $this->lote = Lote::find($this->id);
+      $this->id = $this->lote->id;
       $this->title = "Eliminar";
       $this->btnText = "Eliminar";
       $this->bg =  "background-color: rgb(239 68 68)";
@@ -289,7 +289,7 @@ class Modal extends Component
       $this->precio_venta_directa =  $this->lote->precio_venta_directa;
       $this->estado =  $this->lote->estado;
       $this->titulo =  $this->lote->titulo;
-      $this->fraccion_min =  $this->lote->fraccion_min;
+      $this->fraccion_min =  $this->lote->fraccion_min ?? ($this->base * 0.1);
 
       $this->foto1 =  $this->lote->foto1;
       $this->foto2 =  $this->lote->foto2;
@@ -624,11 +624,11 @@ class Modal extends Component
 
   public function delete()
   {
-    if (!$this->contrato) {
-      $this->dispatch('contratoNotExits');
+    if (!$this->lote) {
+      $this->dispatch('loteNotExits');
     } else {
-      $this->contrato->delete();
-      $this->dispatch('contratoDeleted');
+      $this->lote->delete();
+      $this->dispatch('loteDeleted');
     }
   }
 

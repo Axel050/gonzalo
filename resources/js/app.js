@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     spaceBetween: 30,
     loop: true,
     autoplay: {
-      delay: 3000,
+      delay: 5000,
     },
     breakpoints: {
       // when window width is >= 320px
@@ -53,13 +53,13 @@ document.addEventListener('DOMContentLoaded', () => {
       spaceBetween: 15,
       centerInsufficientSlides: true,
       loop: true,
-      autoplay: { delay: 2000 },
+      autoplay: { delay: 5000 },
       breakpoints: {
         420: {
           slidesPerView: 3,
           spaceBetween: 50,
           loop: slides > 3 ? true : false,
-          autoplay: slides > 3 ? { delay: 2000 } : false,
+          autoplay: slides > 3 ? { delay: 5000 } : false,
         },
       },
       modules: [Autoplay],
@@ -76,13 +76,13 @@ document.addEventListener('DOMContentLoaded', () => {
       spaceBetween: 15,
       centerInsufficientSlides: true,
       loop: true,
-      autoplay: { delay: 2000 },
+      autoplay: { delay: 5000 },
       breakpoints: {
         420: {
           slidesPerView: 5,
           spaceBetween: 50,
           loop: slides > 3 ? true : false,
-          autoplay: slides > 3 ? { delay: 2000 } : false,
+          autoplay: slides > 3 ? { delay: 5000 } : false,
         },
       },
       modules: [Autoplay],
@@ -102,13 +102,13 @@ document.addEventListener('DOMContentLoaded', () => {
       spaceBetween: 15,
       centerInsufficientSlides: true,
       loop: slides > 3 ? true : false,
-      autoplay: { delay: 2000 },
+      autoplay: { delay: 5000 },
       breakpoints: {
         420: {
           slidesPerView: 4,
           spaceBetween: 50,
           loop: slides > 3 ? true : false,
-          autoplay: slides > 3 ? { delay: 2000 } : false,
+          autoplay: slides > 3 ? { delay: 5000 } : false,
         },
       },
       modules: [Autoplay],
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
         centerInsufficientSlides: true,
         spaceBetween: 50,
         loop: slides > 3 ? true : false,
-        autoplay: slides > 3 ? { delay: 2000 } : false,
+        autoplay: slides > 3 ? { delay: 5000 } : false,
 
 
         // breakpoints: {
@@ -163,7 +163,7 @@ document.addEventListener('DOMContentLoaded', () => {
       spaceBetween: 30,
       centerInsufficientSlides: true,
       loop: true,
-      autoplay: { delay: 3000 },
+      autoplay: { delay: 5000 },
       breakpoints: {
         420: {
           loop: slides > 3 ? true : false,

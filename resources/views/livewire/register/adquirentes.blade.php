@@ -160,9 +160,10 @@
 
             <div class= 'items-center   w-full lg:mx-auto  bg-red-00 lg:col-span-2 '>
                 <div class="relative w-full  flex items-center">
-                    <input type="checkbox" wire:model="terminos" class = 'lg:size-5 mr-2 ' placeholder="alias.banco" />
+                    <input type="checkbox" wire:model="terminos" class = 'lg:size-5 mr-2 cursor-pointer' />
                     <label class="w-full text-start text-casa-black  text-base ">He leído y acepto <a
-                            href="{{ route('terminos') }}" class="font-semibold hover:font-bold  underline">Términos y
+                            href="{{ route('terminos-adquirentes') }}" class="font-semibold hover:font-bold  underline"
+                            target="_blank" rel="noopener noreferrer" title="Ver términos y condiciones">Términos y
                             condiciones</a></label>
                 </div>
                 <x-input-error for="terminos" class="top-full py-0 leading-[12px] text-red-500" />

@@ -9,7 +9,23 @@
     {{-- <article class=" flex lg:flex-row flex-col p-4 mt-20 g-blue-600  shadow-lg rounded-2xl mb-10 bg-green-100"> --}}
 
     <article
-        class=" grid lg:grid-cols-2 grid-cols-1 p-4 lg:mt-20 mt-10 g-blue-600  shadow-lg rounded-2xl mb-10 lg:w-auto w-full">
+        class=" grid lg:grid-cols-2 grid-cols-1 p-4 lg:mt-20 mt-10 g-blue-600  shadow-lg rounded-2xl mb-10 lg:w-auto w-full relative">
+
+        <button wire:click="loteAnterior"
+            class=" p-2 left-2 lg:-left-2  lg:-top-10 -top-7 absolute hover:scale-105 disabled:opacity-10 disabled:cursor-default"
+            @disabled($cantidadLotes < 2) title="Lote anterior">
+            <svg fill="#fff" class="size-8 lg:size-11 rotate-180">
+                <use xlink:href="#arrow-right"></use>
+            </svg></button>
+
+        <button wire:click="loteSiguiente"
+            class=" p-2 right-2 lg:-right-2 lg:-top-10 -top-7 absolute hover:scale-105 disabled:opacity-10 disabled:cursor-default"
+            title="Lote siguiente" @disabled($cantidadLotes < 2)>
+            <svg fill="#fff" class="size-8 lg:size-11 ">
+                <use xlink:href="#arrow-right"></use>
+            </svg>
+        </button>
+
 
         <div x-data="{
             records: @js($records),
@@ -129,15 +145,6 @@
                 <li class="">{{ $lote->tipo?->nombre }}</li>
                 <li class="">Lote: {{ $lote->id }}</li>
 
-
-                @php
-                    $route = match ($lote->estado) {
-                        'en_subasta' => 'subasta.lotes',
-                        'asignado' => 'subasta-proximas.lotes',
-                        default => 'subasta-pasadas.lotes',
-                    };
-                @endphp
-
                 <li class="border border-gray-600">
                     <a href="{{ route($route, $subasta->id) }}" title="Ir a subasta {{ $subasta->titulo }}">Subasta:
                         {{ $subasta->titulo }}</a>
@@ -188,8 +195,9 @@
                                 </audio>  --}}
                         @else
                             @if ($formData[$item->id])
-                                <li><span
-                                        class="font-semibold mr-1">{{ $item->nombre }}:</span>{{ $formData[$item->id] }}
+                                <li>
+                                    <span class="font-semibold mr-1  mt-0.5">{{ $item->nombre }}:</span>
+                                    <span>{{ $formData[$item->id] }}</span>
                                 </li>
                             @endif
                         @endif
