@@ -241,7 +241,100 @@
         </div>
         {{--  --}}
         {{--  OLD --}}
+        <div x-data="{
+            records: @js($records),
+            currentIndex: 0,
+            next() {
+                this.currentIndex = (this.currentIndex + 1) % this.records.length;
+            },
+            prev() {
+                this.currentIndex = (this.currentIndex - 1 + this.records.length) % this.records.length;
+            },
+            goTo(index) {
+                this.currentIndex = index;
+            }
+        }"
+            class="flx flex-col items-center  col-start-1  lg:row-start-1 lg:row-end-4 row-start-2 hidden">
 
+
+            {{-- Imagen principal --}}
+            <div class="relative w-full flex justify-center  max-w-150 ">
+                <button @click="prev"
+                    class="absolute lg:inline-block  hidden left-0 top-1/2 -translate-y-1/2 z-10  rounded-full px-2 py-1 hover:scale-105">
+                    <svg class="rotate-180" width="39" height="67" viewBox="0 0 39 67" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2.26917 65.5L36.7307 33.5L2.26918 1.5" stroke="#262626" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M2.26917 65.5L36.7307 33.5L2.26918 1.5" stroke="black" stroke-opacity="0.2"
+                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg></button>
+
+
+
+
+                <figure class=" lg:w-150 w-full flex justify-center items-center relative">
+                    <!-- Contenedor con el tamaño exacto de la imagen -->
+                    {{-- <div class="relative group size-111" wire:click="$set('modal_foto',records[currentIndex].image )"> --}}
+                    <div class="relative group lg:size-111 w-full"
+                        x-on:click="
+                        @this.set('modal_index', currentIndex);
+                        @this.set('modal_foto', records[currentIndex].image);
+                    ">
+                        <!-- Imagen -->
+                        <img :src="records[currentIndex].image"
+                            class="lg:size-111 w-full lg:max-h-none max-h-[160px] object-contain transition-all duration-500 ease-in-out mx-auto cursor-pointer lg:mt-0 mt-2"
+                            x-transition:enter="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
+                            x-transition:leave="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90">
+
+                        <!-- Capa de superposición: solo aparece al hacer hover SOBRE la imagen -->
+                        <span
+                            class="absolute inset-0 bg-gray-800/60 text-casa-base-2 text-4xl font-bold 
+                                      flex justify-center items-center  opacity-0 group-hover:opacity-100 transition-opacity duration-900
+                                      pointer-events-none cursor-pointer ">
+                            Agrandar
+                        </span>
+                    </div>
+                </figure>
+
+                @if ($modal_foto)
+                    <x-modal-foto-detalle :records="$records" :current-index="$modal_index" />
+                @endif
+
+
+
+                <button @click="next"
+                    class="absolute lg:inline-block hidden right-0 top-1/2 -translate-y-1/2 z-10 bgwhite/70 rounded-full px-2 py-1 hover:scale-105">
+
+                    <svg width="39" height="67" viewBox="0 0 39 67" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path d="M2.26917 65.5L36.7307 33.5L2.26918 1.5" stroke="#262626" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                        <path d="M2.26917 65.5L36.7307 33.5L2.26918 1.5" stroke="black" stroke-opacity="0.2"
+                            stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+
+            {{-- Miniaturas --}}
+            <div class="hidden lg:flex gap-2 mt-4">
+                <template x-for="(record, index) in records" :key="index">
+                    <img :src="record.thumb ?? record.image" @click="goTo(index)"
+                        class="w-20 h-20 object-contain cursor-pointer border-2 rounded-md transition-all duration-300 "
+                        :class="index === currentIndex ? 'border-casa-black  scale-110 ' :
+                            'border-transparent hover:scale-105 hover:border-casa-black/25'">
+                </template>
+            </div>
+
+            <!-- Botones circulares en Mobile -->
+            <div class="flex lg:hidden gap-2 mt-4">
+                <template x-for="(record, index) in records" :key="index">
+                    <button @click="goTo(index)" class="w-3 h-3 rounded-full transition-all duration-300 mr-2"
+                        :class="index === currentIndex ? 'bg-casa-black scale-125' : 'bg-gray-300 hover:bg-gray-400'">
+                    </button>
+                </template>
+            </div>
+
+        </div>
 
 
         {{-- SECOND --}}
