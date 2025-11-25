@@ -17,7 +17,6 @@
         <h3 class="lg:text-3xl text-lg  font-bold">Encontra la tuya.</h3>
 
         <div class="w-full mt-15 mb-0">
-
             @livewire('subastas-abiertas')
         </div>
 
@@ -97,7 +96,7 @@
 
                                 </div>
 
-                                <p class="lg:text-xl text-sm">{{ $item->descripcion }} </p>
+                                <p class="lg:text-xl text-sm line-clamp-3">{{ $item->descripcion }} </p>
 
                             </a>
                         @endforeach
@@ -173,7 +172,7 @@
 
 
 
-                                <p class="text-xl">{{ $item->descripcion }}</p>
+                                <p class="text-xl line-clamp-3">{{ $item->descripcion }}</p>
 
 
                             </a>

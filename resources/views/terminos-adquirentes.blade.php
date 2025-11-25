@@ -8,7 +8,13 @@
 
     <div class="flex flex-col items-center min-h-[30vh] px-4">
 
-        <h1 class="my-8 lg:my-12 mx-auto lg:text-5xl text-2xl text-center font-semibold">Términos y condiciones para los
+
+
+        <svg fill="#fff" class="w-60  h-7 lg:flex  mt-12 mb-4 bg-red-4 lg:scale-150 scale-115">
+            <use xlink:href="#casa-icon"></use>
+        </svg>
+
+        <h1 class="lg:my-8 my-4  mx-auto lg:text-4xl text-2xl text-center font-semibold">Términos y condiciones para los
             Adquirentes
         </h1>
 

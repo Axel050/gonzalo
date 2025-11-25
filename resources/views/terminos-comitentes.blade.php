@@ -3,9 +3,14 @@
 
     <div class="flex flex-col items-center min-h-[30vh] px-4">
 
-        <h1 class="my-8 lg:my-12 mx-auto lg:text-5xl text-2xl text-center font-semibold">Términos y condiciones para los
+        <svg fill="#fff" class="w-60  h-7 lg:flex  mt-12 mb-4 bg-red-4 lg:scale-150 scale-115">
+            <use xlink:href="#casa-icon"></use>
+        </svg>
+
+        <h1 class="lg:my-8 my-4  mx-auto lg:text-4xl text-2xl text-center font-semibold">Términos y condiciones para los
             Comitentes
         </h1>
+
 
         <div class="lg:px-24 px-4 flex flex-col gap-y-2  max-w-7xl">
             <p>
@@ -51,7 +56,8 @@
             </p>
             <p>
                 6.- Si un lote no resulta ser vendido El Comitente no tendrá que afrontar ningún cargo. Sin
-                embargo, si El Comitente decide retirar algún lote antes de que se realice la subasta, sin justificar
+                embargo, si El Comitente decide retirar algún lote antes de que se realice la subasta, sin
+                justificar
                 el motivo, deberá abonar a Casablanca.ar el 50% de la base fijada en concepto de gastos
                 administrativos. Esto lo podrá hacer hasta un día antes del inicio del remate.
             </p>

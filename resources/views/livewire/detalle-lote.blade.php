@@ -27,7 +27,7 @@
         </button>
 
 
-        <div x-data="{
+        {{-- <div x-data="{
             records: @js($records),
             currentIndex: 0,
             next() {
@@ -38,6 +38,42 @@
             },
             goTo(index) {
                 this.currentIndex = index;
+            }
+        }"
+            class="flex flex-col items-center  col-start-1  lg:row-start-1 lg:row-end-4 row-start-2"> --}}
+
+        <div x-data="{
+            records: @js($records),
+            currentIndex: 0,
+        
+            next() {
+                this.currentIndex = (this.currentIndex + 1) % this.records.length;
+            },
+            prev() {
+                this.currentIndex = (this.currentIndex - 1 + this.records.length) % this.records.length;
+            },
+            goTo(index) {
+                this.currentIndex = index;
+            },
+        
+            // --- Swipe táctil ---
+            touchStartX: 0,
+            touchEndX: 0,
+            onTouchStart(e) {
+                this.touchStartX = e.changedTouches[0].screenX;
+            },
+            onTouchEnd(e) {
+                this.touchEndX = e.changedTouches[0].screenX;
+        
+                const distance = this.touchEndX - this.touchStartX;
+        
+                if (Math.abs(distance) < 50) return;
+        
+                if (distance > 0) {
+                    this.prev();
+                } else {
+                    this.next();
+                }
             }
         }"
             class="flex flex-col items-center  col-start-1  lg:row-start-1 lg:row-end-4 row-start-2">

@@ -34,7 +34,7 @@
                         <b>{{ $dia }} de {{ $mes }} | {{ $hora }}hs</b>
                     </div>
 
-                    <p class="text-xl">{{ $subA->descripcion }} </p>
+                    <p class="text-xl line-clamp-3">{{ $subA->descripcion }} </p>
                 </a>
                 {{-- @endfor --}}
             @endforeach
