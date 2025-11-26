@@ -127,6 +127,8 @@
 
                     <x-form-item-area label="Descripcion" :method="$method" model="descripcion" />
 
+                    <x-form-item label="Valuacion" :method="$method" model="valuacion" type="number" />
+
                     <x-form-item label="Base" :method="$method" model="base" type="number" />
 
                     <x-form-item-sel label="Moneda" :method="$method" model="moneda_id">
@@ -138,7 +140,6 @@
                         @endforeach
                     </x-form-item-sel>
 
-                    <x-form-item label="Valuacion" :method="$method" model="valuacion" type="number" />
 
                     <x-form-item label="Fraccion minima" :method="$method" model="fraccion_min" type="number" />
 
