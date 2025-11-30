@@ -27,6 +27,9 @@ class Index extends Component
   #[Url]
   public $ids;
 
+  #[Url]
+  public $fromCont;
+
   #[On(['lotes'])]
   public function openLotes($id = false)
   {
@@ -82,6 +85,21 @@ class Index extends Component
 
     $exists = false;
 
+
+
+
+    if ($this->fromCont) {
+      $lote = Lote::find($this->fromCont);
+
+      if ($lote) {
+        $this->id = $this->fromCont;
+        return $this->method = "update";
+      }
+    }
+
+
+
+
     if ($this->ids) {
       $parts = explode('-', $this->ids);
 
@@ -114,6 +132,13 @@ class Index extends Component
     $this->method = "";
     $this->resetPage();
   }
+
+  #[On('loteContrato')]
+  public function cerrar()
+  {
+    $this->method = "";
+  }
+
 
   // public function render2()
   // {

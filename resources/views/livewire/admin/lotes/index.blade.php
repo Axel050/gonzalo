@@ -82,7 +82,7 @@
             @endif
 
         @endif
-
+        {{-- @dump($method) --}}
 
 
         <div class="overflow-x-auto bg-gray-200 m-4 border-2 border-gray-600  mx-auto rounded-md  shadow-md relative">

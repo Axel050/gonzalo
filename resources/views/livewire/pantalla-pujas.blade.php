@@ -2,7 +2,8 @@
 
     {{-- @dump('VER OPCION PONER MODAL PARA MENJEAR PUJAS Y OFERTAS ') --}}
 
-    <article class="bg-red-00 flex  w-full lg:justify-center justify-start flex-col mt-10 lg:mb-8 mb-4 lg:px-0 px-4">
+    <article
+        class="bg-red-00 flex  w-full lg:justify-center justify-start flex-col mt-10 lg:mb-8 mb-4 lg:px-0 px-4 relative">
         <svg fill="#fff" class="w-[247px] h-[47px] mx-auto mb-2 lg:block hidden">
             <use xlink:href="#tuslotes"></use>
         </svg>
@@ -10,11 +11,19 @@
         <h2 class="lg:hidden text-4xl font-helvetica">tus lotes</h2>
 
         <h3 class="font-helvetica font-semibold lg:text-3xl text-sm  tracking-normal lg:text-center mt-4 lg:mb-2 mb-1">
-            Estos son
-            lotes que agregaste a tu carrito.
+            Desde aquí podrás pujar por los lotes que elegiste.
         </h3>
-        <p class=" lg:text-3xl text-sm lg:text-center text-start">Desde aquí podrás pujar por los lotes que elegiste.</p>
 
+
+        @if ($tieneOrdenes)
+            <a href="{{ route('carrito') }}"
+                class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-gray-50 rounded-full md:px-4 px-2 flex items-center justify-between  lg:py-2 py-1 lg:text-xl text-sm font-bold  w-fit absolute lg:right-6 top-2 right-2">
+                Ver tu carrito
+                <svg class="lg:size-8 size-5 md:ml-5 ml-3">
+                    <use xlink:href="#arrow-right"></use>
+                </svg>
+            </a>
+        @endif
     </article>
 
 
@@ -58,7 +67,7 @@
                             <button class=" -mt-3 -mr-3 h-fit disabled:opacity-30 disabled:cursor-not-allowed"
                                 wire:click="quitar({{ $lote['id'] }})"
                                 title="{{ $adquirenteEsGanador ? 'No puedes quitar, tu oferta es la ultima' : 'Quitar del carrito' }}"
-                                {{-- @disabled($adquirenteEsGanador) --}}>
+                                @disabled($adquirenteEsGanador)>
                                 <svg class="size-8 ">
                                     <use xlink:href="#trash"></use>
                                 </svg>
@@ -103,12 +112,13 @@
                                     <ul class="flex gap-4 text-sm  mb-2 mt-1 lg:mt-0">
                                         <li
                                             class="lg:px-3 px-2 lg:py-2 py-0.5 rounded-full border border-casa-black lg:text-sm text-xs">
-                                            <a href="{{ route('lotes.show', $lote['id']) }}">Lote:
+                                            <a href="{{ route('lotes.show', $lote['id']) }}" title="Ir a lote">Lote:
                                                 {{ $lote->id }}</a>
                                         </li>
                                         <li
-                                            class="lg:px-3 px-2 lg:py-2 py-0.5 rounded-full border border-casa-black lg:text-sm text-xs">
-                                            <a href="{{ route('subasta.lotes', $lote->ultimoContrato?->subasta_id) }}">Subasta:
+                                            class="lg:px-3 px-2 lg:py-2 py-0.5 rounded-full border border-casa-rojo lg:text-sm text-xs text-casa-rojo font-semibold hover:bg-casa-rojo hover:text-white">
+                                            <a href="{{ route('subasta.lotes', $lote->ultimoContrato?->subasta_id) }}"
+                                                title="Ir a subasta">Subasta:
                                                 {{ $lote->ultimoContrato?->subasta?->titulo }}</a>
                                         </li>
                                     </ul>
@@ -126,9 +136,9 @@
                                 </div>
 
                                 <p class=" lg:text-xl text-sm"> Base :
-                                    {{ $signo }}{{ number_format($lote['precio_base'], 0, ',', '.') }}</p>
+                                    {{ $signo }} {{ number_format($lote['precio_base'], 0, ',', '.') }}</p>
                                 <p class=" lg:text-xl text-sm font-bold"> Oferta actual :
-                                    {{ $signo }}{{ $actual }}</p>
+                                    {{ $signo }} {{ $actual }}</p>
 
                             </div>
 
@@ -137,7 +147,7 @@
                         <div class=" flex flex-col  gap-y-2">
 
                             <div class=" text-sm lg:text-xl lg:mt-2"> Fracción minima :
-                                {{ $signo }}{{ number_format($lote['fraccion_min'], 0, ',', '.') }}</div>
+                                {{ $signo }} {{ number_format($lote['fraccion_min'], 0, ',', '.') }}</div>
 
 
 
@@ -171,7 +181,7 @@
                                 @if ($subastaActiva)
                                     <p
                                         class="text-casa-black border border-black rounded-full px-4 lg:py-2 py-1 lg:flex items-center justify-center w-full lg:text-xl text-sm lg:mb-2 mb-1 bg-casa-base   lg:order-7 mt-auto">
-                                        Ofertaste: <b class="ml-1">{{ $signo }}{{ $actual }}</b>
+                                        Ofertaste: <b class="ml-1">{{ $signo }} {{ $actual }}</b>
                                     </p>
                                 @else
                                     <span
@@ -186,7 +196,7 @@
 
                                     @if ($lote->ultimoContrato?->subasta->estado == 'finalizada')
                                         <a href="{{ route('carrito') }}"
-                                            class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  lg:py-2 py-1  w-full  lg:text-xl text-sm font-bold order-10 lg:mt-2  lg:order-11 ">
+                                            class="bg-casa-green hover:bg-casa-fondo border border-green-500 hover:text-casa-green text-gray-50 rounded-full px-4 flex items-center justify-between  lg:py-2 py-1  w-full  lg:text-xl text-sm font-bold order-10 lg:mt-2  lg:order-11 ">
                                             Pagar
                                             <svg class="lg:size-8  size-6">
                                                 <use xlink:href="#arrow-right"></use>
@@ -195,7 +205,7 @@
                                         </a>
                                     @else
                                         <span
-                                            class="bg-casa-black  border border-casa-black  text-gray-50 rounded-full px-4 flex items-center justify-between  lg:py-2 py-1  w-full  lg:text-xl text-sm font-bold order-10 lg:mt-2  lg:order-11 ">
+                                            class="bg-casa-gtext-casa-green  border border-casa-black  text-gray-50 rounded-full px-4 flex items-center justify-between  lg:py-2 py-1  w-full  lg:text-xl text-sm font-bold order-10 lg:mt-2  lg:order-11 ">
                                             Preparando orden ...
                                             <svg
                                                 class="lg:size-8  size-6  text-white animate-[spin_3s_linear_infinite]">
@@ -405,10 +415,10 @@
                     const now = new Date();
                     const end = new Date(endTimeString);
 
-                    console.log(`new INIT for lote ${loteId}`);
-                    console.log(`endTime from data attribute: ${endTimeString}`);
-                    console.log(`end (Date object): ${end}`);
-                    console.log(`now: ${now}`);
+                    // console.log(`new INIT for lote ${loteId}`);
+                    // console.log(`endTime from data attribute: ${endTimeString}`);
+                    // console.log(`end (Date object): ${end}`);
+                    // console.log(`now: ${now}`);
 
                     if (!isNaN(end.getTime()) && end > now) {
                         this.isValid = true;
@@ -444,9 +454,9 @@
                     } else {
                         this.timeRemaining = '00:00';
                         this.isValid = false;
-                        console.log(
-                            `Temporizador no iniciado para lote ${loteId}: endTime (${endTimeString}) es pasado o inválido.`
-                        );
+                        // console.log(
+                        //     `Temporizador no iniciado para lote ${loteId}: endTime (${endTimeString}) es pasado o inválido.`
+                        // );
                     }
                 },
 

@@ -4,12 +4,14 @@ namespace App\Services;
 
 use App\Enums\LotesEstados;
 use App\Events\PujaRealizada;
+use App\Mail\PujaSuperadaEmail;
 use App\Models\Adquirente;
 use App\Models\Lote;
 use App\Models\Moneda;
 use App\Models\Puja;
 use App\Models\Subasta;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Mail;
 use InvalidArgumentException;
 use DomainException;
 
@@ -110,10 +112,18 @@ class PujaService
       throw new DomainException('Tu oferta es la última');
     }
 
-    $ultimoMonto = Puja::where('lote_id', $lote->id)
+    // $ultimoMonto = Puja::where('lote_id', $lote->id)
+    //   ->where('subasta_id', $subasta->id)
+    //   ->orderByDesc('id')
+    //   ->value('monto') ?? 0;
+
+    $ultimaPuja = Puja::where('lote_id', $lote->id)
       ->where('subasta_id', $subasta->id)
-      ->orderByDesc('id')
-      ->value('monto') ?? 0;
+      ->orderByDesc('id')->first();
+
+
+    $ultimoMonto = $ultimaPuja ? $ultimaPuja->monto : 0;
+
 
     // info([" PUJA SERVICE ULTIMO MONTO" => $ultimoMonto]);
     // info([" PUJA SERVICE ULTIMO MONTO visto" => $ultimoMontoVisto]);
@@ -146,6 +156,30 @@ class PujaService
     event(new PujaRealizada($lote->id, $montoFinal, $puja->id, $ultimoAdquirente, $signo));
 
     info("DESPUES EVENT puja");
+
+
+    $dataMail = [
+      "monto" => $puja->monto,
+      "lote_id" => $lote->id,
+      "titulo" => $lote->titulo,
+      "foto" => $lote->foto,
+      "subasta" => $subasta->titulo,
+    ];
+
+
+    if ($ultimoMonto > 0) {
+      try {
+        Mail::to($ultimaPuja->adquirente?->user?->email)->send(new PujaSuperadaEmail($dataMail));
+      } catch (\Exception $e) {
+        // Log del error para debugging, sin detener el job
+        info('Error al enviar PujaSuperada en job DesactivarLotesExpirados: ' . $e->getMessage(), [
+          'adquirente_id' => $adquirente->id ?? null,
+          'trace' => $e->getTraceAsString(),
+        ]);
+      }
+    }
+
+
 
     return [
       'success' => true,

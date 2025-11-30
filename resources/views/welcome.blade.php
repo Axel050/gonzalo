@@ -36,8 +36,8 @@
 
         @if (count($subastasProx))
             <div class="flex flex-col   w-full   items-center lg:pb-24 lg:px-24 lg:mt-0  mt-10 ">
-                <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4 mb-4 lg:mb-8">próximas
-                    subastas
+                <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4 mb-4 lg:mb-8">
+                    subastas próximas
                 </p>
 
                 <div class="swiper-home-subastas     w-full  lg:overflow-x-hidden lg:px-0 px-4">
@@ -172,7 +172,7 @@
 
 
 
-                                <p class="text-xl line-clamp-3">{{ $item->descripcion }}</p>
+                                <p class="text-xl line-clamp-3oxu">{{ $item->descripcion }}</p>
 
 
                             </a>

@@ -36,13 +36,16 @@
             <label>Recordarme</label>
         </div>
 
-        <div class="flex items-center justify-end">
-            <flux:button variant="primary" type="submit" class="w-full">{{ __('Ingresar') }}</flux:button>
-        </div>
 
-        <div class="flex items-center justify-end bg-casa-base-2 rounded-lg hover:bg-casa-base w-fit px-4 mt-2">
-            <a href="{{ route('adquirentes.create') }}" class="w-full text-center py-1.5">¿ Primera vez ?</a>
-        </div>
+        {{-- <flux:button variant="primary" type="submit" class="w-full">{{ __('Ingresar') }}</flux:button> --}}
+        <button type="submit" class="bg-casa-base w-full py-2 rounded-lg hover:bg-casa-base-2">Ingresar</button>
+
+
+
+        <a href="{{ route('adquirentes.create') }}"
+            class="w-full text-center py-1 text-sm bg-casa-black border rounded-lg border-casa-base text-casa-base hover:bg-casa-black-h">¿
+            Primera vez ?</a>
+
     </form>
 
     @if (Route::has('register'))

@@ -9,6 +9,7 @@ use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use App\Mail\ContratoEmail;
 use App\Mail\OrdenEmail;
+use App\Mail\PujaSuperadaEmail;
 use Illuminate\Support\Facades\Route;
 use App\Mail\TestEmail;
 use App\Models\Adquirente;
@@ -103,6 +104,29 @@ Route::get('/test-mail-orden/{ordenId}/{adquirenteId}', function ($ordenId, $adq
   }
   return new OrdenEmail($fakeData); // Se renderiza directamente en el navegador
 });
+
+
+Route::get('/test-puja-superada/{loteId}/{adquirenteId}', function ($loteId, $adquirenteId) {
+
+  $lote = Lote::FindOrFail($loteId);
+  $adquirente = Adquirente::findOrFail($adquirenteId);
+
+  $dataMail = [
+    "monto" => 200,
+    "lote_id" => 21,
+    "titulo" => "ese",
+    "foto" => "esculturas3.jpg",
+    "subasta" => "vinos",
+  ];
+
+  if (app()->environment('production')) {
+    mail::to($adquirente->user?->email)->send(new PujaSuperadaEmail($dataMail));
+  }
+  return new PujaSuperadaEmail($dataMail); // Se renderiza directamente en el navegador
+});
+
+
+
 
 // dd("TTTTEEST EL POST ; CREAR UN FORMULARIO CON PSOT ; SIMPLE PARA ASFGURA EL CSRF TOKEN");
 Route::get('/comitentes/crear', [ComitenteController::class, "create"])->name('comitentes.create');

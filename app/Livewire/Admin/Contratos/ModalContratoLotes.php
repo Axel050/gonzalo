@@ -9,6 +9,7 @@ use App\Models\ContratoLote;
 use App\Models\Lote;
 use App\Models\Moneda;
 use Illuminate\Support\Facades\Mail;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ModalContratoLotes extends Component
@@ -30,11 +31,13 @@ class ModalContratoLotes extends Component
   public $moneda_id = 1; //peso
   public $contrato;
   public $lote_id = false;
+  public $lote_id_modal = false;
   public $titulo, $descripcion, $precio_base;
   public $autorizados = [];
 
   public $tempLotes = [];
   public $method;
+  public $valuacion;
 
 
   public function closeModal()
@@ -81,6 +84,12 @@ class ModalContratoLotes extends Component
       $this->lote_id = $loteId;
     }
   }
+  public function updatedValuacion($value)
+  {
+    $this->precio_base = $value;
+    info(["precio base vaue" => $value]);
+    info(["precio base" => $this->precio_base]);
+  }
 
   public function updatedSearch($value)
   {
@@ -99,12 +108,14 @@ class ModalContratoLotes extends Component
   }
 
 
+  #[On(['loteUpdated', 'loteContrato'])]
   public function mount()
   {
 
     // $this->monedas = Moneda::all();
     $this->monedas = Moneda::all()->keyBy('id');
 
+    info(["oprevio mont contrato " => $this->id]);
     $this->contrato = Contrato::find($this->id);
     // $this->tempLotes = $this->contrato->lotes->toArray();
     $this->tempLotes = $this->contrato->lotes->map(function ($lote) {
@@ -114,6 +125,8 @@ class ModalContratoLotes extends Component
       return $array;
     })->toArray();
     // info($this->tempLotes);
+
+    $this->method = "";
   }
 
 
@@ -123,6 +136,7 @@ class ModalContratoLotes extends Component
       'titulo' => 'required',
       'precio_base' => 'required|numeric|min:1',
       'moneda_id' => 'required',
+      'valuacion' => 'required',
     ];
     return $rules;
   }
@@ -136,29 +150,39 @@ class ModalContratoLotes extends Component
       "precio_base.numeric" => "Ingrese numero.",
       "precio_base.min" => "Ingrese base.",
       "moneda_id.required" => "Elija moneda.",
+      "valuacion.required" => "Ingrese valuación.",
     ];
   }
 
 
 
-  public function add2()
+  public function addComplete()
   {
-    // $contratoLote = ContratoLote::where('contrato_id', 7)
-    //   ->where('lote_id', 25)
-    //   ->first();
-    // $contratoLote = ContratoLote::where([
-    //   'contrato_id' => 7,
-    //   'lote_id' => 25
-    // ])->first();
 
+    $this->validate();
 
-    $contratoLote2 = ContratoLote::find(43);
+    $newLote = Lote::create([
+      'titulo' => $this->titulo,
+      'descripcion' => $this->descripcion,
+      'valuacion' => $this->valuacion,
+      'comitente_id' => $this->contrato?->comitente_id,
+      'ultimo_contrato' => $this->contrato?->id,
+      'estado' => LotesEstados::INCOMPLETO,
+    ]);
 
+    ContratoLote::create([
+      'contrato_id' => $this->contrato->id,
+      'lote_id' => $newLote->id,
+      'precio_base' => $this->precio_base,
+      'moneda_id' => $this->moneda_id,
+    ]);
 
-
-    // info(["contratoLote" => $contratoLote]);
-    info(["contratoLote2" => $contratoLote2]);
+    $this->reset(['titulo', 'descripcion', 'precio_base', 'lote_id', 'foto1', 'moneda_id', 'valuacion']);
+    $this->lote_id_modal = $newLote->id;
+    $this->method = "update";
   }
+
+
   public function add()
   {
     $this->validate();
@@ -175,12 +199,13 @@ class ModalContratoLotes extends Component
       'titulo' => $this->titulo,
       'descripcion' => $this->descripcion,
       'precio_base' => $this->precio_base,
+      'valuacion' => $this->valuacion,
       'id' => $this->lote_id,
       'foto1' => $this->foto1,
       'moneda_id' => $this->moneda_id,
     ]);
 
-    $this->reset(['titulo', 'descripcion', 'precio_base', 'lote_id', 'foto1', 'moneda_id']);
+    $this->reset(['titulo', 'descripcion', 'precio_base', 'lote_id', 'foto1', 'moneda_id', 'valuacion']);
   }
 
   public function quitar($index)
@@ -200,6 +225,7 @@ class ModalContratoLotes extends Component
       $this->precio_base = (int)$this->tempLotes[$index]['precio_base'];
       $this->lote_id = $this->tempLotes[$index]['id'];
       $this->moneda_id = $this->tempLotes[$index]['moneda_id'];
+      $this->valuacion = $this->tempLotes[$index]['valuacion'];
 
       if ($this->tempLotes[$index]['foto1']) {
         $this->foto1 = $this->tempLotes[$index]['foto1'];
@@ -274,6 +300,7 @@ class ModalContratoLotes extends Component
         $newLote = Lote::create([
           'titulo' => $tempLote['titulo'],
           'descripcion' => $tempLote['descripcion'],
+          'valuacion' => $tempLote['valuacion'],
           'comitente_id' => $this->contrato?->comitente_id,
           'ultimo_contrato' => $this->contrato?->id,
           'estado' => LotesEstados::INCOMPLETO,

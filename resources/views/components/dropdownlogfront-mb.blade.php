@@ -4,7 +4,7 @@
     :class="{ ' block idden lock transition-all duration-1000': !openSide }"> --}}
 
 
-    <div class="flex   justify-start items-center py-1  border-1  rounded-2xl  border-casa-black  px-2 "
+    <div class="flex   justify-start items-center py-1  border-1  rounded-2xl  border-casa-black  px-2 h-7"
         :class="{ 'bg-casa-fondo-h ': open }" @click="open = ! open">
 
         <span class="text-sm text-gray-800" x-show="!open">

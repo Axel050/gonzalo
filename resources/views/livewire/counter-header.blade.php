@@ -1,16 +1,18 @@
-<div
-    class="w-full bg-casa-black flex lg:flex-row flex-col text-white pt-4 lg:pb-8 pb-10 justify-between lg:px-24 px-4 items-center relative">
+<div class="w-full bg-casa-black flex lg:flex-row flex-col text-white pt-2 lg:pb-4 pb-5 justify-between lg:px-24 px-4 items-center relative"
+    x-data="{ open: true }">
+    {{-- class="w-full bg-casa-black flex lg:flex-row flex-col text-white pt-4 lg:pb-8 pb-10 justify-between lg:px-24 px-4 items-center relative"> --}}
 
     <!-- Parte que SÍ debe actualizarse al navegar (título, fecha, botón móvil) -->
-    <div class="flex lg:flex-col flex-row lg:items-start justify-between w-full items-center">
+    <div class="flex lg:flex-col flex-row lg:items-start justify-between w-full items-center bg--500">
         <a href="{{ route('subasta.lotes', $last->id) }}"
-            class="lg:text-[43px] lg:leading-[47px] text-[26px] font-librecaslon mb-1 hover:font-semibold">
+            class="lg:text-[43px] lg:leading-[47px] text-[26px] leading-[25px] font-librecaslon lg:mb-1 mb-0 hover:font-semibold">
             {{ $last->titulo ?? 'Subasta' }}
         </a>
 
         <div class="flex lg:flex-col flex-row gap-x-2">
-            <p class="lg:text-3xl text-xs font-semibold">Termina el</p>
-            <p class="lg:text-3xl text-xs font-semibold">
+            {{-- <p class="lg:text-3xl text-xs font-semibold">Termina el</p> --}}
+            <p class="lg:text-2xl text-xs font-semibold">Termina el</p>
+            <p class="lg:text-2xl text-xs font-semibold">
                 {{ $fechaFin?->translatedFormat('d M | H:i') }}
             </p>
         </div>
@@ -23,7 +25,8 @@
 
 
     <!-- SOLO ESTA PARTE lleva wire:ignore → el contador numérico -->
-    <div class="flex items-center lg:justify-end justify-between w-full" wire:ignore>
+    <div class="flex items-center lg:justify-end justify-between w-full " wire:ignore x-show="open"
+        x-transition:enter.duration.500ms x-transition:leave.duration.400ms>
         <p class="lg:text-lg text-xs mr-6">Faltan</p>
 
 
@@ -36,28 +39,34 @@
 
         <div class="flex" data-fecha-fin="{{ $fechaFin?->format('Y-m-d H:i:s') ?? '' }}">
             <div class="flex flex-col items-center justify-center">
-                <p id="counter-dias" class="lg:text-[120px] text-[50px] lg:leading-[120px] leading-[50px]">00</p>
-                <p class="lg:text-3xl text-xs font-bold">dias</p>
+                {{-- <p id="counter-dias" class="lg:text-[120px] text-[50px] lg:leading-[120px] leading-[50px]">00</p> --}}
+                <p id="counter-dias" class="lg:text-[80px] text-[35px] lg:leading-[80px] leading-[35px]">00</p>
+                <p class="lg:text-2xl text-xs font-bold">dias</p>
             </div>
             {{-- <p class="lg:text-[120px] text-[50px] self-start mx-1 animate-pulse">:</p> --}}
-            <p class="lg:text-[120px] text-[50px] lg: self-start mx-1 lg:leading-[120px] leading-[50px] animate-pulse">
+            {{-- <p class="lg:text-[120px] text-[50px] lg: self-start mx-1 lg:leading-[120px] leading-[50px] animate-pulse"> --}}
+            <p class="lg:text-[80px] text-[35px] lg: self-start mx-1 lg:leading-[80px] leading-[35px] animate-pulse">
                 :</p>
             <div class="flex flex-col items-center">
-                <p id="counter-horas" class="lg:text-[120px] text-[50px] lg:leading-[120px] leading-[50px]">00</p>
-                <p class="lg:text-3xl text-xs font-bold">horas</p>
+                {{-- <p id="counter-horas" class="lg:text-[120px] text-[50px] lg:leading-[120px] leading-[50px]">00</p> --}}
+                <p id="counter-horas" class="lg:text-[80px] text-[35px] lg:leading-[80px] leading-[35px]">00</p>
+                <p class="lg:text-2xl text-xs font-bold">horas</p>
             </div>
             {{-- <p class="lg:text-[120px] text-[50px] self-start mx-1 animate-pulse">:</p> --}}
-            <p class="lg:text-[120px] text-[50px] lg: self-start mx-1 lg:leading-[120px] leading-[50px] animate-pulse">
+            {{-- <p class="lg:text-[120px] text-[50px] lg: self-start mx-1 lg:leading-[120px] leading-[50px] animate-pulse"> --}}
+            <p class="lg:text-[80px] text-[35px] lg: self-start mx-1 lg:leading-[80px] leading-[35px] animate-pulse">
                 :</p>
             <div class="flex flex-col items-center">
-                <p id="counter-minutos" class="lg:text-[120px] text-[50px] lg:leading-[120px] leading-[50px]">00</p>
-                <p class="lg:text-3xl text-xs font-bold">minutos</p>
+                {{-- <p id="counter-minutos" class="lg:text-[120px] text-[50px] lg:leading-[120px] leading-[50px]">00</p> --}}
+                <p id="counter-minutos" class="lg:text-[80px] text-[35px] lg:leading-[80px] leading-[35px]">00</p>
+                <p class="lg:text-2xl text-xs font-bold">minutos</p>
             </div>
         </div>
     </div>
 
+
     <!-- Botón móvil (fuera de wire:ignore para que funcione el x-data open) -->
-    <button class="text-white absolute lg:hidden bottom-3 left-1/2 py-2" @click="open = !open">
+    <button class="text-white absolute lg:hidden bottom-0 left-1/2 py-2" @click="open = !open">
         <svg fill="#fff" class="w-4 h-2.5 transition-transform" :class="{ 'rotate-180': !open }">
             <use xlink:href="#arrow-up"></use>
         </svg>

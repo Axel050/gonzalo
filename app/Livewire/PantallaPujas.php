@@ -160,6 +160,13 @@ class PantallaPujas extends Component
 
   //   // $this->ofertas[$loteId] = 12222;
   // }
+  public function registrarPujass($loteId)
+  {
+    $this->dispatch('puja-exitosa', loteId: $loteId);
+  }
+
+
+
   #[On('registrarPujaModal')]
   public function registrarPuja(PujaService $pujaService, $loteId, $ultimoMontoVisto, $monto = null)
   {
@@ -219,6 +226,7 @@ class PantallaPujas extends Component
       $this->ultimaOferta = $result['message']['monto_final'];
       // $this->fraccion_min[$loteId] = $this->lotes->firstWhere('id', $loteId)?->fraccion_min;
       $this->ofertas[$loteId] = "";
+      $this->dispatch('puja-exitosa', loteId: $loteId);
     } catch (ModelNotFoundException | InvalidArgumentException | DomainException $e) {
       if ($ultimoMontoVisto == 0) {
         $base = Lote::find($loteId)->precio_base;
@@ -262,7 +270,8 @@ class PantallaPujas extends Component
         $loteId,
       );
 
-      $this->lotes  = $this->adquirente?->carrito?->lotes;
+      // $this->lotes  = $this->adquirente?->carrito?->lotes;
+      $this->lotes  = $this->adquirente?->carrito?->lotesFiltrados;
     } catch (ModelNotFoundException | InvalidArgumentException $e) {
       $this->addError('quitar.' . $loteId, $e->getMessage());
       // $this->addError('quitar.19', $e->getMessage());

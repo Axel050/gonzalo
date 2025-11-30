@@ -488,6 +488,8 @@ class Modal extends Component
 
       $this->lote->save();
 
+
+      $this->dispatch("loteContrato");
       $this->dispatch("loteUpdated");
     }
   }
@@ -631,6 +633,14 @@ class Modal extends Component
       $this->dispatch('loteDeleted');
     }
   }
+
+  public function cerrar()
+  {
+    $this->dispatch("loteContrato");
+    // $this->method = "";
+  }
+
+
 
   public function render()
   {

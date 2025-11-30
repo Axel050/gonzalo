@@ -64,7 +64,7 @@
 
         <nav x-data="{ scrolled: false }" @scroll.window="scrolled = window.pageYOffset > 50"
             :class="{ 'opacity-20 ': scrolled, 'bg-transparent': !scrolled }"
-            class=" sticky top-0 z-50  flex  w-full -200 justify-between py-4 lg:px-24 px-4  text-gray-800  border-b  border-gray-700 shadow-lg lg:h-30 h-16 items-center hover:bg-casa-base   transition-all duration-1000 ease-in-out hover:opacity-100 ">
+            class=" sticky top-0 z-50  flex  w-full -200 justify-between py-4 lg:px-24 px-4  text-gray-800  border-b  border-gray-700 shadow-lg lg:h-20 lg:h30  h16 h-11 items-center hover:bg-casa-base   transition-all duration-1000 ease-in-out hover:opacity-100 ">
 
 
 
@@ -128,11 +128,12 @@
 
             <div class="lg:flex hidden">
 
-                <a href="{{ route('comitentes.create') }}"
-                    class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black mr-8 text-black  h-fit lg:flex hidden">
-                    ¿Tenés algo para vender?
-                </a>
-
+                @guest
+                    <a href="{{ route('comitentes.create') }}"
+                        class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black mr-8 text-black  h-fit lg:flex hidden">
+                        ¿Tenés algo para vender?
+                    </a>
+                @endguest
 
 
 
@@ -149,12 +150,18 @@
                     </div>
 
                     @role('adquirente')
-                        <a href="{{ route('pantalla-pujas') }}" class=" px-2 rounded  hover:scale-105  pt-1"
-                            title="Pantalla pujas">
-                            <svg fill="#000" class="size-8">
-                                <use xlink:href="#cart"></use>
-                            </svg>
-                        </a>
+                        @if (!request()->routeIs('pantalla-pujas'))
+                            <a href="{{ route('pantalla-pujas') }}"
+                                class=" px-2   hover:scale-105  pt-0.5 flex  items-center rounded-3xl border border-casa-black"
+                                title="Pantalla pujas">
+                                <svg fill="#000" class="size-7">
+                                    <use xlink:href="#cart"></use>
+                                </svg>
+                                <span class="pr-0.5">
+                                    Pujas
+                                </span>
+                            </a>
+                        @endif
                     @endrole
                 @else
                     <a href="{{ route('login') }}"
@@ -169,11 +176,16 @@
 
             <div class="lg:hidden flex">
                 @role('adquirente')
-                    <a href="{{ route('pantalla-pujas') }}" class=" px-2 rounded  mr-1" title="Pantalla pujas">
-                        <svg fill="#fff" class="size-8">
-                            <use xlink:href="#cart"></use>
-                        </svg>
-                    </a>
+                    @if (!request()->routeIs('pantalla-pujas'))
+                        <a href="{{ route('pantalla-pujas') }}"
+                            class=" px-2   mr-3 flex items-center rounded-3xl border border-casa-black  h-7"
+                            title="Pantalla pujas">
+                            <svg fill="#fff" class="size-7">
+                                <use xlink:href="#cart"></use>
+                            </svg>
+                            <span clas="text-xs">Pujas</span>
+                        </a>
+                    @endif
                 @endrole
 
                 <x-dropdownlogfront-mb />

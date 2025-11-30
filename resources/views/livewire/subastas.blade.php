@@ -11,11 +11,20 @@
     <div class="flex flex-col  px-4 mt-10 gap-8  w-full max-w-7xl">
 
         {{-- @if (isset($lotes) && count($lotes)) --}}
+
+        @if ($subastas->count())
+            <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4  lg:mb-0 -mb-2">
+                subastas
+                abiertas
+            </p>
+        @endif
         @foreach ($subastas as $sub)
             <div class="w-full  flex flex-col lg:p-8  lg:pb-8  p-4 pb-20  gap-y-1 border border-casa-black relative">
 
 
                 <div class="flex  gap-x-12">
+
+
 
                     <div class="flex  flex-col justify-between items-start  w-full ">
                         <p class="font-librecaslon lg:text-4xl text-[26px]  mb-3">{{ $sub->titulo }}</p>
@@ -76,6 +85,12 @@
 
             </div>
         @endforeach
+
+        @if ($subastasProx->count())
+            <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4  lg:mb-0 -mb-2">
+                subastas próximas
+            </p>
+        @endif
 
         @foreach ($subastasProx as $subP)
             <div
@@ -169,6 +184,12 @@
             </div>
         @endforeach
 
+
+        @if ($subastasFin->count())
+            <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4  lg:mb-0 -mb-2">
+                subastas pasadas
+            </p>
+        @endif
 
         @foreach ($subastasFin as $subF)
             <div
