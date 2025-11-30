@@ -34,9 +34,27 @@
                     </tr>
                     <tr style="text-align:center;">
                         <td>
+
+                            {{-- storage/imagenes/lotes/thumbnail/ --}}
+
+                            @php
+
+                                if (app()->environment('production')) {
+                                    $route = 'https://casablanca.ar';
+                                } else {
+                                    $route = 'http://127.0.0.1:8000';
+                                }
+
+                            @endphp
+
+
+
                             {{-- // <img  src={{{Storage::url('$data['lote']['foto1'] }}</td> --}}
-                            <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $data['foto']) }}"
+                            <img src="{{ $route . '/storage/imagenes/lotes/thumbnail/' . $data['foto'] }}"
                                 style="width: 250px;" />
+                            {{-- <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $data['foto']) }}"
+                                style="width: 250px;" /> --}}
+
 
                         </td>
 
@@ -74,7 +92,7 @@
                                 style="border-radius:20px; padding:10px 15px ; text-decoration:none;background-color:#262626;color:white;font-size:18px;font-weight:700;line-height:1;">
                                 <span style=";vertical-align:middle;">Ir a pujas</span>
 
-                                <img src="http://127.0.0.1:8000/arrow-r.png "
+                                <img src="{{ $route }} . '/arrow-r.png'"
                                     style="width:25px;margin-left:70px;display:inline;vertical-align:middle;" />
 
                             </a>

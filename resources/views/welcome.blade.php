@@ -172,7 +172,7 @@
 
 
 
-                                <p class="text-xl line-clamp-3oxu">{{ $item->descripcion }}</p>
+                                <p class="text-xl line-clamp-3">{{ $item->descripcion }}</p>
 
 
                             </a>
