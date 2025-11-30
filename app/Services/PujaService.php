@@ -162,7 +162,7 @@ class PujaService
       "monto" => $puja->monto,
       "lote_id" => $lote->id,
       "titulo" => $lote->titulo,
-      "foto" => $lote->foto,
+      "foto" => $lote->foto1,
       "subasta" => $subasta->titulo,
     ];
 

@@ -88,11 +88,11 @@
                 <table style="text-align: center;margin-top:40px" align="center">
                     <tr>
                         <td>
-                            <a href="http://127.0.0.1:8000/pantalla-pujas"
+                            <a href="https://www.casablanca.ar/pantalla-pujas"
                                 style="border-radius:20px; padding:10px 15px ; text-decoration:none;background-color:#262626;color:white;font-size:18px;font-weight:700;line-height:1;">
                                 <span style=";vertical-align:middle;">Ir a pujas</span>
 
-                                <img src="{{ $route }} . '/arrow-r.png'"
+                                <img src="{{ $route . '/arrow-r.png' }}"
                                     style="width:25px;margin-left:70px;display:inline;vertical-align:middle;" />
 
                             </a>
