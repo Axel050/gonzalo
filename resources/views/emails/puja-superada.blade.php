@@ -13,9 +13,12 @@
         <tr style="text-align:center;">
 
             <td style="padding: 20px;text-align:center;">
-                <h1 style="font-size: 24px; color: #262626; margin: 0 0 20px 0; text-align: center;">CASABLANCA.AR</h1>
-                <h3 style="font-size: 20px; color: #FF530D; margin: 20px 0 20px 0; text-align: center;">¡Tu puja fue
-                    superada!</h3>
+                <h1
+                    style="font-size: 24px; color: #262626; margin: 0 0 20px 0; text-align: center;text-decoration:none;">
+                    CASABLANCA.AR</h1>
+                <h3 style="font-size: 22px; color: #FF530D; margin: 20px 0 20px 0; text-align: center;">
+                    ¡Tu puja fue superada!
+                </h3>
 
 
 
@@ -35,7 +38,6 @@
                     <tr style="text-align:center;">
                         <td>
 
-                            {{-- storage/imagenes/lotes/thumbnail/ --}}
 
                             @php
 
