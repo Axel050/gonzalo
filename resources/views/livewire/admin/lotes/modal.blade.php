@@ -175,6 +175,9 @@
                         <x-form-item label="Precio venta directa" :method="$method" model="precio_venta_directa"
                             type="number" wire:show="venta_directa == '1'" />
 
+
+                        <x-form-item-area label="Descripcion extra" :method="$method" model="desc_extra" />
+
                         {{-- <x-form-item label="Destacado" :method="$method" model="destacado" typ="number" /> --}}
                         <div class="items-start  lg:w-60 w-[85%] mx-auto  mb-[-5px] mt-1.5">
                             <label class="w-full text-start text-gray-500  leading-[16px] text-base">

@@ -97,18 +97,18 @@
         @endif
 
 
-        <div
-            class="flex flex-wrap  mt-10 sm:gap-8 md:gap-10 lg:gap-12  gap-2 place-content-center justify-center max-w-[1440px]">
-
-
+        <div class="flex flex-wrap  mt-10 lg:gap-12 gap-2 place-content-center justify-center max-w-[1440px] ">
 
 
             @forelse ($lotes as $lote)
                 <div
-                    class=" bg-casa-base-2 bas flex flex-col sm:p-6 p-2 gap-y-1 sm:border border-casa-black sm:w-[394px]  sm:min-w-[350px] md:min-w-[380px] min-w-[44%] relative">
+                    class=" bg-casa-base-2 bas flex flex-col lg:p-6 p-2 gap-y-1 lg:border border-casa-black lg:w-[394px]  lg:min-w-[300px] min-w-[44%] relative max-w-[48%]">
 
                     <div class="flex justify-between items-center sm:order-1 order-2">
-                        <p class="font-bold sm:text-3xl text-sm w-full  mr-3">{{ $lote['titulo'] }}</p>
+
+                        {{-- <p class="font-bold sm:text-3xl text-sm w-full  mr-3 line-clamp-1">{{ $lote['titulo'] }}</p> --}}
+
+                        <x-clamp :text="$lote['titulo']" bclass="z-20" exp="-bottom-2 -right-2 md:right-0" />
 
                         @if ($lote['tienePujas'])
                             <x-hammer />
@@ -161,7 +161,7 @@
 
 
                 <div
-                    class="flex bg-casa-black justify-center items-center text-4xl font-bold text-casa-base-2  py-18 px-40 col-span-3">
+                    class="flex bg-casa-black justify-center items-center md:text-4xl text-2xl font-bold text-casa-base-2  py-18 md:px-40 px-10 col-span-3">
                     <p>¡Sin lotes en esta subasta!</p>
                 </div>
             @endforelse

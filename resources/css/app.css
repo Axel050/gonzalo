@@ -15,7 +15,8 @@
   --font-helvetica: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 
 
-  --font-librecaslon: 'LibreCaslonDisplay', serif;
+
+  --font-caslon: 'ITC Caslon 224 Std', serif;
   /* Nueva fuente añadida */
 
   --color-casa-black: #262626;
@@ -261,12 +262,85 @@ input[type="search"] {
   background-color: #262626;
 } */
 
-@font-face {
+/* @font-face {
   font-family: 'ITC Caslon 224 Std';
   src: url('/assets/fonts/LibreCaslonDisplay-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
+} */
+
+
+
+/* --- 1. BOOK (Peso 400 - Normal) --- */
+@font-face {
+  font-family: 'ITC Caslon 224 Std';
+  src: url('/assets/fonts/ITC-Caslon-224-Std-Book.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
+
+@font-face {
+  font-family: 'ITC Caslon 224 Std';
+  src: url('../fonts/caslon/Book-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* --- 2. MEDIUM (Peso 500) --- */
+@font-face {
+  font-family: 'ITC Caslon 224 Std';
+  src: url('/assets/fonts/ITC-Caslon-224-Std-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* src: url('../fonts/ITC-Caslon-224-Std-Medium-Italic.ttf') format('truetype'); */
+
+@font-face {
+  font-family: 'ITC Caslon 224 Std';
+  src: url('../fonts/c.ttf') format('truetype');
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* --- 3. BOLD (Peso 700) --- */
+@font-face {
+  font-family: 'ITC Caslon 224 Std';
+  src: url('/assets/fonts/ITC-Caslon-224-Std-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ITC Caslon 224 Std';
+  src: url('/assets/fonts/caslon/Bold-Italic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* --- 4. BLACK (Peso 900 - Extra Gruesa) --- */
+@font-face {
+  font-family: 'ITC Caslon 224 Std';
+  src: url('/assets/fonts/ITC-Caslon-224-Std-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'ITC Caslon 224 Std';
+  src: url('/assets/fonts/ITC-Caslon-224-Std-Black-Italic.ttf') format('truetype');
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
 
 
 .audiodetalle::-webkit-media-controls-panel {

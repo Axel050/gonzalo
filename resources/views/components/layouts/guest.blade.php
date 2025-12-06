@@ -152,11 +152,12 @@
                     @role('adquirente')
                         @if (!request()->routeIs('pantalla-pujas'))
                             <a href="{{ route('pantalla-pujas') }}"
-                                class=" px-2   hover:scale-105  pt-0.5 flex  items-center rounded-3xl border border-casa-black"
+                                class=" px-2   hover:scale-105  pt-0.5 flex  items-center rounded-3xl border border-casa-black text-sm"
                                 title="Pantalla pujas">
-                                <svg fill="#000" class="size-7">
+                                {{-- <svg fill="#000" class="size-7">
                                     <use xlink:href="#cart"></use>
-                                </svg>
+                                </svg> --}}
+                                <x-hammer-icon />
                                 <span class="pr-0.5">
                                     Pujas
                                 </span>
@@ -180,9 +181,10 @@
                         <a href="{{ route('pantalla-pujas') }}"
                             class=" px-2   mr-3 flex items-center rounded-3xl border border-casa-black  h-7"
                             title="Pantalla pujas">
-                            <svg fill="#fff" class="size-7">
+                            {{-- <svg fill="#fff" class="size-7">
                                 <use xlink:href="#cart"></use>
-                            </svg>
+                            </svg> --}}
+                            <x-hammer-icon />
                             <span clas="text-xs">Pujas</span>
                         </a>
                     @endif
@@ -204,7 +206,15 @@
         {{-- bg-[repeating-linear-gradient(45deg,currentColor_0,currentColor_1px,transparent_1px,transparent_5px)] --}}
         {{-- <main class="   bgred-500 h-[calc(100dvh-48px)]" style="min-height: calc(100dvh - 48px); "> --}}
         {{-- <main class="   bgred-500 h-dvh" style="min-height: calc(100dvh - 48px); "> --}}
-        <main class="    -dvh ">
+
+        @if (!request()->routeIs('subastas', 'adquirentes.create', 'comitentes.create'))
+            <a href="{{ route('subastas') }}"
+                class="bg-rd-500 border border-casa-black rounded-4xl px-2 py-1 fixed right-2 bottom-5 z-40 bg-casa-base hover:bg-casa-base-2"
+                title="Ir a subastas">Subastas</a>
+        @endif
+
+
+        <main class="relative">
             {{ $slot }}
         </main>
 

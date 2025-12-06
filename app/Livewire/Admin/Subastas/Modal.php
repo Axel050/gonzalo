@@ -39,6 +39,7 @@ class Modal extends Component
 
   public $titulo;
   public $descripcion;
+  public $desc_extra;
   public $num;
 
   public $estados;
@@ -131,6 +132,7 @@ class Modal extends Component
       $this->titulo =  $this->subasta->titulo;
       $this->envio =  $this->subasta->envio;
       $this->descripcion =  $this->subasta->descripcion;
+      $this->desc_extra =  $this->subasta->desc_extra;
 
       if ($this->subasta->comision !== null) {
         $comision = floatval($this->subasta->comision);
@@ -174,6 +176,7 @@ class Modal extends Component
       "comision" => (int)$this->comision,
       "tiempo_post_subasta" => $this->tiempoPos,
       "descripcion" => $this->descripcion,
+      "desc_extra" => $this->desc_extra,
       "garantia" => (int) $this->garantia,
       "estado" => SubastaEstados::INACTIVA,
       "fecha_inicio" => $this->iniD . " " . $this->iniH,
@@ -196,6 +199,7 @@ class Modal extends Component
 
       $this->subasta->titulo = $this->titulo;
       $this->subasta->descripcion = $this->descripcion;
+      $this->subasta->desc_extra = $this->desc_extra;
       $this->subasta->comision = $this->comision;
       $this->subasta->tiempo_post_subasta = $this->tiempoPos;
       // $this->subasta->envio = $this->envio ?? 0;

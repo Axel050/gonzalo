@@ -54,6 +54,7 @@ class Modal extends Component
   public $nombre;
 
   public $descripcion;
+  public $desc_extra;
   public $valuacion;
   public $base = 1;
   public $fraccion_min = 0;
@@ -284,6 +285,7 @@ class Modal extends Component
 
       $this->contrato_id =  $this->lote->ultimo_contrato;
       $this->descripcion =  $this->lote->descripcion;
+      $this->desc_extra =  $this->lote->desc_extra;
       $this->valuacion = (int)$this->lote->valuacion;
       $this->venta_directa =  $this->lote->venta_directa;
       $this->precio_venta_directa =  $this->lote->precio_venta_directa;
@@ -471,6 +473,7 @@ class Modal extends Component
 
       $this->lote->titulo = $this->titulo;
       $this->lote->descripcion = $this->descripcion;
+      $this->lote->desc_extra = $this->desc_extra;
       $this->lote->destacado = $this->destacado;
 
 

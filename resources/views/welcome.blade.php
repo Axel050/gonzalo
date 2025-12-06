@@ -1,22 +1,53 @@
 <x-layouts.guest>
 
 
-    <div class="flex flex-col justify-center items-center bg-gry-400 h-full ">
+    <div class="flex flex-col justify-center items-center bg-gry-400 h-full  relative">
 
 
-
+        {{-- 
         <svg class="w-[701px] h-42  mt-20 lg:block  hidden">
             <use xlink:href="#real"></use>
-        </svg>
-
+        </svg> --}}
+        {{-- 
         <svg class="w-[273px] h-35  mt-20 lg:hidden block">
             <use xlink:href="#real-mb"></use>
-        </svg>
+        </svg> --}}
 
-        <h2 class="lg:text-3xl text-lg  font-bold mt-15">Cada objeto tiene una historia.</h2>
-        <h3 class="lg:text-3xl text-lg  font-bold">Encontra la tuya.</h3>
 
-        <div class="w-full mt-15 mb-0">
+
+        {{-- Poner un div para el carrutsel aqui y otra en "cada objero tiene una hjostio " --}}
+        <x-fancy-heading text="S{u}bast{a}s o{n}line " variant="italic mx-[0.5px] font-normal text-black"
+            class=" md:text-8xl text-4xl    text-center text-wrap font-normal md:-mb-10 -mb-4 text-black md:mt-20  mt-8" />
+
+        <x-fancy-heading text="par{a} gent{e} re{a}l." variant="italic mx-[0.5px] font-normal text-black"
+            class=" md:text-8xl  text-4xl  text-center text-wrap font-normal mb-4 text-black" />
+
+
+        <div class="swiper-home-mb     w-full  lg:overflow-x-hidden lg:px-0 px-4 md:hidden">
+
+            <div class="swiper-wrapper  flex  items-center">
+
+                @foreach (range(1, 8) as $i)
+                    <div class="swiper-slide h-18 g-blue-500">
+                        <img src="{{ asset("home/home$i.png") }}" class="h-18 bg-rd-300 mx-auto" />
+                    </div>
+                @endforeach
+            </div>
+        </div>
+
+
+
+
+
+        <h2 class="lg:text-3xl text-xl  font-bold md:mt-15 mt-12 self-start  md:self-auto ml-6 md:ml-0">Cada objeto
+            tiene una
+            historia.</h2>
+        <h2 class="lg:text-3xl text-xl  font-bold  self-start  md:self-auto  ml-6 md:ml-0">Encontra la tuya.</h2>
+
+
+
+
+        <div class="w-full md:mt-15 mt-12 mb-0">
             @livewire('subastas-abiertas')
         </div>
 
@@ -36,16 +67,18 @@
 
         @if (count($subastasProx))
             <div class="flex flex-col   w-full   items-center lg:pb-24 lg:px-24 lg:mt-0  mt-10 ">
-                <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4 mb-4 lg:mb-8">
+                {{-- <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4 mb-4 lg:mb-8">
                     subastas próximas
-                </p>
+                </p> --}}
+                <x-fancy-heading text="s{u}bast{a}s p{r}óxim{a}s" variant="italic mx-[0.5px] font-normal"
+                    class=" md:text-[32px] text-[20px]  text-center self-start md:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
 
                 <div class="swiper-home-subastas     w-full  lg:overflow-x-hidden lg:px-0 px-4">
 
                     <div class="swiper-wrapper  flex lg:flex-row flex-col">
                         @foreach ($subastasProx as $item)
                             <a href="{{ route('subasta-proximas.lotes', $item->id) }}"
-                                class="flex flex-col bg-casa-black text-casa-base-2 lg:p-6 p-4 mb-6 swiper-slide">
+                                class="flex flex-col bg-casa-black text-casa-base-2 lg:p-6 p-4 mb-6 swiper-slide ">
 
 
                                 <div class="flex justify-between items-center lg:mb-4 mb-2">
@@ -96,7 +129,18 @@
 
                                 </div>
 
-                                <p class="lg:text-xl text-sm line-clamp-3">{{ $item->descripcion }} </p>
+
+
+
+                                <p class="text-xl line-clamp-3">{{ $item->descripcion }}</p>
+
+
+
+                                @if ($item->desc_extra)
+                                    <x-modal-desc-extra-home :titulo="$item->titulo" :desc="$item->desc_extra" :route="route('subasta-proximas.lotes', $item->id)" />
+                                @endif
+
+
 
                             </a>
                         @endforeach
@@ -109,8 +153,11 @@
 
         @if (count($subastasFin))
             <div class="flex flex-col   w-full   items-center lg:pb-24 lg:px-24 lg:mt-0  mt-10 ">
-                <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4 mb-4 lg:mb-8">subastas
-                    pasadas</p>
+                {{-- <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4 mb-4 lg:mb-8">subastas
+                    pasadas</p> --}}
+
+                <x-fancy-heading text="s{u}bast{a}s p{a}sa{d}as" variant="italic mx-[0.5px] font-normal"
+                    class=" md:text-[32px] text-[20px]  text-center self-start md:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
 
                 <div class="swiper-home-subastas     w-full  lg:overflow-x-hidden lg:px-0 px-4 ">
 
@@ -175,6 +222,12 @@
                                 <p class="text-xl line-clamp-3">{{ $item->descripcion }}</p>
 
 
+                                @if ($item->desc_extra)
+                                    <x-modal-desc-extra-home :titulo="$item->titulo" :desc="$item->desc_extra" :route="route('subasta-pasadas.lotes', $item->id)" />
+                                @endif
+
+
+
                             </a>
                         @endforeach
                     </div>
@@ -185,43 +238,44 @@
 
 
 
+        @guest
+            <div
+                class="flex flex-col bg-casa-base-2 w-full lg:items-center lg:px-24 lg:py-24 px-4 py-11   border-y-1 border-accent mt-8 ">
 
-        <div
-            class="flex flex-col bg-casa-base-2 w-full lg:items-center lg:px-24 lg:py-24 px-4 py-11   border-y-1 border-accent mt-8 ">
-
-            <svg class="w-120 h-30 lg:block hidden ">
-                <use xlink:href="#primera-vez"></use>
-            </svg>
-
-            <h3 class="lg:hidden block text-[37px]  leading-[39px] font-sans ">
-                ¿Primera vez en una subasta?
-            </h3>
-
-            <p class="lg:text-3xl text-lg font-bold lg:mt-7 mt-5">Así funciona: </p>
-
-            <p class="lg:text-xl text-sm font-bold lg:mt-7 mt-6">Ingresá:</p>
-            <p class="lg:text-xl text-sm  mt-1">Para poder ofertar necesitás abonar un seguro reembolsable.</p>
-            <p class="lg:text-xl text-sm  ">Si no comprás, te lo devolvemos.</p>
-
-            <p class="lg:text-xl text-sm font-bold lg:mt-7 mt-6">Ofertá: </p>
-            <p class="lg:text-xl text-smtext-xl  mt-1">Si al terminar la subasta nadie más ofrece, el producto es tuyo.
-            </p>
-            <p class="lg:text-xl text-smtext-xl  ">Si alguien más ofertó al final de la subasta, ténes 2 minutos más
-                para pujar.
-            </p>
-
-            <p class="lg:text-xl text-sm font-bold lg:mt-7 mt-6">No te muevas de tu casa: </p>
-            <p class="lg:text-xl text-sm  mt-1">Todo es online: mirás, ofertás y pagás desde donde estés.</p>
-            <p class="lg:text-xl text-sm  ">Si ganás, coordinamos la entrega con vos</p>
-
-            <a href="{{ route('adquirentes.create') }}"
-                class=" bg-casa-black rounded-4xl flex  items-center px-4 py-1 mx-auto text-casa-base mt-8 lg:text-xl text-sm font-bold  lg:w-fit w-full lg:justify-center justify-between">
-                Registrarme
-                <svg fill="#fff" class="size-7  ml-6 shrink-0 self-start">
-                    <use xlink:href="#arrow-right"></use>
+                <svg class="w-120 h-30 lg:block hidden ">
+                    <use xlink:href="#primera-vez"></use>
                 </svg>
-            </a>
-        </div>
+
+                <h3 class="lg:hidden block text-[37px]  leading-[39px] font-sans ">
+                    ¿Primera vez en una subasta?
+                </h3>
+
+                <p class="lg:text-3xl text-lg font-bold lg:mt-7 mt-5">Así funciona: </p>
+
+                <p class="lg:text-xl text-sm font-bold lg:mt-7 mt-6">Ingresá:</p>
+                <p class="lg:text-xl text-sm  mt-1">Para poder ofertar necesitás abonar un seguro reembolsable.</p>
+                <p class="lg:text-xl text-sm  ">Si no comprás, te lo devolvemos.</p>
+
+                <p class="lg:text-xl text-sm font-bold lg:mt-7 mt-6">Ofertá: </p>
+                <p class="lg:text-xl text-smtext-xl  mt-1">Si al terminar la subasta nadie más ofrece, el producto es tuyo.
+                </p>
+                <p class="lg:text-xl text-smtext-xl  ">Si alguien más ofertó al final de la subasta, ténes 2 minutos más
+                    para pujar.
+                </p>
+
+                <p class="lg:text-xl text-sm font-bold lg:mt-7 mt-6">No te muevas de tu casa: </p>
+                <p class="lg:text-xl text-sm  mt-1">Todo es online: mirás, ofertás y pagás desde donde estés.</p>
+                <p class="lg:text-xl text-sm  ">Si ganás, coordinamos la entrega con vos</p>
+
+                <a href="{{ route('adquirentes.create') }}"
+                    class=" bg-casa-black rounded-4xl flex  items-center px-4 py-1 mx-auto text-casa-base mt-8 lg:text-xl text-sm font-bold  lg:w-fit w-full lg:justify-center justify-between">
+                    Registrarme
+                    <svg fill="#fff" class="size-7  ml-6 shrink-0 self-start">
+                        <use xlink:href="#arrow-right"></use>
+                    </svg>
+                </a>
+            </div>
+        @endguest
 
 
 

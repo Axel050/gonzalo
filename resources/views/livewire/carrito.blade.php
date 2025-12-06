@@ -3,16 +3,20 @@
 
 
     <article class="bg-red-00 flex  w-full lg:justify-center justify-start flex-col mt-10 lg:mb-8 mb-4 lg:px-0 px-4">
-        <svg fill="#fff" class="w-[262px] h-[47px] mx-auto mb-2 lg:block hidden">
-            <use xlink:href="#tucarrito"></use>
-        </svg>
 
-        <h2 class="lg:hidden text-4xl font-helvetica">tu carrito</h2>
+        {{-- <svg fill="#fff" class="w-[262px] h-[47px] mx-auto mb-2 lg:block hidden">
+            <use xlink:href="#tucarrito"></use>
+        </svg> --}}
+
+        <x-fancy-heading text="t{u}  c{a}rri{t}o" variant="italic mr-[1px] font-medium"
+            class=" md:text-[64px] text-[36px]  md:text-center text-start text-wrap font-medium md:mb-0 mb-2" />
+
+        {{-- <h2 class="lg:hidden text-4xl font-helvetica">tu carrito</h2> --}}
 
 
 
         <h3
-            class="font-helvetica font-semibold lg:text-3xl text-sm leading-[1] tracking-normal lg:text-center mt-4 mb-2 ">
+            class="font-helvetica font-semibold lg:text-3xl text-sm leading-[1] tracking-normal lg:text-center md:mt-3 mb-2 ">
             Pagá por los
             lotes que ganaste.
         </h3>

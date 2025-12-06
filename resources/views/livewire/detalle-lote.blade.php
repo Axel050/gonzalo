@@ -175,9 +175,16 @@
             class="flex flex-col lg:ml-18 pt-4 pl-2  g-red-300 max-w-150  lg:col-start-2  lg:row-start-2 lg:row-end-3 row-start-3">
 
 
+            <div class="lg:order-1 order-2">
 
-            <p class="lg:text-lg text-sm lg:order-1 order-2"><span class="font-semibold">Descripción:</span>
-                {{ $lote->descripcion }}.</p>
+                <p class="lg:text-lg text-sm "><span class="font-semibold">Descripción:</span>
+                    {{ $lote->descripcion }}.</p>
+
+                @if ($lote->desc_extra)
+                    <x-modal-desc-extra-lote :titulo="$lote->titulo" :desc="$lote->desc_extra" />
+                @endif
+
+            </div>
 
             <ul class="text-sm my-2 flex flex-col lg:order-2 order-3">
 

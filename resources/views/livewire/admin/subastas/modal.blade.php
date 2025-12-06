@@ -80,6 +80,8 @@
 
                     <x-form-item-area label="Descripcion" :method="$method" model="descripcion" />
 
+                    <x-form-item-area label="Descripcion Extra" :method="$method" model="desc_extra" />
+
                     @if ($method == 'update' || $method == 'view')
                         <x-form-item label="Estado" method="view" model="estado" />
                     @endif

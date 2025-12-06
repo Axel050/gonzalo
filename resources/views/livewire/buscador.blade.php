@@ -3,16 +3,27 @@
     @if ($from != 'home')
 
 
-        <h2
-            class="font-librecaslon font-normal lg:text-[64px]  text-[37px] leading-[1] tracking-normal lg:text-center text-start">
-            @if ($todas)
-                Subastas
-            @elseif($view)
-                Lotes
-            @else
+        {{-- <h2
+            class="font-librecaslon font-normal lg:text-[64px]  text-[37px] leading-[1] tracking-normal lg:text-center text-start"> --}}
+        @if ($todas)
+            {{-- Subastas --}}
+
+            <x-fancy-heading text="S{u}bast{a}s" variant="italic mx-[0.5px] font-normal"
+                class=" md:text-[64px] text-[37px] leading-9 text-center  md:mb-1 text-wrap font-normal" />
+        @elseif($view)
+            {{-- Lotes --}}
+
+            <x-fancy-heading text="L{o}te{s}" variant="italic mr-[1px]"
+                class=" md:text-[64px] text-[37px] leading-9 text-center  md:mb-1 text-wrap " />
+        @else
+            {{-- <h2
+                class="font-librecaslon font-normal lg:text-[64px]  text-[37px] leading-[1] tracking-normal lg:text-center text-start">
                 {{ $subasta_bus->titulo }}
-            @endif
-        </h2>
+            </h2> --}}
+            <x-fancy-heading-v text="{{ $subasta_bus->titulo }}" variant="italic mx-[0.5px] font-normal"
+                class=" md:text-[64px] text-[37px] leading-9 text-center  md:mb-1 text-wrap font-normal" />
+        @endif
+
 
 
         @if ($route)

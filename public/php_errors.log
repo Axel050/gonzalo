@@ -7,3 +7,28 @@
 [26-Nov-2025 16:41:35 America/Argentina/Buenos_Aires] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 32768 bytes) in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Foundation\Exceptions\Handler.php on line 1
 [26-Nov-2025 16:41:35 America/Argentina/Buenos_Aires] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 20480 bytes) in C:\xampp\htdocs\casablanca12\vendor\intervention\image\src\Drivers\Gd\Decoders\FilePathImageDecoder.php on line 35
 [26-Nov-2025 16:41:35 America/Argentina/Buenos_Aires] PHP Fatal error:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 32768 bytes) in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Foundation\Exceptions\Handler.php on line 1
+[05-Dec-2025 16:00:47 America/Argentina/Buenos_Aires] PHP Fatal error:  Uncaught ErrorException: Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\casablanca12\vendor\symfony\http-foundation\Response.php:387) in C:\xampp\htdocs\casablanca12\vendor\symfony\http-foundation\Response.php:322
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(256): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->Illuminate\Foundation\Bootstrap\{closure}()
+#2 C:\xampp\htdocs\casablanca12\vendor\symfony\http-foundation\Response.php(322): header()
+#3 C:\xampp\htdocs\casablanca12\vendor\symfony\http-foundation\Response.php(401): Symfony\Component\HttpFoundation\Response->sendHeaders()
+#4 C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(219): Symfony\Component\HttpFoundation\Response->send()
+#5 C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(196): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#6 C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(256): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#7 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->Illuminate\Foundation\Bootstrap\{closure}()
+#8 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\symfony\http-foundation\Response.php on line 322
+[05-Dec-2025 16:00:48 America/Argentina/Buenos_Aires] PHP Fatal error:  Uncaught ErrorException: Cannot modify header information - headers already sent by (output started at C:\xampp\htdocs\casablanca12\vendor\symfony\http-foundation\Response.php:387) in C:\xampp\htdocs\casablanca12\vendor\symfony\http-foundation\Response.php:322
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(256): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError()
+#1 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->Illuminate\Foundation\Bootstrap\{closure}()
+#2 C:\xampp\htdocs\casablanca12\vendor\symfony\http-foundation\Response.php(322): header()
+#3 C:\xampp\htdocs\casablanca12\vendor\symfony\http-foundation\Response.php(401): Symfony\Component\HttpFoundation\Response->sendHeaders()
+#4 C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(219): Symfony\Component\HttpFoundation\Response->send()
+#5 C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(196): Illuminate\Foundation\Bootstrap\HandleExceptions->renderHttpResponse()
+#6 C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(232): Illuminate\Foundation\Bootstrap\HandleExceptions->handleException()
+#7 C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Foundation\Bootstrap\HandleExceptions.php(256): Illuminate\Foundation\Bootstrap\HandleExceptions->handleShutdown()
+#8 [internal function]: Illuminate\Foundation\Bootstrap\HandleExceptions->Illuminate\Foundation\Bootstrap\{closure}()
+#9 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\symfony\http-foundation\Response.php on line 322

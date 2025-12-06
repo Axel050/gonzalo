@@ -2,11 +2,21 @@
 
 
     <div
-        class="relative flex flex-col bg-casa-fondo lg:w-5/6 w-full mx-auto justify-center lg:px-20 px-4  lg:pb-8 lg:pt-2  lg:h-58  text-casa-black border border-casa-black  z-10 py-8">
-
+        class="relative flex flex-col bg-casa-fondo lg:w-5/6 w-full mx-auto justify-center lg:px-20 px-4  lg:pb-8 lg:pt-2  lg:h-58  text-casa-black border border-casa-black  z-10 py-8  ">
+        {{-- 
         <h2 class="lg:text-[64px] text-[37px] lg:leading-26 leading-9 font-librecaslon text-center">¿Tenés algo para
-            vender?</h2>
+            vender?</h2> --}}
+        {{--  --}}
+        {{-- <h2 class="text-6xl font-helvetica text-casa-black">
+  ¿Tenés <span class="font-librecaslon italic">algo</span> para vender?
+</h2> --}}
 
+        <x-fancy-heading text="¿Te{n}és al{g}o p{a}ra v{e}n{d}er?"
+            class=" md:text-[64px] text-[37px] leading-9 text-start  md:mb-1 text-wrap" />
+
+
+
+        {{--  --}}
         <div class="flex  justify-between lg:flex-row flex-col lg:mt-0 mt-5 ">
             <div class="flex flex-col lg:text-xl text-sm">
                 <p>Completá el formulario, contanos qué querés rematar y lo evaluamos sin compromiso.</p>
@@ -28,8 +38,12 @@
 
         <div
             class="flex flex-col bg-casa-black lg:w-5/6 w-full mx-auto justify-center  lg:px-20 px-4  lg:pb-8 lg:pt-2  lg:h-58 lg:mt-50 lg:border border-b-1 border-x-casa-fondo-h py-8">
-            <h2 class="lg:text-[64px] text-[37px] lg:leading-26 leading-9 font-librecaslon text-center">¿Tenés alguna
-                duda?</h2>
+            {{-- <h2 class="lg:text-[64px] text-[37px] lg:leading-26 leading-9 font-librecaslon text-center">¿Tenés alguna
+                duda?</h2> --}}
+
+            <x-fancy-heading text="¿Te{n}és al{g}un{a} du{d}a?"
+                class=" md:text-[64px] text-[37px] leading-9 text-start  md:mb-1 text-wrap text-casa-base" />
+
 
             <div class="flex  justify-between lg:flex-row flex-col lg:mt-0 mt-5 ">
 
@@ -38,13 +52,13 @@
                     <p>Fringilla egestas nunc nulla eros sed nulla tristique.</p>
                 </div>
 
-                <button
+                <a href="mailto:info@casablanca.ar"
                     class="bg-casa-fondo hover:bg-transparent hover:text-white text-casa-black rounded-full px-4 flex items-center justify-between gap-x-5 py-1  border border-casa-fondo-h text-nowrap text-xl font-bold h-fit self-start lg:w-fit w-full lg:mt-0 mt-5">
                     Contactanos
                     <svg fill="#fff" class="size-8  ml-8">
                         <use xlink:href="#arrow-right"></use>
                     </svg>
-                </button>
+                </a>
 
             </div>
         </div>
@@ -70,11 +84,14 @@
                 <li><a href="{{ route('subastas') }}"
                         class="border border-casa-fondo-h rounded-full px-3 py-1 hover:bg-casa-black hover:text-casa-fondo-h">Subastas</a>
                 </li>
-                <li>
-                    <a href="{{ route('adquirentes.create') }}"
-                        class="border border-casa-fondo-h rounded-full px-3 py-1 hover:bg-casa-black hover:text-casa-fondo-h">¿Primera
-                        vez?</a>
-                </li>
+                @guest
+
+                    <li>
+                        <a href="{{ route('adquirentes.create') }}"
+                            class="border border-casa-fondo-h rounded-full px-3 py-1 hover:bg-casa-black hover:text-casa-fondo-h">¿Primera
+                            vez?</a>
+                    </li>
+                @endguest
                 <li><a href="{{ route('comitentes.create') }}"
                         class="border border-casa-fondo-h rounded-full px-3 py-1 hover:bg-casa-black hover:text-casa-fondo-h">¿Tenés
                         algo para vender?</a>

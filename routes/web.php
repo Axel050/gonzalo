@@ -31,7 +31,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
   }
   return redirect()->route('admin.index')->with('error', 'No tienes permiso para acceder al panel de control.');
-})->middleware(['auth', 'verified', 'active.role'])->name('dashboard');
+})->middleware(['auth', 'active.role'])->name('dashboard');
 
 
 Route::get('/', function () {
@@ -81,7 +81,7 @@ Route::get('/test-mail', function () {
     "fecha" => $contrato->fecha_firma,
   ];
 
-
+  Mail::to("axeldavidpaz@gmail.com")->send(new ContratoEmail($data));
   return (new ContratoEmail($data))->render();
 });
 
@@ -119,9 +119,9 @@ Route::get('/test-puja-superada/{loteId}/{adquirenteId}', function ($loteId, $ad
     "subasta" => "vinos",
   ];
 
-  if (app()->environment('production')) {
-    mail::to($adquirente->user?->email)->send(new PujaSuperadaEmail($dataMail));
-  }
+  // if (app()->environment('production')) {
+  // mail::to($adquirente->user?->email)->send(new PujaSuperadaEmail($dataMail));
+  // }
   return new PujaSuperadaEmail($dataMail); // Se renderiza directamente en el navegador
 });
 
@@ -147,43 +147,45 @@ Route::get('/csrf-token', function () {
 
 Route::get('/adquirentes/perfil', [AdquirenteController::class, "perfil"])->name('adquirentes.perfil')->middleware('adquirente.logged');
 
-Route::get('/lotes', function () {
+// Route::get('/lotes', function () {
 
-  $lotes = Lote::where("estado", "en_subasta")->get();
-  $subasta = Subasta::find(9);
+//   $lotes = Lote::where("estado", "en_subasta")->get();
+//   $subasta = Subasta::find(9);
 
-  return view("lotes", compact(["lotes", "subasta"]));
-})->name('lotes')->middleware(['auth']);
+//   return view("lotes", compact(["lotes", "subasta"]));
+// })->name('lotes')->middleware(['auth']);
 
 
 Route::get('/lotes/{id}', function ($id) {
   return view('detalle-lotes', compact("id"));
-})->name('lotes.show')->middleware(['auth']);;
+})->name('lotes.show')->middleware(['auth', 'verified']);;
 
 Route::get('/pantalla-pujas', function () {
   return view('pantalla-pujas');
-})->name('pantalla-pujas')->middleware(['auth']);
+})->name('pantalla-pujas')->middleware(['auth', 'verified']);
 
 Route::get('/carrito', function () {
   return view('carrito');
-})->name('carrito')->middleware(['auth']);
+})->name('carrito')->middleware(['auth', 'verified']);
 
 Route::get('/subastas', function () {
   return view('subastas');
 })->name('subastas');
 
 
-Route::get('/tuactivos', LotesActivos::class)->name('lotes.activos');
+// Route::get('/tuactivos', LotesActivos::class)->name('lotes.activos');
+
+
 // Route::get('/subastas/{subasta}/lotes-activos', [AdquirenteController::class, 'getLotesActivos']);
 
-Route::get('/subastas/proximas/{subasta}/lotes', [AdquirenteController::class, 'getLotesProximos'])->name('subasta-proximas.lotes')->middleware(['auth']);
+Route::get('/subastas/proximas/{subasta}/lotes', [AdquirenteController::class, 'getLotesProximos'])->name('subasta-proximas.lotes')->middleware(['auth', 'verified']);
 
-Route::get('/subastas/pasadas/{subasta}/lotes', [AdquirenteController::class, 'getLotesPasados'])->name('subasta-pasadas.lotes')->middleware(['auth']);
+Route::get('/subastas/pasadas/{subasta}/lotes', [AdquirenteController::class, 'getLotesPasados'])->name('subasta-pasadas.lotes')->middleware(['auth', 'verified']);
 
 
-Route::get('/subastas/buscador/lotes', [AdquirenteController::class, 'getLotesSearch'])->name('subasta-buscador.lotes')->middleware(['auth']);
+Route::get('/subastas/buscador/lotes', [AdquirenteController::class, 'getLotesSearch'])->name('subasta-buscador.lotes')->middleware(['auth', 'verified']);
 
-Route::get('/subastas/{subasta}/lotes', [AdquirenteController::class, 'getLotes'])->name('subasta.lotes')->middleware(['auth']);
+Route::get('/subastas/{subasta}/lotes', [AdquirenteController::class, 'getLotes'])->name('subasta.lotes')->middleware(['auth', 'verified']);
 
 
 Route::get('/terminos-comitentes', function () {
@@ -193,6 +195,11 @@ Route::get('/terminos-comitentes', function () {
 Route::get('/terminos-adquirentes', function () {
   return view('terminos-adquirentes');
 })->name('terminos-adquirentes');
+
+
+Route::get('/instructivo-comitentes', function () {
+  return view('instructivo-comitentes');
+})->name('instructivo-comitentes');
 
 
 // MP

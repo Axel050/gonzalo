@@ -3,23 +3,27 @@
     {{-- @dump('VER OPCION PONER MODAL PARA MENJEAR PUJAS Y OFERTAS ') --}}
 
     <article
-        class="bg-red-00 flex  w-full lg:justify-center justify-start flex-col mt-10 lg:mb-8 mb-4 lg:px-0 px-4 relative">
-        <svg fill="#fff" class="w-[247px] h-[47px] mx-auto mb-2 lg:block hidden">
+        class="bg-red-00 flex  w-full lg:justify-center justify-start flex-col mt-10 lg:mb-8 mb-4 lg:px-0 px-4 relative ">
+        {{-- <svg fill="#fff" class="w-[247px] h-[47px] mx-auto mb-2 lg:block hidden">
             <use xlink:href="#tuslotes"></use>
-        </svg>
+        </svg> --}}
 
-        <h2 class="lg:hidden text-4xl font-helvetica">tus lotes</h2>
+        {{-- <h2 class="lg:hidden text-4xl font-helvetica">tus lotes</h2> --}}
 
-        <h3 class="font-helvetica font-semibold lg:text-3xl text-sm  tracking-normal lg:text-center mt-4 lg:mb-2 mb-1">
+        <x-fancy-heading text="t{u}s lo{t}es el{e}gi{d}os" variant="italic mx-[px] font-normal"
+            class=" md:text-[47px] text-[28px]  md:text-center  text-start text-wrap font-normal " />
+
+        <h3
+            class="font-helvetica font-semibold lg:text-3xl text-sm  tracking-normal lg:text-center md:mt-3 mt-1 lg:mb-2 mb-1">
             Desde aquí podrás pujar por los lotes que elegiste.
         </h3>
 
 
         @if ($tieneOrdenes)
             <a href="{{ route('carrito') }}"
-                class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-gray-50 rounded-full md:px-4 px-2 flex items-center justify-between  lg:py-2 py-1 lg:text-xl text-sm font-bold  w-fit absolute lg:right-6 top-2 right-2">
+                class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-gray-50 rounded-full md:px-4 px-1 flex items-center justify-between  lg:py-2 py-0.5 lg:text-xl text-xs font-bold  w-fit md: absolute lg:right-6 md:top-2  -top-5 right-1 mx-auto -4 md:mt-0">
                 Ver tu carrito
-                <svg class="lg:size-8 size-5 md:ml-5 ml-3">
+                <svg class="lg:size-8 size-4 md:ml-5 ml-2">
                     <use xlink:href="#arrow-right"></use>
                 </svg>
             </a>
@@ -62,7 +66,15 @@
                     <div class="flex  flex-col py-2   lg:p-6 p-4  bg-casa-base-2 lg:border border-casa-black">
 
                         <div class=  "lg:flex hidden w-full justify-between">
-                            <h2 class="  lg:text-3xl  font-bold "> {{ $lote['titulo'] }}</h2>
+
+                            {{-- <h2 class="  lg:text-3xl  font-bold line-clamp-1 ">
+                                {{ $lote['titulo'] }} aeeee eeee eeee
+                            </h2> --}}
+
+                            <x-clamp :text="$lote['titulo']" />
+
+
+                            {{--  --}}
 
                             <button class=" -mt-3 -mr-3 h-fit disabled:opacity-30 disabled:cursor-not-allowed"
                                 wire:click="quitar({{ $lote['id'] }})"
@@ -86,7 +98,9 @@
                             <div class="flex flex-col   w-full lg:pl-0 pl-2 ">
 
                                 <div class="lg:hidden flex w-full  justify-between ">
-                                    <h1 class="  text-sm  font-bold "> {{ $lote['titulo'] }}</h1>
+                                    {{-- <h1 class="  text-sm  font-bold "> {{ $lote['titulo'] }}</h1> --}}
+                                    <x-clamp :text="$lote['titulo']" class="text-sm font-bold " />
+
                                     <div class=" flex items-center gap-2">
                                         <div class="inline-block lg:hidden">
                                             @if ($subastaActiva)
@@ -115,9 +129,18 @@
                                             <a href="{{ route('lotes.show', $lote['id']) }}" title="Ir a lote">Lote:
                                                 {{ $lote->id }}</a>
                                         </li>
+
+                                        @php
+                                            if ($subastaActiva) {
+                                                $rou = 'subasta.lotes';
+                                            } else {
+                                                $rou = 'subasta-pasadas.lotes';
+                                            }
+                                        @endphp
                                         <li
                                             class="lg:px-3 px-2 lg:py-2 py-0.5 rounded-full border border-casa-rojo lg:text-sm text-xs text-casa-rojo font-semibold hover:bg-casa-rojo hover:text-white">
-                                            <a href="{{ route('subasta.lotes', $lote->ultimoContrato?->subasta_id) }}"
+                                            {{-- <a href="{{ route('subasta.lotes', $lote->ultimoContrato?->subasta_id) }}" --}}
+                                            <a href="{{ route($rou, $lote->ultimoContrato?->subasta_id) }}"
                                                 title="Ir a subasta">Subasta:
                                                 {{ $lote->ultimoContrato?->subasta?->titulo }}</a>
                                         </li>
@@ -184,10 +207,10 @@
                                         Ofertaste: <b class="ml-1">{{ $signo }} {{ $actual }}</b>
                                     </p>
                                 @else
-                                    <span
+                                    {{-- <span
                                         class="text-casa-black border border-black rounded-full lg:px-4  px-1 lg:py-2 py-1 w-full lg:text-xl text-sm font-bold text-center  lg:mb-2 mb-0 block  lg:order-7  order-8 lg:mt-0 mt-1">
                                         Puja finalizada
-                                    </span>
+                                    </span> --}}
 
                                     {{-- <h2
                                     class="text-casa-black border border-black rounded-full px-2 py-0.5 w-full text-xs font-bold text-center   lg:hidden order-10">
@@ -205,7 +228,7 @@
                                         </a>
                                     @else
                                         <span
-                                            class="bg-casa-gtext-casa-green  border border-casa-black  text-gray-50 rounded-full px-4 flex items-center justify-between  lg:py-2 py-1  w-full  lg:text-xl text-sm font-bold order-10 lg:mt-2  lg:order-11 ">
+                                            class="bg-casa-black   border border-casa-black  text-gray-50 rounded-full px-4 flex items-center justify-between  lg:py-2 py-1  w-full  lg:text-xl text-sm font-bold order-10 lg:mt-1  lg:order-11 ">
                                             Preparando orden ...
                                             <svg
                                                 class="lg:size-8  size-6  text-white animate-[spin_3s_linear_infinite]">
@@ -286,9 +309,9 @@
                                     class="bottom-0 text-red-500 order-4 text-lg" /> --}}
                                     </div>
                                 @else
-                                    <div class="flex flex-col lg:gap-2 gap-0.5 items-center order-7 pt-2 mt-auto">
+                                    <div class="flex flex-col lg:gap-2 gap-0.5 items-center order-7 t-2 mt-auto">
                                         <span
-                                            class="text-casa-black border border-black rounded-full lg:px-4 px-2 lg:py-2 py-1 w-full lg:text-xl  text-sm font-bold text-center">
+                                            class="text-casa-base border bg-casa-rojo rounded-full lg:px-4 px-2 lg:py-2 py-1 w-full lg:text-xl  text-sm font-bold text-center">
                                             Puja finalizada
                                         </span>
                                         <span

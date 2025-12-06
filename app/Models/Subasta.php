@@ -26,6 +26,7 @@ class Subasta extends Model implements Auditable
     'descripcion',
     'garantia',
     'envio',
+    'desc_extra',
   ];
 
   protected $casts = [

@@ -117,6 +117,38 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
 
+  // 
+  // 
+
+  document.querySelectorAll('.swiper-home-mb').forEach((el, index) => {
+
+    const slides = el.querySelectorAll('.swiper-slide').length;
+
+    console.log("INNNEEEEadd")
+    new Swiper(el, {
+      slidesPerView: 3,
+
+      centerInsufficientSlides: true,
+      spaceBetween: 50,
+      loop: slides > 3 ? true : false,
+      autoplay: slides > 3 ? { delay: 2000 } : false,
+
+
+      // breakpoints: {
+      //   420: {
+      //     slidesPerView: 3,
+      //   },
+      // },
+      modules: [Autoplay],
+
+    });
+
+
+  });
+
+  // 
+  // 
+
 
   document.querySelectorAll('.swiper-home-subastas').forEach((el, index) => {
 

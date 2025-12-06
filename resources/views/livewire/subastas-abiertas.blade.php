@@ -1,5 +1,8 @@
 <div class="flex flex-col   w-full items-center lg:px-24    mt-8 lg:mt-20  ">
-    <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4 mb-4 lg:mb-8">subastas abiertas</p>
+    {{-- <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4 mb-4 lg:mb-8">subastas abiertas</p> --}}
+
+    <x-fancy-heading text="s{u}bast{a}s a{b}iert{a}s" variant="italic mx-[0.5px] font-normal"
+        class=" md:text-[32px] text-[20px]  text-center self-start md:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
 
 
 
@@ -35,6 +38,14 @@
                     </div>
 
                     <p class="text-xl line-clamp-3">{{ $subA->descripcion }} </p>
+
+                    @if ($subA->desc_extra)
+                        <x-modal-desc-extra-home :titulo="$subA->titulo" :desc="$subA->desc_extra" :route="route('subasta.lotes', $subA->id)" />
+                    @endif
+
+
+
+
                 </a>
                 {{-- @endfor --}}
             @endforeach

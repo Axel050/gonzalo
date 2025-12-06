@@ -4,13 +4,18 @@
 
 
     @if ($titulo)
-        <h2 class="lg:text-[40px] text-[26px] font-librecaslon w-full  lg:text-center text-start mb-2">
-            @if ($from == 'home')
-                Lotes destacados
-            @else
-                {{ $subasta->titulo }}
-            @endif
-        </h2>
+        @if ($from == 'home')
+            <x-fancy-heading text="l{o}te{s} d{e}st{a}ca{d}os" variant="italic mx-[0.5px] font-normal"
+                class=" md:text-[40px] text-[26px]  text-center text-wrap font-normal mb-4" />
+
+            {{-- Lotes destacados --}}
+        @else
+            <h2 class="lg:text-[40px] text-[26px] font-librecaslon w-full  lg:text-center text-start mb-2">
+                <span class="bg-red-400">
+                    {{ $subasta->titulo }}
+                </span>
+            </h2>
+        @endif
     @endif
 
 

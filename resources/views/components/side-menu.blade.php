@@ -213,7 +213,7 @@
                     </svg>
                 </button>
 
-                <ul class="flex flex-col  mt-1.5 border-l-4  border-cyan-800 ml-1 px-2 rounded-l-sm" x-show="openAux"
+                <ul class="flex flex-col  mt-1.5 border-l-4  border-cyan-800 ml-1 px-2 rounded-l-sm lead" x-show="openAux"
                     x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0"
                     x-transition:leave="transition ease-in duration-200"

@@ -64,8 +64,12 @@ class AdquirenteService
     ]);
 
 
+
+    // $a->sendEmail
     if ($user) {
 
+
+      $user->sendEmailVerificationNotification();
       $adquirente = Adquirente::create([
         'nombre' => $data['nombre'],
         'apellido' => $data['apellido'],

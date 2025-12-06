@@ -5,7 +5,7 @@
     <!-- Parte que SÍ debe actualizarse al navegar (título, fecha, botón móvil) -->
     <div class="flex lg:flex-col flex-row lg:items-start justify-between w-full items-center bg--500">
         <a href="{{ route('subasta.lotes', $last->id) }}"
-            class="lg:text-[43px] lg:leading-[47px] text-[26px] leading-[25px] font-librecaslon lg:mb-1 mb-0 hover:font-semibold">
+            class="lg:text-[43px] lg:leading-[47px] text-[26px] leading-[25px]  lg:mb-1 mb-0 hover:font-semibold font-caslon italic">
             {{ $last->titulo ?? 'Subasta' }}
         </a>
 
