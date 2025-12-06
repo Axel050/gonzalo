@@ -21,7 +21,7 @@
                 {{ $subasta_bus->titulo }}
             </h2> --}}
             <x-fancy-heading-v text="{{ $subasta_bus->titulo }}" variant="italic mx-[0.5px] font-normal"
-                class=" md:text-[64px] text-[37px] leading-9 text-center  md:mb-1 text-wrap font-normal" />
+                class=" md:text-[64px] text-[36px] leading-9 text-center  md:mb-1 text-wrap font-normal" />
         @endif
 
 

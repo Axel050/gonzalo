@@ -8,7 +8,7 @@
             <use xlink:href="#tucarrito"></use>
         </svg> --}}
 
-        <x-fancy-heading text="t{u}  c{a}rri{t}o" variant="italic mr-[1px] font-medium"
+        <x-fancy-heading text="t{u}  c{a}rri{t}o" variant="italic mx-[1px] font-normal"
             class=" md:text-[64px] text-[36px]  md:text-center text-start text-wrap font-medium md:mb-0 mb-2" />
 
         {{-- <h2 class="lg:hidden text-4xl font-helvetica">tu carrito</h2> --}}

@@ -6,7 +6,7 @@
 @php
     // 1. Preparamos las clases de la fuente especial (Caslon) usando la variable $variant
     // Asegúrate de que 'font-casa-caslon' coincida con lo que definiste en tu CSS (o usa 'font-caslon')
-    $caslonClasses = "font-casa-caslon {$variant} text-[1.15em] leading-[0] -mr-0.5 align-baseline";
+    $caslonClasses = "font-casa-caslon {$variant} text-[1em] leading-[0] mx-0.5 align-baseline";
 
     // 2. Separamos el texto en caracteres
     $chars = preg_split('//u', $text, -1, PREG_SPLIT_NO_EMPTY);
