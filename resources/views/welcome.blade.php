@@ -23,7 +23,7 @@
             class=" md:text-8xl  text-4xl  text-center text-wrap font-normal mb-4 text-black" />
 
 
-        <div class="swiper-home-mb     w-full  lg:overflow-x-hidden lg:px-0 px-4 md:hidden">
+        <div class="swiper-home-mb     w-full  overflow-x-hidden lg:px-0 px-4 md:hidden">
 
             <div class="swiper-wrapper  flex  items-center">
 
