@@ -274,7 +274,7 @@ input[type="search"] {
 /* --- 1. BOOK (Peso 400 - Normal) --- */
 @font-face {
   font-family: 'ITC Caslon 224 Std';
-  src: url('/assets/fonts/caslon/Book.ttf') format('truetype');
+  src: url('../fonts/caslon/Book.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -291,7 +291,7 @@ input[type="search"] {
 /* --- 2. MEDIUM (Peso 500) --- */
 @font-face {
   font-family: 'ITC Caslon 224 Std';
-  src: url('/assets/fonts/caslon/Medium.ttf') format('truetype');
+  src: url('../fonts/caslon/Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -302,7 +302,7 @@ input[type="search"] {
 /* --- 3. BOLD (Peso 700) --- */
 @font-face {
   font-family: 'ITC Caslon 224 Std';
-  src: url('/assets/fonts/caslon/Bold.ttf') format('truetype');
+  src: url('../fonts/caslon/Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
   font-display: swap;
@@ -310,7 +310,7 @@ input[type="search"] {
 
 @font-face {
   font-family: 'ITC Caslon 224 Std';
-  src: url('/assets/fonts/caslon/Bold-Italic.ttf') format('truetype');
+  src: url('../fonts/caslon/Bold-Italic.ttf') format('truetype');
   font-weight: 700;
   font-style: italic;
   font-display: swap;
@@ -319,7 +319,7 @@ input[type="search"] {
 /* --- 4. BLACK (Peso 900 - Extra Gruesa) --- */
 @font-face {
   font-family: 'ITC Caslon 224 Std';
-  src: url('/assets/fonts/caslon/Black.ttf') format('truetype');
+  src: url('../fonts/caslon/Black.ttf') format('truetype');
   font-weight: 900;
   font-style: normal;
   font-display: swap;
