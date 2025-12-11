@@ -20,8 +20,8 @@
                 class="font-librecaslon font-normal lg:text-[64px]  text-[37px] leading-[1] tracking-normal lg:text-center text-start">
                 {{ $subasta_bus->titulo }}
             </h2> --}}
-            <x-fancy-heading-v text="{{ $subasta_bus->titulo }}" variant="italic mx-[0.5px] font-normal"
-                class=" md:text-[64px] text-[36px] leading-9 text-center  md:mb-1 text-wrap font-normal tracking-[0.05em] md:tracking-normal" />
+            <x-fancy-heading-v text="{{ $subasta_bus->titulo }}" variant="italic  font-normal   -tracking-[3px] "
+                class=" md:text-[64px] text-[37px] leadin-9 text-center  md:mb-1 text-wrap font-normal   " />
         @endif
 
 
