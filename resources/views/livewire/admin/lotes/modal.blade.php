@@ -185,7 +185,7 @@
                             </label>
                             <div class="relative w-full   text-gray-600 flex pl-18 gap-x-10 lg:gap-x-14  text-base">
 
-                                <div class="flex  items-center ">
+                                <div class="flex  items-center ">-
                                     <input type="radio" wire:model="destacado" value="0" name="destacado"
                                         class ="h-6 rounded-md border border-gray-400 w-4 text-gray-500 p-1 text-sm bg-gray-100 mr-0.5  "
                                         @disabled($method == 'view') />
@@ -227,7 +227,7 @@
 
                     @endif
 
-                    <div class="flex !flex-row gap-6 !justify-center lg:text-base text-sm lg:col-span-4  mt-60">
+                    <div class="flex !flex-row gap-6 !justify-center lg:text-base text-sm lg:col-span-4  mt-12">
 
                         <div class=" flex justify-center gap-x-5 lg:gap-x-8">
 

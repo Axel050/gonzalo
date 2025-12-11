@@ -120,6 +120,51 @@ document.addEventListener('DOMContentLoaded', () => {
   // 
   // 
 
+  const swiperPcElement = document.querySelector('.swiper-home-pc');
+  if (swiperPcElement) {
+    new Swiper(swiperPcElement, {
+      slidesPerView: 7, // Muestra varias para llenar el ancho
+      spaceBetween: 20,
+      loop: true,
+      centeredSlides: true, // Ayuda a que se vea estético detrás
+      speed: 3000, // Movimiento suave y lento
+
+      autoplay: {
+        delay: 0, // Flujo continuo si usas linear easing
+        disableOnInteraction: false,
+      },
+      modules: [Autoplay],
+      // Opcional: para movimiento continuo lineal tipo cinta transportadora
+      /*
+      freeMode: true,
+      freeModeMomentum: false,
+      */
+    });
+  }
+
+  const swiperPcElement2 = document.querySelector('.swiper-home-pc-2');
+  if (swiperPcElement2) {
+    new Swiper(swiperPcElement2, {
+      slidesPerView: 7, // Muestra varias para llenar el ancho
+      spaceBetween: 40,
+      loop: true,
+      centeredSlides: true, // Ayuda a que se vea estético detrás
+      speed: 3000, // Movimiento suave y lento
+
+      autoplay: {
+        delay: 0, // Flujo continuo si usas linear easing
+        disableOnInteraction: false,
+      },
+      modules: [Autoplay],
+      // Opcional: para movimiento continuo lineal tipo cinta transportadora
+      /*
+      freeMode: true,
+      freeModeMomentum: false,
+      */
+    });
+  }
+
+
   document.querySelectorAll('.swiper-home-mb').forEach((el, index) => {
 
     const slides = el.querySelectorAll('.swiper-slide').length;
@@ -131,8 +176,15 @@ document.addEventListener('DOMContentLoaded', () => {
       centerInsufficientSlides: true,
       spaceBetween: 50,
       loop: slides > 3 ? true : false,
-      autoplay: slides > 3 ? { delay: 2000 } : false,
+      speed: 3000, // Movimiento suave y lento
 
+      // autoplay: slides > 3 ? { delay: 2000 } : false,
+
+
+      autoplay: {
+        delay: 0, // Flujo continuo si usas linear easing
+        disableOnInteraction: false,
+      },
 
       // breakpoints: {
       //   420: {

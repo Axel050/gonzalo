@@ -1,4 +1,4 @@
-<article class="flex  w-full lg:justify-center flex-col  mb-8 px-4 ">
+<article class="flex  w-full lg:justify-center flex-col   px-4 ">
 
     @if ($from != 'home')
 

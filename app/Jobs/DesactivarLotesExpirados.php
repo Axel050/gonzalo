@@ -273,8 +273,15 @@ class DesactivarLotesExpirados implements ShouldQueue
         info(["data mail JOB " => $dataMail]);
         info(["ANTES MAIL mail JOB "]);
 
+        if ($adquirente?->alias) {
+          $mail = $adquirente?->alias?->adquirente?->user?->email;
+        } else {
+          $mail = $adquirente->user?->email;
+        }
+
+
         try {
-          Mail::to($adquirente->user?->email)->send(new OrdenEmail($dataMail));
+          Mail::to($mail)->send(new OrdenEmail($dataMail));
         } catch (\Exception $e) {
           // Log del error para debugging, sin detener el job
           info('Error al enviar OrdenEmail en job DesactivarLotesExpirados: ' . $e->getMessage(), [

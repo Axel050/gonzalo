@@ -56,7 +56,7 @@ class Index extends Component
 
 
       if (!$adquirente) {
-        $this->dispatch('paisNotExits');
+        $this->dispatch('adquirenteNotExits');
       } else {
         $this->method = $method;
         $this->id = $id;
@@ -128,7 +128,20 @@ class Index extends Component
           });
           break;
         case 'todos':
+          // $adquirentes = Adquirente::join('users', 'adquirentes.user_id', '=', 'users.id')
+          //   ->where(function ($query) {
+          //     $query->where("adquirentes.id", "like", '%' . $this->query . '%')
+          //       ->orWhere("adquirentes.nombre", "like", '%' . $this->query . '%')
+          //       ->orWhere("adquirentes.apellido", "like", '%' . $this->query . '%')
+          //       ->orWhere("adquirentes.telefono", "like", '%' . $this->query . '%')
+          //       ->orWhere("adquirentes.CUIT", "like", '%' . $this->query . '%')
+          //       ->orWhere("users.email", "like", '%' . $this->query . '%')
+          //       ->orWhereHas('alias', function ($query) {
+          //         $query->where('nombre', 'like', '%' . $this->query . '%');
+          //       });
+          //   });
           $adquirentes = Adquirente::join('users', 'adquirentes.user_id', '=', 'users.id')
+            ->select('adquirentes.*')  // Add this to avoid ID conflict
             ->where(function ($query) {
               $query->where("adquirentes.id", "like", '%' . $this->query . '%')
                 ->orWhere("adquirentes.nombre", "like", '%' . $this->query . '%')
@@ -136,8 +149,8 @@ class Index extends Component
                 ->orWhere("adquirentes.telefono", "like", '%' . $this->query . '%')
                 ->orWhere("adquirentes.CUIT", "like", '%' . $this->query . '%')
                 ->orWhere("users.email", "like", '%' . $this->query . '%')
-                ->orWhereHas('alias', function ($query) {
-                  $query->where('nombre', 'like', '%' . $this->query . '%');
+                ->orWhereHas('alias', function ($q) {  // Note: Renamed to $q to avoid shadowing
+                  $q->where('nombre', 'like', '%' . $this->query . '%');
                 });
             });
           break;

@@ -336,7 +336,15 @@ class ModalContratoLotes extends Component
         "fecha" => $this->contrato->fecha_firma,
       ];
 
-      Mail::to($this->contrato->comitente?->mail)->send(new ContratoEmail($data));
+
+      if ($this->contrato->comitente?->alias) {
+        $mail = $this->contrato->comitente?->alias?->comitente?->mail;
+      } else {
+        $mail = $this->contrato->comitente?->mail;
+      }
+
+      // dd($mail);
+      Mail::to($mail)->send(new ContratoEmail($data));
       // Mail::to('axeldavidpaz@gmail.com')->send(new TestEmail($data));
     }
 

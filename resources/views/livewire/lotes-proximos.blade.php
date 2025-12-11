@@ -58,7 +58,7 @@
 
 
 
-        <div class="flex flex-wrap  mt-10 lg:gap-12 gap-2 place-content-center justify-center max-w-[1440px]">
+        <div class="flex flex-wrap  mt-10 lg:gap-12 gap-2 place-content-center justify-center max-w-[1440px]  w-full">
 
 
             {{-- @if ($lotes) --}}

@@ -1,4 +1,4 @@
->@props(['titulo', 'desc', 'route'])
+@props(['titulo', 'desc', 'route'])
 
 
 <div x-data="{ open: false }" class=" inlineblock  relaive 2 pt-1">

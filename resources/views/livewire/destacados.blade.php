@@ -6,7 +6,7 @@
     @if ($titulo)
         @if ($from == 'home')
             <x-fancy-heading text="l{o}te{s} d{e}st{a}ca{d}os" variant="italic mx-[0.5px] font-normal"
-                class=" md:text-[40px] text-[26px]  text-center text-wrap font-normal mb-4" />
+                class=" md:text-[40px] text-[26px]  md:text-center text-start ml-4 md:ml-0 text-wrap font-normal mb-4" />
 
             {{-- Lotes destacados --}}
         @else

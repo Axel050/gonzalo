@@ -1,4 +1,4 @@
-<div class="flex flex-col   w-full items-center lg:px-24    mt-8 lg:mt-20  ">
+<div class="flex flex-col   w-full items-center lg:px-24   ">
     {{-- <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4 mb-4 lg:mb-8">subastas abiertas</p> --}}
 
     <x-fancy-heading text="s{u}bast{a}s a{b}iert{a}s" variant="italic mx-[0.5px] font-normal"
