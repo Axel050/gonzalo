@@ -67,9 +67,12 @@
                 <div
                     class=" bg-casa-base-2 bas flex flex-col lg:p-6 p-2 gap-y-1 lg:border border-casa-black lg:w-[394px]  lg:min-w-[300px] min-w-[44%] relative max-w-[48%]">
 
-                    <div class="flex justify-between items-center lg:order-1 order-2">
+                    {{-- <div class="flex justify-between items-center lg:order-1 order-2">
                         <p class="font-bold lg:text-3xl text-sm w-full  mr-3">{{ $lote['titulo'] }}</p>
-                    </div>
+                    </div> --}}
+
+                    <x-clamp :text="$lote['titulo']" bclass=" mr-1" mas="absolute -bottom-2 -right-2 md:right-0 " />
+
 
                     <div class="flex gap-x-4 justify-center my-2 lg:order-2 order-1">
                         <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote['foto']) }}"

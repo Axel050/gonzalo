@@ -2,7 +2,8 @@
     'text',
     'class' => 'lg:text-3xl font-bold', // clases por defecto, puedes cambiarlas
     'bclass' => 'md:text-xs text-[10px]', // clases por defecto, puedes cambiarlas
-    'exp' => 'right-2 top-1/2', // clases por defecto, puedes cambiarlas
+    'mas' => 'absolute', // clases por defecto, puedes cambiarlas
+    'menos' => 'absolute right-2 top-1/2', // clases por defecto, puedes cambiarlas
 ])
 
 <div x-data="{
@@ -27,7 +28,7 @@
     }
 }" x-init="checkTruncate($refs.title)" class="relative ">
     <h2 x-ref="title" @click="expanded = !expanded" :class="expanded ? 'line-clamp-none' : 'line-clamp-1'"
-        class="cursor-pointer transition-all duration-200 {{ $class }}">
+        class="cursor-pointer transition-all duration-200 mr-1 {{ $class }}">
         {{ $text }}
 
 
@@ -36,8 +37,11 @@
     <button x-show="truncated" @click="expanded = !expanded"
         class="text-[10px] -mt-1  absolute transition-colors duration-200 {{ $bclass }}"
         :class="{
-            'text-blue-600  right-1': !expanded,
-            {{-- Estilo para "Ver más" --}} 'text-red-600     {{ $exp }} ': expanded {{-- Estilo para "Ver menos" --}}
+            'text-blue-600  right-1  {{ $mas }} ': !expanded,
+            {{-- Estilo para "Ver más" --}} 'text-red-600     {{ $menos }} ': expanded
+        
+        
+            {{-- Estilo para "Ver menos" --}}
         }">
         <span x-show="!expanded">Ver más</span>
         <span x-show="expanded">Ver menos</span>

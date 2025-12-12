@@ -108,7 +108,7 @@
 
                         {{-- <p class="font-bold sm:text-3xl text-sm w-full  mr-3 line-clamp-1">{{ $lote['titulo'] }}</p> --}}
 
-                        <x-clamp :text="$lote['titulo']" bclass="z-20" exp="-bottom-2 -right-2 md:right-0" />
+                        <x-clamp :text="$lote['titulo']" bclass="z-2 mr-1" mas="absolute -bottom-2 -right-2 md:right-0 " />
 
                         @if ($lote['tienePujas'])
                             <x-hammer />

@@ -71,7 +71,8 @@
                                 {{ $lote['titulo'] }} aeeee eeee eeee
                             </h2> --}}
 
-                            <x-clamp :text="$lote['titulo']" />
+                            {{-- <x-clamp :text="$lote['titulo']" /> --}}
+                            <x-clamp :text="$lote['titulo']" bclass=" mr-1" mas="absolute -bottom-2 -right-2 md:right-0 " />
 
 
                             {{--  --}}
