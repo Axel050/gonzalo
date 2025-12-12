@@ -220,7 +220,7 @@
 
                                     @if ($lote->ultimoContrato?->subasta->estado == 'finalizada')
                                         <a href="{{ route('carrito') }}"
-                                            class="bg-casa-green hover:bg-casa-fondo border border-green-500 hover:text-casa-green text-gray-50 rounded-full px-4 flex items-center justify-between  lg:py-2 py-1  w-full  lg:text-xl text-sm font-bold order-10 lg:mt-2  lg:order-11 ">
+                                            class="bg-casa-green hover:bg-casa-fondo border border-green-500 hover:text-casa-green text-gray-50 rounded-full px-4 flex items-center justify-between  lg:py-1.5 py-1  w-full  lg:text-xl text-sm font-bold order-10 lg:mt-1  lg:order-11 ">
                                             Pagar
                                             <svg class="lg:size-8  size-6">
                                                 <use xlink:href="#arrow-right"></use>
@@ -282,7 +282,7 @@
                                         </div>
 
                                         <button
-                                            class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  lg:py-2 py-1  w-full  lg:text-xl text-sm font-bold   "
+                                            class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  lg:py-1.5 py-1  w-full  lg:text-xl text-sm font-bold   "
                                             wire:click="registrarPuja({{ $lote->id }} , {{ $actualParam }} )"
                                             wire:loading.attr="disabled">
 

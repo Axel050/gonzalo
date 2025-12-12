@@ -44,8 +44,10 @@
                     <div class="flex flex-col bg-purple grow">
 
                         <div class="flex lg:items-center  items-end  mb-3 ">
-                            <p class="font-semibold lg:text-xl text-sm  w-full  lg:mt-0 mt-2  ">{{ $des['titulo'] }}
-                            </p>
+                            {{-- <p class="font-semibold lg:text-xl text-sm  w-full  lg:mt-0 mt-2  ">{{ $des['titulo'] }}
+                            </p> --}}
+                            <x-clamp :text="$des['titulo']" bclass=" mr-1 " mas="absolute -bottom-2.5 -right-2 md:right-0 "
+                                class="md:text-xl text-sm font-bold  " />
                             {{-- <p class="font-semibold text-xl w-full  ">8888 -{{ $i }}</p> --}}
 
                             {{-- <x-hammer /> --}}

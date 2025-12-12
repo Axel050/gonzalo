@@ -17,7 +17,7 @@
 
                     <div class="flex justify-between items-center lg:mb-4 mb-2">
 
-                        <p class="text-[26px]  lg:text-[40px] font-librecaslon leading-[40px]">{{ $subA->titulo }} </p>
+                        <p class="text-[26px]  lg:text-[40px] font-caslon leading-[40px]">{{ $subA->titulo }} </p>
                         <svg fill="#fff" class="size-8  ml-8 shrink-0 self-start">
                             <use xlink:href="#arrow-right"></use>
                         </svg>

@@ -29,7 +29,7 @@
 
 
                     <div class="flex  flex-col justify-between items-start  w-full ">
-                        <p class="font-casa-caslon  lg:text-4xl text-[26px]  mb-3">{{ $sub->titulo }}</p>
+                        <p class="font-caslon  lg:text-4xl text-[26px]  mb-3">{{ $sub->titulo }}</p>
 
                         @php
                             $fecha = \Carbon\Carbon::parse($sub->fecha_fin);
@@ -47,7 +47,7 @@
                             $routeAbi = route('subasta.lotes', $sub->id);
                         @endphp
 
-                        <div class="flex flex-col g-violet-400 w-full md:w-fit">
+                        <div class="flex flex-col g-violet-400 w-full md:w-fit ">
 
                             <p class="lg:text-xl text-sm ">{{ $sub->descripcion }} </p>
 
@@ -120,7 +120,7 @@
                 <div class="flex  gap-x-12">
 
                     <div class="flex  flex-col justify-between items-start  w-full ">
-                        <p class="font-librecaslon lg:text-4xl text-[26px]  mb-3">{{ $subP->titulo }}</p>
+                        <p class="font-caslon lg:text-4xl text-[26px]  mb-3">{{ $subP->titulo }}</p>
 
 
                         @php
@@ -166,7 +166,7 @@
                         @endphp
 
 
-                        <div class="flex flex-col bgviolet-400 w-full md:w-fit">
+                        * <div class="flex flex-col bgviolet-400 w-full md:w-fit">
 
                             <p class="lg:text-xl text-sm ">{{ $subP->descripcion }} </p>
 
@@ -239,7 +239,7 @@
                 <div class="flex  gap-x-12">
 
                     <div class="flex  flex-col justify-between items-start g-red-100 w-full  bg-rd-50 ">
-                        <p class="font-librecaslon lg:text-4xl text-[26px]  mb-3">{{ $subF->titulo }}</p>
+                        <p class="font-caslon lg:text-4xl text-[26px]  mb-3">{{ $subF->titulo }}</p>
 
                         @php
                             $fechaFin = \Carbon\Carbon::parse($subF->fecha_fin);
