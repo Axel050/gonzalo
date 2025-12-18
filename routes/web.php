@@ -18,6 +18,7 @@ use App\Models\ContratoLote;
 use App\Models\Lote;
 use App\Models\Orden;
 use App\Models\Subasta;
+use App\Services\SubastaService;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 
@@ -43,7 +44,15 @@ Route::get('/', function () {
     ->orderBy('fecha_fin', 'asc')
     ->first();
   // info(["subastas " => $subastas]);
-  return view('welcome', compact("subastasProx", "subastasAct", "subastasFin", "last"));
+
+
+
+  $destacados = app(SubastaService::class)->getLotesActivosDestacadosHome()->toArray();
+
+  $contadorDestacados = !empty($destacados);
+
+
+  return view('welcome', compact("subastasProx", "subastasAct", "subastasFin", "last", "contadorDestacados"));
 })->name('home');
 
 

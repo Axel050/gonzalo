@@ -22,6 +22,7 @@ class Destacados extends Component
   public $destacados;
   public $from;
   protected $subastaService;
+  public $contador  = false;
   // protected $subastaService;
   // protected $subastaService;
 
@@ -53,6 +54,7 @@ class Destacados extends Component
       if ($this->from == "home") {
         $this->destacados = $this->subastaService?->getLotesActivosDestacadosHome()->toArray();
         info(["HOME" => $this->destacados]);
+        $this->contador  = $this->destacados ? true : false;
       } else {
         # code...
 

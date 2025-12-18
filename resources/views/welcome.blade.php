@@ -170,7 +170,7 @@
 
         </section>
 
-        <div class="w-full     [&>article]:max-w-8xl md:px-24">
+        <div class="w-full     [&>article]:max-w-8xl md:px-24 g-green-300">
             @livewire('subastas-abiertas')
 
 
@@ -180,9 +180,8 @@
         </div>
 
 
-
-        @if ($last)
-            <div class="  lg:px-24  px-4 overflow-x-hidden  w-full b-blue-300 max-w-8x px">
+        @if ($last && $contadorDestacados)
+            <div class="  lg:px-24  px-4 overflow-x-hidden  w-full g-blue-300 max-w-8x p-1">
 
                 @livewire('destacados', ['subasta_id' => $last->id, 'titulo' => true, 'from' => 'home'])
             </div>
