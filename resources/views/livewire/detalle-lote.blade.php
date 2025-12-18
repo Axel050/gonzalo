@@ -1,4 +1,4 @@
-<div class="flex flex-col justify-center items-center hvh w-full  pt-0 ">
+<div class="flex flex-col justify-center items-center hvh w-full   md:gap-y-24 gap-y-16 pt-12">
 
     @if ($method == 'noHabilitado')
         @livewire('modal-no-habilitado-pujar', ['subasta' => $lote->ultimoContrato?->subasta_id, 'adquirente' => $adquirente->id, 'lote' => $lote_id])
@@ -9,7 +9,7 @@
     {{-- <article class=" flex lg:flex-row flex-col p-4 mt-20 g-blue-600  shadow-lg rounded-2xl mb-10 bg-green-100"> --}}
 
     <article
-        class=" grid lg:grid-cols-2 grid-cols-1 p-4 lg:mt-20 mt-10 g-blue-600  shadow-lg rounded-2xl mb-10 lg:w-auto w-full relative">
+        class=" grid lg:grid-cols-2 grid-cols-1 p-4 lg-blue-600  shadw-lg rounded-2xl  lg:w-auto w-full relative md:mt-8 mt-4 max-w-6xl">
 
         <button wire:click="loteAnterior"
             class=" p-2 left-2 lg:-left-2  lg:-top-10 -top-7 absolute hover:scale-105 disabled:opacity-10 disabled:cursor-default"
@@ -37,7 +37,8 @@
         @endphp
 
         {{--  --}} {{--  --}}
-        {{--  --}} <div x-data="{
+        {{--  --}}
+        <div {{-- x-data="{
             records: @js($records),
             currentIndex: 0,
             touchStartX: 0,
@@ -62,12 +63,47 @@
                     }
                 }
             }
+        }" --}} x-data="{
+            records: @js($records),
+            currentIndex: 0,
+            touchStartX: 0,
+            touchEndX: 0,
+            get hasMultiple() {
+                return this.records.length > 1;
+            },
+            next() {
+                if (!this.hasMultiple) return;
+                this.currentIndex = (this.currentIndex + 1) % this.records.length;
+            },
+            prev() {
+                if (!this.hasMultiple) return;
+                this.currentIndex = (this.currentIndex - 1 + this.records.length) % this.records.length;
+            },
+            goTo(index) {
+                if (!this.hasMultiple) return;
+                this.currentIndex = index;
+            },
+            handleSwipe() {
+                if (!this.hasMultiple) return;
+                const swipeThreshold = 50;
+                const diff = this.touchStartX - this.touchEndX;
+                if (Math.abs(diff) > swipeThreshold) {
+                    diff > 0 ? this.next() : this.prev();
+                }
+            }
         }"
             class="flex flex-col items-center col-start-1 lg:row-start-1 lg:row-end-4 row-start-2">
             {{-- Imagen principal --}}
             <div class="relative w-full flex justify-center max-w-150 ">
-                <button @click="prev"
-                    class="absolute lg:inline-block hidden left-0 top-1/2 -translate-y-1/2 z-10 rounded-full px-2 py-1 hover:scale-105">
+                {{-- <button @click="prev"
+                    class="absolute lg:inline-block hidden left-0 top-1/2 -translate-y-1/2 z-10 rounded-full px-2 py-1 hover:scale-105"> --}}
+
+                <button @click="prev" :disabled="!hasMultiple"
+                    :class="!hasMultiple
+                        ?
+                        'opacity-5 cursor-not-allowed pointer-events-none' :
+                        'hover:scale-105'"
+                    class="absolute lg:inline-block hidden left-0 top-1/2 -translate-y-1/2 z-10 rounded-full pr-2 py-1 transition">
                     <svg class="rotate-180" width="39" height="67" viewBox="0 0 39 67" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path d="M2.26917 65.5L36.7307 33.5L2.26918 1.5" stroke="#262626" stroke-width="3"
@@ -75,6 +111,10 @@
                         <path d="M2.26917 65.5L36.7307 33.5L2.26918 1.5" stroke="black" stroke-opacity="0.2"
                             stroke-width="3" stroke-linecap="round" stroke-linejoin="round" />
                     </svg></button>
+
+
+
+
                 <figure class=" lg:w-150 w-full flex justify-center items-center relative">
                     <!-- Contenedor con el tamaño exacto de la imagen -->
                     {{-- <div class="relative group size-111" wire:click="$set('modal_foto',records[currentIndex].image )"> --}}
@@ -104,8 +144,14 @@
                 @if ($modal_foto)
                     <x-modal-foto-detalle :records="$records" :current-index="$modal_index" />
                 @endif
-                <button @click="next"
-                    class="absolute lg:inline-block hidden right-0 top-1/2 -translate-y-1/2 z-10 bgwhite/70 rounded-full px-2 py-1 hover:scale-105">
+                {{-- <button @click="next"
+                    class="absolute lg:inline-block hidden right-0 top-1/2 -translate-y-1/2 z-10 bgwhite/70 rounded-full px-2 py-1 hover:scale-105"> --}}
+                <button @click="next" :disabled="!hasMultiple"
+                    :class="!hasMultiple
+                        ?
+                        'opacity-5 cursor-not-allowed pointer-events-none' :
+                        'hover:scale-105'"
+                    class="absolute lg:inline-block hidden right-0 top-1/2 -translate-y-1/2 z-10 rounded-full pl-2 py-1 transition">
                     <svg width="39" height="67" viewBox="0 0 39 67" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path d="M2.26917 65.5L36.7307 33.5L2.26918 1.5" stroke="#262626" stroke-width="3"
@@ -267,20 +313,20 @@
                                 auth()->user()?->adquirente?->garantia($lote->ultimoContrato?->subasta_id))
                             @if (!$inCart)
                                 <button
-                                    class="bg-casa-black hover:bg-casa-base-2 text-casa-base hover:text-casa-black border border-casa-black rounded-full px-4 flex items-center justify-between gap-x-5 py-1 max-w-90 mt-4"
+                                    class="bg-casa-black hover:bg-casa-base-2 text-casa-base hover:text-casa-black border border-casa-black rounded-full px-4 flex items-center justify-between gap-x-5 py-1 max-w-90 mt-4 font-bold"
                                     wire:click="addCarrito">
                                     Hace click para ofertar
-                                    <svg fill="#fff" class="size-8 ">
-                                        <use xlink:href="#arrow-right"></use>
+                                    <svg class="size-[26px]">
+                                        <use xlink:href="#arrow-right1"></use>
                                     </svg>
                                 </button>
                             @else
                                 <a href="{{ route('pantalla-pujas') }}"
-                                    class="bg-casa-fondo hover:bg-casa-black hover:text-casa-base  text-casa-black border  border-casa-black rounded-full px-4 flex items-center justify-between gap-x-5 py-1 max-w-90 mt-4"
+                                    class="bg-casa-fondo hover:bg-casa-black hover:text-casa-base  text-casa-black border  border-casa-black rounded-full px-4 flex items-center justify-between gap-x-5 py-1 max-w-90 mt-4 font-bold"
                                     wire:click="addCarrito">
                                     Ver tus lotes
-                                    <svg fill="#fff" class="size-8 ">
-                                        <use xlink:href="#arrow-right"></use>
+                                    <svg class="size-[26px] ">
+                                        <use xlink:href="#arrow-right1"></use>
                                     </svg>
                                 </a>
                             @endif
@@ -342,36 +388,29 @@
 
 
 
-    {{-- $route --}}
-    <div class="lg:mt-10 mt-6  lg:w-fit w-full">
 
+
+    <div class="  w-full  [&>article]:max-w-5xl">
         @livewire('buscador', ['subasta_id' => $subasta->id, 'route' => $route])
 
-        {{-- <x-buscador /> --}}
 
     </div>
 
-    {{-- <div class="w-5/6">
-
-        <x-buscador />
-    </div> --}}
 
 
-
-
-
-    <div class="pb-0 pt-18 lg:px-24 overflow-x-hidden  w-full">
+    {{-- 
+    <div class="pb-0  lg:px-24 overflow-x-hidden  w-full">
         @livewire('destacados', ['subasta_id' => $subasta->id, 'route' => $route])
     </div>
 
 
-    {{-- <div class="-pb-10"> --}}
+    <div class="md:px-24 w-full">
 
-    @livewire('subastas-abiertas')
-    {{-- </div> --}}
+        @livewire('subastas-abiertas')
+    </div>
 
 
-
+ --}}
 
 
 

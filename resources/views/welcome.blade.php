@@ -1,7 +1,7 @@
 <x-layouts.guest>
 
 
-    <div class="flex flex-col justify-center items-center bg-gry-400 h-full  relative">
+    <div class="flex flex-col justify-center items-center bg-gry-400 h-full  relative md:gap-y-24 gap-y-16 ">
 
 
         {{-- 
@@ -55,7 +55,7 @@
         <h2 class="lg:text-3xl text-xl  font-bold  self-start  md:self-auto  ml-6 md:ml-0">Encontra la tuya.</h2> --}}
 
 
-        <section class="relative w-full overflow-hidden md:pt-10 pt-6 g-[#fbfbfb] bg-bue-300 lg:pb-24 pb-10">
+        <section class="relative w-full overflow-hidden md:pt-10 pt-6 g-[#fbfbfb] bg-bue-300 lg:pb-24 pb-10 ">
 
             <!-- ========================================== -->
             <!--  1. CAROUSEL PC (Detrás del texto)         -->
@@ -170,18 +170,19 @@
 
         </section>
 
-        <div class="w-full   bg-cyan-95">
+        <div class="w-full     [&>article]:max-w-8xl md:px-24">
             @livewire('subastas-abiertas')
-        </div>
 
-        <div class=" lg:w-4/5 w-full  b-yellow-500 lg:pb-24 pb-10">
+
             @livewire('buscador', ['todas' => true, 'from' => 'home'])
+
+
         </div>
 
 
 
         @if ($last)
-            <div class="lg:pb-24 pb-10  lg:px-24 px-4 overflow-x-hidden  w-full b-blue-300">
+            <div class="  lg:px-24  px-4 overflow-x-hidden  w-full b-blue-300 max-w-8x px">
 
                 @livewire('destacados', ['subasta_id' => $last->id, 'titulo' => true, 'from' => 'home'])
             </div>
@@ -189,173 +190,179 @@
 
 
         @if (count($subastasProx))
-            <div class="flex flex-col   w-full   items-center lg:pb-24   pb-10 lg:px-24 b-green-400  ">
+            <div class="flex flex-col   w-full   items-center  lg:px-24 ">
                 {{-- <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4 mb-4 lg:mb-8">
                     subastas próximas
                 </p> --}}
-                <x-fancy-heading text="s{u}bast{a}s p{r}óxim{a}s" variant="italic mx-[0.5px] font-normal"
-                    class=" md:text-[32px] text-[20px]  text-center self-start md:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
 
-                <div class="swiper-home-subastas     w-full  lg:overflow-x-hidden lg:px-0 px-4">
+                <div class="flex flex-col   w-full   items-center   max-w-8xl">
 
-                    <div class="swiper-wrapper  flex lg:flex-row flex-col">
-                        @foreach ($subastasProx as $item)
-                            <a href="{{ route('subasta-proximas.lotes', $item->id) }}"
-                                class="flex flex-col bg-casa-black text-casa-base-2 lg:p-6 p-4 mb-6 swiper-slide ">
+                    <x-fancy-heading text="s{u}bast{a}s p{r}óxim{a}s" variant="italic mx-[0.5px] font-normal"
+                        class=" md:text-[32px] text-[20px]  text-center self-start md:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
 
+                    <div class="swiper-home-subastas     w-full  lg:overflow-x-hidden lg:px-0 px-4">
 
-                                <div class="flex justify-between items-center lg:mb-4 mb-2">
-
-                                    <p class="text-[26px]  lg:text-[40px] font-caslon leading-[40px] ">
-                                        {{ $item->titulo }}
-                                    </p>
-
-                                    <svg fill="#fff" class="size-8  ml-8 self-start flex-shrink-0">
-                                        <use xlink:href="#arrow-right"></use>
-                                    </svg>
-
-                                </div>
+                        <div class="swiper-wrapper  flex lg:flex-row flex-col">
+                            @foreach ($subastasProx as $item)
+                                <a href="{{ route('subasta-proximas.lotes', $item->id) }}"
+                                    class="flex flex-col bg-casa-black text-casa-base lg:p-6 p-4  swiper-slide  md:mb-0 mb-4">
 
 
-                                @php
-                                    $fechaIni = \Carbon\Carbon::parse($item->fecha_inicio);
-                                    $diaIni = $fechaIni->translatedFormat('d'); // 06
-                                    $mesIni = Str::upper($fechaIni->translatedFormat('M')); // AGO
-                                    $horaIni = $fechaIni->format('H'); // 11
+                                    <div class="flex justify-between items-center lg:mb-4 mb-2">
 
-                                    $fechaFin = \Carbon\Carbon::parse($item->fecha_fin);
-                                    $diaFin = $fechaFin->translatedFormat('d'); // 06
-                                    $mesFin = Str::upper($fechaFin->translatedFormat('M')); // AGO
-                                    $horaFin = $fechaFin->format('H'); // 11
+                                        <p class="text-[26px]  lg:text-[40px] font-caslon leading-[40px] ">
+                                            {{ $item->titulo }}
+                                        </p>
 
-                                @endphp
-
-                                {{-- <p class="mb-2 text-xl ">Abierta hasta el
-                                    <b></b>
-                                </p> --}}
-
-                                <div class="flex justify-between lg:text-xl text-sm">
-
-                                    <div class="flex flex-col mb-1.5">
-                                        <p>Desde el</p>
-                                        <p class="font-bold"> {{ $diaIni }} de {{ $mesIni }} |
-                                            {{ $horaIni }}hs</p>
+                                        <svg class="size-[26px]  ml-8 self-start flex-shrink-0">
+                                            <use xlink:href="#arrow-right1"></use>
+                                        </svg>
 
                                     </div>
 
-                                    <div class="flex flex-col">
-                                        <p>Hasta el</p>
-                                        <p class="font-bold">{{ $diaFin }} de {{ $mesFin }} |
-                                            {{ $horaFin }}hs</p>
+
+                                    @php
+                                        $fechaIni = \Carbon\Carbon::parse($item->fecha_inicio);
+                                        $diaIni = $fechaIni->translatedFormat('d'); // 06
+                                        $mesIni = Str::upper($fechaIni->translatedFormat('M')); // AGO
+                                        $horaIni = $fechaIni->format('H'); // 11
+
+                                        $fechaFin = \Carbon\Carbon::parse($item->fecha_fin);
+                                        $diaFin = $fechaFin->translatedFormat('d'); // 06
+                                        $mesFin = Str::upper($fechaFin->translatedFormat('M')); // AGO
+                                        $horaFin = $fechaFin->format('H'); // 11
+
+                                    @endphp
+
+                                    <div class="flex justify-between lg:text-xl text-sm">
+
+                                        <div class="flex flex-col mb-1.5">
+                                            <p>Desde el</p>
+                                            <p class="font-bold"> {{ $diaIni }} de {{ $mesIni }} |
+                                                {{ $horaIni }}hs</p>
+
+                                        </div>
+
+                                        <div class="flex flex-col">
+                                            <p>Hasta el</p>
+                                            <p class="font-bold">{{ $diaFin }} de {{ $mesFin }} |
+                                                {{ $horaFin }}hs</p>
+
+                                        </div>
 
                                     </div>
 
-                                </div>
 
 
 
-
-                                <p class="text-xl line-clamp-3">{{ $item->descripcion }}</p>
-
-
-
-                                @if ($item->desc_extra)
-                                    <x-modal-desc-extra-home :titulo="$item->titulo" :desc="$item->desc_extra" :route="route('subasta-proximas.lotes', $item->id)" />
-                                @endif
+                                    <p class="text-xl line-clamp-3">{{ $item->descripcion }}</p>
 
 
 
-                            </a>
-                        @endforeach
+                                    @if ($item->desc_extra)
+                                        <x-modal-desc-extra-home :titulo="$item->titulo" :desc="$item->desc_extra"
+                                            :route="route('subasta-proximas.lotes', $item->id)" />
+                                    @endif
+
+
+
+                                </a>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         @endif
 
 
+
+
         @if (count($subastasFin))
-            <div class="flex flex-col   w-full   items-center lg:pb-24 pb-10 lg:px-24   bg-rd-100">
+            <div class="flex flex-col   w-full   items-center md:px-24   ">
                 {{-- <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4 mb-4 lg:mb-8">subastas
                     pasadas</p> --}}
 
-                <x-fancy-heading text="s{u}bast{a}s p{a}sa{d}as" variant="italic mx-[0.5px] font-normal"
-                    class=" md:text-[32px] text-[20px]  text-center self-start md:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
+                <div class="flex flex-col   w-full   items-center   max-w-8xl">
+                    <x-fancy-heading text="s{u}bast{a}s p{a}sa{d}as" variant="italic mx-[0.5px] font-normal"
+                        class=" md:text-[32px] text-[20px]  text-center self-start md:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
 
-                <div class="swiper-home-subastas     w-full  lg:overflow-x-hidden lg:px-0 px-4 ">
+                    <div class="swiper-home-subastas     w-full  lg:overflow-x-hidden lg:px-0 px-4 ">
 
-                    <div class="swiper-wrapper  flex lg:flex-row flex-col  ">
+                        <div class="swiper-wrapper  flex lg:flex-row flex-col  ">
 
-                        @foreach ($subastasFin as $item)
-                            <a href="{{ route('subasta-pasadas.lotes', $item->id) }}"
-                                class="flex flex-col bg-casa-base-2 text-casa-black p-6 mb-6 swiper-slide border border-casa-black/50 ">
-
-
-
-                                <div class="flex justify-between items-center lg:mb-4 mb-2">
-
-                                    <p class="text-2xl  lg:text-[40px] font-caslon leading-[40px]">
-                                        {{ $item->titulo }}
-                                    </p>
-
-                                    <svg fill="#fff" class="size-8  ml-8 self-start flex-shrink-0">
-                                        <use xlink:href="#arrow-right"></use>
-                                    </svg>
-
-                                </div>
+                            @foreach ($subastasFin as $item)
+                                <a href="{{ route('subasta-pasadas.lotes', $item->id) }}"
+                                    class="flex flex-col bg-casa-base-2 text-casa-black p-6  swiper-slide border border-casa-black/50 md:mb-0 mb-4">
 
 
-                                @php
-                                    $fechaIni = \Carbon\Carbon::parse($item->fecha_inicio);
-                                    $diaIni = $fechaIni->translatedFormat('d'); // 06
-                                    $mesIni = Str::upper($fechaIni->translatedFormat('M')); // AGO
-                                    $horaIni = $fechaIni->format('H'); // 11
 
-                                    $fechaFin = \Carbon\Carbon::parse($item->fecha_fin);
-                                    $diaFin = $fechaFin->translatedFormat('d'); // 06
-                                    $mesFin = Str::upper($fechaFin->translatedFormat('M')); // AGO
-                                    $horaFin = $fechaFin->format('H'); // 11
+                                    <div class="flex justify-between items-center lg:mb-4 mb-2">
 
-                                @endphp
+                                        <p class="text-2xl  lg:text-[40px] font-caslon leading-[40px]">
+                                            {{ $item->titulo }}
+                                        </p>
 
-                                {{-- <p class="mb-2 text-xl ">Abierta hasta el
+                                        <svg class="size-[26px]  ml-8 self-start flex-shrink-0">
+                                            <use xlink:href="#arrow-right1"></use>
+                                        </svg>
+
+                                    </div>
+
+
+                                    @php
+                                        $fechaIni = \Carbon\Carbon::parse($item->fecha_inicio);
+                                        $diaIni = $fechaIni->translatedFormat('d'); // 06
+                                        $mesIni = Str::upper($fechaIni->translatedFormat('M')); // AGO
+                                        $horaIni = $fechaIni->format('H'); // 11
+
+                                        $fechaFin = \Carbon\Carbon::parse($item->fecha_fin);
+                                        $diaFin = $fechaFin->translatedFormat('d'); // 06
+                                        $mesFin = Str::upper($fechaFin->translatedFormat('M')); // AGO
+                                        $horaFin = $fechaFin->format('H'); // 11
+
+                                    @endphp
+
+                                    {{-- <p class="mb-2 text-xl ">Abierta hasta el
                                     <b></b>
                                 </p> --}}
 
-                                <div class="flex justify-between">
+                                    <div class="flex justify-between">
 
-                                    <div class="flex flex-col mb-1.5">
-                                        <p>Desde el</p>
-                                        <p class="font-bold"> {{ $diaIni }} de {{ $mesIni }} |
-                                            {{ $horaIni }}hs</p>
+                                        <div class="flex flex-col mb-1.5">
+                                            <p>Desde el</p>
+                                            <p class="font-bold"> {{ $diaIni }} de {{ $mesIni }} |
+                                                {{ $horaIni }}hs</p>
+
+                                        </div>
+
+                                        <div class="flex flex-col">
+                                            <p>Hasta el</p>
+                                            <p class="font-bold">{{ $diaFin }} de {{ $mesFin }} |
+                                                {{ $horaFin }}hs</p>
+
+                                        </div>
 
                                     </div>
 
-                                    <div class="flex flex-col">
-                                        <p>Hasta el</p>
-                                        <p class="font-bold">{{ $diaFin }} de {{ $mesFin }} |
-                                            {{ $horaFin }}hs</p>
-
-                                    </div>
-
-                                </div>
 
 
+                                    <p class="text-xl line-clamp-3">{{ $item->descripcion }}</p>
 
-                                <p class="text-xl line-clamp-3">{{ $item->descripcion }}</p>
 
-
-                                @if ($item->desc_extra)
-                                    <x-modal-desc-extra-home :titulo="$item->titulo" :desc="$item->desc_extra" :route="route('subasta-pasadas.lotes', $item->id)" />
-                                @endif
+                                    @if ($item->desc_extra)
+                                        <x-modal-desc-extra-home :titulo="$item->titulo" :desc="$item->desc_extra"
+                                            :route="route('subasta-pasadas.lotes', $item->id)" />
+                                    @endif
 
 
 
-                            </a>
-                        @endforeach
+                                </a>
+                            @endforeach
+                        </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         @endif
 

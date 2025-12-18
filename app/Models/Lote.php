@@ -98,15 +98,15 @@ class Lote extends Model implements Auditable
   }
 
 
-  public function getPrecioBaseAttribute()
-  {
-    if ($this->ultimo_contrato) {
-      return $this->contratoLotes()
-        ->where('contrato_id', $this->ultimo_contrato)
-        ->value('precio_base');
-    }
-    return null; // Return null if no ultimo_contrato is set
-  }
+  // public function getPrecioBaseAttribute()
+  // {
+  //   if ($this->ultimo_contrato) {
+  //     return $this->contratoLotes()
+  //       ->where('contrato_id', $this->ultimo_contrato)
+  //       ->value('precio_base');
+  //   }
+  //   return null; // Return null if no ultimo_contrato is set
+  // }
 
 
   public function getPrecioFinalAttribute()

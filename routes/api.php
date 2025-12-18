@@ -5,6 +5,7 @@ use App\Http\Controllers\CarritoController;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ComitenteController;
 use App\Http\Controllers\MPController;
+use App\Http\Controllers\SubastaController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -36,6 +37,12 @@ Route::post('/carrito', [CarritoController::class, 'store'])->name('carrito.stor
 Route::post('/carrito/pujar', [CarritoController::class, 'pujar'])->name('carrito.pujar');
 
 Route::post('/notification', [MPController::class, 'notification']);
+
+
+// GET / api / subastas / 12 / lotes ? search = bici & page = 2 & per_page = 5
+
+Route::get('/subastas-proximas/{subasta}/lotes', [SubastaController::class, 'lotesProximos']);
+
 
 
 

@@ -1,9 +1,9 @@
-<div class="flex flex-col justify-center items-center  w-full  pt-0  text-casa-black ">
+<div class="flex flex-col justify-center items-center  w-full    text-casa-black md:gap-y-24 gap-y-16 pt-12">
 
 
 
 
-    <div class="mt-10">
+    <div class="  w-full  [&>article]:max-w-5xl">
         @livewire('buscador', ['subasta_id' => $subasta->id, 'search' => $search])
     </div>
 
@@ -14,7 +14,7 @@
         {{-- @if (auth()->user()?->adquirente?->estado_id == 1 || auth()->user()?->adquirente?->garantia($subasta->id) || !auth()->user()?->hasRole('adquirente')) --}}
 
 
-        <div class=" bg-casa-black flex  border rounded-full    mx-auto justify-between pl-3 pr-1 py-0.5 items-center mt-5 border-casa-black col-span-3"
+        <div class=" bg-casa-black flex  border rounded-full    mx-auto justify-between pl-3 pr-1 py-0.5 items-center  border-casa-black col-span-3"
             wire:show="filtered">
 
             <p class="text-nowrap text-casa-base-2 ml-2">Resultados: <span class="ml-1">{{ $filtered }}</span>
@@ -22,7 +22,7 @@
 
 
             <button wire:click="todos"
-                class="bg-casa-base-2 hover:bg-casa-black-h hover:text-casa-base border border-casa-base  text-casa-black rounded-full px-4 flex items-center justify-between  py-0.5 w-fit lg:ml-20 ml-4">
+                class="bg-casa-base-2 hover:bg-casa-black-h hover:text-casa-base border border-casa-base  text-casa-black rounded-full px-4 flex items-center justify-between  py-0.5 w-fit md:ml-20 ml-4">
                 Ver todos los lotes
                 <span class="text-xl leading-0 ml-8">X</span>
             </button>
@@ -31,49 +31,60 @@
 
         {{-- <div class="flex bg-casa-black justify-center items-center text-4xl font-bold text-casa-base-2  py-8 px-40 col-span-3 "
                 wire:show="noSearch"> --}}
-        <div class=" bg-casa-black flex  border rounded-full  w-fit  mx-auto justify-center  py-2 items-center mt-5 border-casa-black col-span-3 text-casa-base-2  lg:px-20  px-5 lg:text-xl text-lg"
+        <div class=" bg-casa-black flex  border rounded-full  w-fit  mx-auto justify-between  py-2 items-center  border-casa-black col-span-3 text-casa-base-2    px-4 md:text-xl text-md"
             wire:show="noSearch">
-            <button wire:click="$set('noSearch',false)">¡Sin resultados para <b>"{{ $search }}"</b>! <span
-                    class="text-xl leading-0 ml-8 cursor-pointer">X</span></button>
+            <button wire:click="$set('noSearch',false)">¡Sin resultados para <b>"{{ $search }}"</b>!
+
+                <svg class="lg:size-8 size-7 lg:ml-20 ml-7 inline hover:scale-105">
+                    <use xlink:href="#x"></use>
+                </svg>
+            </button>
+            </button>
+
 
         </div>
 
 
-        <div class="flex flex-wrap  mt-10 lg:gap-12 gap-2 place-content-center justify-center max-w-[1440px]  w-full">
+
+
+
+
+
+        <div class="flex flex-wrap   md:gap-12 gap-2 place-content-center justify-center max-w-[1440px]  w-full">
 
 
             @forelse ($lotes as $lote)
                 <div
-                    class=" bg-casa-base-2 bas flex flex-col lg:p-6 p-2 gap-y-1 lg:border border-casa-black lg:w-[394px]  lg:min-w-[300px] min-w-[44%] relative max-w-[48%]">
+                    class=" bg-casa-base-2 bas flex flex-col md:p-6 p-2 gap-y-1 md:border border-casa-black md:w-[394px]  md:min-w-[300px] min-w-[44%] relative max-w-[48%]">
 
-                    {{-- <div class="flex justify-between items-center lg:order-1 order-2"> --}}
-                    {{-- <p class="font-bold lg:text-3xl text-sm w-full  mr-3">{{ $lote['titulo'] }}</p> --}}
+                    {{-- <div class="flex justify-between items-center md:order-1 order-2"> --}}
+                    {{-- <p class="font-bold md:text-3xl text-sm w-full  mr-3">{{ $lote['titulo'] }}</p> --}}
                     {{-- </div> --}}
 
                     <x-clamp :text="$lote['titulo']" bclass="z-20" exp="-bottom-2 -right-2 md:right-0" />
 
-                    <div class="flex gap-x-4 justify-center my-2 lg:order-2 order-1">
+                    <div class="flex gap-x-4 justify-center my-2 md:order-2 order-1">
                         <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote['foto']) }}"
-                            class="lg:size-49 size-20 " />
+                            class="md:size-49 size-20 " />
                     </div>
 
 
-                    <p class="text-xl mb-2 lg:block hidden lg:order-3">{{ $lote['descripcion'] }}. </p>
+                    <p class="text-xl mb-2 md:block hidden md:order-3">{{ $lote['descripcion'] }}. </p>
 
 
-                    <p class="lg:text-xl text-sm  mt-auto lg:order-4 order-3">Base:
+                    <p class="md:text-xl text-sm  mt-auto md:order-4 order-3">Base:
                         {{ $this->getMonedaSigno($lote['moneda_id']) }}{{ $lote['precio_base'] }}</p>
 
 
 
-                    {{-- <a href="{{ route('lotes.show', $lote['id']) }}" class="absolute inset-0 lg:hidden z-10"></a> --}}
+                    {{-- <a href="{{ route('lotes.show', $lote['id']) }}" class="absolute inset-0 md:hidden z-10"></a> --}}
 
 
 
 
                     @if ($lote['estado_lote'] == 'vendido')
                         <p
-                            class=" bg-red-800 text-gray-50   border border-black rounded-full px-4 flex  justify-center  lg:py-2 pt-0.5  w-full  lg:text-xl text-sm font-bold mb-2 order-6">
+                            class=" bg-red-800 text-casa-base  border border-black rounded-full px-4 flex  justify-center  md:py-2 pt-0.5  w-full  md:text-xl text-sm font-bold mb-2 order-6">
                             VENDIDO
                         </p>
                     @else
@@ -85,13 +96,13 @@
                                 </svg>
                             </a> --}}
 
-                        <a href="{{ route('lotes.show', $lote['id']) }}" class="absolute inset-0 lg:hidden z-10"></a>
+                        <a href="{{ route('lotes.show', $lote['id']) }}" class="absolute inset-0 md:hidden z-10"></a>
 
                         <a href="{{ route('lotes.show', $lote['id']) }}"
-                            class="hover:text-casa-black bg-casa-black text-gray-50  hover:bg-casa-base  border border-black rounded-full px-4 lg:flex items-center justify-between  py-2  w-full  text-xl font-bold mb-2  hidden  order-6">
-                            <span class="lg:inline-block hidden">Ver detalle</span>
-                            <svg class="size-8 ">
-                                <use xlink:href="#arrow-right"></use>
+                            class="hover:text-casa-black bg-casa-black text-casa-base  hover:bg-casa-base  border border-black rounded-full px-4 md:flex items-center justify-between  py-2  w-full  text-xl font-bold mb-2  hidden  order-6">
+                            <span class="md:inline-block hidden">Ver detalle</span>
+                            <svg class="size-[26px] ">
+                                <use xlink:href="#arrow-right1"></use>
                             </svg>
                         </a>
                     @endif

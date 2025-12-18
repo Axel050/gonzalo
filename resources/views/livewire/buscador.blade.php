@@ -1,15 +1,15 @@
-<article class="flex  w-full lg:justify-center flex-col   px-4 ">
+<article class="flex   md:justify-center flex-col   px-4 md:px-0  md:mx-auto  w-full">
 
     @if ($from != 'home')
 
 
         {{-- <h2
-            class="font-librecaslon font-normal lg:text-[64px]  text-[37px] leading-[1] tracking-normal lg:text-center text-start"> --}}
+            class="font-librecaslon font-normal md:text-[64px]  text-[37px] leading-[1] tracking-normal md:text-center text-start"> --}}
         @if ($todas)
             {{-- Subastas --}}
 
             <x-fancy-heading text="S{u}bast{a}s" variant="italic mx-[0.5px] font-normal"
-                class=" md:text-[64px] text-[37px] leading-9 text-center  md:mb-1 text-wrap font-normal" />
+                class=" md:text-[64px] text-[37px] leading-9 md:text-center text-start   md:mb-1 text-wrap font-normal" />
         @elseif($view)
             {{-- Lotes --}}
 
@@ -17,36 +17,36 @@
                 class=" md:text-[64px] text-[37px] leading-9 text-center  md:mb-1 text-wrap " />
         @else
             {{-- <h2
-                class="font-librecaslon font-normal lg:text-[64px]  text-[37px] leading-[1] tracking-normal lg:text-center text-start">
+                class="font-librecaslon font-normal md:text-[64px]  text-[37px] leading-[1] tracking-normal md:text-center text-start">
                 {{ $subasta_bus->titulo }}
             </h2> --}}
             <x-fancy-heading-v text="{{ $subasta_bus->titulo }}" variant="italic  font-normal   -tracking-[3px] "
-                class=" md:text-[64px] text-[37px] leadin-9 text-center  md:mb-1 text-wrap font-normal   " />
+                class=" md:text-[64px] text-[37px] leadin-9 md:text-center text-start  md:mb-1 text-wrap font-normal   " />
         @endif
 
 
 
         @if ($route)
             <a href="{{ route('subasta.lotes', $subasta_id) }}"
-                class="font-helvetica font-semibold lg:text-xl text-sm  tracking-normal lg:text-center text-start mt-4 mb-2  flex border rounded-full px-4 justify-between lg:mx-auto py-1 border-casa-black items-center hover:bg-casa-base-2 w-fit ">
+                class="font-helvetica font-semibold md:text-xl text-sm  tracking-normal md:text-center text-start md:mt-3 mt-1 mb-2  flex border rounded-full px-4 justify-between md:mx-auto py-1 border-casa-black items-center hover:bg-casa-base-2 w-fit text-casa-black ">
                 <span>Ver todos los lotes</span>
-                <svg class="lg:size-8 size-5 ml-15">
-                    <use xlink:href="#arrow-right"></use>
+                <svg class="md:size-[26px] size-5 md:ml-15 ml-10">
+                    <use xlink:href="#arrow-right1"></use>
                 </svg>
 
             </a>
         @endif
-        <p class="lg:text-center text-start lg:text-3xl text-sm ">Podés buscar tus lotes por título, característica,
+        <p class="md:text-center text-start md:text-2xl text-sm ">Podés buscar tus lotes por título, característica,
             artista, material, época, etc.
         </p>
 
     @endif
 
     <div
-        class=" g-blue-200 flex border rounded-full  w-6/6  mx-auto justify-between pl-3 pr-1 py-1 items-center lg:mt-5 mt-3 border-casa-black">
+        class="    flex border rounded-full  w-6/6  mx-auto justify-between pl-3 pr-1 py-1 items-center md:mt-5 mt-3 border-casa-black ">
 
         <div class="flex items-center">
-            <svg fill="#fff" class="lg:size-8  size-6 ">
+            <svg fill="#fff" class="md:size-8  size-6 ">
                 <use xlink:href="#lupa"></use>
             </svg>
             {{-- <span class="text-nowrap">¿Que buscas?</span> --}}
@@ -55,17 +55,17 @@
 
 
         <input type="search"
-            class="w-full lg:mx-3 mx-1 focus:outline-0 placeholder:text-gray-600 placeholder:lg:text-xl  placeholder:text-sm "
+            class="w-full md:mx-3 mx-1 focus:outline-0 placeholder:text-gray-600 placeholder:md:text-xl  placeholder:text-sm  "
             wire:model.live.debounce.500ms="search" placeholder="¿Qué buscas?" />
 
         <button
-            class="bg-casa-black hover:bg-casa-black-h text-gray-50 rounded-full lg:px-4 px-2 flex items-center justify-between  py-2 lg:w-67 w-9"
+            class="bg-casa-black hover:bg-casa-black-h text-casa-base rounded-full md:px-4 px-2 flex items-center justify-between  py-2 md:w-67 w-9"
             wire:click="buscarLotes">
             {{-- wire:click="$parent.filtrar('{{ $search }}')" --}}
 
-            <span class="lg:block hidden">Buscar</span>
-            <svg class="lg:size-8 size-5 ">
-                <use xlink:href="#arrow-right"></use>
+            <span class="md:block hidden font-bold">Buscar</span>
+            <svg class="md:size-[26px] size-5 ">
+                <use xlink:href="#arrow-right1"></use>
             </svg>
         </button>
 
@@ -78,7 +78,7 @@
             <svg class="w-4 h-3.5 mr-1">
                 <use xlink:href="#error-icon"></use>
             </svg>
-            <p class="lg:max-w-80 leading-[12px] ">
+            <p class="md:max-w-80 leading-[12px] ">
                 {{ $message }}
             </p>
         </div>

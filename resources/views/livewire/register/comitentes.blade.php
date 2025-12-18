@@ -12,7 +12,7 @@
         <p class="lg:text-xl text-sm">Registrate para poder subastar tu bienes.</p>
 
 
-        <form wire:submit.prevent="save" class="grid lg:grid-cols-2  grid-cols-1 gap-y-2 gap-x-8 mt-5 ">
+        <form wire:submit.prevent="save" class="grid lg:grid-cols-3  grid-cols-1 gap-y-2 gap-x-8 mt-5 ">
 
 
             <div class= 'items-start  lg:w-60 w-full lg:mx-auto  '>
@@ -142,7 +142,7 @@
             </div>
 
 
-            <div wire:ignore class="relative mt-3 lg:col-span-2  mx-auto ">
+            <div wire:ignore class="relative mt-3 lg:col-span-3  mx-auto ">
                 <div id="g-recaptcha" class="g-recaptcha" data-sitekey="{{ config('services.recaptcha.key') }}"
                     data-callback="onRecaptchaSuccess" data-expired-callback="onRecaptchaExpired"></div>
             </div>
@@ -150,7 +150,7 @@
                 class="top-full py-0 leading-[12px] text-red-500 mb-2 mx-auto lg:col-span-2" />
 
             <button type="submit"
-                class="bg-casa-black  text-casa-base mx-auto px-4 py-1 rounded-3xl mt-3 w-full lg:col-span-2 flex justify-between items-center lg:text-xl text-sm font-bold">
+                class="bg-casa-black  text-casa-base mx-auto px-4 py-1 rounded-3xl mt-3 w-full lg:col-span-3 flex justify-between items-center lg:text-xl text-sm font-bold">
                 <span>Enviar</span>
 
                 <svg fill="#fff" class="lg:size-8 size-7 ">
@@ -166,7 +166,9 @@
 
     <div
         class="flex  lg:flex-row flex-col w-full lg:justify-between   text-casa-fondo-h pt-6 lg:pb-6 pb-10 lg:px-24 px-4  border-casa-base-2  bg-casa-black   text-start lg:mt-auto  mt-12 ">
-        <p>&copy; 2025 Creado por casablanca.ar</p>
+
+        <p>&copy; 2025 Creado por <a href="https://www.aisolucionesweb.com/"
+                class="hover:text-casa-base font-semibold hover:font-bold">aisolucionesweb</a></p>
         <p>&copy; Diseñado por
             <a href="https://www.crabbystudio.com/" target="_blank" class="underline"> CrabbyStudio</a>
         </p>

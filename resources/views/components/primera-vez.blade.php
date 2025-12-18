@@ -43,11 +43,12 @@
       <p class="lg:text-xl text-sm  ">Si ganás, coordinamos la entrega con vos</p>
 
       <a href="{{ route('adquirentes.create') }}"
-          class=" bg-casa-black rounded-4xl flex  items-center px-4 py-1 mx-auto text-casa-base mt-8 lg:text-xl text-sm font-bold  lg:w-fit w-full lg:justify-center justify-between">
+          class=" bg-casa-black rounded-4xl flex  items-center px-4 py-2 mx-auto text-casa-base mt-8 lg:text-xl text-sm font-bold  lg:w-fit w-full lg:justify-center justify-between">
           Registrarme
-          <svg fill="#fff" class="size-7  ml-6 shrink-0 self-start">
-              <use xlink:href="#arrow-right"></use>
+          <svg fill="#fff" class="size-[26px]  ml-6 shrink-0 self-start">
+              <use xlink:href="#arrow-right1"></use>
           </svg>
+
       </a>
   </div>
   6

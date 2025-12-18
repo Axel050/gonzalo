@@ -19,7 +19,7 @@
 
             <!-- Modal -->
             <div x-show="open" x-transition.scale
-                class="bg-casa-base rounded-xl md:py-6 py-4 md:max-w-3/4 max-w-4/5   mx-4 shadow-xl  text-casa-black">
+                class="bg-casa-base rounded-xl md:py-6 py-4 md:max-w-3/4 max-w-4/5   mx-4 shadow-xl  text-casa-black md:px-6 px-4">
 
                 <h3 class="md:text-2xl text-xl font-semibold mb-3 px-2 text-center">
                     {{ $titulo }}</h3>
@@ -34,7 +34,7 @@
                     {!! nl2br(e($desc)) !!}
                 </p>
 
-                <div class="mt-6 flex justify-center md:gap-x-12 gap-x-6 ">
+                <div class="md:mt-8 mt-6 flex justify-center md:gap-x-12 gap-x-6 ">
 
                     <button @click="open = false"
                         class="px-2 py-1 rounded-full border border-casa-black  transition bg-casa-base-2 text-casa-black flex items-center hover:bg-casa-black hover:text-casa-base ">

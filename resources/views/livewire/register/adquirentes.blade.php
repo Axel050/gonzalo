@@ -202,7 +202,8 @@
 
     <div
         class="flex  lg:flex-row flex-col w-full lg:justify-between   text-casa-fondo-h pt-6 lg:pb-6 pb-10 lg:px-24 px-4  border-casa-base-2  bg-casa-black   text-start  lg:mt-auto mt-12">
-        <p>&copy; 2025 Creado por casablanca.ar</p>
+        <p>&copy; 2025 Creado por <a href="https://www.aisolucionesweb.com/"
+                class="hover:text-casa-base font-semibold hover:font-bold">aisolucionesweb</a></p>
         <p>&copy; Diseñado por
             <a href="https://www.crabbystudio.com/" target="_blank" class="underline"> CrabbyStudio</a>
         </p>

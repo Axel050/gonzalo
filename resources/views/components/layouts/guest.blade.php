@@ -62,139 +62,142 @@
 
 
 
+
         <nav x-data="{ scrolled: false }" @scroll.window="scrolled = window.pageYOffset > 50"
-            :class="{ 'opacity-20 ': scrolled, 'bg-transparent': !scrolled }"
-            class=" sticky top-0 z-50  flex  w-full -200 justify-between py-4 lg:px-24 px-4  text-gray-800  border-b  border-gray-700 shadow-lg lg:h-20 lg:h30  h16 h-11 items-center hover:bg-casa-base   transition-all duration-1000 ease-in-out hover:opacity-100 ">
+            :class="{ 'opacity-5 ': scrolled, 'bg-transparent': !scrolled }"
+            class=" sticky top-0 z-50  flex  w-full -200  py-4    text-gray-800  -gray-700 shadw-lg lg:h-20 lg:h30  h16 h-11 items-center hover:bg-casa-base   transition-all duration-1000 ease-in-out hover:opacity-100   mx-auto md:px-24 px-4  border-b border-casa-black ">
+
+
+            <div class="max-w-8xl  flex  w-full justify-between items-center  mx-auto">
 
 
 
 
 
+                <div class="lg:flex hidden ">
 
-            <div class="lg:flex hidden">
+                    <div class="flex  gap-4 text-casa-base">
 
-                <div class="flex  gap-4 text-gray-300 ">
+                        <a href="" class="over:scale-105">
+                            <svg fill="#fff" class="size-8 ">
+                                <use xlink:href="#instagram"></use>
+                            </svg>
+                        </a>
 
-                    <a href="" class="over:scale-105">
-                        <svg fill="#fff" class="size-8 ">
-                            <use xlink:href="#instagram"></use>
-                        </svg>
+                        <a href="" class="over:scale-105">
+                            <svg fill="#fff" class="size-8 ">
+                                <use xlink:href="#what"></use>
+                            </svg>
+                        </a>
+
+                        <a href="" class="over:scale-105">
+                            <svg fill="#fff" class="size-8 ">
+                                <use xlink:href="#mail"></use>
+                            </svg>
+                        </a>
+
+                    </div>
+
+
+                    <a href="{{ route('subastas') }}"
+                        class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black text-black ml-8 mr-4 h-fit ">
+                        Subastas
                     </a>
 
-                    <a href="" class="over:scale-105">
-                        <svg fill="#fff" class="size-8 ">
-                            <use xlink:href="#what"></use>
-                        </svg>
-                    </a>
+                    @guest
+                        <a href="{{ route('adquirentes.create') }}"
+                            class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black text-black h-fit">
+                            ¿Primera vez?
+                        </a>
+                    @endguest
 
-                    <a href="" class="over:scale-105">
-                        <svg fill="#fff" class="size-8 ">
-                            <use xlink:href="#mail"></use>
-                        </svg>
-                    </a>
 
                 </div>
 
 
-                <a href="{{ route('subastas') }}"
-                    class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black text-black ml-8 mr-4 h-fit ">
-                    Subastas
+
+
+
+                <a href="{{ route('home') }}" class=" over:scale-105">
+                    <svg fill="#fff" class="w-59  h-7  lg:flex hidden">
+                        <use xlink:href="#casa-icon"></use>
+                    </svg>
+
+                    <svg fill="#fff" class="w-28  h-5  lg:hidden flex">
+                        <use xlink:href="#casa-icon-mb"></use>
+                    </svg>
                 </a>
 
-                @guest
-                    <a href="{{ route('adquirentes.create') }}"
-                        class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black text-black h-fit">
-                        ¿Primera vez?
-                    </a>
-                @endguest
 
+                <div class="lg:flex hidden">
 
-            </div>
-
-
-
-
-
-            <a href="{{ route('home') }}" class=" over:scale-105">
-                <svg fill="#fff" class="w-59  h-7  lg:flex hidden">
-                    <use xlink:href="#casa-icon"></use>
-                </svg>
-
-                <svg fill="#fff" class="w-28  h-5  lg:hidden flex">
-                    <use xlink:href="#casa-icon-mb"></use>
-                </svg>
-            </a>
-
-
-            <div class="lg:flex hidden">
-
-                @guest
-                    <a href="{{ route('comitentes.create') }}"
-                        class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black mr-8 text-black  h-fit lg:flex hidden">
-                        ¿Tenés algo para vender?
-                    </a>
-                @endguest
+                    @guest
+                        <a href="{{ route('comitentes.create') }}"
+                            class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black mr-8 text-black  h-fit lg:flex hidden">
+                            ¿Tenés algo para vender?
+                        </a>
+                    @endguest
 
 
 
 
-                @auth
+                    @auth
 
 
 
 
 
-                    <div class="flex justify-end ml-auto mr-4  text-black  z-50 cursor-pointer">
+                        <div class="flex justify-end ml-auto mr-4  text-black  z-50 cursor-pointer">
 
-                        <x-dropdownlogfront />
-                    </div>
+                            <x-dropdownlogfront />
+                        </div>
 
+                        @role('adquirente')
+                            @if (!request()->routeIs('pantalla-pujas'))
+                                <a href="{{ route('pantalla-pujas') }}"
+                                    class=" px-2   hover:scale-105  pt-0.5 flex  items-center rounded-3xl border border-casa-black text-sm"
+                                    title="Pantalla pujas">
+                                    {{-- <svg fill="#000" class="size-7">
+                                    <use xlink:href="#cart"></use>
+                                </svg> --}}
+                                    <x-hammer-icon />
+                                    <span class="pr-0.5">
+                                        Pujas
+                                    </span>
+                                </a>
+                            @endif
+                        @endrole
+                    @else
+                        <a href="{{ route('login') }}"
+                            class="inline-block px-3 py-2  text-white  rounded-full text-sm bg-casa-black hover:scale-105">
+                            Log in
+                        </a>
+
+                    @endauth
+                </div>
+
+
+
+                <div class="lg:hidden flex">
                     @role('adquirente')
                         @if (!request()->routeIs('pantalla-pujas'))
                             <a href="{{ route('pantalla-pujas') }}"
-                                class=" px-2   hover:scale-105  pt-0.5 flex  items-center rounded-3xl border border-casa-black text-sm"
+                                class=" px-2   mr-3 flex items-center rounded-3xl border border-casa-black  h-7"
                                 title="Pantalla pujas">
-                                {{-- <svg fill="#000" class="size-7">
-                                    <use xlink:href="#cart"></use>
-                                </svg> --}}
+                                {{-- <svg fill="#fff" class="size-7">
+                                <use xlink:href="#cart"></use>
+                            </svg> --}}
                                 <x-hammer-icon />
-                                <span class="pr-0.5">
-                                    Pujas
-                                </span>
+                                <span clas="text-xs">Pujas</span>
                             </a>
                         @endif
                     @endrole
-                @else
-                    <a href="{{ route('login') }}"
-                        class="inline-block px-3 py-2  text-white  rounded-full text-sm bg-casa-black hover:scale-105">
-                        Log in
-                    </a>
 
-                @endauth
-            </div>
+                    <x-dropdownlogfront-mb />
 
-
-
-            <div class="lg:hidden flex">
-                @role('adquirente')
-                    @if (!request()->routeIs('pantalla-pujas'))
-                        <a href="{{ route('pantalla-pujas') }}"
-                            class=" px-2   mr-3 flex items-center rounded-3xl border border-casa-black  h-7"
-                            title="Pantalla pujas">
-                            {{-- <svg fill="#fff" class="size-7">
-                                <use xlink:href="#cart"></use>
-                            </svg> --}}
-                            <x-hammer-icon />
-                            <span clas="text-xs">Pujas</span>
-                        </a>
-                    @endif
-                @endrole
-
-                <x-dropdownlogfront-mb />
+                </div>
 
             </div>
-
-            {{-- </div> --}}
 
         </nav>
 
@@ -209,12 +212,12 @@
 
         @if (!request()->routeIs('subastas', 'adquirentes.create', 'comitentes.create'))
             <a href="{{ route('subastas') }}"
-                class="bg-rd-500 border border-casa-black rounded-4xl px-2 py-1 fixed right-2 bottom-5 z-40 bg-casa-base hover:bg-casa-base-2"
+                class="bg-rd-500 border md:border-2 border-casa-black rounded-4xl md:px-4 md:text-xl px-2 py-1 md:py-1.5 fixed right-2 md:right-5 bottom-5 md:bottom-7 z-40 bg-casa-base hover:bg-casa-base-2"
                 title="Ir a subastas">Subastas</a>
         @endif
 
 
-        <main class="relative">
+        <main class="relative ">
             {{ $slot }}
         </main>
 

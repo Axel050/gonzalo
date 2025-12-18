@@ -1,6 +1,6 @@
-<div class="flex flex-col justify-center items-center hvh w-full  pt-0  text-casa-black">
+<div class="flex flex-col justify-center items-center hvh w-full  pt-12  text-casa-black md:gap-y-24 gap-y-16 md:px-24">
 
-    <div class="mt-10">
+    <div class="  w-full  [&>article]:max-w-5xl">
         @livewire('buscador', ['subasta_id' => $subasta->id, 'search' => $search])
     </div>
 
@@ -10,7 +10,7 @@
         {{-- @if (auth()->user()?->adquirente?->estado_id == 1 || auth()->user()?->adquirente?->garantia($subasta->id) || !auth()->user()?->hasRole('adquirente')) --}}
 
 
-        <div class=" bg-casa-black flex  border rounded-full    mx-auto justify-between pl-3 pr-1 py-0.5 items-center mt-5 border-casa-black col-span-3"
+        <div class=" bg-casa-black flex  border rounded-full    mx-auto justify-between pl-3 pr-1 py-0.5 items-center  border-casa-black col-span-3 bg-red"
             wire:show="filtered">
 
             <p class="text-nowrap text-casa-base-2 ml-2">Resultados: <span class="ml-1">{{ $filtered }}</span>
@@ -25,10 +25,15 @@
         </div>
 
 
-        <div class=" bg-casa-black flex  border rounded-full  w-fit  mx-auto justify-center  py-2 items-center mt-5 border-casa-black col-span-3 text-casa-base-2  sm:px-20 px-5 sm:text-xl text-lg"
+        <div class=" bg-casa-black flex  border rounded-full  w-fit  mx-auto justify-between  py-2 items-center  border-casa-black col-span-3 text-casa-base-2  px-4 sm:text-xl text-lg"
             wire:show="noSearch">
-            <button wire:click="$set('noSearch',false)">¡Sin resultados para <b>"{{ $search }}"</b>! <span
-                    class="text-xl leading-0 ml-8 cursor-pointer">X</span></button>
+            <button wire:click="$set('noSearch',false)">¡Sin resultados para <b>"{{ $search }}"</b>!
+
+
+                <svg class="lg:size-8 size-7 lg:ml-20 ml-7 inline hover:scale-105">
+                    <use xlink:href="#x"></use>
+                </svg>
+            </button>
 
         </div>
 
@@ -41,7 +46,7 @@
             {{-- <x-registrate monto="{{ $subasta->garantia }}" subasta={{}} /> --}}
 
             <article
-                class="g-red-500 flex idden  lg:w-5/6 w-full  lg:justify-center justify-start flex-col lg:mt-10 mt-6 mb-8 mx-auto lg:px-12 lg:py-12 px-6 py-10  bg-casa-fondo-h border border-casa-black">
+                class="g-red-500 flex idden   w-full  lg:justify-center justify-start flex-col  mx-auto lg:px-12 lg:py-12 px-6 py-10  bg-casa-fondo-h border border-casa-black  max-w-8xl">
                 {{-- <h2 class=" font-bold lgtext-3xl  text-xl lg:text-center text-start">¿Como puedo ofertar?</h2> --}}
                 <button
                     class="bg-casa-black hover:bg-transparent hover:text-casa-black border border-casa-black text-casa-base rounded-full px-4 flex items-center justify-between  py-1  col-span-3 mx-auto lg:text-2xl font-semibold text-sm lg:w-fit lg w-full  "
@@ -97,7 +102,7 @@
         @endif
 
 
-        <div class="flex flex-wrap  mt-10 lg:gap-12 gap-2 place-content-center justify-center max-w-[1440px]  w-full">
+        <div class="flex flex-wrap   lg:gap-12 gap-2 place-content-center justify-center max-w-8xl w-full ">
 
 
             @forelse ($lotes as $lote)
@@ -121,7 +126,7 @@
                     <div class="flex gap-x-4 justify-center my-2 sm:order-2 order-1">
 
                         <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote['foto']) }}"
-                            class="sm:size-49 size-20  " />
+                            class="md:size-49 size-20  " />
 
                     </div>
 
@@ -133,6 +138,7 @@
                     @endphp
                     <p class="sm:text-xl text-sm  mt-auto sm:order-4 order-3">Base:
                         {{ $this->getMonedaSigno($lote['moneda_id']) }}{{ $lote['precio_base'] }}</p>
+
                     <p class="sm:text-xl text-sm font-semibold sm:mb-3 sm:order-5 order-4">
                         <span class="sm:inline-block hidden ">Oferta actual: </span>
                         <span class="sm:hidden ">Actual: </span>
@@ -144,10 +150,10 @@
                     <a href="{{ route('lotes.show', $lote['id']) }}" class="absolute inset-0 sm:hidden z-10"></a>
 
                     <a href="{{ route('lotes.show', $lote['id']) }}"
-                        class="hover:text-casa-black bg-casa-black text-gray-50  hover:bg-casa-base  border border-black rounded-full px-4 sm:flex items-center justify-between  py-2  w-full  text-xl font-bold mb-2  hidden  order-6">
+                        class="hover:text-casa-black bg-casa-black text-casa-base  hover:bg-casa-base  border border-black rounded-full px-4 sm:flex items-center justify-between  py-2  w-full  text-xl font-bold mb-2  hidden  order-6">
                         <span class="sm:inline-block hidden">Ver detalle</span>
-                        <svg class="size-8 ">
-                            <use xlink:href="#arrow-right"></use>
+                        <svg class="size-[26px] ">
+                            <use xlink:href="#arrow-right1"></use>
                         </svg>
                     </a>
 
@@ -166,6 +172,11 @@
                 </div>
             @endforelse
 
+            @if (count($lotes))
+                <div class="w-full  justify-between  lg:w-[75%]  mx-auto px-2 bg-red-600">
+                    {{-- {{ $lotes->links() }} --}}
+                </div>
+            @endif
 
         </div>
         {{-- @else

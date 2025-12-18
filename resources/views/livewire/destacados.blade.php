@@ -1,4 +1,4 @@
-<div class="swiper-destacados   overflow-x-hidden w-full ">
+<div class="swiper-destacados   overflow-x-hidden w-full   d:px-24 max-w-8xl mx-auto">
 
     {{-- <div class="flex flex-col   w-full   items-center lg:pb-24 lg:px-24 lg:mt-0  mt-10 "> --}}
 
@@ -27,14 +27,15 @@
         @foreach ($destacados as $des)
             {{-- @for ($i = 0; $i < 1; $i++) --}}
             <div
-                class=" bg-casa-base-2 flex flex-col lg:px-4 lg:py-8 px-2 py-2 gap-y-4 lg:border border-casa-black swiper-slide">
+                class=" bg-casa-base-2 flex flex-col lg:px-4 lg:py-8 px-2 py-2 gap-y-4 lg:border border-casa-black swiper-slide text-casa-black">
 
                 <a href="{{ route('lotes.show', $des['id']) }}" class="absolute inset-0 lg:hidden z-10"></a>
 
                 <div class="flex lg:flex-row flex-col gap-x-4 ">
 
                     {{-- <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $des['foto']) }}" class="size-36 obje " /> --}}
-                    <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $des['foto']) }}" class="size-36 mx-auto" />
+                    <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $des['foto']) }}"
+                        class="md:size-36 size-25 mx-auto" />
 
                     {{-- <p class="font-semibold lg:text-xl text-sm  w-full  block lg:hidden ">{{ $des['titulo'] }} </p> --}}
 
@@ -71,7 +72,7 @@
                     </div>
                 </div>
 
-                <div class="lg:flex hidden  w-full  justify-center px-8 items-center mt-4">
+                <div class="lg:flex hidden  w-full  justify-center px-4 items-center mt-4">
                     {{-- <span
                         class="text-4xl border rounded-full size-8 flex items-center pt-0 leading-0 p-2 justify-center border-gray-900">
                         +
@@ -79,10 +80,10 @@
 
 
                     <a href="{{ route('lotes.show', $des['id']) }}"
-                        class="bg-casa-black hover:bg-casa-black-h text-gray-50 rounded-full px-4 flex items-center justify-between gap-x-5 py-1  w-full ml-4">
+                        class="bg-casa-black hover:bg-casa-black-h text-casa-base rounded-full px-4 flex items-center justify-between gap-x-5 py-1  w-full  font-bold">
                         Ver detalle
-                        <svg class="size-8 ">
-                            <use xlink:href="#arrow-right"></use>
+                        <svg class="size-[26px] ">
+                            <use xlink:href="#arrow-right1"></use>
                         </svg>
                     </a>
 

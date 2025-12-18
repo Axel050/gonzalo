@@ -20,6 +20,10 @@
   --font-caslon: 'ITC Caslon 224 Std', serif;
   /* Nueva fuente añadida */
 
+
+  --width-8xl: 1472px;
+  --max-width-8xl: 1472px;
+
   --color-casa-black: #262626;
   --color-casa-black-h: #202020;
 

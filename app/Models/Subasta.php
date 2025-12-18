@@ -242,7 +242,7 @@ class Subasta extends Model implements Auditable
       );
 
     try {
-      $results = $query->get();
+      // $results = $query->get();
       // info(["Lotes activoss" => $results->toArray()]);
     } catch (\Exception $e) {
       info(["Error en lotesProximos" => $e->getMessage()]);

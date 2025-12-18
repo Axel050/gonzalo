@@ -61,7 +61,7 @@ class SubastaService
   }
 
 
-  public function getLotesActivos(Subasta $subasta, bool $conCaracteristicas = false)
+  public function getLotesCASI(Subasta $subasta, bool $conCaracteristicas = false)
   {
     if (!$subasta->isActiva()) {
       throw new \Exception('Subasta no activa', 403);
@@ -74,27 +74,30 @@ class SubastaService
       $query->with('valoresCaracteristicas');
     }
 
-    return $query->get()->map(function ($lote) use ($subasta, $conCaracteristicas) {
-      $data = [
-        'id' => $lote->id,
-        'titulo' => $lote->titulo,
-        'foto' => $lote->foto1,
-        'descripcion' => $lote->descripcion,
-        'precio_base' => $lote->precio_base,
-        'puja_actual' => $lote->pujas->first()?->monto,
-        'tiempo_post_subasta_fin' => $lote->tiempo_post_subasta_fin,
-        'estado' => $lote->isActivoEnSubasta($subasta->id) ? 'activo' : 'inactivo',
-        'moneda_id' => $lote->moneda_id,
-        'tienePujas' => $lote->pujas()->exists(),
-      ];
+    return $query
+      // ->get()->map(function ($lote) use ($subasta, $conCaracteristicas) {
+      ->paginate(10) // 👈 paginación aquí
+      ->through(function ($lote) use ($subasta, $conCaracteristicas) {
+        $data = [
+          'id' => $lote->id,
+          'titulo' => $lote->titulo,
+          'foto' => $lote->foto1,
+          'descripcion' => $lote->descripcion,
+          'precio_base' => $lote->precio_base,
+          'puja_actual' => $lote->pujas->first()?->monto,
+          'tiempo_post_subasta_fin' => $lote->tiempo_post_subasta_fin,
+          'estado' => $lote->isActivoEnSubasta($subasta->id) ? 'activo' : 'inactivo',
+          'moneda_id' => $lote->moneda_id,
+          'tienePujas' => $lote->pujas()->exists(),
+        ];
 
-      if ($conCaracteristicas) {
-        // Ya están cargadas en memoria, no hace consultas extra
-        $data['caracteristicas'] = $lote->valoresCaracteristicas->pluck('valor');
-      }
+        if ($conCaracteristicas) {
+          // Ya están cargadas en memoria, no hace consultas extra
+          $data['caracteristicas'] = $lote->valoresCaracteristicas->pluck('valor');
+        }
 
-      return $data;
-    });
+        return $data;
+      });
   }
 
 
@@ -104,7 +107,7 @@ class SubastaService
 
 
 
-  public function getLotesActivosaaa(Subasta $subasta)
+  public function getLotesActivos(Subasta $subasta)
   {
 
 
@@ -241,9 +244,145 @@ class SubastaService
   }
 
 
+  public function getLotesProximos(
+    Subasta $subasta,
+    ?string $search = null,
+    bool $conCaracteristicas = false,
+    int $page = 1,
+    int $perPage = 4
+  ) {
+    $query = $subasta->lotesProximos();
+
+    if ($search) {
+      $query->where(function ($q) use ($search) {
+        $q->where('lotes.titulo', 'like', "%{$search}%")
+          ->orWhere('lotes.descripcion', 'like', "%{$search}%");
+      });
+    }
+
+    if ($conCaracteristicas) {
+      $query->with('valoresCaracteristicas');
+    }
+
+    return $query->simplePaginate(
+      $perPage,
+      ['*'],
+      'page',
+      $page
+    );
+  }
 
 
-  public function getLotesProximos(Subasta $subasta, bool $conCaracteristicas = false)
+
+
+
+
+
+
+
+  public function getLotesProximosxxx(
+    Subasta $subasta,
+    ?string $search = null,
+    bool $conCaracteristicas = false,
+    int $page = 1,
+    int $perPage = 4
+  ) {
+    $query = $subasta->lotesProximos();
+
+    if ($search) {
+      $query->where(function ($q) use ($search) {
+        $q->where('lotes.titulo', 'like', "%{$search}%")
+          ->orWhere('lotes.descripcion', 'like', "%{$search}%")
+          ->orWhereHas('valoresCaracteristicas', function ($c) use ($search) {
+            $c->where('valor', 'like', "%{$search}%");
+          });
+      });
+    }
+
+    if ($conCaracteristicas) {
+      $query->with('valoresCaracteristicas');
+    }
+
+    // return $query->paginate(
+    //   $perPage,
+    //   ['*'],
+    //   'page',
+    //   $page
+    // );
+    // if ($search) {
+    //   return $query->paginate($perPage, ['*'], 'page', $page);
+    // }
+
+    // return $query->simplePaginate($perPage, ['*'], 'page', $page);
+
+    return $query->simplePaginate($perPage);
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  public function getLotesProximosaaa(
+    Subasta $subasta,
+    ?string $search = null,
+    bool $conCaracteristicas = false
+  ) {
+    if (!$subasta->isProxima()) {
+      throw new \Exception('Subasta no disponible', 403);
+    }
+
+    $query = $subasta->lotesProximos();
+
+    if ($search) {
+      $query->where(function ($q) use ($search) {
+
+        // 🔹 título y descripción
+        $q->where('lotes.titulo', 'like', "%{$search}%")
+          ->orWhere('lotes.descripcion', 'like', "%{$search}%")
+
+          // 🔹 características
+          ->orWhereHas('valoresCaracteristicas', function ($c) use ($search) {
+            $c->where('valor', 'like', "%{$search}%");
+          });
+      });
+    }
+
+    if ($conCaracteristicas) {
+      $query->with('valoresCaracteristicas');
+    }
+
+    return $query
+      ->paginate(2)
+      ->through(function ($lote) use ($subasta, $conCaracteristicas) {
+
+        $data = [
+          'id' => $lote->id,
+          'titulo' => $lote->titulo,
+          'foto' => $lote->foto1,
+          'descripcion' => $lote->descripcion,
+          'precio_base' => $lote->precio_base,
+          'moneda_id' => $lote->moneda_id,
+        ];
+
+        if ($conCaracteristicas) {
+          $data['caracteristicas'] =
+            $lote->valoresCaracteristicas->pluck('valor');
+        }
+
+        return $data;
+      });
+  }
+
+
+  public function getLotesProximosOLDSubasta($subasta, bool $conCaracteristicas = false)
   {
 
     if (!$subasta->isProxima()) {
@@ -258,26 +397,29 @@ class SubastaService
     }
 
 
-    return $query->get()->map(function ($lote) use ($subasta, $conCaracteristicas) {
-      $data = [
-        'id' => $lote->id,
-        'titulo' => $lote->titulo,
-        'foto' => $lote->foto1,
-        'descripcion' => $lote->descripcion,
-        'precio_base' => $lote->precio_base,
-        'puja_actual' => $lote->pujas->first()?->monto,
-        'tiempo_post_subasta_fin' => $lote->tiempo_post_subasta_fin,
-        'estado' => $lote->isActivoEnSubasta($subasta->id) ? 'activo' : 'inactivo',
-        'moneda_id' => $lote->moneda_id,
-      ];
+    return $query
+      // ->get()->map(function ($lote) use ($subasta, $conCaracteristicas) {
+      ->paginate(10) // 👈 paginación aquí
+      ->through(function ($lote) use ($subasta, $conCaracteristicas) {
+        $data = [
+          'id' => $lote->id,
+          'titulo' => $lote->titulo,
+          'foto' => $lote->foto1,
+          'descripcion' => $lote->descripcion,
+          'precio_base' => $lote->precio_base,
+          'puja_actual' => $lote->pujas->first()?->monto,
+          'tiempo_post_subasta_fin' => $lote->tiempo_post_subasta_fin,
+          'estado' => $lote->isActivoEnSubasta($subasta->id) ? 'activo' : 'inactivo',
+          'moneda_id' => $lote->moneda_id,
+        ];
 
-      if ($conCaracteristicas) {
-        // Ya están cargadas en memoria, no hace consultas extra
-        $data['caracteristicas'] = $lote->valoresCaracteristicas->pluck('valor');
-      }
+        if ($conCaracteristicas) {
+          // Ya están cargadas en memoria, no hace consultas extra
+          $data['caracteristicas'] = $lote->valoresCaracteristicas->pluck('valor');
+        }
 
-      return $data;
-    });
+        return $data;
+      });
   }
 
 

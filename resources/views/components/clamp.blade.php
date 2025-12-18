@@ -35,14 +35,15 @@
 
     </h2>
     <button x-show="truncated" @click="expanded = !expanded"
-        class="text-[10px] -mt-1  absolute transition-colors duration-200 {{ $bclass }}"
+        class="text-[10px] -mt-1  absolute transition-colors duration-200  {{ $bclass }}"
         :class="{
             'text-blue-600  right-1  {{ $mas }} ': !expanded,
             {{-- Estilo para "Ver más" --}} 'text-red-600     {{ $menos }} ': expanded
         
         
             {{-- Estilo para "Ver menos" --}}
-        }">
+        }"
+        title="ver">
         <span x-show="!expanded">Ver más</span>
         <span x-show="expanded">Ver menos</span>
     </button>

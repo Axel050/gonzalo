@@ -3,85 +3,161 @@
 namespace App\Livewire;
 
 use App\Enums\SubastaEstados;
-use App\Jobs\ActivarLotes;
-use App\Jobs\DesactivarLotesExpirados;
-use App\Models\Garantia;
 use App\Models\Moneda;
-use App\Models\Puja;
 use App\Models\Subasta;
-use App\Services\MPService;
 use App\Services\SubastaService;
 use Livewire\Attributes\On;
-use Livewire\Attributes\Url;
 use Livewire\Component;
-use MercadoPago\Client\Payment\PaymentRefundClient;
-use MercadoPago\MercadoPagoConfig;
+use Livewire\Attributes\Url;
 
 
 class LotesProximos extends Component
 {
+
   #[Url()]
-  public $searchParam = ''; //
+  public string $searchParam = '';
+
+
+  public string $search = '';
+
+  public string $searchx = '';
   public $noSearch;
-  public $search;
-  public $filtered;
-
-  protected $subastaService;
-
-  public $monedas;
-  public Subasta $subasta;
-  public $lotes = [];
-  public $error = null;
-  public $subastaEstado = "11";
   public $modal;
+  public $filtered;
+  public $monedas;
 
-  // #[On('echo:subasta.{subasta.id},SubastaEstadoActualizado')]
-  // #[On('echo:my-channel.{subasta.id},SubastaEstadoActualizado')]
+
+  public int $page = 1;
+  public int $perPage = 6;
+
+  public array $lotes = [];
+  public bool $hasMore = true;
+  public bool $fallbackAll = false;
+
+
+  public Subasta $subasta;
+
+
+  public function mount(Subasta $subasta)
+  {
+    $this->subasta = $subasta;
+    $this->monedas = Moneda::all();
+
+    if (!empty($this->searchParam)) {
+      $this->search = $this->searchParam;
+      $this->filtrar($this->searchParam);
+    } else {
+      $this->loadLotes();
+    }
+  }
+
+  // public function updatingSearch()
+  // {
+  //   $this->resetPage(); // 
+  // }
+
+  #[On('echo:my-channel,SubastaEstadoActualizado')]
+  public function actualizarEstado($event)
+  {
+
+    if ($this->subasta->estado == SubastaEstados::ACTIVA) {
+      $this->modal = 1;
+      $this->lotes = [];
+    }
+  }
+
+
   public function continuar()
   {
     return redirect()->route('subasta.lotes', $this->subasta->id);
   }
 
-  #[On('echo:my-channel,SubastaEstadoActualizado')]
-  public function actualizarEstado($event)
+
+  #[On('buscarLotes')]
+  public function filtrar($search)
   {
-    // Si cambio manual en la BD estdo lote , y disparao el even , actualizar sin refresh OK  
+    $this->search = trim($search);
+    $this->searchParam = $this->search;
 
-    // $this->subastaEstado = $event['estado'];
-    // $this->lotes = $event['lotes'];
-    // if ($this->subastaEstado === 'inactiva') {
-    //     $this->error = 'La subasta ha finalizado';
-    // }
+    // Reset total
+    $this->page = 1;
+    $this->lotes = [];
+    $this->filtered = null;
+    $this->noSearch = false;
+    $this->hasMore = true;
+    $this->fallbackAll = false;
+
+    // 🔍 Buscar con filtro
+    $paginator = app(SubastaService::class)->getLotesProximos(
+      $this->subasta,
+      $this->search,
+      true,          // características solo si hay búsqueda
+      1,
+      $this->perPage
+    );
+
+    // ✅ CASO 1: hay resultados
+    if ($paginator->count() > 0) {
+      $this->filtered = $paginator->count(); // puede ser null si usás simplePaginate
+      $this->appendPaginator($paginator);
+      return;
+    }
+
+    // ❌ CASO 2: NO hay resultados
+    $this->noSearch = true;
+    $this->fallbackAll = true;
+    // Traer TODOS los lotes sin filtro
+    $paginator = app(SubastaService::class)->getLotesProximos(
+      $this->subasta,
+      null,
+      false,
+      1,
+      $this->perPage
+    );
+
+    $this->appendPaginator($paginator);
+  }
 
 
 
-    info("REVERT  XXXX PROX ANTES LOAD");
+
+  protected function appendPaginator($paginator)
+  {
+    $items = collect($paginator->items())->map(fn($lote) => [
+      'id' => $lote->id,
+      'titulo' => $lote->titulo,
+      'foto' => $lote->foto1,
+      'descripcion' => $lote->descripcion,
+      'precio_base' => $lote->precio_base,
+      'moneda_id' => $lote->moneda_id,
+    ])->toArray();
+
+    $this->lotes = array_merge($this->lotes, $items);
+    $this->hasMore = $paginator->hasMorePages();
+  }
+
+
+
+
+  public function todos()
+  {
+    $this->search = '';
+    $this->searchParam = '';
+    $this->noSearch = false;
+    $this->filtered = null;
+    $this->fallbackAll = false;
+    $this->page = 1;
+    $this->lotes = [];
+    $this->hasMore = true;
+    $this->dispatch("clearSearch");
 
     $this->loadLotes();
-
-    if ($this->subasta->estado == SubastaEstados::ACTIVA) {
-      $this->modal = 1;
-    }
-    // $this->test = "22";
-    info("REVERT  XXXX PROX");
-    // info(["lotes " => $event['lotes']]);
-    // info(["subata estado " => $event['estado']]);
-    // dd("aaaa");
-
   }
 
-  public function activar()
-  {
-    info("ACTIVAR");
-    $job = new ActivarLotes();
-    $job->handle();
-  }
 
-  public function job()
-  {
-    $job = new DesactivarLotesExpirados();
-    $job->handle();
-  }
+
+
+
 
 
   public function getMonedaSigno($id)
@@ -89,155 +165,46 @@ class LotesProximos extends Component
     return $this->monedas->firstWhere('id', $id)?->signo ?? '';
   }
 
-
-  public function mount(Subasta $subasta, SubastaService $subastaService)
-  {
-    info("mount ");
-    $this->subastaService = $subastaService;
-    $this->subasta = $subasta;
-
-    $this->monedas = Moneda::all();
-
-    $now = now();
-    // if ($this->estado === SubastaEstados::INACTIVA && $now->lessThan($this->fecha_inicio)) {
-    // if ($this->subasta->estado === 'inactiva' && $now->between($this->subasta->fecha_inicio, $this->subasta->fecha_fin)) {
-    if ($this->subasta->estado === SubastaEstados::INACTIVA && $now->lessThan($this->subasta->fecha_inicio)) {
-      if ($this->searchParam) {
-        $this->filtrar($this->searchParam, $subastaService);
-        $this->search = $this->searchParam;
-        // $this->dispatch("searchValue", $this->searchParam);
-      } else {
-        $this->loadLotes();
-      }
-    } else {
-      info("mount444 8888");
-      $this->lotes = [];
-    }
-  }
-
   public function loadLotes()
   {
-    info("lotesClassxxx");
-    try {
-      info("lotesClass");
+    $search = $this->fallbackAll ? null : $this->search;
+    $conCaracteristicas = !empty($this->search);
 
-      $this->lotes = $this->subastaService?->getLotesProximos($this->subasta)?->toArray();
-      info(["lotesCl8888ass" => $this->lotes]);
-      $this->lotes = $this->lotes ?? collect();
-      info(["lotesCl8888ass33333" => $this->lotes]);
-      $this->error = null;
-    } catch (\Exception $e) {
-      // info(["error" => $this-}>lotes]);
-      info(["errorrrr" => $e->getMessage()]);
-      $this->lotes = [];
-      $this->error = $e->getMessage();
+
+    $paginator = app(SubastaService::class)->getLotesProximos(
+      $this->subasta,
+      $search,
+      $conCaracteristicas,
+      $this->page,
+      $this->perPage
+    );
+
+    $items = collect($paginator->items())->map(fn($lote) => [
+      'id' => $lote->id,
+      'titulo' => $lote->titulo,
+      'foto' => $lote->foto1,
+      'descripcion' => $lote->descripcion,
+      'precio_base' => $lote->precio_base,
+      'moneda_id' => $lote->moneda_id,
+    ])->toArray();
+
+    $this->lotes = array_merge($this->lotes, $items);
+    $this->hasMore = $paginator->hasMorePages();
+    if ($this->filtered) {
+      $this->filtered = count($this->lotes);
     }
   }
 
 
-  #[On(['buscarLotes'])]
-  public function filtrar($search, SubastaService $subastaService)
+  public function loadMore()
   {
-    // Guardar el término de búsqueda
-    $this->search = is_string($search) ? trim($search) : '';
-
-    // Siempre obtener TODOS los lotes frescos del servicio para buscar desde cero
-    $todosLosLotes = $subastaService?->getLotesProximos($this->subasta, true)?->toArray() ?? [];
-
-    // Si no hay término de búsqueda, mostrar todos los lotes
-    if (empty($this->search)) {
-      $this->lotes = $todosLosLotes;
-      $this->noSearch = false;
+    if (! $this->hasMore) {
       return;
     }
 
-    // Filtrar desde TODOS los lotes, no desde los ya filtrados
-    $searchLower = strtolower($this->search);
-    // $filteredLotes = collect($todosLosLotes)->filter(function ($lote) use ($searchLower) {
-    //   return str_contains(strtolower($lote['titulo'] ?? ''), $searchLower)
-    //     || str_contains(strtolower($lote['descripcion'] ?? ''), $searchLower);
-    // })->values()->toArray();
-
-    $filteredLotes = collect($todosLosLotes)->filter(function ($lote) use ($searchLower) {
-      $tituloMatch = str_contains(strtolower($lote['titulo'] ?? ''), $searchLower);
-      $descripcionMatch = str_contains(strtolower($lote['descripcion'] ?? ''), $searchLower);
-
-      // Buscar en características
-      $caracteristicasMatch = collect($lote['caracteristicas'] ?? [])
-        ->contains(function ($valor) use ($searchLower) {
-          return str_contains(strtolower($valor), $searchLower);
-        });
-
-      return $tituloMatch || $descripcionMatch || $caracteristicasMatch;
-    })->values()->toArray();
-
-
-    // Si hay coincidencias, mostrar solo los filtrados
-    if (!empty($filteredLotes)) {
-      $this->lotes = $filteredLotes;
-      $this->noSearch = false;
-      $this->filtered  = count($filteredLotes);
-    } else {
-      // Si no hay coincidencias, mantener todos los lotes pero mostrar mensaje
-      $this->lotes = $todosLosLotes;
-      $this->noSearch = true;
-      $this->filtered  = null;
-    }
-
-    info('Búsqueda realizada', [
-      'término' => $this->search,
-      'total_lotes' => count($todosLosLotes),
-      'coincidencias' => count($filteredLotes),
-      'mostrando' => $this->noSearch ? 'todos con mensaje' : 'solo filtrados'
-    ]);
-  }
-
-  public function todos(SubastaService $subastaService)
-  {
-    $this->subastaService = $subastaService;
+    $this->page++;
     $this->loadLotes();
-    $this->filtered = null;
-    $this->searchParam = null;
-    $this->dispatch("clearSearch");
   }
-
-
-  // #[On('echo:subasta.{subasta.id},PujaRealizada')]
-  // public function actualizarLote($event)
-  // {
-  //   foreach ($this->lotes as &$lote) {
-  //     if ($lote['id'] == $event['lote_id']) {
-  //       $lote['puja_actual'] = $event['monto'];
-  //       $lote['tiempo_post_subasta_fin'] = $event['tiempo_post_subasta_fin'];
-  //       $lote['estado'] = $event['estado'];
-  //       break;
-  //     }
-  //   }
-  // }
-
-  public function mp(MPService $mpService)
-  {
-    $preference = $mpService->crearPreferencia("Deposito", 1, 300, 5, 6);
-
-    // info(["PPPP" => $preference]);
-  }
-
-
-
-  public function crearDevolucion(MPService $mpService)
-  {
-    info("CREEEEE");
-    try {
-      $de = $mpService->crearDevolucion(21);
-      //code...
-    } catch (\Throwable $th) {
-      //throw $th;
-      info(["EERRROORRR"  => $th]);
-    }
-  }
-
-
-
 
 
 

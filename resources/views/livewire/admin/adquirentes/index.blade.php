@@ -190,11 +190,11 @@
 
             </div>
         </div>
-        @if (count($adquirentes))
-            <div class="w-full  justify-between  lg:w-[75%]  mx-auto px-2 ">
-                {{ $adquirentes->links() }}
-            </div>
-        @endif
+          @if (count($adquirentes))
+              <div class="w-full  justify-between  lg:w-[75%]  mx-auto px-2 ">
+                  {{ $adquirentes->links() }}
+              </div>
+          @endif
     </div>
 
 </div> <!-- end card -->
