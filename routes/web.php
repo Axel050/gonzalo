@@ -52,7 +52,9 @@ Route::get('/', function () {
   $contadorDestacados = !empty($destacados);
 
 
-  return view('welcome', compact("subastasProx", "subastasAct", "subastasFin", "last", "contadorDestacados"));
+  $showVerifiedModal = request()->has('verified') && request()->query('verified') == 1;
+
+  return view('welcome', compact("subastasProx", "subastasAct", "subastasFin", "last", "contadorDestacados", "showVerifiedModal"));
 })->name('home');
 
 

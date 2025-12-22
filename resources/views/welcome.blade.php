@@ -4,6 +4,45 @@
     <div class="flex flex-col justify-center items-center bg-gry-400 h-full  relative md:gap-y-24 gap-y-16 ">
 
 
+
+        <!-- Todo tu contenido actual del welcome -->
+
+        <!-- Modal de verificación exitosa -->
+        @if ($showVerifiedModal)
+            <div x-data="{ open: true }" x-show="open" x-transition
+                class="fixed inset-0 z-50 flex items-center justify-center bg-gray-600/70 backdrop-blur-xs transition-opacity duration-300">
+
+
+                <div class="bg-casa-base  rounded-lg shadow-xl max-w-md w-full p-6 mx-4">
+
+                    <div class="flex items-center justify-center mb-4">
+                        <svg class="w-16 h-16 text-casa-green " fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7">
+                            </path>
+                        </svg>
+                    </div>
+
+                    <h2 class="text-2xl font-bold text-center mb-2">¡Email verificado con éxito!</h2>
+                    {{-- <p class="text-gray-600 text-center mb-8">
+                        Ahora puedes disfrutar de todas las funcionalidades de la aplicación.
+                    </p> --}}
+                    <div class="text-center mt-10 pt-4">
+                        <a href="/"
+                            class="px-8 py-3 bg-casa-black text-white font-medium rounded-lg hover:bg-casa-black-h  transition">
+                            Continuar
+                        </a>
+                    </div>
+
+
+                </div>
+
+            </div>
+        @endif
+
+
+
+
+
         {{-- 
         <svg class="w-[701px] h-42  mt-20 lg:block  hidden">
             <use xlink:href="#real"></use>
@@ -143,7 +182,7 @@
                     </div>
 
                     <div
-                        class="bg-reen-600 w-full  mx-auto  z-50 md:h-32 md:-translate-y-6 md:absolute md:top-6  plae-self-center">
+                        class="bg-reen-600 w-full  mx-auto  z-40 md:h-32 md:-translate-y-6 md:absolute md:top-6  plae-self-center ">
                         {{-- 
                     <div
                         class="bg-reen-600 w-fit mx-auto  z-50 md:h-32 md:-translate-y-6 md:absolute md:top-6  border border-green-500  place-self-center px-20 bg-[linear-gradient(to_right,transparent_0%,rgba(246,242,238,0.5)_10%,rgb(246,242,238)_50%,rgba(246,242,238,0.5)_90%,transparent_100%)]
@@ -152,9 +191,9 @@
 
 
 
-                        <div class="md:h-32 w-fit md:mx-auto bg-ed-400 md:pt-5  md:px-2   bg-casa-base">
+                        <div class="md:h-32 w-fit md:mx-auto bg-ed-400 md:pt-5  md:px-2   bg-casa-base ">
 
-                            <h2 class="lg:text-3xl text-xl font-bold z-50 bg-red300 w-fit md:mx-auto md:mb-2">
+                            <h2 class="lg:text-3xl text-xl font-bold  bg-red300 w-fit md:mx-auto md:mb-2">
                                 Cada objeto tiene una historia.
                             </h2>
                             <h2 class="lg:text-3xl text-xl font-bold bg-yellow-00 w-fit md:mx-auto">
