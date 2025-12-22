@@ -256,7 +256,11 @@ class SubastaService
     if ($search) {
       $query->where(function ($q) use ($search) {
         $q->where('lotes.titulo', 'like', "%{$search}%")
-          ->orWhere('lotes.descripcion', 'like', "%{$search}%");
+          ->orWhere('lotes.descripcion', 'like', "%{$search}%")
+
+          ->orWhereHas('valoresCaracteristicas', function ($c) use ($search) {
+            $c->where('valor', 'like', "%{$search}%");
+          });
       });
     }
 

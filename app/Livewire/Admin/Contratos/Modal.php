@@ -54,6 +54,7 @@ class Modal extends Component
         ),
       ],
       'fecha_firma' => 'required|date',
+      'subasta_id' => 'required',
     ];
 
     return $rules;
@@ -65,6 +66,7 @@ class Modal extends Component
       "comitente_id.required" => "Elija comitente.",
       'comitente_id.unique' => 'Comitente y subasta existente. ',
       "fecha_firma.required" => "Elija fecha.",
+      "subasta_id.required" => "Elija subasta.",
     ];
   }
 

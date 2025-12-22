@@ -109,9 +109,14 @@ class Modal extends Component
 
     $this->resetErrorBag('foto1');
     try {
-      $this->validate([
-        'foto1' => 'image|max:13000', // max:13000 limita el tamaño a 13 MB (en KB)
-      ]);
+      $this->validate(
+        [
+          'foto1' => 'image|max:33000', // max:13000 limita el tamaño a 13 MB (en KB)
+        ],
+        ['foto1.max' => "Menor a 13mb"]
+
+
+      );
     } catch (\Illuminate\Validation\ValidationException $e) {
       unlink($this->foto1->getRealPath());
       $this->addError('foto1', $e->validator->errors()->first('foto1'));

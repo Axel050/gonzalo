@@ -79,55 +79,45 @@
     </div>
 </div>
 
-
-
 @once
-    <script>
-        function startCounter() {
-            if (window.counterInterval) clearInterval(window.counterInterval);
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            window.startCounter = function() {
+                if (window.counterInterval) clearInterval(window.counterInterval);
 
-            const container = document.querySelector('[wire\\:ignore] [data-fecha-fin]');
-            if (!container) return;
+                const container = document.querySelector('[wire\\:ignore] [data-fecha-fin]');
+                if (!container) return;
 
-            const fechaFin = new Date(container.dataset.fechaFin);
-            if (isNaN(fechaFin)) return;
+                const fechaFin = new Date(container.dataset.fechaFin);
+                if (isNaN(fechaFin)) return;
 
-            const update = () => {
-                const diff = (fechaFin - new Date()) / 1000;
+                const update = () => {
+                    const diff = (fechaFin - new Date()) / 1000;
+                    if (diff <= 0) {
+                        ['dias', 'horas', 'minutos'].forEach(u => {
+                            const el = document.getElementById('counter-' + u);
+                            if (el) el.textContent = '00';
+                        });
+                        clearInterval(window.counterInterval);
+                        return;
+                    }
 
-                if (diff <= 0) {
-                    ['dias', 'horas', 'minutos'].forEach(u => {
-                        const el = document.getElementById('counter-' + u);
-                        if (el) el.textContent = '00';
-                    });
-                    clearInterval(window.counterInterval);
-                    return;
-                }
+                    const dias = Math.floor(diff / 86400);
+                    const horas = Math.floor((diff % 86400) / 3600);
+                    const minutos = Math.ceil((diff % 3600) / 60);
 
-                const dias = Math.floor(diff / 86400);
-                const horas = Math.floor((diff % 86400) / 3600);
-                const minutos = Math.ceil((diff % 3600) / 60);
+                    document.getElementById('counter-dias').textContent = String(dias).padStart(2, '0');
+                    document.getElementById('counter-horas').textContent = String(horas).padStart(2, '0');
+                    document.getElementById('counter-minutos').textContent = String(minutos).padStart(2,
+                        '0');
+                };
 
-                document.getElementById('counter-dias').textContent = String(dias).padStart(2, '0');
-                document.getElementById('counter-horas').textContent = String(horas).padStart(2, '0');
-                document.getElementById('counter-minutos').textContent = String(minutos).padStart(2, '0');
+                update();
+                window.counterInterval = setInterval(update, 1000);
             };
 
-            update();
-            window.counterInterval = setInterval(update, 1000);
-        }
-
-        // 1️⃣ Primera carga
-        document.addEventListener('DOMContentLoaded', startCounter);
-
-        // 2️⃣ Navegación Livewire
-        document.addEventListener('livewire:navigated', startCounter);
-
-        // 3️⃣ CUANDO LIVEWIRE TERMINA DE RENDERIZAR (CLAVE PARA LOGIN)
-        document.addEventListener('livewire:load', () => {
-            Livewire.hook('message.processed', () => {
-                startCounter();
-            });
+            window.startCounter();
+            document.addEventListener('livewire:navigated', window.startCounter);
         });
     </script>
 @endonce

@@ -1,7 +1,7 @@
-<div class="flex flex-col justify-center items-center hvh w-full  pt-0  text-casa-black">
+<div class="flex flex-col justify-center items-center hvh w-full    text-casa-black md:gap-y-24 gap-y-16 pt-12">
 
 
-    <div class="mt-5">
+    <div>
 
         {{-- @livewire('buscador', ['subasta_id' => $subasta->id, 'search' => $search]) --}}
         @livewire('buscador', ['subasta_id' => 1, 'search' => $search, 'view' => true])
@@ -22,7 +22,7 @@
 
         {{-- <div class="grid grid-cols-3 px-20 mt-10 gap-12 place-content-center justify-center"> --}}
 
-        <div class=" bg-casa-black flex  border rounded-full  lg:w-2xl  w-[95%]  mx-auto pl-3 pr-1 py-0.5 items-center lg:mt-5 mt-1 border-casa-black  {{ $existFrom ? 'justify-between' : 'justify-center' }} "
+        <div class=" bg-casa-black flex  border rounded-full  lg:w-2xl  w-[95%]  mx-auto pl-3 pr-1 py-0.5 items-center  border-casa-black  {{ $existFrom ? 'justify-between' : 'justify-center' }} "
             wire:show="filtered">
             {{-- @dump($existFrom) --}}
             <p class="text-nowrap text-casa-base-2 ml-2">Resultados: <span class="ml-1">{{ $filtered }}</span>
@@ -42,7 +42,7 @@
 
         {{-- <div class="flex bg-casa-black justify-center items-center text-4xl font-bold text-casa-base-2  py-8 px-40 col-span-3 "
                 wire:show="noSearch"> --}}
-        <div class=" bg-casa-black flex  border rounded-full  w-fit  mx-auto justify-center  py-1 items-center mt-5 border-casa-black col-span-3 text-casa-base-2  px-14 text-lg"
+        <div class=" bg-casa-black flex  border rounded-full  w-fit  mx-auto justify-center  py-1 items-center  border-casa-black col-span-3 text-casa-base-2  px-14 text-lg"
             wire:show="noSearch">
             <button wire:click="$set('noSearch',false)">¡Sin resultados para <b>"{{ $search }}"</b>! <span
                     class="text-xl leading-0 ml-8 cursor-pointer">X</span></button>
@@ -52,7 +52,7 @@
 
 
 
-        <div class="flex flex-wrap  mt-10 lg:gap-12 gap-2 place-content-center justify-center max-w-[1440px]">
+        <div class="flex flex-wrap   lg:gap-12 gap-2 place-content-center justify-center max-w-[1440px]">
 
 
             {{-- @if (isset($lotes) && count($lotes)) --}}

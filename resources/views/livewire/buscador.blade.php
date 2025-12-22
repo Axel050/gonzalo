@@ -27,7 +27,7 @@
 
 
         @if ($route)
-            <a href="{{ route('subasta.lotes', $subasta_id) }}"
+            <a href="{{ route($route, $subasta_id) }}"
                 class="font-helvetica font-semibold md:text-xl text-sm  tracking-normal md:text-center text-start md:mt-3 mt-1 mb-2  flex border rounded-full px-4 justify-between md:mx-auto py-1 border-casa-black items-center hover:bg-casa-base-2 w-fit text-casa-black ">
                 <span>Ver todos los lotes</span>
                 <svg class="md:size-[26px] size-5 md:ml-15 ml-10">

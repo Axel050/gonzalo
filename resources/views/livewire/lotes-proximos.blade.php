@@ -1,8 +1,11 @@
 <div class="flex flex-col justify-center items-center  w-full    text-casa-black md:gap-y-24 gap-y-16 pt-12">
 
 
-    <div class="  w-full  [&>article]:max-w-5xl">
+    <div class="  w-full  [&>article]:max-w-5xl flex flex-col gap-y-4">
         @livewire('buscador', ['subasta_id' => $subasta->id, 'search' => $search])
+
+        <x-search-message :search="$search" />
+
     </div>
 
 
@@ -35,34 +38,7 @@
     @if (auth()->user())
         {{-- @if (auth()->user()?->adquirente?->estado_id == 1 || auth()->user()?->adquirente?->garantia($subasta->id) || !auth()->user()?->hasRole('adquirente')) --}}
 
-        <div class=" bg-casa-black flex  border rounded-full    mx-auto justify-between pl-3 pr-1 py-0.5 items-center  border-casa-black col-span-3"
-            wire:show="filtered">
 
-            <p class="text-nowrap text-casa-base-2 ml-2">Resultados para <b>"{{ $search }}"</b>
-                {{-- : <span class="ml-1">{{ $filtered }}</span> --}}
-            </p>
-
-
-            <button wire:click="todos"
-                class="bg-casa-base-2 hover:bg-casa-black-h hover:text-casa-base border border-casa-base  text-casa-black rounded-full px-4 flex items-center justify-between  py-0.5 w-fit md:ml-20 ml-4">
-                Ver todos los lotes
-                <span class="text-xl leading-0 ml-8">X</span>
-            </button>
-        </div>
-
-
-        <div class=" bg-casa-black flex  border rounded-full  w-fit  mx-auto justify-between  py-2 items-center  border-casa-black col-span-3 text-casa-base-2  px-4 md:text-xl text-lg"
-            wire:show="noSearch">
-            <button wire:click="$set('noSearch',false)">¡Sin resultados para <b>"{{ $search }}"</b>!
-
-                <svg class="lg:size-8 size-7 lg:ml-20 ml-7 inline hover:scale-105">
-                    <use xlink:href="#x"></use>
-                </svg>
-
-
-            </button>
-
-        </div>
 
 
 
@@ -132,18 +108,6 @@
         </div>
     @endif
     {{-- @endrole --}}
-
-
-
-    {{-- <button class="bg-blue-600 text-white px-2 my-2 ml-60 rounded-2xl  text-center" wire:click="mp">MP</button>
-    <button class="bg-red-600 text-white px-2 my-2 ml-60 rounded-2xl  text-center" wire:click="crearDevolucion(21)">MP -
-        REFOUND</button> --}}
-
-
-    {{-- <button class="bg-white rounded text-red-700 px-5 py-0 ml-40 mr-30 " wire:click="activar">Cheack Activar</button>
-    <button class="bg-white rounded text-red-700 px-5 py-0 mx-auto " wire:click="job">Cheack Desactivar</button>
-    <hr><br> --}}
-
 
 
 

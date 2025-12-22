@@ -103,7 +103,7 @@
                     @endguest
                     <li><a href="{{ route('comitentes.create') }}"
                             class="border border-casa-fondo-h rounded-full px-3 py-1 hover:bg-casa-black hover:text-casa-fondo-h">¿Tenés
-                            amdo para vender?</a>
+                            algo para vender?</a>
                     </li>
                 </ul>
 
@@ -140,7 +140,7 @@
     <div
         class="flex  md:flex-row flex-col w-full  text-casa-fondo-h py-6 md:px-24 px-4 border-t-2 border-casa-base-2  bg-casa-black  pb-18 ">
         <div class="max-w-8xl flex  md:flex-row flex-col md:justify-between w-full  mx-auto">
-            <p>&copy; 2025 Creado por <a href="https://www.aisolucionesweb.com/"
+            <p>&copy; 2025 Creado por <a href="https://www.aisolucionesweb.com/" target="_blank"
                     class="hover:text-casa-base font-semibold hover:font-bold">aisolucionesweb</a></p>
             <p>&copy; Diseñado por
                 <a href="https://www.crabbystudio.com/" target="_blank" class="underline"> CrabbyStudio</a>

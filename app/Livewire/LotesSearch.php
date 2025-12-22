@@ -137,24 +137,6 @@ class LotesSearch extends Component
     $lotesProximos    = $getLotes($idsSubastasProx, LotesEstados::ASIGNADO, 'proximo');
     $lotesFinalizados = $getLotes($idsSubastasFin,  LotesEstados::DISPONIBLE, 'finalizado');
 
-    // Unimos y ordenamos
-    // $this->lotes = $lotesActivos
-    //   ->merge($lotesProximos)
-    //   ->merge($lotesFinalizados)
-    //   ->sortBy(function ($lote) {
-    //     return $lote->tipo === 'activo' ? 0 : ($lote->tipo === 'proximo' ? 1 : 2);
-    //   })
-    //   ->values();
-
-    $totalActivos     = $lotesActivos->count();
-    $totalProximos    = $lotesProximos->count();
-    $totalFinalizados = $lotesFinalizados->count();
-
-    // $this->lotes = $lotesActivos
-    //   ->merge($lotesProximos)
-    //   ->merge($lotesFinalizados)
-    //   ->sortBy(fn($lote) => $lote->tipo === 'activo' ? 0 : ($lote->tipo === 'proximo' ? 1 : 2))
-    //   ->values();
 
     $merged = collect($lotesActivos)
       ->merge($lotesProximos)
@@ -169,10 +151,10 @@ class LotesSearch extends Component
     $this->lotes = $merged->toArray();
 
     info([
-      'Activos' => count($lotesActivos),
-      'Próximos' => count($lotesProximos),
-      'Finalizados' => count($lotesFinalizados),
-      'Total Final' => $this->filtered
+      // 'Activos' => count($lotesActivos),
+      // 'Próximos' => count($lotesProximos),
+      // 'Finalizados' => count($lotesFinalizados),
+      // 'Total Final' => $this->filtered
     ]);
 
 
