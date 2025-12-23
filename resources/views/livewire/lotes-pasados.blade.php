@@ -3,10 +3,12 @@
 
 
 
-    <div class="  w-full  [&>article]:max-w-5xl">
-        @livewire('buscador', ['subasta_id' => $subasta->id, 'search' => $search])
-    </div>
 
+    <div class="  w-full  [&>article]:max-w-5xl flex flex-col gap-y-4">
+        @livewire('buscador', ['subasta_id' => $subasta->id, 'search' => $search])
+        <x-search-message :search="$search" />
+
+    </div>
 
 
     {{-- @role('adquirente') --}}
@@ -14,35 +16,6 @@
         {{-- @if (auth()->user()?->adquirente?->estado_id == 1 || auth()->user()?->adquirente?->garantia($subasta->id) || !auth()->user()?->hasRole('adquirente')) --}}
 
 
-        <div class=" bg-casa-black flex  border rounded-full    mx-auto justify-between pl-3 pr-1 py-0.5 items-center  border-casa-black col-span-3"
-            wire:show="filtered">
-
-            <p class="text-nowrap text-casa-base-2 ml-2">Resultados: <span class="ml-1">{{ $filtered }}</span>
-            </p>
-
-
-            <button wire:click="todos"
-                class="bg-casa-base-2 hover:bg-casa-black-h hover:text-casa-base border border-casa-base  text-casa-black rounded-full px-4 flex items-center justify-between  py-0.5 w-fit md:ml-20 ml-4">
-                Ver todos los lotes
-                <span class="text-xl leading-0 ml-8">X</span>
-            </button>
-        </div>
-
-
-        {{-- <div class="flex bg-casa-black justify-center items-center text-4xl font-bold text-casa-base-2  py-8 px-40 col-span-3 "
-                wire:show="noSearch"> --}}
-        <div class=" bg-casa-black flex  border rounded-full  w-fit  mx-auto justify-between  py-2 items-center  border-casa-black col-span-3 text-casa-base-2    px-4 md:text-xl text-md"
-            wire:show="noSearch">
-            <button wire:click="$set('noSearch',false)">¡Sin resultados para <b>"{{ $search }}"</b>!
-
-                <svg class="lg:size-8 size-7 lg:ml-20 ml-7 inline hover:scale-105">
-                    <use xlink:href="#x"></use>
-                </svg>
-            </button>
-            </button>
-
-
-        </div>
 
 
 
@@ -56,10 +29,6 @@
             @forelse ($lotes as $lote)
                 <div
                     class=" bg-casa-base-2 bas flex flex-col md:p-6 p-2 gap-y-1 md:border border-casa-black md:w-[394px]  md:min-w-[300px] min-w-[44%] relative max-w-[48%]">
-
-                    {{-- <div class="flex justify-between items-center md:order-1 order-2"> --}}
-                    {{-- <p class="font-bold md:text-3xl text-sm w-full  mr-3">{{ $lote['titulo'] }}</p> --}}
-                    {{-- </div> --}}
 
                     <x-clamp :text="$lote['titulo']" bclass="z-20" exp="-bottom-2 -right-2 md:right-0" />
 
@@ -121,6 +90,15 @@
                 </div>
             @endforelse
 
+            @if ($hasMore)
+                <div class="text-center mt-8 w-full  px-4">
+                    <button wire:click="loadMore"
+                        class="bg-casa-base-2 text-casa-black rounded-3xl md:px-30 py-2 font-bold w-full md:w-fit  border border-casa-black md:text-lg text-sm hover:bg-casa-base">
+                        Cargar más
+                    </button>
+                </div>
+            @endif
+
         </div>
         {{-- @else
             <div class="mt-5">
@@ -128,18 +106,9 @@
             </div>
         @endif --}}
     @endif
-    {{-- @endrole --}}
 
 
 
-    {{-- <button class="bg-blue-600 text-white px-2 my-2 ml-60 rounded-2xl  text-center" wire:click="mp">MP</button>
-    <button class="bg-red-600 text-white px-2 my-2 ml-60 rounded-2xl  text-center" wire:click="crearDevolucion(21)">MP -
-        REFOUND</button> --}}
-
-
-    {{-- <button class="bg-white rounded text-red-700 px-5 py-0 ml-40 mr-30 " wire:click="activar">Cheack Activar</button>
-    <button class="bg-white rounded text-red-700 px-5 py-0 mx-auto " wire:click="job">Cheack Desactivar</button>
-    <hr><br> --}}
 
 
 

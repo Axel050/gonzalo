@@ -208,7 +208,7 @@ class DetalleLote extends Component
     $this->subastaService = $subastaService;
     $this->adquirente = auth()->user()?->adquirente;
     $this->lote = Lote::find($this->id);
-    $this->base = $this->lote?->precio_base;
+    $this->base = $this->lote?->ultimoConLote?->precio_base;
     $this->subasta = Subasta::find($this->lote?->ultimoContrato?->subasta_id);
 
     $this->ultimaOferta = $this->lote?->getPujaFinal()?->monto;

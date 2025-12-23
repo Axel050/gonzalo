@@ -175,20 +175,8 @@ class Subasta extends Model implements Auditable
         'contrato_lotes.estado as contrato_lote_estado',
         'contrato_lotes.id as contrato_lote_id',
 
-      )
-      // ->with(['pujas' => function ($query) {
-      //   $query->orderByDesc('id')->first();
-      // }])
-    ;
+      );
 
-    // info(["test"]);
-    try {
-      $results = $query->get();
-      // info(["Lotes activoss" => $results->toArray()]);
-    } catch (\Exception $e) {
-      info(["Error en lotesActivos" => $e->getMessage()]);
-      throw $e;
-    }
 
     return $query;
   }
@@ -375,8 +363,8 @@ class Subasta extends Model implements Auditable
       );
 
     try {
-      $results = $query->get();
-      info(["123456789" => $results]);
+      // $results = $query->get();
+      // info(["123456789" => $results]);
     } catch (\Exception $e) {
       info(["Error en lotesPasados" => $e->getMessage()]);
       throw $e;

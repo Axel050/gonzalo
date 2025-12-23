@@ -14,8 +14,6 @@ use App\Services\SubastaService;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
-use MercadoPago\Client\Payment\PaymentRefundClient;
-use MercadoPago\MercadoPagoConfig;
 
 
 class LotesPasados extends Component
@@ -30,9 +28,16 @@ class LotesPasados extends Component
 
   public $monedas;
   public Subasta $subasta;
-  public $lotes = [];
+  // public $lotes = [];
   public $error = null;
   public $subastaEstado = "11";
+
+  public array $lotes = [];
+  public int $page = 1;
+  public int $perPage = 6;
+  public bool $hasMore = true;
+  public bool $fallbackAll = false;
+
 
   // #[On('echo:subasta.{subasta.id},SubastaEstadoActualizado')]
   // #[On('echo:my-channel.{subasta.id},SubastaEstadoActualizado')]
@@ -58,18 +63,6 @@ class LotesPasados extends Component
 
   }
 
-  public function activar()
-  {
-    info("ACTIVAR");
-    $job = new ActivarLotes();
-    $job->handle();
-  }
-
-  public function job()
-  {
-    $job = new DesactivarLotesExpirados();
-    $job->handle();
-  }
 
 
   public function getMonedaSigno($id)
@@ -78,10 +71,10 @@ class LotesPasados extends Component
   }
 
 
-  public function mount(Subasta $subasta, SubastaService $subastaService)
+  public function mount(Subasta $subasta)
   {
     info("mountxxxaaa ");
-    $this->subastaService = $subastaService;
+    // $this->subastaService = $subastaService;
     $this->subasta = $subasta;
 
     $this->monedas = Moneda::all();
@@ -91,7 +84,7 @@ class LotesPasados extends Component
     // if ($this->subasta->estado === 'inactiva' && $now->between($this->subasta->fecha_inicio, $this->subasta->fecha_fin)) {
     if ($this->subasta->estado === SubastaEstados::FINALIZADA && $now->greaterThan($this->subasta->fecha_fin)) {
       if ($this->searchParam) {
-        $this->filtrar($this->searchParam, $subastaService);
+        $this->filtrar($this->searchParam);
         $this->search = $this->searchParam;
         // $this->dispatch("searchValue", $this->searchParam);
       } else {
@@ -103,7 +96,7 @@ class LotesPasados extends Component
     }
   }
 
-  public function loadLotes()
+  public function loadLoteeees()
   {
     info("lotesClassxxx");
     try {
@@ -120,8 +113,118 @@ class LotesPasados extends Component
     }
   }
 
-  #[On(['buscarLotes'])]
-  public function filtrar($search, SubastaService $subastaService)
+
+
+
+
+  #[On('buscarLotes')]
+  public function filtrar($search)
+  {
+    $this->search = trim($search);
+    $this->searchParam = $this->search;
+
+    // Reset total
+    $this->page = 1;
+    $this->lotes = [];
+    $this->filtered = null;
+    $this->noSearch = false;
+    $this->hasMore = true;
+    $this->fallbackAll = false;
+
+    $paginator = app(SubastaService::class)->getLotesPasados(
+      $this->subasta,
+      $this->search,
+      true,          // características solo si hay búsqueda
+      1,
+      $this->perPage
+    );
+
+    if ($paginator->count() > 0) {
+      $this->filtered = $paginator->count(); // puede ser null si usás simplePaginate
+      $this->appendPaginator($paginator);
+      return;
+    }
+
+    $this->noSearch = true;
+    $this->fallbackAll = true;
+    // Traer TODOS los lotes sin filtro
+    $paginator = app(SubastaService::class)->getLotesPasados(
+      $this->subasta,
+      null,
+      false,
+      1,
+      $this->perPage
+    );
+
+
+    $this->appendPaginator($paginator);
+  }
+
+  protected function appendPaginator($paginator)
+  {
+    $items = collect($paginator->items())->map(fn($lote) => [
+      'id' => $lote->id,
+      'titulo' => $lote->titulo,
+      'foto' => $lote->foto1,
+      'descripcion' => $lote->descripcion,
+      'precio_base' => $lote->precio_base,
+      'moneda_id' => $lote->moneda_id,
+      'estado_lote' => $lote->estado_lote,
+    ])->toArray();
+
+    $this->lotes = array_merge($this->lotes, $items);
+    $this->hasMore = $paginator->hasMorePages();
+  }
+
+
+  public function loadLotes()
+  {
+    if (! $this->hasMore) {
+      return;
+    }
+
+    $search = $this->fallbackAll ? null : $this->search;
+    $conCaracteristicas = !empty($this->search);
+
+    $paginator = app(SubastaService::class)->getLotesPasados(
+      $this->subasta,
+      $search,
+      $conCaracteristicas,
+      $this->page,
+      $this->perPage
+    );
+
+    $items = collect($paginator->items())->map(fn($lote) => [
+      'id' => $lote->id,
+      'titulo' => $lote->titulo,
+      'foto' => $lote->foto1,
+      'descripcion' => $lote->descripcion,
+      'precio_base' => $lote->precio_base,
+      'moneda_id' => $lote->moneda_id,
+      'estado_lote' => $lote->lote_estado,
+    ])->toArray();
+
+    $this->lotes = array_merge($this->lotes, $items);
+    $this->hasMore = $paginator->hasMorePages();
+    if ($this->filtered) {
+      $this->filtered = count($this->lotes);
+    }
+  }
+
+
+  public function loadMore()
+  {
+    if (! $this->hasMore) {
+      return;
+    }
+
+    $this->page++;
+    $this->loadLotes();
+  }
+
+
+  #[On(['buscarLotsses'])]
+  public function filtrsssar($search, SubastaService $subastaService)
   {
     // Guardar el término de búsqueda
     $this->search = is_string($search) ? trim($search) : '';
@@ -173,13 +276,19 @@ class LotesPasados extends Component
     ]);
   }
 
-  public function todos(SubastaService $subastaService)
+  public function todos()
   {
-    $this->subastaService = $subastaService;
-    $this->loadLotes();
+    $this->search = '';
+    $this->searchParam = '';
+    $this->noSearch = false;
     $this->filtered = null;
-    $this->searchParam = null;
+    $this->fallbackAll = false;
+    $this->page = 1;
+    $this->lotes = [];
+    $this->hasMore = true;
     $this->dispatch("clearSearch");
+
+    $this->loadLotes();
   }
 
 

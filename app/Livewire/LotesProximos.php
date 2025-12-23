@@ -35,6 +35,8 @@ class LotesProximos extends Component
   public bool $fallbackAll = false;
 
 
+
+
   public Subasta $subasta;
 
 

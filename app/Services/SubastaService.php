@@ -101,13 +101,55 @@ class SubastaService
   }
 
 
+  public function getLotesActivos(
+    Subasta $subasta,
+    ?string $search = null,
+    bool $conCaracteristicas = false,
+    int $page = 1,
+    int $perPage = 6
+  ) {
+    if (! $subasta->isActiva()) {
+      throw new \Exception('Subasta no activa', 403);
+    }
+
+    $query = $subasta->lotesActivos()
+      ->with([
+        'pujas' => fn($q) => $q->latest()->limit(1),
+      ])
+      ->withExists('pujas');
+
+    // 🔍 búsqueda
+    if ($search) {
+      $query->where(function ($q) use ($search) {
+        $q->where('lotes.titulo', 'like', "%{$search}%")
+          ->orWhere('lotes.descripcion', 'like', "%{$search}%")
+          ->orWhereHas('valoresCaracteristicas', function ($c) use ($search) {
+            $c->where('valor', 'like', "%{$search}%");
+          });
+      });
+    }
+
+    // ⚡ solo si hace falta
+    if ($conCaracteristicas) {
+      $query->with('valoresCaracteristicas:id,lote_id,valor');
+      // $query->with('valoresCaracteristicas');
+    }
+
+    return $query->simplePaginate(
+      $perPage,
+      ['*'],
+      'page',
+      $page
+    );
+  }
 
 
 
 
 
 
-  public function getLotesActivos(Subasta $subasta)
+
+  public function getLotesActivosxxx(Subasta $subasta)
   {
 
 
@@ -517,8 +559,51 @@ class SubastaService
 
 
 
+  public function getLotesPasados(
+    Subasta $subasta,
+    ?string $search = null,
+    bool $conCaracteristicas = false,
+    int $page = 1,
+    int $perPage = 6
+  ) {
+    if (!$subasta->isPasada()) {
+      throw new \Exception('Subasta no disponible', 403);
+    }
 
-  public function getLotesPasados(Subasta $subasta, bool $conCaracteristicas = false)
+    $query = $subasta->lotesPasados()
+      ->with([
+        'pujas' => fn($q) => $q->latest()->limit(1),
+      ])
+      ->withExists('pujas');
+
+
+    if ($search) {
+      $query->where(function ($q) use ($search) {
+        $q->where('lotes.titulo', 'like', "%{$search}%")
+          ->orWhere('lotes.descripcion', 'like', "%{$search}%")
+          ->orWhereHas('valoresCaracteristicas', function ($c) use ($search) {
+            $c->where('valor', 'like', "%{$search}%");
+          });
+      });
+    }
+
+
+    if ($conCaracteristicas) {
+      $query->with('valoresCaracteristicas:id,lote_id,valor');
+      // $query->with('valoresCaracteristicas');
+    }
+
+
+    return $query->simplePaginate(
+      $perPage,
+      ['*'],
+      'page',
+      $page
+    );
+  }
+
+
+  public function getLotesPasadosOOO(Subasta $subasta, bool $conCaracteristicas = false)
   {
 
     if (!$subasta->isPasada()) {

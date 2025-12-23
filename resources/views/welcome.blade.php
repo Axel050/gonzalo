@@ -5,7 +5,6 @@
 
 
 
-        <!-- Todo tu contenido actual del welcome -->
 
         <!-- Modal de verificación exitosa -->
         @if ($showVerifiedModal)
@@ -23,9 +22,7 @@
                     </div>
 
                     <h2 class="text-2xl font-bold text-center mb-2">¡Email verificado con éxito!</h2>
-                    {{-- <p class="text-gray-600 text-center mb-8">
-                        Ahora puedes disfrutar de todas las funcionalidades de la aplicación.
-                    </p> --}}
+
                     <div class="text-center mt-10 pt-4">
                         <a href="/"
                             class="px-8 py-3 bg-casa-black text-white font-medium rounded-lg hover:bg-casa-black-h  transition">

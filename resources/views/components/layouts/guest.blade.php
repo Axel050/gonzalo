@@ -203,7 +203,7 @@
 
         <!-- Page Content -->
 
-        @livewire('counter-header')
+        {{-- @livewire('counter-header') --}}
 
         {{-- <main class=" bg-gray-900  px-4 lg:px-6  "> --}}
         {{-- bg-[repeating-linear-gradient(45deg,currentColor_0,currentColor_1px,transparent_1px,transparent_5px)] --}}

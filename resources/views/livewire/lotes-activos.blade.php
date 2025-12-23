@@ -1,15 +1,20 @@
 <div class="flex flex-col justify-center items-center hvh w-full  pt-12  text-casa-black md:gap-y-24 gap-y-16 md:px-24">
 
-    <div class="  w-full  [&>article]:max-w-5xl">
+    <div class="  w-full  [&>article]:max-w-5xl flex flex-col gap-y-4">
+
         @livewire('buscador', ['subasta_id' => $subasta->id, 'search' => $search])
+        <x-search-message :search="$search" />
+
     </div>
 
 
+
+    {{-- @dump('check hammer move'd) --}}
     {{-- @role('adquirente') --}}
     @if (auth()->user())
         {{-- @if (auth()->user()?->adquirente?->estado_id == 1 || auth()->user()?->adquirente?->garantia($subasta->id) || !auth()->user()?->hasRole('adquirente')) --}}
 
-
+        {{-- 
         <div class=" bg-casa-black flex  border rounded-full    mx-auto justify-between pl-3 pr-1 py-0.5 items-center  border-casa-black col-span-3 bg-red"
             wire:show="filtered">
 
@@ -35,7 +40,7 @@
                 </svg>
             </button>
 
-        </div>
+        </div> --}}
 
         @if (
             !(auth()->user()?->adquirente?->estado_id == 1 ||
@@ -50,7 +55,7 @@
                 {{-- <h2 class=" font-bold lgtext-3xl  text-xl lg:text-center text-start">¿Como puedo ofertar?</h2> --}}
                 <button
                     class="bg-casa-black hover:bg-transparent hover:text-casa-black border border-casa-black text-casa-base rounded-full px-4 flex items-center justify-between  py-1  col-span-3 mx-auto lg:text-2xl font-semibold text-sm lg:w-fit lg w-full  "
-                    wire:click="mp">
+                    wire:click="$set('modalPago',true)">
                     <span class="pb-0.5">
                         Quiero ofertar
                     </span>
@@ -172,13 +177,22 @@
                 </div>
             @endforelse
 
-            @if (count($lotes))
-                <div class="w-full  justify-between  lg:w-[75%]  mx-auto px-2 bg-red-600">
-                    {{-- {{ $lotes->links() }} --}}
+            @if ($hasMore)
+                <div class="text-center mt-8 w-full  px-4">
+                    <button wire:click="loadMore"
+                        class="bg-casa-base-2 text-casa-black rounded-3xl md:px-30 py-2 font-bold w-full md:w-fit  border border-casa-black md:text-lg text-sm hover:bg-casa-base">
+                        Cargar más
+                    </button>
                 </div>
             @endif
 
+
+
+
         </div>
+
+
+
         {{-- @else
             <div class="mt-5">
                 <x-registrate />

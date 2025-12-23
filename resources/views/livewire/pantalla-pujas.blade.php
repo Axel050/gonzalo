@@ -3,14 +3,6 @@
 
 
     <article class="bg-red-00 flex  w-full md:justify-center justify-start flex-col  relative max-w-8xl">
-        {{-- <svg fill="#fff" class="w-[247px] h-[47px] mx-auto mb-2 md:block hidden">
-            <use xlink:href="#tuslotes"></use>
-        </svg> --}}
-
-        {{-- <h2 class="md:hidden text-4xl font-helvetica">tus lotes</h2> --}}
-
-        {{-- <div class="max-w-8xl bg-green-600 relative"> --}}
-
 
         <x-fancy-heading text="t{u}s lo{t}es el{e}gi{d}os" variant="italic mx-[px] font-normal"
             class=" md:text-[47px] text-[28px]  md:text-center  text-start text-wrap font-normal " />
@@ -30,7 +22,6 @@
                 </svg>
             </a>
         @endif
-        {{-- </div> --}}
     </article>
 
 
@@ -162,8 +153,11 @@
 
                                 </div>
 
+
+
                                 <p class=" md:text-xl text-sm"> Base :
-                                    {{ $signo }} {{ number_format($lote['precio_base'], 0, ',', '.') }}</p>
+                                    {{ $signo }}
+                                    {{ number_format($lote['ultimoConLote']['precio_base'], 0, ',', '.') }}</p>
                                 <p class=" md:text-xl text-sm font-bold"> Oferta actual :
                                     {{ $signo }} {{ $actual }}</p>
 

@@ -121,6 +121,8 @@ class PantallaPujas extends Component
     $this->ofertas[$loteId] = number_format((int) $cleanValue, 0, ',', '.');
   }
 
+
+
   public function mount()
   {
     // info("mount_ CarritoShow");
@@ -131,7 +133,7 @@ class PantallaPujas extends Component
     $this->lotes  = $this->adquirente?->carrito?->lotesFiltrados;
 
 
-    // info("lotes SHOW" . $this->lotes);
+    info("lotes SHOW" . $this->lotes);
     $this->monedas = Moneda::all();
 
     if ($this->lotes) {
@@ -140,7 +142,7 @@ class PantallaPujas extends Component
         $actual = optional($lote->getPujaFinal())->monto !== null ? (int) $lote->getPujaFinal()->monto : 0;
         // $this->ofertas[$lote->id] = number_format($actual + $lote->fraccion_min, 0, ',', '.');
         if (!$actual) {
-          $this->ofertas[$lote->id] = $lote->precio_base;
+          $this->ofertas[$lote->id] = $lote->ultimoConLote?->precio_base;
         } else {
           # code...
           $this->ofertas[$lote->id] = $actual + $lote->fraccion_min;
@@ -151,6 +153,10 @@ class PantallaPujas extends Component
 
     $this->tieneOrdenes = $this->adquirente->ordenes()->where("estado", "pendiente")->exists();
   }
+
+
+
+
 
 
   // public function registrarPuja(PujaService $pujaService, $loteId, $ultimoMontoVisto, $monto = null)
