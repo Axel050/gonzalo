@@ -42,7 +42,8 @@
 
 
 
-        <div class="flex flex-wrap   md:gap-12 gap-2 place-content-center justify-center max-w-[1440px]  w-full">
+        <div
+            class="flex flex-wrap   md:gap-12 gap-2 place-content-center justify-center max-w-[1440px]  w-full px-2 md:px-0">
 
 
             {{-- @if ($lotes) --}}
@@ -50,7 +51,7 @@
 
             @forelse ($lotes as $lote)
                 <div
-                    class=" bg-casa-base-2 bas flex flex-col md:p-6  p-2 gap-y-1 md:border border-casa-black md:w-[394px]  md:min-w-[300px] min-w-[44%] relative max-w-[48%]">
+                    class=" bg-casa-base-2 bas flex flex-col md:p-6  p-2 gap-y-1 md:border border-casa-black md:w-[394px]  md:min-w-[300px] min-w-[44%] relative max-w-[48%] w-full">
 
                     <x-clamp :text="$lote['titulo']" bclass=" ml-1  z-20" mas="absolute -bottom-2 -right-3 md:right-0 "
                         menos="absolute right-2 md:top-1/2 top-full " />

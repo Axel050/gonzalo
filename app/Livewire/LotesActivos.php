@@ -24,6 +24,11 @@ class LotesActivos extends Component
 
   public $error = null;
 
+  protected function searchType(): string
+  {
+    return 'pujas'; // Solo cargará campos de pujas
+  }
+
 
   protected function fetchData($search, $page)
   {
@@ -56,10 +61,6 @@ class LotesActivos extends Component
   }
 
 
-  public function getMonedaSigno($id)
-  {
-    return $this->monedas->firstWhere('id', $id)?->signo ?? '';
-  }
 
 
 

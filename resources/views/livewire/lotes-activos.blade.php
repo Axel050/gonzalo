@@ -107,12 +107,12 @@
         @endif
 
 
-        <div class="flex flex-wrap   lg:gap-12 gap-2 place-content-center justify-center max-w-8xl w-full ">
+        <div class="flex flex-wrap   lg:gap-12 gap-2 place-content-center justify-center max-w-8xl w-full px-2 md:px-0">
 
 
             @forelse ($lotes as $lote)
                 <div
-                    class=" bg-casa-base-2 bas flex flex-col lg:p-6 p-2 gap-y-1 lg:border border-casa-black lg:w-[394px]  lg:min-w-[300px] min-w-[44%] relative max-w-[48%]">
+                    class=" bg-casa-base-2 bas flex flex-col lg:p-6 p-2 gap-y-1 lg:border border-casa-black lg:w-[394px]  lg:min-w-[300px] min-w-[44%] relative max-w-[48%] w-full">
 
                     <div class="flex justify-between items-center sm:order-1 order-2">
 

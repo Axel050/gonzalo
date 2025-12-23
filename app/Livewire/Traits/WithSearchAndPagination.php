@@ -25,6 +25,9 @@ trait WithSearchAndPagination
    * Este método debe ser definido en el componente para 
    * indicar qué método del servicio llamar.
    */
+
+  abstract protected function searchType(): string;
+
   abstract protected function fetchData($search, $page);
 
   public function todos()
@@ -62,22 +65,47 @@ trait WithSearchAndPagination
     $this->appendPaginator($paginator);
   }
 
+
+
+
+
+
   protected function appendPaginator($paginator)
   {
-    $items = collect($paginator->items())->map(fn($lote) => [
-      'id' => $lote->id,
-      'titulo' => $lote->titulo,
-      'foto' => $lote->foto1,
-      'descripcion' => $lote->descripcion,
-      'precio_base' => $lote->precio_base,
-      'puja_actual' => $lote->pujas->first()?->monto,
-      'moneda_id' => $lote->moneda_id,
-      'tienePujas' => (bool) $lote->pujas_exists,
-    ])->toArray();
+    $type = $this->searchType();
+
+
+    $items = collect($paginator->items())->map(function ($lote) use ($type) {
+      $data = [
+        'id' => $lote->id,
+        'titulo' => $lote->titulo,
+        'foto' => $lote->foto1,
+        'descripcion' => $lote->descripcion,
+        'precio_base' => $lote->precio_base,
+        'moneda_id' => $lote->moneda_id,
+
+      ];
+
+      if ($type === 'estado' || $type === 'completo') {
+
+        $data['estado'] = $lote->estado;
+      }
+
+
+      if ($type === 'pujas' || $type === 'completo') {
+
+        $data['puja_actual'] = $lote->pujas->first()?->monto;
+        $data['tienePujas'] = (bool) $lote->pujas_exists;
+      }
+
+      return $data;
+    })->toArray();
 
     $this->lotes = array_merge($this->lotes, $items);
     $this->hasMore = $paginator->hasMorePages();
   }
+
+
 
   protected function resetSearchState()
   {
@@ -96,7 +124,18 @@ trait WithSearchAndPagination
     if (!$this->hasMore) return;
 
     $this->page++;
-    $paginator = $this->fetchData($this->fallbackAll ? null : $this->search, $this->page);
+    $searchTerm = $this->fallbackAll ? null : $this->search;
+
+    $paginator = $this->fetchData($searchTerm, $this->page);
+
+    // IMPORTANTE: Llamar al método que tiene los IF del searchType
     $this->appendPaginator($paginator);
+  }
+
+
+
+  public function getMonedaSigno($id)
+  {
+    return $this->monedas->firstWhere('id', $id)?->signo ?? '';
   }
 }

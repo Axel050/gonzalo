@@ -355,7 +355,7 @@ class Subasta extends Model implements Auditable
         'lotes.descripcion',
         'lotes.valuacion',
         'lotes.ultimo_contrato',
-        'lotes.estado as lote_estado',
+        'lotes.estado',
         'contrato_lotes.moneda_id',
         'contrato_lotes.precio_base',
         'contrato_lotes.estado as contrato_lote_estado',

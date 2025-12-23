@@ -7,7 +7,6 @@
     <div class="  w-full  [&>article]:max-w-5xl flex flex-col gap-y-4">
         @livewire('buscador', ['subasta_id' => $subasta->id, 'search' => $search])
         <x-search-message :search="$search" />
-
     </div>
 
 
@@ -20,15 +19,13 @@
 
 
 
-
-
-
-        <div class="flex flex-wrap   md:gap-12 gap-2 place-content-center justify-center max-w-[1440px]  w-full">
+        <div
+            class="flex flex-wrap   md:gap-12 gap-2 place-content-center justify-center max-w-[1440px]  w-full px-2 md:px-0">
 
 
             @forelse ($lotes as $lote)
                 <div
-                    class=" bg-casa-base-2 bas flex flex-col md:p-6 p-2 gap-y-1 md:border border-casa-black md:w-[394px]  md:min-w-[300px] min-w-[44%] relative max-w-[48%]">
+                    class=" bg-casa-base-2 bas flex flex-col md:p-6 p-2 gap-y-1 md:border border-casa-black md:w-[394px]  md:min-w-[300px] min-w-[44%] w-full relative max-w-[48%]">
 
                     <x-clamp :text="$lote['titulo']" bclass="z-20" exp="-bottom-2 -right-2 md:right-0" />
 
@@ -49,9 +46,7 @@
                     {{-- <a href="{{ route('lotes.show', $lote['id']) }}" class="absolute inset-0 md:hidden z-10"></a> --}}
 
 
-
-
-                    @if ($lote['estado_lote'] == 'vendido')
+                    @if ($lote['estado'] == 'vendido')
                         <p
                             class=" bg-red-800 text-casa-base  border border-black rounded-full px-4 flex  justify-center  md:py-2 pt-0.5  w-full  md:text-xl text-sm font-bold mb-2 order-6">
                             VENDIDO

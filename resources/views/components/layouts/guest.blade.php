@@ -205,10 +205,6 @@
 
         @livewire('counter-header')
 
-        {{-- <main class=" bg-gray-900  px-4 lg:px-6  "> --}}
-        {{-- bg-[repeating-linear-gradient(45deg,currentColor_0,currentColor_1px,transparent_1px,transparent_5px)] --}}
-        {{-- <main class="   bgred-500 h-[calc(100dvh-48px)]" style="min-height: calc(100dvh - 48px); "> --}}
-        {{-- <main class="   bgred-500 h-dvh" style="min-height: calc(100dvh - 48px); "> --}}
 
         @if (!request()->routeIs('subastas', 'adquirentes.create', 'comitentes.create'))
             <a href="{{ route('subastas') }}"
