@@ -29,11 +29,11 @@ class Subastas extends Component
 
     $this->subastasFin = Subasta::whereIn('estado', ["finalizada"])->get();
 
-    info([
-      "subasta" => count($this->subastas),
-      "subastaProx" => count($this->subastasProx),
-      "subastaFIN" => count($this->subastasFin),
-    ]);
+    // info([
+    //   "subasta" => count($this->subastas),
+    //   "subastaProx" => count($this->subastasProx),
+    //   "subastaFIN" => count($this->subastasFin),
+    // ]);
   }
 
 

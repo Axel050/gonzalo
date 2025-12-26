@@ -32,7 +32,7 @@
 
             <div class="text-right md:mt-8 mt-6">
                 <button @click="open = false"
-                    class="px-2 py-1 rounded-full border border-casa-black  transition bg-casa-black text-casa-base flex items-center hover:bg-casa-base-2 hover:text-casa-black mx-auto">
+                    class="px-2 py-1 rounded-full border border-casa-black  transition bg-casa-black text-casa-base flex items-center hover:bg-casa-base-2 hover:text-casa-black mx-auto font-bold">
                     Cerrar
 
                     <svg class="lg:size-6 size-5  ml-12 ">

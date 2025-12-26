@@ -2167,3 +2167,9 @@ Stack trace:
 #78 C:\xampp\htdocs\casablanca12\public\index.php(20): Illuminate\Foundation\Application->handleRequest()
 #79 C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Foundation\resources\server.php(23): require_once('...')
 #80 {main} in C:\xampp\htdocs\casablanca12\app\Livewire\LotesPasados.php on line 20
+[23-Dec-2025 16:21:25 America/Argentina/Buenos_Aires] PHP Fatal error:  Cannot use App\Enums\LotesEstados as LotesEstados because the name is already in use in C:\xampp\htdocs\casablanca12\app\Services\SubastaService.php on line 6
+[23-Dec-2025 17:51:13 America/Argentina/Buenos_Aires] PHP Fatal error:  Cannot redeclare App\Livewire\LotesSearch::filtrar() in C:\xampp\htdocs\casablanca12\app\Livewire\LotesSearch.php on line 220
+[23-Dec-2025 17:51:14 America/Argentina/Buenos_Aires] PHP Fatal error:  Cannot redeclare App\Livewire\LotesSearch::filtrar() in C:\xampp\htdocs\casablanca12\app\Livewire\LotesSearch.php on line 220
+[23-Dec-2025 17:51:15 America/Argentina/Buenos_Aires] PHP Fatal error:  Cannot redeclare App\Livewire\LotesSearch::filtrar() in C:\xampp\htdocs\casablanca12\app\Livewire\LotesSearch.php on line 220
+[23-Dec-2025 21:15:30 America/Argentina/Buenos_Aires] PHP Fatal error:  Cannot redeclare App\Livewire\LotesSearch::resetSearchState() in C:\xampp\htdocs\casablanca12\app\Livewire\LotesSearch.php on line 152
+[23-Dec-2025 21:15:34 America/Argentina/Buenos_Aires] PHP Fatal error:  Cannot redeclare App\Livewire\LotesSearch::resetSearchState() in C:\xampp\htdocs\casablanca12\app\Livewire\LotesSearch.php on line 152

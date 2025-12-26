@@ -9,6 +9,101 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 
+
+
+function initSwiperAbiertasHome() {
+
+  document.querySelectorAll('.swiper-home-subastas').forEach((el, index) => {
+
+    if (el.swiper) {
+      el.swiper.destroy(true, true);
+    }
+
+
+    const slides = el.querySelectorAll('.swiper-slide').length;
+    // autoplay: { delay: 2000 },
+
+
+    if (window.innerWidth >= 640) {
+      console.log("INNNEEEEadd")
+      new Swiper(el, {
+        slidesPerView: 3,
+
+        centerInsufficientSlides: true,
+        spaceBetween: 50,
+        loop: slides > 3 ? true : false,
+        autoplay: slides > 3 ? { delay: 5000 } : false,
+
+
+        // breakpoints: {
+        //   420: {
+        //     slidesPerView: 3,
+        //   },
+        // },
+        modules: [Autoplay],
+
+      });
+    }
+    else {
+      console.log("MOBILE ")
+      // En móvil quitamos clases de Swiper para que se vea como flex-col
+      el.classList.remove("swiper-home-subastas");
+      el.classList.remove("swiper-container");
+      el.classList.add("flex", "flex-col");
+    }
+  });
+
+}
+
+
+
+function initSwiperDestacados() {
+  document.querySelectorAll('.swiper-destacados').forEach((el) => {
+
+    // destruir si existe
+    if (el.swiper) {
+      el.swiper.destroy(true, true);
+    }
+
+    const slides = el.querySelectorAll('.swiper-slide').length;
+
+    // ⏳ esperar repaint real
+    requestAnimationFrame(() => {
+      new Swiper(el, {
+        slidesPerView: 2,
+        spaceBetween: 15,
+        centerInsufficientSlides: true,
+        loop: slides > 3,
+        autoplay: slides > 3 ? { delay: 5000 } : false,
+
+        breakpoints: {
+          420: {
+            slidesPerView: 3,
+            spaceBetween: 50,
+          },
+        },
+
+        modules: [Autoplay, Pagination],
+        pagination: {
+          el: el.querySelector('.swiper-pagination'),
+          clickable: true,
+        },
+      });
+    });
+  });
+}
+
+document.addEventListener('livewire:navigated', () => {
+  initSwiperDestacados();
+  initSwiperAbiertasHome();
+});
+
+document.addEventListener('livewire:load', () => {
+  initSwiperDestacados();
+  initSwiperAbiertasHome();
+});
+
+
 // Configura tu Swiper
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -44,7 +139,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-  document.querySelectorAll('.swiper-destacados').forEach((el, index) => {
+  document.querySelectorAll('.swiper-destacadosss').forEach((el, index) => {
 
     const slides = el.querySelectorAll('.swiper-slide').length;
 
@@ -202,7 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 
 
 
-  document.querySelectorAll('.swiper-home-subastas').forEach((el, index) => {
+  document.querySelectorAll('.swiper-home-subastassss').forEach((el, index) => {
 
     const slides = el.querySelectorAll('.swiper-slide').length;
     // autoplay: { delay: 2000 },

@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Traits;
 
-use App\Services\SubastaService;
+
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 

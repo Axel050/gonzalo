@@ -2,8 +2,6 @@
 
 use App\Http\Controllers\AdquirenteController;
 use App\Http\Controllers\ComitenteController;
-use App\Http\Controllers\MPController;
-use App\Livewire\LotesActivos;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -11,14 +9,12 @@ use App\Mail\ContratoEmail;
 use App\Mail\OrdenEmail;
 use App\Mail\PujaSuperadaEmail;
 use Illuminate\Support\Facades\Route;
-use App\Mail\TestEmail;
 use App\Models\Adquirente;
 use App\Models\Contrato;
 use App\Models\ContratoLote;
 use App\Models\Lote;
 use App\Models\Orden;
 use App\Models\Subasta;
-use App\Services\SubastaService;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 
@@ -37,7 +33,7 @@ Route::get('/dashboard', function () {
 
 Route::get('/', function () {
   $subastasProx = Subasta::where('fecha_inicio', '>=', Carbon::now())->get();
-  $subastasAct = Subasta::whereIn('estado', ["activa", "enpuja"])->get();
+  // $subastasAct = Subasta::whereIn('estado', ["activa", "enpuja"])->get();
   $subastasFin = Subasta::whereIn('estado', ["finalizada"])->get();
   $last = Subasta::whereIn('estado', ['activa', 'en_puja'])
     ->where('fecha_fin', '>', Carbon::now())
@@ -47,14 +43,19 @@ Route::get('/', function () {
 
 
 
-  $destacados = app(SubastaService::class)->getLotesActivosDestacadosHome()->toArray();
+  // $destacados = app(SubastaService::class)->getLotesActivosDestacadosHome()->toArray();
 
-  $contadorDestacados = !empty($destacados);
+
+  // $contadorDestacados = !empty($destacados);
 
 
   $showVerifiedModal = request()->has('verified') && request()->query('verified') == 1;
 
-  return view('welcome', compact("subastasProx", "subastasAct", "subastasFin", "last", "contadorDestacados", "showVerifiedModal"));
+  return view('welcome', compact("last", "showVerifiedModal", 'subastasProx', 'subastasFin'));
+
+
+  // return view('welcome', compact("subastasProx", "subastasAct", "subastasFin", "last", "contadorDestacados", "showVerifiedModal"));
+
 })->name('home');
 
 

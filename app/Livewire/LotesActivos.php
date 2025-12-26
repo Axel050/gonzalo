@@ -88,6 +88,7 @@ class LotesActivos extends Component
       $this->loadLotes();
     } else {
       info("mount444 ");
+      $this->hasMore = false;
       $this->lotes = [];
     }
   }
@@ -96,6 +97,7 @@ class LotesActivos extends Component
 
   public function loadLotes()
   {
+    info("LOadssssssssssssssssssssa");
     $search = $this->fallbackAll ? null : $this->search;
     $conCaracteristicas = ! empty($this->search);
 

@@ -1,4 +1,4 @@
-<footer class=" text-white  mt-20 g-red-300 flex flex-col w-full">
+<footer class=" text-casa-base  md:mt-24 mt-16  g-red-300 flex flex-col w-full ">
 
 
     <div

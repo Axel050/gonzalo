@@ -3,17 +3,11 @@
 namespace App\Livewire;
 
 use App\Enums\SubastaEstados;
-use App\Jobs\ActivarLotes;
-use App\Jobs\DesactivarLotesExpirados;
 use App\Livewire\Traits\WithSearchAndPagination;
-use App\Models\Garantia;
 use App\Models\Moneda;
-use App\Models\Puja;
 use App\Models\Subasta;
-use App\Services\MPService;
 use App\Services\SubastaService;
 use Livewire\Attributes\On;
-use Livewire\Attributes\Url;
 use Livewire\Component;
 
 
@@ -46,8 +40,6 @@ class LotesPasados extends Component
   }
 
 
-  // #[On('echo:subasta.{subasta.id},SubastaEstadoActualizado')]
-  // #[On('echo:my-channel.{subasta.id},SubastaEstadoActualizado')]
 
   #[On('echo:my-channel,SubastaEstadoActualizado')]
   public function actualizarEstado($event)
@@ -60,14 +52,7 @@ class LotesPasados extends Component
     //     $this->error = 'La subasta ha finalizado';
     // }
 
-
     $this->loadLotes();
-    // $this->test = "22";
-    info("REVERT  XXXX");
-    // info(["lotes " => $event['lotes']]);
-    // info(["subata estado " => $event['estado']]);
-    // dd("aaaa");
-
   }
 
 

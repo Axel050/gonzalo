@@ -3,9 +3,12 @@
 namespace App\Services;
 
 use App\Enums\LotesEstados;
+
+
 use App\Models\EstadosLote;
 use App\Models\Lote;
 use App\Models\Subasta;
+use Illuminate\Support\Facades\DB;
 
 class SubastaService
 {
@@ -177,7 +180,53 @@ class SubastaService
   }
 
 
+
+
+
+
   public function getLotesActivosDestacadosHome()
+  {
+    return Lote::query()
+      ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
+      ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
+
+      // 🔥 subquery: última puja
+      ->leftJoin('pujas as p', function ($join) {
+        $join->on('p.lote_id', '=', 'lotes.id')
+          ->whereRaw('p.id = (
+                    select id from pujas
+                    where pujas.lote_id = lotes.id
+                    order by id desc
+                    limit 1
+                 )');
+      })
+
+      ->where('lotes.estado', LotesEstados::EN_SUBASTA)
+      ->where('contrato_lotes.estado', 'activo')
+      ->where('lotes.destacado', true)
+      ->where(function ($query) {
+        $query->whereNull('contrato_lotes.tiempo_post_subasta_fin')
+          ->orWhere('contrato_lotes.tiempo_post_subasta_fin', '>=', now());
+      })
+      ->whereColumn('lotes.ultimo_contrato', 'contratos.id')
+
+      ->select([
+        'lotes.id',
+        'lotes.titulo',
+        'lotes.foto1 as foto',
+        'contrato_lotes.precio_base',
+        'contrato_lotes.moneda_id',
+        'lotes.estado as estado_lote',
+
+        // ✅ calculados en SQL
+        DB::raw('COALESCE(p.monto, 0) as puja_actual'),
+        DB::raw('CASE WHEN p.id IS NULL THEN 0 ELSE 1 END as tienePujas'),
+      ])
+
+      ->get();
+  }
+
+  public function getLotesActivosDestacadosHomeee()
   {
 
 
@@ -220,6 +269,8 @@ class SubastaService
     });
   }
 
+
+
   public function getLotesActivosDestacadosHomeFoto()
   {
 
@@ -256,7 +307,7 @@ class SubastaService
   }
 
 
-  public function getLotesActivosDestacados(Subasta $subasta)
+  public function getLotesActivosDestacado2s(Subasta $subasta)
   {
 
     info("In SUBASTA SERVICE");
@@ -284,6 +335,11 @@ class SubastaService
       ];
     });
   }
+
+
+
+
+
 
 
   public function getLotesProximos(
@@ -532,7 +588,7 @@ class SubastaService
 
 
 
-  public function getLotesProximosDestacados(Subasta $subasta)
+  public function getLotesProximosDestacados22(Subasta $subasta)
   {
 
 
@@ -737,4 +793,235 @@ class SubastaService
       ];
     });
   }
+
+
+
+
+
+
+
+
+
+
+
+  public function buscarLotes(
+    ?string $search = null,
+    int $page = 1,
+    int $perPage = 6
+  ) {
+    $query = Lote::query()
+      ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
+      ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
+      ->join('subastas', 'contratos.subasta_id', '=', 'subastas.id')
+      ->leftJoin(
+        'valores_cataracteristicas as vc',
+        'vc.lote_id',
+        '=',
+        'lotes.id'
+      )
+
+      ->leftJoin('pujas as p', function ($join) {
+        $join->on('p.lote_id', '=', 'lotes.id')
+          ->whereRaw('p.id = (
+                     select id from pujas 
+                     where pujas.lote_id = lotes.id 
+                     order by id desc limit 1
+                 )');
+      })
+
+
+      // 🔒 reglas de negocio fijas
+      ->whereIn('lotes.estado', [
+        LotesEstados::EN_SUBASTA,
+        LotesEstados::ASIGNADO,
+        LotesEstados::DISPONIBLE,
+      ])
+      ->where('contrato_lotes.estado', 'activo')
+      ->whereColumn('lotes.ultimo_contrato', 'contratos.id')
+
+      // 🔍 búsqueda
+      ->when($search, function ($q) use ($search) {
+        $q->where(function ($qq) use ($search) {
+          $qq->where('lotes.titulo', 'like', "%{$search}%")
+            ->orWhere('lotes.descripcion', 'like', "%{$search}%")
+            ->orWhere('vc.valor', 'like', "%{$search}%");
+        });
+      })
+
+      ->select(
+        'lotes.id',
+        'lotes.titulo',
+        'lotes.descripcion',
+        'lotes.foto1',
+        'lotes.estado as lote_estado',
+        'contrato_lotes.precio_base',
+        'contrato_lotes.moneda_id',
+        'contratos.subasta_id',
+        'subastas.estado as subasta_estado',
+        'subastas.fecha_inicio',
+        'subastas.fecha_fin'
+      )
+      ->selectRaw('COALESCE(p.monto, 0) as puja_actual')
+      ->selectRaw('CASE WHEN p.id IS NULL THEN 0 ELSE 1 END as tiene_pujas')
+
+      ->distinct();
+
+    // 👉 paginación SIEMPRE acá
+    return $query->simplePaginate(
+      $perPage,
+      ['*'],
+      'page',
+      $page
+    );
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  private const MAP_ACTIVOS = [
+    'pujas' => true,
+    'estado_lote' => true,
+    'tiempo' => true,
+  ];
+
+  private const MAP_PROXIMOS = [
+    // nada de pujas
+    'estado_lote' => true,
+  ];
+
+  private const MAP_PASADOS = [
+    'estado_lote' => true,
+  ];
+
+  private const MAP_FOTOS = [];
+
+
+
+
+  private function mapLote(
+    $lote,
+    // Subasta $subasta,
+    array $options = []
+  ): array {
+    return array_filter([
+      'id' => $lote->id,
+      'titulo' => $lote->titulo,
+      'foto' => $lote->foto1,
+      'descripcion' => $options['descripcion'] ?? false
+        ? $lote->descripcion
+        : null,
+
+      'precio_base' => $lote->precio_base,
+      'moneda_id'   => $lote->moneda_id,
+
+      // 🔥 SOLO SI SE PIDE
+      'puja_actual' => ($options['pujas'] ?? false)
+        ? $lote->pujas->first()?->monto
+        : null,
+
+
+      'tienePujas' => ($options['pujas'] ?? false)
+        ? $lote->pujas->isNotEmpty()
+        : null,
+
+
+
+
+
+
+      'estado_lote' => $options['estado_lote'] ?? false
+        ? $lote->lote_estado
+        : null,
+
+      'tiempo_post_subasta_fin' => $options['tiempo'] ?? false
+        ? $lote->tiempo_post_subasta_fin
+        : null,
+    ], fn($v) => !is_null($v));
+  }
+
+
+
+  public function getLotesActivosDestacados(Subasta $subasta)
+  {
+    if (! $subasta->isActiva()) {
+      throw new \Exception('Subasta no activa', 403);
+    }
+
+    return $subasta
+      ->lotesActivosDestacados()
+      // 👇 SOLO porque es ACTIVA y se muestran pujas
+      ->with([
+        'pujas' => function ($q) {
+          $q->select('id', 'lote_id', 'monto')
+            ->latest('id')
+            ->limit(1);
+        }
+      ])
+      ->get()
+      ->map(fn($lote) => $this->mapLote(
+        $lote,
+        self::MAP_ACTIVOS   // 👈 perfil ACTIVO
+      ));
+  }
+
+
+  public function getLotesProximosDestacados(Subasta $subasta)
+  {
+    if (! $subasta->isProxima()) {
+      throw new \Exception('Subasta no disponible', 403);
+    }
+
+    return $subasta
+      ->lotesProximosDestacados()
+      // 🚫 NO cargamos pujas (no se usan en próximos)
+      ->get()
+      ->map(fn($lote) => $this->mapLote(
+        $lote,
+        self::MAP_PROXIMOS   // 👈 perfil PROXIMO
+      ));
+  }
+
+
+
+  // public function getLotesProximosDestacados(Subasta $subasta)
+  // {
+  //   return $this->getDestacados(
+  //     $subasta,
+  //     fn($s) => $s->isProxima(),
+  //     fn($s) => $s->lotesProximosDestacados()
+  //   );
+  // }
+
+  // public function getLotesPasadosDestacados(Subasta $subasta)
+  // {
+  //   return $this->getDestacados(
+  //     $subasta,
+  //     fn($s) => $s->isPasada(),
+  //     fn($s) => $s->lotesPasadosDestacados()
+  //   );
+  // }
+
+
+
+
+
+
+
+
+
+
+
 }

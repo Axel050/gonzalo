@@ -1,6 +1,6 @@
 @props([
     'text',
-    'class' => 'lg:text-3xl font-bold', // clases por defecto, puedes cambiarlas
+    'class' => 'md:text-3xl font-bold', // clases por defecto, puedes cambiarlas
     'bclass' => 'md:text-xs text-[10px]', // clases por defecto, puedes cambiarlas
     'mas' => 'absolute', // clases por defecto, puedes cambiarlas
     'menos' => 'absolute right-2 top-1/2', // clases por defecto, puedes cambiarlas

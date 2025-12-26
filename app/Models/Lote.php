@@ -171,6 +171,10 @@ class Lote extends Model implements Auditable
   }
 
 
+
+
+
+
   public function pujas()
   {
     return $this->hasMany(Puja::class)->orderBy('id', 'desc');;

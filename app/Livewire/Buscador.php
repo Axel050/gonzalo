@@ -17,6 +17,10 @@ class Buscador extends Component
   public $abiertas;
   public $view;
   public $from;
+  public $titulo;
+
+  public Subasta $subasta;
+
 
   protected $rules = [
     'search' => 'required|min:3'
@@ -36,6 +40,11 @@ class Buscador extends Component
     $this->search = null;
   }
 
+
+  public function mount(Subasta $subasta)
+  {
+    $this->titulo = $subasta->titulo;
+  }
 
   public function buscarLotes()
   {
@@ -67,8 +76,7 @@ class Buscador extends Component
 
   public function render()
   {
-    $subasta_bus = Subasta::find($this->subasta_id);
 
-    return view('livewire.buscador', compact("subasta_bus"));
+    return view('livewire.buscador');
   }
 }

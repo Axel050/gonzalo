@@ -1,5 +1,5 @@
 <div
-    class=" bg-casa-base-2 px-4 md:px-24 wfull max-w-8xl swiper-destacados-pujas  g-green-200 md:w-full w-[90vw] overflow-hidden">
+    class=" bg-casa-base-2/70 px-4 md:px-24 wfull max-w-8xl swiper-destacados-pujas  g-green-200 md:w-full w-[90vw] overflow-hidden">
 
     {{-- 
     <h2 class="lg:text-[40px] text-[26px] font-librecaslon w-full  lg:text-center text-start mb-1">
@@ -13,7 +13,7 @@
         class=" md:text-[40px] text-[26px]  text-center text-wrap font-medium mb-4" />
 
 
-    <div class="swiper-wrapper g-red-200  p-1   ">
+    <div class="swiper-wrapper bg-re  p-1   ">
 
         @foreach ($destacados as $des)
             <a href="{{ route('lotes.show', $des['id']) }}"

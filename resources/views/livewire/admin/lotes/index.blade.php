@@ -162,7 +162,7 @@
                                                 {{ $lot->tipo?->encargado?->apellido }}
                                             </a>
                                         </td>
-                                        <td>{{ (int) $lot->precio_base }}</td>
+                                        <td>{{ (int) $lot->ultimoConLote?->precio_base }}</td>
                                         <td>{{ (int) $lot->valuacion }}</td>
                                         <td>{{ $lot->ultimoConLote?->moneda?->titulo }}</td>
                                         <td>

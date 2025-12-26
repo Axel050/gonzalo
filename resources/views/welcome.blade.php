@@ -40,58 +40,9 @@
 
 
 
-        {{-- 
-        <svg class="w-[701px] h-42  mt-20 lg:block  hidden">
-            <use xlink:href="#real"></use>
-        </svg> --}}
-        {{-- 
-        <svg class="w-[273px] h-35  mt-20 lg:hidden block">
-            <use xlink:href="#real-mb"></use>
-        </svg> --}}
 
 
-
-        {{-- Poner un div para el carrutsel aqui y otra en "cada objero tiene una hjostio " --}}
-        {{-- <div class="flex flex-col bg-red-500 p-2 w-full justify-center swiper-home-pc  ">
-            <div class="swiper-wrapper  items-center  bg-yellow-200 md:absolute bottom-4">
-
-                @foreach (range(1, 8) as $i)
-                    <div class="swiper-slide h-18 g-blue-500">
-                        <img src="{{ asset("home/home$i.png") }}" class="h-18 bg-rd-300 mx-auto" />
-                    </div>
-                @endforeach
-            </div>
-
-            <x-fancy-heading text="S{u}bast{a}s o{n}line " variant="italic mx-[0.5px] font-normal text-black"
-                class=" md:text-8xl text-4xl    text-center text-wrap font-normal md:-mb-10 -mb-4 text-black md:mt-20  mt-8" />
-            <x-fancy-heading text="par{a} gent{e} re{a}l." variant="italic mx-[0.5px] font-normal text-black"
-                class=" md:text-8xl  text-4xl  text-center text-wrap font-normal mb-4 text-black" />
-
-        </div>
-
-        <div class="swiper-home-mb     w-full  overflow-x-hidden lg:px-0 px-4 md:hidden">
-
-            <div class="swiper-wrapper  flex  items-center">
-
-                @foreach (range(1, 8) as $i)
-                    <div class="swiper-slide h-18 g-blue-500">
-                        <img src="{{ asset("home/home$i.png") }}" class="h-18 bg-rd-300 mx-auto" />
-                    </div>
-                @endforeach
-            </div>
-        </div>
-
-
-
-
-
-        <h2 class="lg:text-3xl text-xl  font-bold md:mt-15 mt-12 self-start  md:self-auto ml-6 md:ml-0">Cada objeto
-            tiene una
-            historia.</h2>
-        <h2 class="lg:text-3xl text-xl  font-bold  self-start  md:self-auto  ml-6 md:ml-0">Encontra la tuya.</h2> --}}
-
-
-        <section class="relative w-full overflow-hidden md:pt-10 pt-6 g-[#fbfbfb] bg-bue-300 lg:pb-24 pb-10 ">
+        <section class="relative w-full overflow-hidden md:pt-10 pt-6 g-[#fbfbfb] bg-bue-300 lg:pb-24 pb-1  ">
 
             <!-- ========================================== -->
             <!--  1. CAROUSEL PC (Detrás del texto)         -->
@@ -180,12 +131,6 @@
 
                     <div
                         class="bg-reen-600 w-full  mx-auto  z-40 md:h-32 md:-translate-y-6 md:absolute md:top-6  plae-self-center ">
-                        {{-- 
-                    <div
-                        class="bg-reen-600 w-fit mx-auto  z-50 md:h-32 md:-translate-y-6 md:absolute md:top-6  border border-green-500  place-self-center px-20 bg-[linear-gradient(to_right,transparent_0%,rgba(246,242,238,0.5)_10%,rgb(246,242,238)_50%,rgba(246,242,238,0.5)_90%,transparent_100%)]
-                        "> --}}
-
-
 
 
                         <div class="md:h-32 w-fit md:mx-auto bg-ed-400 md:pt-5  md:px-2   bg-casa-base ">
@@ -216,19 +161,17 @@
         </div>
 
 
-        @if ($last && $contadorDestacados)
-            <div class="  lg:px-24  px-4 overflow-x-hidden  w-full g-blue-300 max-w-8x p-1">
+        {{-- @if ($last && $contadorDestacados) --}}
+        {{-- <div class="  lg:px-24  px-4 overflow-x-hidden  w-full g-blue-300 max-w-8x p-1"> --}}
 
-                @livewire('destacados', ['subasta_id' => $last->id, 'titulo' => true, 'from' => 'home'])
-            </div>
-        @endif
+        @livewire('destacados', ['subasta_id' => $last->id, 'titulo' => true, 'from' => 'home'])
+
+        {{-- </div> --}}
+        {{-- @endif --}}
 
 
         @if (count($subastasProx))
             <div class="flex flex-col   w-full   items-center  lg:px-24 ">
-                {{-- <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4 mb-4 lg:mb-8">
-                    subastas próximas
-                </p> --}}
 
                 <div class="flex flex-col   w-full   items-center   max-w-8xl">
 
@@ -315,8 +258,7 @@
 
         @if (count($subastasFin))
             <div class="flex flex-col   w-full   items-center md:px-24   ">
-                {{-- <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4 mb-4 lg:mb-8">subastas
-                    pasadas</p> --}}
+
 
                 <div class="flex flex-col   w-full   items-center   max-w-8xl">
                     <x-fancy-heading text="s{u}bast{a}s p{a}sa{d}as" variant="italic mx-[0.5px] font-normal"
@@ -358,9 +300,6 @@
 
                                     @endphp
 
-                                    {{-- <p class="mb-2 text-xl ">Abierta hasta el
-                                    <b></b>
-                                </p> --}}
 
                                     <div class="flex justify-between">
 

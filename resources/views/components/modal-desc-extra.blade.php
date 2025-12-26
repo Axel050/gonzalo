@@ -35,7 +35,7 @@
             <div class="md:mt-8 mt-6 flex justify-center md:gap-x-12 gap-x-6 ">
 
                 <button @click="open = false"
-                    class="px-2 py-1 rounded-full border border-casa-black  transition bg-casa-base-2 text-casa-black flex items-center hover:bg-casa-black hover:text-casa-base ">
+                    class="px-2 py-1 rounded-full border border-casa-black  transition bg-casa-base-2 text-casa-black flex items-center hover:bg-casa-black hover:text-casa-base font-bold ">
                     Cerrar
 
                     <svg class="lg:size-6 size-5  md:ml-12 ml-8 ">
@@ -46,7 +46,7 @@
 
 
                 <a href="{{ $route }}"
-                    class="px-2 py-1 rounded-full border border-casa-black  transition bg-casa-black text-casa-base flex items-center hover:bg-casa-base-2 hover:text-casa-black ">
+                    class="px-2 py-1 rounded-full border border-casa-black  transition bg-casa-black text-casa-base flex items-center hover:bg-casa-base-2 hover:text-casa-black font-bold">
                     Entrar
 
                     <svg class="lg:size-6 size-5  md:ml-12 ml-8 ">

@@ -15,7 +15,7 @@ class Destacados extends Component
   public $route;
 
   public $titulo;
-  public $subasta;
+  public Subasta $subasta;
   public $subasta_id;
   public $monedas;
   public $lote;
@@ -27,12 +27,14 @@ class Destacados extends Component
   // protected $subastaService;
 
 
-  public function mount(SubastaService $subastaService)
+  public function mount(SubastaService $subastaService, Subasta $subasta)
   {
 
 
+
     $this->subastaService = $subastaService;
-    $this->subasta = Subasta::find($this->subasta_id);
+    // $this->subasta = Subasta::find(15);
+    $this->subasta = $subasta;
     $this->monedas = Moneda::all();
     // $this->lote = Lote::find(8);
     $this->loadLotes();
@@ -42,19 +44,11 @@ class Destacados extends Component
   public function loadLotes()
   {
     try {
-      info("lotesClass");
-      info(["lotesClass5555" => $this->from]);
 
-      // match ($this->route) {
-      //   'en_subasta' => 'subasta.lotes',
-      //   'asignado' => 'subasta-proximas.lotes',
-      //   default => 'subasta-pasadas.lotes'
-      // };
 
       if ($this->from == "home") {
         $this->destacados = $this->subastaService?->getLotesActivosDestacadosHome()->toArray();
-        info(["HOME" => $this->destacados]);
-        $this->contador  = $this->destacados ? true : false;
+        $this->contador = ! empty($this->destacados);
       } else {
         # code...
 
@@ -67,10 +61,9 @@ class Destacados extends Component
         };
 
         $this->destacados = $this->subastaService?->{$metodo}($this->subasta)?->toArray();
+        // $this->destacados = [];
 
-        // $this->destacados = $this->subastaService?->{$metodo}()?->toArray();
-
-        // info(["desssLIVE" => $this->destacados]);
+        $this->contador = ! empty($this->destacados);
       }
       // info(["lotesClass" => $this->destacados]);
       // $this->error = null;

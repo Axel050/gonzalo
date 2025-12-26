@@ -46,7 +46,7 @@ class DetalleLote extends Component
 
   public $records;
 
-  public $formData;
+  public $formData = [];
   public $caracteristicas;
 
   public $url;
@@ -55,6 +55,12 @@ class DetalleLote extends Component
 
   public $inCart;
   public $route;
+
+  public $tienePujas;
+
+
+
+
 
   // public function loteSiguiente()
   public function loteSiguiente(SubastaService $subastaService)
@@ -97,11 +103,11 @@ class DetalleLote extends Component
       // 2. Corregido el error de sintaxis ($$ -> $)
       switch ($this->lote->estado) {
         case LotesEstados::EN_SUBASTA:
-          $siguienteId = $subastaService->getSiguienteLoteId($this->subasta, $this->lote->id);
+          $siguienteId = $subastaService->getAnteriorLoteId($this->subasta, $this->lote->id);
           break;
 
         case LotesEstados::ASIGNADO:
-          $siguienteId = $subastaService->getSiguienteLoteIdProximos($this->subasta, $this->lote->id);
+          $siguienteId = $subastaService->getAnteriorLoteIdProximos($this->subasta, $this->lote->id);
           break;
 
         case LotesEstados::STANDBY || LotesEstados::DISPONIBLE:
@@ -174,44 +180,36 @@ class DetalleLote extends Component
 
 
 
-  public function loadLotes()
-  {
-    try {
-      info("lotesClass");
-
-      $metodo = match ($this->route) {
-        'en_subasta' => 'getLotesActivosDestacados',
-        'asignado'   => 'getLotesProximosDestacados',
-        default      => 'getLotesPasadosDestacados'
-      };
-
-      $this->destacados = $this->subastaService?->{$metodo}($this->subasta)?->toArray();
-
-
-      // $this->destacados = $this->subastaService?->getLotesActivosDestacados($this->subasta)?->toArray();
-      // info(["desss" => $this->destacados]);
-      // info(["lotesClass" => $this->destacados]);
-      // $this->error = null;
-    } catch (\Exception $e) {
-      // info(["error" => $this-}>destacados]);
-      info(["errorrrr" => $e->getMessage()]);
-      $this->destacados = [];
-      // $this->error = $e->getMessage();
-    }
-  }
-
-
   public function mount(SubastaService $subastaService)
   {
 
 
     $this->subastaService = $subastaService;
     $this->adquirente = auth()->user()?->adquirente;
-    $this->lote = Lote::find($this->id);
+    // $this->lote = Lote::find($this->id);
+    // $this->lote = Lote::with([
+    //   'tipo.caracteristicas',
+    //   'valoresCaracteristicas'
+    // ])->find($this->id);
+
+    $this->lote = Lote::with([
+      'tipo.caracteristicas',
+      'valoresCaracteristicas',
+      'pujas' => fn($q) => $q->latest('id')->limit(1),
+      'ultimoContrato.subasta',
+
+
+    ])->findOrFail($this->id);
+
+
+
     $this->base = $this->lote?->ultimoConLote?->precio_base;
     $this->subasta = Subasta::find($this->lote?->ultimoContrato?->subasta_id);
 
     $this->ultimaOferta = $this->lote?->getPujaFinal()?->monto;
+    $this->tienePujas = $this->lote->pujas()->exists();
+
+
 
     $this->lote_id = $this->lote->id;
     $this->subasta_id = $this->subasta?->id;
@@ -247,24 +245,11 @@ class DetalleLote extends Component
     } catch (\Exception $e) {
       // Manejar la excepción lanzada desde getLotesPasadosIds (ej. 'Subasta no activa')
 
-      // Loguear el error para debugging
       logger()->error("Error en detalleLote::mount: " . $e->getMessage(), ['subasta_id' => $this->subasta->id]);
     }
 
 
-    $this->moneda = $this->lote?->moneda;
-    // $this->loadLotes();
-
-    if ($this->moneda) {
-      $this->moneda = Moneda::find($this->moneda)->value("signo");
-    }
-    // info(["monedaaaaaa" => $this->lote?->moneda]);
-
-    // info(["PUJASSS exis"  => $this->lote->pujas()->exists()]);
-
-    // info(["destaco"  => $this->destacados]);
-
-
+    $this->moneda = $this->lote?->ultimoConLote?->moneda?->signo;
 
     if ($this->adquirente) {
 
@@ -331,31 +316,15 @@ class DetalleLote extends Component
       ->toArray();
 
 
+    $this->caracteristicas =  $this->lote->tipo->caracteristicas;
+    $valores = $this->lote->valoresCaracteristicas
+      ->keyBy('caracteristica_id');
 
-
-
-
-    // info("caracteristicas");
-    $this->caracteristicas =  $this->lote->tipo->caracteristicas()->get();
-    // info(["caracteristicas" => $this->caracteristicas->toArray()]);
-    $this->formData = [];
     foreach ($this->caracteristicas as $caracteristica) {
-      $this->formData[$caracteristica->id] = '';
-
-      // Buscar el valor de la característica en valores_cataracteristicas
-      if ($this->lote) {
-        $valorCaracteristica = $this->lote->valoresCaracteristicas()
-          ->where('caracteristica_id', $caracteristica->id)
-          ->first();
-
-        // dd($valorCaracteristica->valor, gettype($valorCaracteristica->valor));
-
-
-        if ($valorCaracteristica) {
-          $this->formData[$caracteristica->id] = $valorCaracteristica->valor;
-        }
-      }
+      $this->formData[$caracteristica->id] =
+        $valores[$caracteristica->id]->valor ?? null;
     }
+
 
     // info(["formData0000000000" => $this->formData]);
   }

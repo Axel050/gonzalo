@@ -53,7 +53,7 @@
 
 </head>
 
-<body class="font-sans antialiased bg-base text-casa-black">
+<body class="font-sans antialiased bg-base text-casa-black bg-casa-base">
     @include('sprite-front')
 
 

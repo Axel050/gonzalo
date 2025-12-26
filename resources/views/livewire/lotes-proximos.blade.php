@@ -2,7 +2,8 @@
 
 
     <div class="  w-full  [&>article]:max-w-5xl flex flex-col gap-y-4">
-        @livewire('buscador', ['subasta_id' => $subasta->id, 'search' => $search])
+        {{-- @livewire('buscador', ['subasta_id' => $subasta->id, 'search' => $search]) --}}
+        <livewire:buscador :subasta="$subasta" :subasta_id="$subasta->id" :search="$search" />
 
         <x-search-message :search="$search" />
 

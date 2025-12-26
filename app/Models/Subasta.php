@@ -100,7 +100,7 @@ class Subasta extends Model implements Auditable
       );
 
     try {
-      $results = $query->get();
+      // $results = $query->get();
     } catch (\Exception $e) {
       info(["Error en lotesDestacados" => $e->getMessage()]);
       throw $e;

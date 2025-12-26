@@ -193,7 +193,7 @@
                 <span>
                     @if ($lote->estado == 'en_subasta')
 
-                        @if ($lote->pujas()->exists())
+                        @if ($tienePujas)
                             <x-hammer />
                         @else
                             <x-hammer-fix />
@@ -235,7 +235,7 @@
             <ul class="text-sm my-2 flex flex-col lg:order-2 order-3">
 
                 {{--  --}}
-                @if (!empty($caracteristicas) && (is_array($caracteristicas) || is_object($caracteristicas)))
+                @if (!empty($caracteristicas))
                     @foreach ($caracteristicas as $item)
                         @if ($item->tipo == 'file')
                             @php
@@ -387,30 +387,27 @@
 
 
 
-
-
-
     <div class="  w-full  [&>article]:max-w-5xl">
-        @livewire('buscador', ['subasta_id' => $subasta->id, 'route' => $route])
+        {{-- @livewire('buscador', ['subasta_id' => $subasta->id, 'route' => $route]) --}}
 
-
+        <livewire:buscador :subasta="$subasta" :subasta_id="$subasta->id" :route="$route" />
     </div>
 
 
+    {{-- <livewire:destacados :subasta="$subasta" :route="$route" :key="'destacados-' . $lote->id" /> --}}
+    <livewire:destacados :subasta="$subasta" :route="$route" :key="'destacados-subasta-' . $lote->id" />
 
-    {{-- 
-    <div class="pb-0  lg:px-24 overflow-x-hidden  w-full">
-        @livewire('destacados', ['subasta_id' => $subasta->id, 'route' => $route])
-    </div>
+
+    {{-- @livewire('destacados', ['subasta_id' => $subasta->id, 'route' => $route]) --}}
+    {{-- </div> --}}
 
 
     <div class="md:px-24 w-full">
-
-        @livewire('subastas-abiertas')
+        {{-- @livewire('subastas-abiertas') --}}
+        <livewire:subastas-abiertas :key="'subastas-abiertas' . $lote->id" />
     </div>
 
 
- --}}
 
 
 
