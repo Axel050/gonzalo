@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\DTOs\PaginatedLotesDTO;
 use App\Enums\SubastaEstados;
 use App\Livewire\Traits\WithSearchAndPagination;
 use App\Models\Moneda;
@@ -77,7 +78,7 @@ class LotesProximos extends Component
 
 
 
-  public function loadLotes()
+  public function loadLotes2()
   {
     $search = $this->fallbackAll ? null : $this->search;
     $conCaracteristicas = !empty($this->search);
@@ -107,7 +108,26 @@ class LotesProximos extends Component
     }
   }
 
+  public function loadLotes()
+  {
+    $paginator = $this->fetchData(
+      $this->fallbackAll ? null : $this->search,
+      $this->page
+    );
 
+    $dto = PaginatedLotesDTO::fromPaginator(
+      $paginator,
+      $this->searchType()
+    );
+
+    $this->lotes   = array_merge($this->lotes, $dto->data);
+    $this->hasMore = $dto->has_more;
+    info(["LOTES PROXIMOS" => $this->lotes]);
+
+    if ($this->filtered !== null) {
+      $this->filtered = count($this->lotes);
+    }
+  }
 
 
 

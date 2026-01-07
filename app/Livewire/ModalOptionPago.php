@@ -32,7 +32,6 @@ class ModalOptionPago extends Component
         $this->montoEnvio = $this->orden->subasta?->envio;
         $this->monto += $this->montoEnvio;
       }
-      info($this->orden->toArray());
     } else {
       $this->monto = $this->subasta->garantia;
     }
@@ -44,20 +43,12 @@ class ModalOptionPago extends Component
   {
 
 
-    // info(
-    //   [
-    //     "adquiernte" => $this->adquirente,
-    //     "subasta" => $this->subasta,
-    //     "orden" => $this->orden,
-    //   ]
-    // );
 
 
     if ($this->from === "orden") {
-      info("INTO ORDEN IFffff ");
+
       $route = "/subastas/";
 
-      // Creamos preferencia desde el servicio
       $preference = $mpService->crearPreferenciaOrden(
         $this->adquirente,
         $this->subasta,
@@ -67,15 +58,11 @@ class ModalOptionPago extends Component
         $this->montoEnvio
       );
     } else {
-      info("INTO ORDEN elsssssssssss ");
       $route = "/subastas/" . $this->subasta->id . "/lotes";
-      $preference = $mpService->crearPreferencia("Garantia", 1, $this->subasta->garantia, $this->adquirente->id, $this->subasta->id, null,  $route);
+      // $preference = $mpService->crearPreferencia("Garantia", 1, $this->subasta->garantia, $this->adquirente->id, $this->subasta->id, null,  $route);
     }
 
 
-    info("xxxxxxxxxxxxxxxxxxxxxxx");
-    // $preference = $mpService->crearPreferencia("Garantia", 1, $this->subasta->garantia, $this->adquirente->id, $this->subasta->id, null,  $route);
-    // $preference = $mpService->crearPreferencia("Garantia", 1, $this->subasta->garantia, $this->adquirente->id, 66, null,  $route);
 
     if ($preference) {
       return redirect()->away($preference->init_point);

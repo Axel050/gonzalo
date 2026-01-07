@@ -2,14 +2,10 @@
 
 namespace App\Livewire;
 
-use App\Models\Adquirente;
-use App\Models\Moneda;
-use App\Models\Orden;
 
-use DomainException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use InvalidArgumentException;
-use Livewire\Attributes\On;
+use App\Models\Orden;
+use App\Services\CarritoService;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
 class Carrito extends Component
@@ -23,7 +19,7 @@ class Carrito extends Component
   public $adquirente;
   public $lotes;
   public $lote_id;
-  public $carrito;
+  public array $carrito = [];
   public $adquirente_id;
 
   public $own = false;
@@ -53,14 +49,28 @@ class Carrito extends Component
   public $ordenes;
 
 
+  // $this->carrito = $service->obtenerResumen($adquirente);+$dto = $service->obtener(auth()->user()->adquirente);
+
+  public function mount(CarritoService $service)
+  {
+    $adquirente = Auth::user()->adquirente;
+
+    $dto = $service->obtenerResumen($adquirente);
+
+    $this->carrito = $dto->toArray();
+  }
 
 
-  public function mount()
+
+
+  public function moun22t()
   {
     info("Mount actualizado");
 
-    $user = auth()->user();
-    $this->adquirente = Adquirente::where("user_id", $user->id)->first();
+    // $user = auth()->user();
+    $user  = Auth::user();
+
+    $this->adquirente = $user->adquirente;
 
     // 🔹 Traemos las órdenes pendientes con su subasta y lotes
     $this->ordenes = $this->adquirente?->ordenes()
@@ -129,7 +139,7 @@ class Carrito extends Component
 
   public function mp($orden_id)
   {
-    info("into  iiiiiiiiiiii");
+
     $this->orden = Orden::with('lotes.lote', 'subasta', 'adquirente')->findOrFail($orden_id);
 
     // $adquirente = $orden->adquirente;
@@ -140,9 +150,13 @@ class Carrito extends Component
       $this->addError('monto', "Error en el monto de la orden.");
       return;
     }
-    info("into  passssss");
 
-    $this->conEnvio = $this->envios[$orden_id] ? 1 : 0;
+
+    // $this->conEnvio = $this->envios[$orden_id] ? 1 : 0;
+
+    $orden = Orden::find($orden_id);
+
+    $this->conEnvio =  $orden->subasta?->envio;
     $this->modalPago = 1;
 
     // Creamos preferencia desde el servicio
@@ -153,7 +167,6 @@ class Carrito extends Component
     // );
 
 
-    info("xxxxxxxxxxxxxxxxxxxxxxx");
     // $preference = $mpService->crearPreferencia("Garantia", 1, $this->subasta->garantia, $this->adquirente->id, $this->subasta->id, null,  $route);
     // $preference = $mpService->crearPreferencia("Garantia", 1, $this->subasta->garantia, $this->adquirente->id, 66, null,  $route);
 
@@ -166,10 +179,7 @@ class Carrito extends Component
     // return redirect($preference['init_point']); // Redirige al checkout
   }
 
-  public function updatedEnvioCheck($value)
-  {
-    // dd($value);
-  }
+
   public function render()
   {
     return view('livewire.carrito');

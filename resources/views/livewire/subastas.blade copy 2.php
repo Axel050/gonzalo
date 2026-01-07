@@ -16,7 +16,7 @@
 
 
     @if (count($subastas))
-        <section class="w-full md:max-w-7xl gap-4 flex flex-col">
+        <section class="w-full md:max-w-5xl gap-4 flex flex-col">
 
             <x-fancy-heading text="s{u}bast{a}s a{b}iert{a}s" variant="italic mx-[0.5px] font-normal"
                 class=" md:text-[32px] text-[20px]  text-center text-wrap font-normal " />
@@ -74,16 +74,15 @@
 
 
                     @if ($item['lotes']->isNotEmpty())
-                        <div class="flex justify-center md:mt-8 mt-6 md:max-h-39 max-h-24  w-full overflow-hidden">
+                        <div class="flex justify-center md:mt-8 mt-6 md:h-39   w-full overflow-hidden">
 
                             <div class="swiper-destacados-img   w-full " id="swiper-subastas-{{ $loop->index }}">
 
                                 <div class="swiper-wrapper  ">
                                     @foreach ($item['lotes'] as $lote)
-                                        <div class="swiper-slide  g-red-500 p-0">
+                                        <div class="swiper-slide  ">
                                             <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote['foto']) }}"
-                                                class=" w-full max-w-full max-h-full object-contain  "
-                                                alt="{{ $lote['titulo'] }}">
+                                                class="mx-auto" alt="{{ $lote['titulo'] }}">
                                         </div>
                                     @endforeach
 
@@ -102,7 +101,7 @@
 
     @if (count($subastasProx))
 
-        <section class="w-full md:max-w-7xl  gap-4 flex flex-col">
+        <section class="w-full md:max-w-5xl  gap-4 flex flex-col">
 
 
             <x-fancy-heading text="s{u}bast{a}s p{r}óxi{m}as" variant="italic mx-[0.5px] font-normal"
@@ -186,7 +185,7 @@
 
 
                     @if ($subP['lotes']->isNotEmpty())
-                        <div class="flex justify-center md:mt-8 mt-6 md:max-h-39 max-h-24   w-full overflow-hidden">
+                        <div class="flex justify-center md:mt-8 mt-6 md:h-39   w-full overflow-hidden">
 
 
                             <div class="swiper-destacados-img  w-full " id="swiper-subastas-{{ $loop->index }}">
@@ -196,8 +195,7 @@
                                     @foreach ($subP['lotes'] as $lote)
                                         <div class="swiper-slide border-gray-700">
                                             <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote['foto']) }}"
-                                                class=" w-full max-w-full max-h-full object-contain "
-                                                alt="{{ $lote['titulo'] }}">
+                                                class="mx-auto" alt="{{ $lote['titulo'] }}">
                                         </div>
                                     @endforeach
 
@@ -219,7 +217,7 @@
 
 
     @if (count($subastasFin))
-        <section class="w-full md:max-w-7xl  gap-4 flex flex-col">
+        <section class="w-full md:max-w-5xl  gap-4 flex flex-col">
 
             <x-fancy-heading text="s{u}bast{a}s p{a}sa{d}as" variant="italic mx-[0.5px] font-normal"
                 class=" md:text-[32px] text-[20px]  text-center text-wrap font-normal " />
@@ -285,7 +283,7 @@
                     </div>
 
                     @if ($subF['lotes']->isNotEmpty())
-                        <div class="flex justify-center md:mt-8 mt-6 md:max-h-39 max-h-24   w-full overflow-hidden">
+                        <div class="flex justify-center md:mt-8 mt-6 md:h-39   w-full overflow-hidden">
 
                             <div class="swiper-destacados-img   w-full " id="swiper-subastas-{{ $loop->index }}">
 
@@ -293,8 +291,7 @@
                                     @foreach ($subF['lotes'] as $lote)
                                         <div class="swiper-slide border-gray-700">
                                             <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote['foto']) }}"
-                                                class=" w-full max-w-full max-h-full object-contain  "
-                                                alt="{{ $lote['titulo'] }}">
+                                                class="mx-auto" alt="{{ $lote['titulo'] }}">
                                         </div>
                                     @endforeach
                                 </div>

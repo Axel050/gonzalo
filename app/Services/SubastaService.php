@@ -2,12 +2,15 @@
 
 namespace App\Services;
 
+use App\DTOs\SubastasDTO;
 use App\Enums\LotesEstados;
 
 
 use App\Models\EstadosLote;
 use App\Models\Lote;
 use App\Models\Subasta;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class SubastaService
@@ -146,38 +149,6 @@ class SubastaService
     );
   }
 
-
-
-
-
-
-
-  public function getLotesActivosxxx(Subasta $subasta)
-  {
-
-
-    if (!$subasta->isActiva()) {
-      // info("NO ACRIVA ");
-      throw new \Exception('Subasta no activa', 403);
-    }
-    // info("pasosoo");
-
-    return $subasta->lotesActivos()->get()->map(function ($lote) use ($subasta) {
-      return [
-        'id' => $lote->id,
-        'titulo' => $lote->titulo,
-        'foto' => $lote->foto1,
-        'descripcion' => $lote->descripcion,
-        'precio_base' => $lote->precio_base,
-        'puja_actual' => $lote->pujas->first()?->monto,
-        'tiempo_post_subasta_fin' => $lote->tiempo_post_subasta_fin,
-        'estado' => $lote->isActivoEnSubasta($subasta->id) ? 'activo' : 'inactivo',
-        'moneda_id' => $lote->moneda_id,
-        'tienePujas' => $lote->pujas()->exists(),
-        "caracteristicas" => $lote->valoresCaracteristicas()->pluck('valor')
-      ];
-    });
-  }
 
 
 
@@ -1017,11 +988,88 @@ class SubastaService
 
 
 
+  public function activas(): Collection
+  {
+    $subastas = Subasta::whereIn('estado', ['activa', 'enpuja'])->get();
 
+    $lotes = $this->lotesPorSubasta(
+      $subastas->pluck('id'),
+      function ($q) {
+        $q->where('lotes.estado', LotesEstados::EN_SUBASTA)
+          ->where('contrato_lotes.estado', 'activo')
+          ->where('lotes.destacado', true)
+          ->where(function ($q) {
+            $q->whereNull('contrato_lotes.tiempo_post_subasta_fin')
+              ->orWhere('contrato_lotes.tiempo_post_subasta_fin', '>=', now());
+          });
+      }
+    );
 
+    return $this->armarRespuesta($subastas, $lotes);
+  }
 
+  public function proximas(): Collection
+  {
+    $subastas = Subasta::where('fecha_inicio', '>', Carbon::now())->get();
 
+    $lotes = $this->lotesPorSubasta(
+      $subastas->pluck('id'),
+      fn($q) =>
+      $q->where('lotes.estado', LotesEstados::ASIGNADO)
+        ->where('contrato_lotes.estado', 'activo')
+        ->where('lotes.destacado', true)
+    );
 
+    return $this->armarRespuesta($subastas, $lotes);
+  }
 
+  public function finalizadas(): Collection
+  {
+    $subastas = Subasta::where('estado', 'finalizada')->get();
 
+    $lotes = $this->lotesPorSubasta(
+      $subastas->pluck('id'),
+      fn($q) =>
+      $q->whereIn('lotes.estado', [
+        LotesEstados::VENDIDO,
+        LotesEstados::DEVUELTO,
+        LotesEstados::STANDBY,
+        LotesEstados::DISPONIBLE,
+      ])
+        ->where('lotes.destacado', true)
+    );
+
+    return $this->armarRespuesta($subastas, $lotes);
+  }
+
+  /* ================= HELPERS ================= */
+
+  private function lotesPorSubasta($subastaIds, callable $callback)
+  {
+    return Lote::query()
+      ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
+      ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
+      ->whereIn('contratos.subasta_id', $subastaIds)
+      ->whereColumn('lotes.ultimo_contrato', 'contratos.id')
+      ->select(
+        'lotes.id',
+        'lotes.titulo',
+        'lotes.foto1',
+        'contratos.subasta_id'
+      )
+      ->tap($callback)
+      ->get()
+      ->groupBy('subasta_id');
+  }
+
+  private function armarRespuesta($subastas, $lotes)
+  {
+
+    return $subastas->map(
+      fn($sub) => new SubastasDTO(
+        $sub,
+        $lotes[$sub->id] ?? collect()
+      )
+    );
+  }
 }

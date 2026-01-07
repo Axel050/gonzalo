@@ -1,9 +1,10 @@
 <x-layouts.guest>
     <x-slot name="headerT">
-        Detalles
+        Carrito
     </x-slot>
 
     @livewire('carrito')
+
 
 
 </x-layouts.guest>

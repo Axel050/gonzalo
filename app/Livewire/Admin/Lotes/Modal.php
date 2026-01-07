@@ -111,7 +111,7 @@ class Modal extends Component
     try {
       $this->validate(
         [
-          'foto1' => 'image|max:33000', // max:13000 limita el tamaño a 13 MB (en KB)
+          'foto1' => 'image|max:33000|image|mimes:jpg,jpeg,png', // max:13000 limita el tamaño a 13 MB (en KB)
         ],
         ['foto1.max' => "Menor a 13mb"]
 
@@ -130,7 +130,7 @@ class Modal extends Component
     $this->resetErrorBag('foto2');
     try {
       $this->validate([
-        'foto2' => 'image|max:13000', // max:13000 limita el tamaño a 13 MB (en KB)
+        'foto2' => 'image|max:33000|image|mimes:jpg,jpeg,png', // max:13000 limita el tamaño a 13 MB (en KB)
       ]);
     } catch (\Illuminate\Validation\ValidationException $e) {
       unlink($this->foto2->getRealPath());
@@ -144,7 +144,7 @@ class Modal extends Component
     $this->resetErrorBag('foto3');
     try {
       $this->validate([
-        'foto3' => 'image|max:13000', // max:13000 limita el tamaño a 13 MB (en KB)
+        'foto3' => 'image|max:33000|image|mimes:jpg,jpeg,png', // max:13000 limita el tamaño a 13 MB (en KB)
       ]);
     } catch (\Illuminate\Validation\ValidationException $e) {
       unlink($this->foto3->getRealPath());
@@ -158,7 +158,7 @@ class Modal extends Component
     $this->resetErrorBag('foto4');
     try {
       $this->validate([
-        'foto4' => 'image|max:13000', // max:13000 limita el tamaño a 13 MB (en KB)
+        'foto4' => 'image|max:33000|image|mimes:jpg,jpeg,png', // max:13000 limita el tamaño a 13 MB (en KB)
       ]);
     } catch (\Illuminate\Validation\ValidationException $e) {
       unlink($this->foto4->getRealPath());
@@ -280,7 +280,14 @@ class Modal extends Component
       $this->lote = Lote::find($this->id);
       $this->destacado = $this->lote->destacado;
       $this->comitente_id =  $this->lote->comitente_id;
-      $this->comitente = $this->lote->comitente?->alias?->nombre . " - " . $this->lote->comitente?->nombre  . " " . $this->lote->comitente?->apellido;
+
+
+      $alias = $this->lote->comitente->alias?->nombre ?? '';
+
+      $nombreCompleto = $this->lote->comitente->nombre . ' ' . $this->lote->comitente->apellido;
+
+      $this->comitente = $alias ? $alias . ' - ' . $nombreCompleto : $nombreCompleto;
+
 
       $this->subasta_id =  $this->lote->ultimoContrato?->subasta_id;
       $this->moneda_id =  $this->lote->ultimoConLote?->moneda_id;
@@ -603,9 +610,33 @@ class Modal extends Component
     $extension = $photo->getClientOriginalExtension();
     $filename = uniqid("img_{$index}_") . '.' . $extension;
 
+    // Leer la imagen una sola vez para optimizar
+    $image = $manager->read($photo);
+
+    // Procesar Normal: Máximo 1080x1080 manteniendo proporción
+    // scaleDown asegura que si la imagen mide p.ej. 800x600, no la suba a 1080
+    $imageNormal = clone $image;
+    $imageNormal->scaleDown(width: 1080, height: 1080);
+
+    // Procesar Miniatura: Máximo 250x250 manteniendo proporción
+    $imageThumbnail = clone $image;
+    $imageThumbnail->scaleDown(width: 250, height: 250);
+
+    // Guardar imágenes usando Storage
+    Storage::disk('public')->put($normalPath . $filename, (string) $imageNormal->encode());
+    Storage::disk('public')->put($thumbnailPath . $filename, (string) $imageThumbnail->encode());
+
+    return $filename;
+  }
+
+  private function processImage2(ImageManager $manager, UploadedFile $photo, int $index, string $normalPath, string $thumbnailPath): string
+  {
+    $extension = $photo->getClientOriginalExtension();
+    $filename = uniqid("img_{$index}_") . '.' . $extension;
+
     // Leer la imagen
-    $imageNormal = $manager->read($photo)->scale(width: 600);
-    $imageThumbnail = $manager->read($photo)->scale(width: 150);
+    $imageNormal = $manager->read($photo)->scale(width: 1080);
+    $imageThumbnail = $manager->read($photo)->scale(width: 250);
 
     // Guardar imágenes usando Storage
     Storage::disk('public')->put($normalPath . $filename, (string) $imageNormal->encode());

@@ -26,6 +26,15 @@ return Application::configure(basePath: dirname(__DIR__))
   ->withMiddleware(function (Middleware $middleware) {
     //
 
+    $middleware->api([
+      \App\Http\Middleware\ForceJsonResponse::class,
+      \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+      'throttle:api',
+      \Illuminate\Routing\Middleware\SubstituteBindings::class,
+    ]);
+
+
+
     $middleware->alias([
       'active.role' => \App\Http\Middleware\CheckActiveRole::class,
       'adquirente.logged' => \App\Http\Middleware\CheckAdquirenteLogged::class,
@@ -33,4 +42,14 @@ return Application::configure(basePath: dirname(__DIR__))
   })
   ->withExceptions(function (Exceptions $exceptions) {
     //
+    $exceptions->render(function (
+      \Illuminate\Auth\AuthenticationException $e,
+      \Illuminate\Http\Request $request
+    ) {
+      if ($request->is('api/*')) {
+        return response()->json([
+          'message' => 'Unauthenticated'
+        ], 401);
+      }
+    });
   })->create();

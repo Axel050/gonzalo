@@ -126,7 +126,9 @@
                         x-on:touchstart="touchStartX = $event.touches[0].clientX"
                         x-on:touchend="touchEndX = $event.changedTouches[0].clientX; handleSwipe()">
                         <!-- Imagen -->
-                        <img :src="records[currentIndex].image" onerror="this.src='{{ $defaultImage }}'"
+                        {{-- <img :src="records[currentIndex].image" onerror="this.src='{{ $defaultImage }}'" --}}
+                        <img :src="records[currentIndex].image"
+                            onerror="this.src='{{ Storage::url('imagenes/lotes/default.png') }}'"
                             class="lg:size-111
                             w-full lg:max-h-none max-h-[160px] object-contain transition-all duration-500 ease-in-out
                             mx-auto cursor-pointer lg:mt-0 mt-2"
@@ -388,13 +390,13 @@
 
 
     <div class="  w-full  [&>article]:max-w-5xl">
-        {{-- @livewire('buscador', ['subasta_id' => $subasta->id, 'route' => $route]) --}}
+
 
         <livewire:buscador :subasta="$subasta" :subasta_id="$subasta->id" :route="$route" />
     </div>
 
 
-    {{-- <livewire:destacados :subasta="$subasta" :route="$route" :key="'destacados-' . $lote->id" /> --}}
+
     <livewire:destacados :subasta="$subasta" :route="$route" :key="'destacados-subasta-' . $lote->id" />
 
 
@@ -403,7 +405,7 @@
 
 
     <div class="md:px-24 w-full">
-        {{-- @livewire('subastas-abiertas') --}}
+
         <livewire:subastas-abiertas :key="'subastas-abiertas' . $lote->id" />
     </div>
 

@@ -10,11 +10,10 @@ use Livewire\Component;
 
 use App\Services\AdquirenteService;
 use Illuminate\Validation\ValidationException;
-use Livewire\Features\SupportFileUploads\WithFileUploads;
 
 class Adquirentes extends Component
 {
-  use WithFileUploads;
+
 
   public $pasP, $mailP;
 

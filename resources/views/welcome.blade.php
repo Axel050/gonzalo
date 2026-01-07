@@ -42,7 +42,7 @@
 
 
 
-        <section class="relative w-full overflow-hidden md:pt-10 pt-6 g-[#fbfbfb] bg-bue-300 lg:pb-24 pb-1  ">
+        <section class="relative w-full overflow-hidden md:pt-10 pt-6 g-[#fbfbfb] bg-bue-300 md:pb-24 pb-1  ">
 
             <!-- ========================================== -->
             <!--  1. CAROUSEL PC (Detrás del texto)         -->
@@ -135,13 +135,23 @@
 
                         <div class="md:h-32 w-fit md:mx-auto bg-ed-400 md:pt-5  md:px-2   bg-casa-base ">
 
-                            <h2 class="lg:text-3xl text-xl font-bold  bg-red300 w-fit md:mx-auto md:mb-2">
+                            <h2 class="md:text-3xl text-xl font-bold  bg-red300 w-fit md:mx-auto md:mb-2">
                                 Cada objeto tiene una historia.
                             </h2>
-                            <h2 class="lg:text-3xl text-xl font-bold bg-yellow-00 w-fit md:mx-auto">
+                            <h2 class="md:text-3xl text-xl font-bold bg-yellow-00 w-fit md:mx-auto">
                                 Encontrá la tuya.
                             </h2>
 
+                            {{-- <a href="{{ route('subastas') }}"
+                                class="border rounded-4xl px-3 py-0.5 border-casa-black mt-4 hover:bg-casa-base-2 over:text-casa-base flex items-center md:mx-auto w-fit"
+                                title="Ir a subastas">Ver nuestras
+                                subastas
+                                <svg class="size-[20px]  ml-4 ">
+                                    <use xlink:href="#arrow-right1"></use>
+                                </svg>
+
+
+                            </a> --}}
                         </div>
                     </div>
 
@@ -162,33 +172,35 @@
 
 
         {{-- @if ($last && $contadorDestacados) --}}
-        {{-- <div class="  lg:px-24  px-4 overflow-x-hidden  w-full g-blue-300 max-w-8x p-1"> --}}
+        {{-- <div class="  md:px-24  px-4 overflow-x-hidden  w-full g-blue-300 max-w-8x p-1"> --}}
 
-        @livewire('destacados', ['subasta_id' => $last->id, 'titulo' => true, 'from' => 'home'])
+        @if ($last)
+            @livewire('destacados', ['subasta_id' => $last->id, 'titulo' => true, 'from' => 'home'])
+        @endif
 
         {{-- </div> --}}
         {{-- @endif --}}
 
 
         @if (count($subastasProx))
-            <div class="flex flex-col   w-full   items-center  lg:px-24 ">
+            <div class="flex flex-col   w-full   items-center  md:px-24 ">
 
                 <div class="flex flex-col   w-full   items-center   max-w-8xl">
 
                     <x-fancy-heading text="s{u}bast{a}s p{r}óxim{a}s" variant="italic mx-[0.5px] font-normal"
                         class=" md:text-[32px] text-[20px]  text-center self-start md:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
 
-                    <div class="swiper-home-subastas     w-full  lg:overflow-x-hidden lg:px-0 px-4">
+                    <div class="swiper-home-subastas     w-full  md:overflow-x-hidden md:px-0 px-4">
 
-                        <div class="swiper-wrapper  flex lg:flex-row flex-col">
+                        <div class="swiper-wrapper  flex md:flex-row flex-col">
                             @foreach ($subastasProx as $item)
                                 <a href="{{ route('subasta-proximas.lotes', $item->id) }}"
-                                    class="flex flex-col bg-casa-black text-casa-base lg:p-6 p-4  swiper-slide  md:mb-0 mb-4">
+                                    class="flex flex-col bg-casa-black text-casa-base md:p-6 p-4  swiper-slide  md:mb-0 mb-4">
 
 
-                                    <div class="flex justify-between items-center lg:mb-4 mb-2">
+                                    <div class="flex justify-between items-center md:mb-4 mb-2">
 
-                                        <p class="text-[26px]  lg:text-[40px] font-caslon leading-[40px] ">
+                                        <p class="text-[26px]  md:text-[40px] font-caslon leading-[40px] ">
                                             {{ $item->titulo }}
                                         </p>
 
@@ -212,7 +224,7 @@
 
                                     @endphp
 
-                                    <div class="flex justify-between lg:text-xl text-sm">
+                                    <div class="flex justify-between md:text-xl text-sm">
 
                                         <div class="flex flex-col mb-1.5">
                                             <p>Desde el</p>
@@ -238,8 +250,8 @@
 
 
                                     @if ($item->desc_extra)
-                                        <x-modal-desc-extra-home :titulo="$item->titulo" :desc="$item->desc_extra"
-                                            :route="route('subasta-proximas.lotes', $item->id)" />
+                                        <x-modal-desc-extra-home :titulo="$item->titulo" :desc="$item->desc_extra" :route="route('subasta-proximas.lotes', $item->id)"
+                                            enlace="text-casa-base hover:text-casa-base-2" />
                                     @endif
 
 
@@ -264,9 +276,9 @@
                     <x-fancy-heading text="s{u}bast{a}s p{a}sa{d}as" variant="italic mx-[0.5px] font-normal"
                         class=" md:text-[32px] text-[20px]  text-center self-start md:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
 
-                    <div class="swiper-home-subastas     w-full  lg:overflow-x-hidden lg:px-0 px-4 ">
+                    <div class="swiper-home-subastas     w-full  md:overflow-x-hidden md:px-0 md:pl-[1px] px-4">
 
-                        <div class="swiper-wrapper  flex lg:flex-row flex-col  ">
+                        <div class="swiper-wrapper  flex md:flex-row flex-col   ">
 
                             @foreach ($subastasFin as $item)
                                 <a href="{{ route('subasta-pasadas.lotes', $item->id) }}"
@@ -274,9 +286,9 @@
 
 
 
-                                    <div class="flex justify-between items-center lg:mb-4 mb-2">
+                                    <div class="flex justify-between items-center md:mb-4 mb-2">
 
-                                        <p class="text-2xl  lg:text-[40px] font-caslon leading-[40px]">
+                                        <p class="text-2xl  md:text-[40px] font-caslon leading-[40px]">
                                             {{ $item->titulo }}
                                         </p>
 

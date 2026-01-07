@@ -1,5 +1,5 @@
 <div class="flex flex-col   w-full items-center   ">
-    {{-- <p class="lg:text-3xl  text-lg font-bold lg:text-center   text-start w-full px-4 mb-4 lg:mb-8">subastas abiertas</p> --}}
+    {{-- <p class="md:text-3xl  text-lg font-bold md:text-center   text-start w-full px-4 mb-4 md:mb-8">subastas abiertas</p> --}}
 
 
     <div class="flex flex-col   w-full   items-center   max-w-8xl">
@@ -11,18 +11,18 @@
 
 
 
-        <div class="swiper-home-subastas     w-full  lg:overflow-x-hidden lg:px-0 px-4">
+        <div class="swiper-home-subastas     w-full  md:overflow-x-hidden md:px-0 md:pl-[1px] px-4">
 
-            <div class="swiper-wrapper  flex lg:flex-row flex-col">
+            <div class="swiper-wrapper  flex md:flex-row flex-col">
 
                 @foreach ($subastasAct as $subA)
                     <a href="{{ route('subasta.lotes', $subA->id) }}"
-                        class="flex flex-col   lg:p-6 p-4  swiper-slide border-1 border-casa-black text-casa-black md:mb-0 mb-4">
+                        class="flex flex-col   md:p-6 p-4  swiper-slide border-1 border-casa-black text-casa-black md:mb-0 mb-4">
 
 
-                        <div class="flex justify-between items-center lg:mb-4 mb-2">
+                        <div class="flex justify-between items-center md:mb-4 mb-2">
 
-                            <p class="text-[26px]  lg:text-[40px] font-caslon leading-[40px]">{{ $subA->titulo }} </p>
+                            <p class="text-[26px]  md:text-[40px] font-caslon leading-[40px]">{{ $subA->titulo }} </p>
                             <svg fill="#fff" class="size-[26px]  ml-8 shrink-0 self-start">
                                 <use xlink:href="#arrow-right1"></use>
                             </svg>

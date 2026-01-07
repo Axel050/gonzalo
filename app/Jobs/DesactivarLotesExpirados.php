@@ -32,7 +32,7 @@ class DesactivarLotesExpirados implements ShouldQueue
       Subasta::whereIn('estado', [SubastaEstados::ACTIVA, SubastaEstados::ENPUJA])
         ->where('fecha_fin', '<=', now())
         ->each(function ($subasta) {
-          info("Procesando subasta ID: {$subasta->id}, Título: {$subasta->titulo}, Estado: {$subasta->estado}");
+          // info("Procesando subasta ID: {$subasta->id}, Título: {$subasta->titulo}, Estado: {$subasta->estado}");
 
           if (!$subasta->fecha_fin) {
             info("Error: fecha_fin es null para subasta ID: {$subasta->id}");

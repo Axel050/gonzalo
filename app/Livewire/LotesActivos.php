@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\DTOs\PaginatedLotesDTO;
 use App\Livewire\Traits\WithSearchAndPagination;
 use App\Models\Moneda;
 use App\Models\Subasta;
@@ -95,7 +96,7 @@ class LotesActivos extends Component
 
 
 
-  public function loadLotes()
+  public function loadLotes2()
   {
     info("LOadssssssssssssssssssssa");
     $search = $this->fallbackAll ? null : $this->search;
@@ -129,6 +130,25 @@ class LotesActivos extends Component
     }
   }
 
+  public function loadLotes()
+  {
+    $paginator = $this->fetchData(
+      $this->fallbackAll ? null : $this->search,
+      $this->page
+    );
+
+    $dto = PaginatedLotesDTO::fromPaginator(
+      $paginator,
+      $this->searchType()
+    );
+
+    $this->lotes   = array_merge($this->lotes, $dto->data);
+    $this->hasMore = $dto->has_more;
+
+    if ($this->filtered !== null) {
+      $this->filtered = count($this->lotes);
+    }
+  }
 
   public function render()
   {

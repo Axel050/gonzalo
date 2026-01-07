@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const slides = el.querySelectorAll('.swiper-slide').length;
 
-
+    // MODEIFER SPACEBETTEN PARA HACER MAS GRANDE 
     new Swiper(el, {
       slidesPerView: 3,
       spaceBetween: 15,
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
       breakpoints: {
         420: {
           slidesPerView: 4,
-          spaceBetween: 50,
+          spaceBetween: 15,
           loop: slides > 3 ? true : false,
           autoplay: slides > 3 ? { delay: 5000 } : false,
         },

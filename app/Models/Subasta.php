@@ -181,6 +181,21 @@ class Subasta extends Model implements Auditable
     return $query;
   }
 
+  public function isActivaCarrito()
+  {
+    $now = now();
+
+
+    if ($this->estado === SubastaEstados::ACTIVA && $now->between($this->fecha_inicio, $this->fecha_fin)) {
+      return true;
+    }
+
+    if ($this->estado === SubastaEstados::ENPUJA) {
+      return true;
+    }
+
+    return false;
+  }
 
 
   public function isActiva()
@@ -202,6 +217,9 @@ class Subasta extends Model implements Auditable
 
     return $this->lotesActivos()->exists();
   }
+
+
+
 
 
   public function lotesProximos()

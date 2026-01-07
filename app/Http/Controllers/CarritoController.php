@@ -7,6 +7,7 @@ use App\Services\PujaService;
 use DomainException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use InvalidArgumentException;
 
 class CarritoController extends Controller
@@ -74,9 +75,10 @@ class CarritoController extends Controller
     $adquirenteId = $request->input('adquirente_id');
     $loteId = $request->input('lote_id');
     $monto = $request->input('monto');
+    $ultimoMontoVisto = $request->input('ultimo_monto_visto');
 
     try {
-      $result = $this->pujaService->registrarPuja($adquirenteId, $loteId, $monto);
+      $result = $this->pujaService->registrarPuja($adquirenteId, $loteId, $monto, $ultimoMontoVisto);
       session()->flash('success', 'Puja registrada correctamente.');
       return response()->json($result, $result['code']);
     } catch (ModelNotFoundException $e) {
@@ -135,11 +137,22 @@ class CarritoController extends Controller
 
 
   /**
-   * Display the specified resource.
+   * Get cart with orders 
    */
-  public function show(string $id)
+  public function getOrdenes(CarritoService $service)
   {
-    //
+    $user = Auth::user();
+
+
+    if (!$user->adquirente) {
+      return response()->json([
+        'message' => 'El usuario no es un adquirente'
+      ], 403);
+    }
+
+    return response()->json(
+      $service->obtenerResumen($user->adquirente)
+    );
   }
 
   /**
@@ -161,4 +174,23 @@ class CarritoController extends Controller
   /**
    * Remove the specified resource from storage.
    */
+
+
+  public function getEstadoCarrito(Request $request, CarritoService $service)
+  {
+    // $adquirente = $request->user()->adquirente;
+
+    // COMENTA ESTA LÍNEA TEMPORALMENTE:
+    // $adquirente = $request->user()->adquirente;
+    $user = $request->user();
+
+    // AGREGA ESTA LÍNEA PARA PRUEBAS (Usa el ID de un adquirente real de tu base de datos):
+    // $adquirente = \App\Models\Adquirente::find(5);
+    $adquirente = $user?->adquirente;
+
+    return response()->json([
+      'lotes' => $service->getLotesDetallados($adquirente),
+      'tieneOrdenesPendientes' => $service->tieneOrdenesPendientes($adquirente)
+    ]);
+  }
 }

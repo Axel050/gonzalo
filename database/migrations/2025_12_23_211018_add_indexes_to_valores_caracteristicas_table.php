@@ -13,8 +13,8 @@ return new class extends Migration
   {
     Schema::table('valores_cataracteristicas', function (Blueprint $table) {
 
-      $table->index('lote_id');
-      $table->index('valor');
+      // $table->index('lote_id');
+      // $table->index('valor');
     });
   }
 
@@ -24,8 +24,8 @@ return new class extends Migration
   public function down(): void
   {
     Schema::table('valores_cataracteristicas', function (Blueprint $table) {
-      $table->dropIndex('lote_id');
-      $table->dropIndex('valor');
+      // $table->dropIndex('lote_id');
+      // $table->dropIndex('valor');
     });
   }
 };

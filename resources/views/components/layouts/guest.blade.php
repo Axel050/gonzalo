@@ -207,9 +207,19 @@
 
 
         @if (!request()->routeIs('subastas', 'adquirentes.create', 'comitentes.create'))
-            <a href="{{ route('subastas') }}"
-                class="bg-rd-500 border md:border-2 border-casa-black rounded-4xl md:px-4 md:text-xl px-2 py-1 md:py-1.5 fixed right-2 md:right-5 bottom-5 md:bottom-7 z-40 bg-casa-base hover:bg-casa-base-2"
-                title="Ir a subastas">Subastas</a>
+            <div class="fixed right-2 md:right-5 bottom-5 md:bottom-7 z-40 flex items-center flex-col group">
+                {{-- <span
+                    class="animate-bounce transition-transform duration-300
+             group-hover:scale-120 group-hover:text-casa-black">
+
+                    <svg class="md:size-[26px] size-5   rotate-90 text-casa-black/70 ">
+                        <use xlink:href="#arrow-right1"></use>
+                    </svg>
+                </span> --}}
+                <a href="{{ route('subastas') }}" {{-- class="bg-rd-500 border md:border-2 border-casa-black rounded-4xl md:px-4 md:text-xl px-2 py-1 md:py-1.5 fixed right-2 md:right-5 bottom-5 md:bottom-7 z-40 bg-casa-base hover:bg-casa-base-2 " --}}
+                    class="bg-rd-500 border md:border-2 border-casa-black rounded-4xl md:px-4 md:text-xl px-2 py-1 md:py-1.5  bg-casa-base hover:bg-casa-base-2 "
+                    title="Ir a subastas">Subastas</a>
+            </div>
         @endif
 
 
@@ -217,12 +227,15 @@
             {{ $slot }}
         </main>
 
+
         @livewire('notificaciones')
 
 
         {{-- </div> --}}
 
         {{-- Route::get('/adquirentes/crear', [AdquirenteController::class, "create"])->name('adquirentes.create'); --}}
+
+
         @if (!request()->routeIs('adquirentes.create', 'comitentes.create'))
             <x-footer />
         @endif

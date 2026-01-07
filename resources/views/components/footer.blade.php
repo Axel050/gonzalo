@@ -58,7 +58,7 @@
                 </div>
 
                 <a href="mailto:info@casablanca.ar"
-                    class="bg-casa-fondo hover:bg-transparent hover:text-casa-base text-casa-black rounded-full px-4 flex items-center justify-between gap-x-5 py-2  border border-casa-fondo-h text-nowrap text-xl font-bold h-fit self-start md:w-fit w-full md:mt-0 mt-5">
+                    class="bg-casa-fondo hover:bg-transparent hover:text-casa-base text-casa-black rounded-full px-4 flex items-center justify-between gap-x-5 py-2  border border-casa-fondo-h text-nowrap md:text-xl text-sm font-bold h-fit self-start md:w-fit w-full md:mt-0 mt-5">
                     Contactanos
                     <svg fill="#fff" class="size-[26px]    ml-8 ">
                         <use xlink:href="#arrow-right1"></use>
@@ -140,7 +140,7 @@
     <div
         class="flex  md:flex-row flex-col w-full  text-casa-fondo-h py-6 md:px-24 px-4 border-t-2 border-casa-base-2  bg-casa-black  pb-18 ">
         <div class="max-w-8xl flex  md:flex-row flex-col md:justify-between w-full  mx-auto">
-            <p>&copy; 2025 Creado por <a href="https://www.aisolucionesweb.com/" target="_blank"
+            <p>&copy; 2025 Software by <a href="https://www.aisolucionesweb.com/" target="_blank"
                     class="hover:text-casa-base font-semibold hover:font-bold">aisolucionesweb</a></p>
             <p>&copy; Diseñado por
                 <a href="https://www.crabbystudio.com/" target="_blank" class="underline"> CrabbyStudio</a>

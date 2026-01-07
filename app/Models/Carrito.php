@@ -69,19 +69,4 @@ class Carrito extends Model
       //    Asegúrate de especificar el nombre completo de la columna: 'carrito_lotes.id'
       ->orderBy('carrito_lotes.id', 'DESC');
   }
-
-  // En el modelo Carrito
-  public function lotesFiltrados2()
-  {
-    return $this->belongsToMany(Lote::class, 'carrito_lotes')
-      ->withPivot('subasta_id', 'estado')
-      ->wherePivotIn('estado', [
-        CarritoLoteEstados::ACTIVO,
-        CarritoLoteEstados::ADJUDICADO,
-        CarritoLoteEstados::EN_ORDEN,
-        CarritoLoteEstados::CERRADO,
-
-      ])
-      ->withTimestamps();
-  }
 }

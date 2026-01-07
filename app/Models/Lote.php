@@ -173,6 +173,25 @@ class Lote extends Model implements Auditable
 
 
 
+  public function contratoActua3l()
+  {
+    return $this->hasOne(ContratoLote::class, 'lote_id')
+      ->whereColumn('contrato_lotes.contrato_id', 'lotes.ultimo_contrato');
+  }
+
+  public function contratoActual()
+  {
+    return $this->hasOne(ContratoLote::class, 'lote_id')
+      ->where('contrato_id', function ($query) {
+        $query->select('ultimo_contrato')
+          ->from('lotes')
+          ->whereColumn('lotes.id', 'contrato_lotes.lote_id')
+          ->limit(1);
+      });
+  }
+
+
+
 
 
   public function pujas()
@@ -184,6 +203,10 @@ class Lote extends Model implements Auditable
   {
     return $this->pujas()->orderByDesc('id')->first();
   }
+
+
+
+
 
   // New7-4
   public function isActivoEnSubasta($subastaId)
@@ -207,10 +230,33 @@ class Lote extends Model implements Auditable
     return optional($this->getPujaFinal())->monto ?? 0;
   }
 
+
   public function getMonedaSignoAttribute()
   {
     // Si ya tenés relación con Moneda, usala:
     $moneda = Moneda::find($this->moneda);
     return $moneda?->signo ?? '';
+  }
+
+
+  public function ultimaPuja()
+  {
+    return $this->hasOne(Puja::class)->latestOfMany();
+  }
+
+
+  public function moneda()
+  {
+    return $this->hasOneThrough(
+      Moneda::class,
+      ContratoLote::class,
+      'lote_id',      // FK en contrato_lotes
+      'id',           // FK en monedas
+      'id',           // PK en lotes
+      'moneda_id'     // FK en contrato_lotes
+    )->whereColumn(
+      'contrato_lotes.contrato_id',
+      'lotes.ultimo_contrato'
+    );
   }
 }

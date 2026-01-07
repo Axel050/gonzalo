@@ -11,7 +11,7 @@ class Notificaciones extends Component
   #[On('echo:my-channel,PujaRealizada')]
   public function mostrarNotificacion($event)
   {
-    info(["TE ALL" => $event]);
+    // info(["TE ALL" => $event]);
     $user = auth()->user();
 
     if (!$user) {

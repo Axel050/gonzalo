@@ -1,12 +1,11 @@
-@props(['titulo', 'desc', 'route'])
+@props(['titulo', 'desc', 'route', 'enlace' => 'text-blue-600 hover:text-blue-800'])
 
 
 <div x-data="{ open: false }" class=" inlineblock  relaive 2 pt-1">
 
     {{-- x --}}
     <!-- Botón para abrir -->
-    <button
-        class="text-blue-600 underline text-sm hover:text-blue-800  g-red-300  fle  w-fit  right-3 bottom-2 absolute  "
+    <button class="{{ $enlace }} underline text-sm   fle  w-fit  right-3 bottom-2 absolute  "
         @click.prevent="open = true">
         Ver descripción extra
     </button>

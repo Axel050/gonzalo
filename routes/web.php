@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdquirenteController;
 use App\Http\Controllers\ComitenteController;
+use App\Http\Controllers\SubastaController;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
@@ -190,14 +191,14 @@ Route::get('/subastas', function () {
 
 // Route::get('/subastas/{subasta}/lotes-activos', [AdquirenteController::class, 'getLotesActivos']);
 
-Route::get('/subastas/proximas/{subasta}/lotes', [AdquirenteController::class, 'getLotesProximos'])->name('subasta-proximas.lotes')->middleware(['auth', 'verified']);
+Route::get('/subastas/proximas/{subasta}/lotes', [SubastaController::class, 'getLotesProximos'])->name('subasta-proximas.lotes')->middleware(['auth', 'verified']);
 
-Route::get('/subastas/pasadas/{subasta}/lotes', [AdquirenteController::class, 'getLotesPasados'])->name('subasta-pasadas.lotes')->middleware(['auth', 'verified']);
+Route::get('/subastas/pasadas/{subasta}/lotes', [SubastaController::class, 'getLotesPasados'])->name('subasta-pasadas.lotes')->middleware(['auth', 'verified']);
 
 
-Route::get('/subastas/buscador/lotes', [AdquirenteController::class, 'getLotesSearch'])->name('subasta-buscador.lotes')->middleware(['auth', 'verified']);
+Route::get('/subastas/buscador/lotes', [SubastaController::class, 'getLotesSearch'])->name('subasta-buscador.lotes')->middleware(['auth', 'verified']);
 
-Route::get('/subastas/{subasta}/lotes', [AdquirenteController::class, 'getLotes'])->name('subasta.lotes')->middleware(['auth', 'verified']);
+Route::get('/subastas/{subasta}/lotes', [SubastaController::class, 'getLotes'])->name('subasta.lotes')->middleware(['auth', 'verified']);
 
 
 Route::get('/terminos-comitentes', function () {

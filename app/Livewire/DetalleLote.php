@@ -316,15 +316,19 @@ class DetalleLote extends Component
       ->toArray();
 
 
-    $this->caracteristicas =  $this->lote->tipo->caracteristicas;
+    $this->caracteristicas =  $this->lote->tipo?->caracteristicas;
     $valores = $this->lote->valoresCaracteristicas
       ->keyBy('caracteristica_id');
 
-    foreach ($this->caracteristicas as $caracteristica) {
-      $this->formData[$caracteristica->id] =
-        $valores[$caracteristica->id]->valor ?? null;
-    }
 
+    $this->formData = []; // o asegúrate de que ya exista
+
+    if ($this->caracteristicas) {
+      foreach ($this->caracteristicas as $caracteristica) {
+        $this->formData[$caracteristica->id] =
+          $valores[$caracteristica->id]->valor ?? null;
+      }
+    }
 
     // info(["formData0000000000" => $this->formData]);
   }

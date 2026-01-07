@@ -132,7 +132,7 @@
                     <div class="flex gap-x-4 justify-center my-2 sm:order-2 order-1">
 
                         <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote['foto']) }}"
-                            class="md:size-49 size-20  " />
+                            class="md:h-49 w-full  h-20  object-contain" />
 
                     </div>
 

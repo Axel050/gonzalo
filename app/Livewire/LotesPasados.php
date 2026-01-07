@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\DTOs\PaginatedLotesDTO;
 use App\Enums\SubastaEstados;
 use App\Livewire\Traits\WithSearchAndPagination;
 use App\Models\Moneda;
@@ -41,20 +42,6 @@ class LotesPasados extends Component
 
 
 
-  #[On('echo:my-channel,SubastaEstadoActualizado')]
-  public function actualizarEstado($event)
-  {
-    // Si cambio manual en la BD estdo lote , y disparao el even , actualizar sin refresh OK  
-
-    // $this->subastaEstado = $event['estado'];
-    // $this->lotes = $event['lotes'];
-    // if ($this->subastaEstado === 'inactiva') {
-    //     $this->error = 'La subasta ha finalizado';
-    // }
-
-    $this->loadLotes();
-  }
-
 
   public function mount(Subasta $subasta)
   {
@@ -76,7 +63,6 @@ class LotesPasados extends Component
         $this->loadLotes();
       }
     } else {
-      info("mount444 8888");
       $this->lotes = [];
     }
   }
@@ -86,6 +72,27 @@ class LotesPasados extends Component
 
 
   public function loadLotes()
+  {
+    $paginator = $this->fetchData(
+      $this->fallbackAll ? null : $this->search,
+      $this->page
+    );
+
+    $dto = PaginatedLotesDTO::fromPaginator(
+      $paginator,
+      $this->searchType()
+    );
+
+    $this->lotes   = array_merge($this->lotes, $dto->data);
+    $this->hasMore = $dto->has_more;
+
+    if ($this->filtered !== null) {
+      $this->filtered = count($this->lotes);
+    }
+  }
+
+
+  public function loadLotes2()
   {
     if (! $this->hasMore) {
       return;

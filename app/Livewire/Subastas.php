@@ -2,8 +2,11 @@
 
 namespace App\Livewire;
 
-
+use App\Http\Resources\SubastaHomeResource;
+use App\Http\Resources\SubastasHomeResource;
+use App\Http\Resources\TestResource;
 use App\Models\Subasta;
+use App\Services\SubastaService;
 use Carbon\Carbon;
 
 use Livewire\Component;
@@ -18,16 +21,43 @@ class Subastas extends Component
   public $subastasFin;
 
 
-
-  public function mount()
+  public function mount(SubastaService $service)
   {
 
-    $this->subastas = Subasta::whereIn('estado', ["activa", "enpuja"])->get();
+    // dd(class_exists(SubastasHomeResource::class));
+    $dtos = $service->activas();
+    $this->subastas = SubastasHomeResource::collection($dtos)
+      ->resolve();
 
-    $this->subastasProx = Subasta::where('fecha_inicio', '>=', Carbon::now())->get();
+    $dtosProx = $service->proximas();
+    $this->subastasProx = SubastasHomeResource::collection($dtosProx)
+      ->resolve();
 
 
-    $this->subastasFin = Subasta::whereIn('estado', ["finalizada"])->get();
+    $dtosFin = $service->finalizadas();
+    $this->subastasFin = SubastasHomeResource::collection($dtosFin)
+      ->resolve();
+
+    // $this->subastas      = $service->activas();
+    // info(["subastas" => $this->subastas]);
+    // $this->subastasProx     = $service->proximas();
+    // $this->subastasFin  = $service->finalizadas();
+  }
+
+
+
+
+
+  public function mounsst()
+  {
+
+
+    // $this->subastas = Subasta::whereIn('estado', ["activa", "enpuja"])->get();
+
+    // $this->subastasProx = Subasta::where('fecha_inicio', '>=', Carbon::now())->get();
+
+
+    // $this->subastasFin = Subasta::whereIn('estado', ["finalizada"])->get();
 
     // info([
     //   "subasta" => count($this->subastas),

@@ -168,7 +168,7 @@ class ModalContratoLotes extends Component
       'valuacion' => $this->valuacion,
       'comitente_id' => $this->contrato?->comitente_id,
       'ultimo_contrato' => $this->contrato?->id,
-      'estado' => LotesEstados::INCOMPLETO,
+      'estado' => LotesEstados::ASIGNADO,
     ]);
 
     ContratoLote::create([

@@ -6,44 +6,44 @@
     </div>
 
     {{-- <div
-        class = "border border-gray-500 md:max-w-[90%] lg:w-auto w-[90%]
+        class = "border border-gray-500 md:max-w-[90%] md:w-auto w-[90%]
       x-auto z-50 shadow-gray-400 shadow-md max-h-[95%] transition delay-150 duration-300 ease-in-out rounded-2xl "> --}}
 
     <article
-        class=" flex idden  md:w-4/6 w-[90%]  lg:justify-center justify-start flex-col lg:mt-10 mt-6 mb-8 mx-auto lg:px-12 lg:py-12 px-6 py-10  bg-casa-fondo-h border border-casa-black z-50 h-fit">
+        class=" flex idden  md:w-fit w-[90%]  md:justify-center justify-start flex-col md:mt-10 mt-6 mb-8 mx-auto md:px-20 md:py-12 px-6 py-10  bg-casa-fondo-h border border-casa-black z-50 h-fit">
 
 
-        <h2 class=" font-bold lgtext-3xl  text-xl lg:text-center text-start">¿Cómo puedo pagar?</h2>
+        <h2 class=" font-bold md:text-3xl  text-xl text-center">¿Cómo puedo pagar?</h2>
 
         <div
-            class="     lg:grid lg:grid-cols-2 grid-cols-1     w-6/6  mx-auto justify-between lg:pl-3 lg:pr-1 py-1 items-start lg:mt-5 mt-4 border-casa-black lg:text-xl text-sm gap-8 ">
+            class="     grid md:grid-cols-2 grid-cols-1     w-6/6  mx-auto justify-between md:pl-3 md:pr-1 py-1 items-start md:mt-5 mt-4 border-casa-black md:text-xl text-sm gap-8 ">
 
-            <div class="flex flex-col   lg:px-4 mb-3">
-                <h3 class="font-bold lg:text-center text-start lg:mb-1 mb-0.5">Transferencia bancaria.</h3>
-                <p class="text-pretty lg:text-center text-start">
+            <div class="flex flex-col   md:px-4 mb-3 col-span-2  ">
+                <h3 class="font-bold text-center  md:mb-1 mb-0.5">Transferencia bancaria.</h3>
+                <p class="text-pretty text-center ">
                     Podés abonar transfiriendo a : </p>
-                <p class="text-pretty lg:text-center text-start">alias: <b class="font-semibold">casa-blanca.ar.mp</b>
+                <p class="text-pretty text-center ">alias: <b class="font-semibold">casa-blanca.ar.mp</b>
                 </p>
-                <p class="text-pretty lg:text-center text-start">CBU: <b class="font-semibold">1212212121</b></p>
-                <p class="text-pretty lg:text-center text-start">Monto: <b
+                <p class="text-pretty text-center ">CBU: <b class="font-semibold">1212212121</b></p>
+                <p class="text-pretty text-center ">Monto: <b
                         class="font-semibold">${{ number_format($monto, 0, ',', '.') }}</b></p>
 
             </div>
 
-            <div class="flex flex-col   lg:px-4 mb-3">
-                <h3 class="font-bold lg:text-center text-start lg:mb-1 mb-0.5">Mercado Pago.</h3>
-                <p class="text-pretty lg:text-center text-start">Podés pagar directamente desde tu cuenta de Mercado
+            {{-- <div class="flex flex-col   md:px-4 mb-3">
+                <h3 class="font-bold md:text-center text-start md:mb-1 mb-0.5">Mercado Pago.</h3>
+                <p class="text-pretty md:text-center text-start">Podés pagar directamente desde tu cuenta de Mercado
                     Pago.</p>
 
                 <button
-                    class="bg-casa-black hover:bg-transparent hover:text-casa-black border border-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  py-1  col-span-3 mx-auto  lg:text-xl font-semibold text-sm lg:w-fit  w-full lg:order-2 mt-2"
+                    class="bg-casa-black hover:bg-transparent hover:text-casa-black border border-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  py-1  col-span-3 mx-auto  md:text-xl font-semibold text-sm md:w-fit  w-full md:order-2 mt-2"
                     wire:click="mp">
                     Pagar <svg class="size-6 ml-5">
                         <use xlink:href="#arrow-right"></use>
                     </svg>
                 </button>
 
-            </div>
+            </div> --}}
 
 
 
@@ -51,14 +51,14 @@
 
 
         <div
-            class="flex lg:flex-row flex-col lg:gap-20 gap-3 lg:w-fit w-full lg:justify-center mx-auto items-center lg:mt-5 mt-3">
+            class="flex md:flex-row flex-col md:gap-20 gap-3 md:w-fit w-full md:justify-center mx-auto items-center md:mt-5 mt-3">
 
 
             <button
-                class="bg-casa-fondo-h hover:bg-casa-black hover:text-casa-base border border-casa-black text-casa-black  rounded-full px-4 flex items-center justify-between  lg:py-0.5 py-1 col-span-3 mx-auto  lg:text-xl font-semibold text-sm lg:w-fit lg w-full h-fit"
+                class="bg-casa-fondo-h hover:bg-casa-black hover:text-casa-base border border-casa-black text-casa-black  rounded-full px-4 flex items-center justify-between  md:py-0.5 py-1 col-span-3 mx-auto  md:text-xl font-semibold text-sm md:w-fit lg w-full h-fit"
                 wire:click="$parent.$set('modalPago',false)">
                 Salir
-                <span class=" ml-3 lg:h-8 h-6 mt-0.5">X</span>
+                <span class=" ml-3 md:h-8 h-6 mt-0.5">X</span>
             </button>
         </div>
 
@@ -70,12 +70,12 @@
     {{-- <div class="flex justify-center  w-full space-x-6">
 
                         <button type="button" wire:click="$parent.$set('method',false)"
-                            class="bg-orange-600 hover:bg-orange-700 mt-4 rounded-lg px-2 lg:py-1 py-0.5 ">
+                            class="bg-orange-600 hover:bg-orange-700 mt-4 rounded-lg px-2 md:py-1 py-0.5 ">
                             Salir
                         </button>
 
                         <button type="button" wire:click="mp"
-                            class="bg-green-600 hover:bg-green-700 mt-4 rounded-lg px-2 lg:py-1 py-0.5 ">
+                            class="bg-green-600 hover:bg-green-700 mt-4 rounded-lg px-2 md:py-1 py-0.5 ">
                             Pagar
                         </button>
 

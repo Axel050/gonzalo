@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Traits;
 
-
+use App\DTOs\PaginatedLotesDTO;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 
@@ -67,10 +67,20 @@ trait WithSearchAndPagination
 
 
 
-
-
-
   protected function appendPaginator($paginator)
+  {
+    $dto = PaginatedLotesDTO::fromPaginator(
+      $paginator,
+      $this->searchType()
+    );
+
+    $this->lotes   = array_merge($this->lotes, $dto->data);
+    $this->hasMore = $dto->has_more;
+  }
+
+
+
+  protected function appendPaginator2($paginator)
   {
     $type = $this->searchType();
 

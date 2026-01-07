@@ -6,6 +6,7 @@ use App\Models\Comitente;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Str;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 
@@ -18,7 +19,86 @@ class ComitenteService
   {
     //
   }
+
+
+
   public function createComitente(array $data): Comitente
+  {
+    info(["DARA SER" => $data]);
+    // CAPA 1: Validamos que 'foto' sea realmente una imagen (mimes:jpg,png,etc)
+    $rules = array_merge($this->rules(), [
+      'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
+    ]);
+
+    $validator = Validator::make($data, $rules, $this->messages());
+
+    if ($validator->fails()) {
+      info('Validación fallida en Service', ['errors' => $validator->errors()]);
+      throw new ValidationException($validator);
+    }
+
+    $filename = '';
+
+    if (isset($data['foto']) && $data['foto']) {
+      $manager = new ImageManager(new Driver());
+
+      try {
+        // CAPA 2: Forzamos la extensión a .jpg. 
+        // No importa si el atacante manda "image/php", nosotros guardaremos ".jpg"
+        $extension = 'jpg';
+        $filename = Str::random(20) . '.' . $extension; // Nombre aleatorio no predecible
+        $destino = public_path("storage/imagenes/comitentes/");
+
+        if (!file_exists($destino)) {
+          mkdir($destino, 0755, true);
+        }
+
+        // Procesar según el origen (Archivo o Base64)
+        if ($data['foto'] instanceof UploadedFile) {
+          $image = $manager->read($data['foto']->getRealPath());
+        } else {
+          // Limpiamos el string base64 por seguridad
+          $base64Data = preg_replace('/^data:image\/\w+;base64,/', '', $data['foto']);
+          $image = $manager->read(base64_decode($base64Data));
+        }
+
+        $image->scale(width: 400);
+
+        // CAPA 3: Re-codificamos la imagen. 
+        // Esto convierte el archivo a un JPG real y elimina scripts PHP ocultos.
+        $image->toJpeg(80)->save($destino . $filename);
+      } catch (\Exception $e) {
+        info('Error procesando imagen: ' . $e->getMessage());
+        // Si alguien intenta subir un PHP "disfrazado", la librería fallará aquí
+        throw new \Exception("El archivo proporcionado no es una imagen válida.");
+      }
+    }
+
+    $comitente = Comitente::create([
+      'nombre' => $data['nombre'],
+      'apellido' => $data['apellido'],
+      'mail' => $data['mail'],
+      'telefono' => $data['telefono'],
+      'CUIT' => $data['CUIT'] ?? null,
+      'domicilio' => $data['domicilio'],
+      'comision' => $data['comision'] ?? 20,
+      'banco' => $data['banco'] ?? null,
+      'numero_cuenta' => $data['numero_cuenta'] ?? null,
+      'CBU' => $data['CBU'] ?? null,
+      'alias_bancario' => $data['alias_bancario'] ?? null,
+      'observaciones' => $data['observaciones'] ?? null,
+      'foto' => $filename,
+    ]);
+
+    info('Comitente creado', ['id' => $comitente->id]);
+
+    return $comitente;
+  }
+
+
+
+
+  public function createComitente2(array $data): Comitente
   {
 
 
@@ -82,10 +162,10 @@ class ComitenteService
     return [
       'nombre' => 'required|string|max:255',
       'apellido' => 'required|string|max:255',
-      'telefono' => 'required|string|max:20',
+      'telefono' => 'required|string|max:20|unique:comitentes,telefono',
       'mail' => 'required|email|unique:comitentes,mail',
       'domicilio' => 'required|string|max:255',
-      'CUIT' => 'nullable|unique:comitentes,CUIT|string|max:20',
+      'CUIT' => 'required|unique:comitentes,CUIT|string|max:20',
       'comision' => 'nullable|numeric',
       'banco' => 'nullable|string|max:255',
       'numero_cuenta' => 'nullable|string|max:255',
@@ -104,7 +184,9 @@ class ComitenteService
       'mail.email' => 'Mail inválido.',
       'mail.unique' => 'Mail existente.',
       'telefono.required' => 'Ingrese teléfono.',
+      'telefono.unique' => 'Teléfono existente.',
       'CUIT.unique' => 'CUIT existente.',
+      'CUIT.required' => 'Ingrese CUIT.',
       'domicilio.required' => 'Ingrese domicilio.',
       'comision.numeric' => 'Comisión inválida.',
     ];

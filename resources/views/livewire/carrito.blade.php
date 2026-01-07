@@ -33,50 +33,46 @@
 
 
         <div class="flex  flex-col     mb-2 md:mb-0  w-full gap-2  ">
-
-            @if (isset($lotes) && count($lotes))
-                @foreach ($lotes as $lote)
+            {{-- lotes card --}}
+            @if (isset($carrito['lotes']) && count($carrito['lotes']))
+                @foreach ($carrito['lotes'] as $lote)
                     <div
                         class="w-full bg-casa-base-2  grid md:grid-cols-4 grid-cols-3 md:p-6 p-4 gap-y-1 md:border border-casa-black justify-between">
 
 
-                        <div class="flex gap-x-4 justify-center  md:size-34 size-20 col-span-1">
-                            <img src="{{ Storage::url('imagenes/lotes/normal/' . $lote->lote->foto1) }}"
-                                class="w-full   " />
+                        {{-- <div class="flex gap-x-4 justify-center  md:size-34 size-20 col-span-1"> --}}
+                        <div class="flex gap-x-4 justify-center   col-span-1">
+                            <img src="{{ Storage::url('imagenes/lotes/normal/' . $lote['foto']) }}"
+                                class="md:h-34 w-full  h-20  object-contain" />
+
                         </div>
 
                         {{-- @dump('CHGECK SINO HAY PUJA ; , VERIFICAR QUE SEA BASE , antes que fraccion') --}}
-                        <div class="flex flex-col justify-center col-span-2">
+                        <div class="flex flex-col justify-center col-span-2 md:pl-4 pl-2">
 
                             <ul class="flex md:flex-row flex-col md:gap-3 gap-2 text-sm">
                                 <li
                                     class="md:px-3 px-2 md:py-2 py-0.5 rounded-full border border-casa-black md:text-sm text-xs w-fit">
-                                    <a href="{{ route('lotes.show', $lote->lote->id) }}">
-                                        Lote: {{ $lote->lote->id }}
+                                    <a href="{{ route('lotes.show', $lote['lote_id']) }}">
+                                        Lote: {{ $lote['lote_id'] }}
                                     </a>
                                 </li>
                                 <li
                                     class="md:px-3 px-2 md:py-2 py-0.5 rounded-full border border-casa-black md:text-sm text-xs w-fit">
-                                    <a
-                                        href="{{ route('subasta-pasadas.lotes', $lote->lote->ultimoContrato?->subasta?->id) }}">
-                                        Subasta: {{ $lote->lote->ultimoContrato?->subasta?->titulo }}
+                                    <a href="{{ route('subasta-pasadas.lotes', $lote['subasta_id']) }}">
+                                        Subasta: {{ $lote['subasta'] }}
                                     </a>
                                 </li>
                             </ul>
 
 
-                            <a href="{{ route('lotes.show', $lote['id']) }}"
-                                class="font-bold md:text-xl text-sm w-full  my-1 ">{{ $lote->lote->titulo }}</a>
-
-
+                            <a href="{{ route('lotes.show', $lote['lote_id']) }}"
+                                class="font-bold md:text-xl text-sm w-full  my-1 ">{{ $lote['titulo'] }}</a>
 
 
                             <p class="md:text-xl text-sm font-bold mb-3">
-                                {{ $lote->lote->moneda_signo }}{{ number_format($lote->lote->monto_actual, 0, ',', '.') }}
+                                {{ $lote['moneda'] }}{{ number_format($lote['monto_actual'], 0, ',', '.') }}
                             </p>
-
-                            {{-- </div> --}}
-
 
 
                         </div>
@@ -108,62 +104,71 @@
 
 
 
-            @foreach ($ordenes as $orden)
+            @foreach ($carrito['ordenes'] as $orden)
                 <div class="shadow-md md:p-4 p-2 mb-6 relative ">
                     <h3 class="md;text-2xl text-md font-bold mb-2">
-                        Subasta: {{ $orden->subasta->titulo }}
+                        Subasta: {{ $orden['subasta'] }}
                     </h3>
-                    <p class="text-sm mb-3">Orden #{{ $orden->id }} - Estado: {{ ucfirst($orden->estado) }}</p>
+                    <p class="text-sm mb-3">Orden #{{ $orden['orden_id'] }} - Estado: {{ ucfirst($orden['estado']) }}
+                    </p>
 
                     <ul class="mb-4">
-                        @foreach ($orden->lotes as $ol)
-                            <li class="flex justify-between">
-                                <span>Lote #{{ $ol->lote->id }} - {{ $ol->lote->titulo }}</span>
-                                <span>${{ number_format($ol->precio_final, 0, ',', '.') }}</span>
-                            </li>
+                        @foreach ($carrito['lotes'] as $lote)
+                            @if ($lote['orden_id'] === $orden['orden_id'])
+                                <li class="flex justify-between">
+                                    <span>
+                                        Lote #{{ $lote['lote_id'] }} - {{ $lote['titulo'] }}
+                                    </span>
+                                    <span>
+                                        {{-- {{ $lote['<moned></moned>a'] }} --}}
+                                        {{ number_format($lote['precio_final'], 0, ',', '.') }}
+                                    </span>
+                                </li>
+                            @endif
                         @endforeach
                     </ul>
 
+
+
                     <p class="flex justify-between border-t border-gray-400 pt-2 font-bold">
                         Subtotal
-                        <span>${{ number_format($orden->lotes->sum('precio_final'), 0, ',', '.') }}</span>
+                        <span>${{ number_format($orden['subtotal'], 0, ',', '.') }}</span>
                     </p>
 
-                    @php
-                        $garantia = collect($garantiasAplicadas)->firstWhere('subasta_id', $orden->subasta->id);
-                    @endphp
 
-                    @if ($garantia)
+                    @if ($orden['garantia'])
                         <p class="flex justify-between text-sm">
                             Deposito:
                             {{-- {{ $garantia['subasta_titulo'] }} --}}
-                            <span>-${{ number_format($garantia['monto'], 0, ',', '.') }}</span>
+                            <span>-${{ number_format($orden['garantia']['monto'], 0, ',', '.') }}</span>
                         </p>
                     @endif
-                    @if ($orden->subasta->envio)
+
+
+                    @if ($orden['envio'])
                         <div class="flex justify-between items-center mb-1 text-sm">
                             <p class="flex items-center">Envio </p>
 
-                            ${{ $orden->monto_envio }}
+                            ${{ $orden['envio'] }}
                         </div>
                     @endif
 
-                    @php
+                    {{-- @php
                         $total = $orden->lotes->sum('precio_final') - ($garantia['monto'] ?? 0);
-                        // $total = $orden->lotes->sum('precio_final') - ($garantia['monto'] ?? 0);
+                        
 
-                        if ($envios[$orden->id]) {
+                        if ($envios[$orden->id] ?? false) {
                             $total += $orden->subasta->envio;
                         }
-                    @endphp
+                    @endphp --}}
                     <p class="flex justify-between border-t border-black pt-2 text-xl font-bold">
                         Total
                         <span>
-                            ${{ number_format($total, 0, ',', '.') }}
+                            ${{ number_format($orden['total'], 0, ',', '.') }}
                         </span>
                     </p>
 
-                    <button wire:click="mp({{ $orden->id }})"
+                    <button wire:click="mp({{ $orden['orden_id'] }})"
                         class="bg-casa-black text-casa-base font-bold rounded-full px-4 py-2 mt-4 inline-flex items-center justify-center hover:bg-casa-base-2 hover:text-casa-black m:w-fit w-full border border-casa-black">
                         Pagar esta subasta
                         <svg class="size-[26px] md:ml-auto ml-2 ">

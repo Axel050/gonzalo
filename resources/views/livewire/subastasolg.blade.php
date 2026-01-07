@@ -10,32 +10,34 @@
 
     {{-- <div class="flex flex-col  px-4 mt-10 gap-8  w-full max-w-7xl"> --}}
 
+    {{-- @if (isset($lotes) && count($lotes)) --}}
 
+    @if ($subastas->count())
+        {{-- <p class="md:text-3xl  text-lg font-bold md:text-center   text-start w-full px-4  md:mb-0 -mb-2">
+                subastas
+                abiertas
+            </p> --}}
 
-
-
-
-    @if (count($subastas))
-        <section class="w-full md:max-w-7xl gap-4 flex flex-col">
+        <section class="w-full md:max-w-5xl  gap-4 flex flex-col">
 
             <x-fancy-heading text="s{u}bast{a}s a{b}iert{a}s" variant="italic mx-[0.5px] font-normal"
                 class=" md:text-[32px] text-[20px]  text-center text-wrap font-normal " />
 
-            @foreach ($subastas as $item)
+
+            @foreach ($subastas as $sub)
                 <article
-                    class="w-full flex flex-col md:p-8 md:pb-8 p-4 pb-20 gap-y-1 border border-casa-black relative text-casa-black">
+                    class="w-full  flex flex-col md:p-8  md:pb-8  p-4 pb-20  gap-y-1 border border-casa-black relative text-casa-black">
 
-                    <div class="flex gap-x-12">
 
-                        <div class="flex flex-col justify-between items-start w-full">
+                    <div class="flex  gap-x-12 ">
 
-                            <p class="font-caslon md:text-4xl text-[26px] mb-3">
-                                {{ $item['subasta']['titulo'] }}
-                            </p>
 
+
+                        <div class="flex  flex-col justify-between items-start  w-full ">
+                            <p class="font-caslon   md:text-4xl text-[26px]  mb-3 ">{{ $sub->titulo }}</p>
 
                             @php
-                                $fecha = \Carbon\Carbon::parse($item['subasta']['fecha_fin']);
+                                $fecha = \Carbon\Carbon::parse($sub->fecha_fin);
                                 $dia = $fecha->translatedFormat('d'); // 06
                                 $mes = Str::upper($fecha->translatedFormat('M')); // AGO
                                 $hora = $fecha->format('H'); // 11
@@ -47,18 +49,20 @@
 
 
                             @php
-                                $routeAbi = route('subasta.lotes', $item['subasta']['id']);
+                                $routeAbi = route('subasta.lotes', $sub->id);
                             @endphp
 
                             <div class="flex flex-col g-violet-400 w-full md:w-fit ">
 
-                                <p class="md:text-xl text-sm ">{{ $item['subasta']['descripcion'] }} </p>
+                                <p class="md:text-xl text-sm ">{{ $sub->descripcion }} </p>
 
-                                @if ($item['subasta']['desc_extra'])
-                                    <x-modal-desc-extra :titulo="$item['subasta']['titulo']" :desc="$item['subasta']['desc_extra']" :route="$routeAbi" />
+                                @if ($sub->desc_extra)
+                                    <x-modal-desc-extra :titulo="$sub->titulo" :desc="$sub->desc_extra" :route="$routeAbi" />
                                 @endif
 
                             </div>
+
+
 
                         </div>
 
@@ -70,20 +74,24 @@
                             </svg>
                         </a>
 
+
                     </div>
 
 
-                    @if ($item['lotes']->isNotEmpty())
-                        <div class="flex justify-center md:mt-8 mt-6 md:max-h-39 max-h-24  w-full overflow-hidden">
+
+                    @php
+                        $lotesAct = $sub->lotesActivosDestacadosFoto()->get();
+                    @endphp
+                    @if ($lotesAct->count() > 0)
+                        <div class="flex justify-center md:mt-8 mt-6 md:h-39   w-full overflow-hidden">
 
                             <div class="swiper-destacados-img   w-full " id="swiper-subastas-{{ $loop->index }}">
 
                                 <div class="swiper-wrapper  ">
-                                    @foreach ($item['lotes'] as $lote)
-                                        <div class="swiper-slide  g-red-500 p-0">
-                                            <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote['foto']) }}"
-                                                class=" w-full max-w-full max-h-full object-contain  "
-                                                alt="{{ $lote['titulo'] }}">
+                                    @foreach ($lotesAct as $lote)
+                                        <div class="swiper-slide border-gray-700">
+                                            <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote->foto1) }}"
+                                                class="mx-auto" alt="{{ $lote->titulo }}">
                                         </div>
                                     @endforeach
 
@@ -93,6 +101,10 @@
 
                         </div>
                     @endif
+
+
+
+
                 </article>
             @endforeach
 
@@ -100,9 +112,16 @@
     @endif
 
 
-    @if (count($subastasProx))
 
-        <section class="w-full md:max-w-7xl  gap-4 flex flex-col">
+
+
+    @if ($subastasProx->count())
+        {{-- <p class="md:text-3xl  text-lg font-bold md:text-center   text-start w-full px-4  md:mb-0 -mb-2">
+                subastas próximas
+            </p> --}}
+
+
+        <section class="w-full md:max-w-5xl  gap-4 flex flex-col">
 
 
             <x-fancy-heading text="s{u}bast{a}s p{r}óxi{m}as" variant="italic mx-[0.5px] font-normal"
@@ -117,16 +136,16 @@
                     <div class="flex  gap-x-12">
 
                         <div class="flex  flex-col justify-between items-start  w-full ">
-                            <p class="font-caslon md:text-4xl text-[26px]  mb-3">{{ $subP['subasta']['titulo'] }}</p>
+                            <p class="font-caslon md:text-4xl text-[26px]  mb-3">{{ $subP->titulo }}</p>
 
 
                             @php
-                                $fechaIni = \Carbon\Carbon::parse($subP['subasta']['fecha_inicio']);
+                                $fechaIni = \Carbon\Carbon::parse($subP->fecha_inicio);
                                 $diaIni = $fechaIni->translatedFormat('d'); // 06
                                 $mesIni = Str::upper($fechaIni->translatedFormat('M')); // AGO
                                 $horaIni = $fechaIni->format('H'); // 11
 
-                                $fechaFin = \Carbon\Carbon::parse($subP['subasta']['fecha_fin']);
+                                $fechaFin = \Carbon\Carbon::parse($subP->fecha_fin);
                                 $diaFin = $fechaFin->translatedFormat('d'); // 06
                                 $mesFin = Str::upper($fechaFin->translatedFormat('M')); // AGO
                                 $horaFin = $fechaFin->format('H'); // 11
@@ -150,22 +169,25 @@
 
                                 </div>
 
+                                {{--  --}}
 
+
+
+                                {{--  --}}
                             </div>
 
 
                             @php
-                                $routeProx = route('subasta-proximas.lotes', $subP['subasta']['id']);
+                                $routeProx = route('subasta-proximas.lotes', $subP->id);
                             @endphp
 
 
                             <div class="flex flex-col bgviolet-400 w-full md:w-fit">
 
-                                <p class="md:text-xl text-sm ">{{ $subP['subasta']['descripcion'] }} </p>
+                                <p class="md:text-xl text-sm ">{{ $subP->descripcion }} </p>
 
-                                @if ($subP['subasta']['desc_extra'])
-                                    <x-modal-desc-extra :titulo="$subP['subasta']['titulo']" :desc="$subP['subasta']['desc_extra']" :route="$routeProx"
-                                        enlace="text-casa-base hover:text-casa-base-2" />
+                                @if ($subP->desc_extra)
+                                    <x-modal-desc-extra :titulo="$subP->titulo" :desc="$subP->desc_extra" :route="$routeProx" />
                                 @endif
 
                             </div>
@@ -184,20 +206,21 @@
                     </div>
 
 
-
-                    @if ($subP['lotes']->isNotEmpty())
-                        <div class="flex justify-center md:mt-8 mt-6 md:max-h-39 max-h-24   w-full overflow-hidden">
+                    @php
+                        $lotesProx = $subP->lotesProximosDestacadosFoto()->get();
+                    @endphp
+                    @if ($lotesProx->count() > 0)
+                        <div class="flex justify-center md:mt-8 mt-6 md:h-39   w-full overflow-hidden">
 
 
                             <div class="swiper-destacados-img  w-full " id="swiper-subastas-{{ $loop->index }}">
 
                                 <div class="swiper-wrapper  ">
 
-                                    @foreach ($subP['lotes'] as $lote)
+                                    @foreach ($lotesProx as $lote)
                                         <div class="swiper-slide border-gray-700">
-                                            <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote['foto']) }}"
-                                                class=" w-full max-w-full max-h-full object-contain "
-                                                alt="{{ $lote['titulo'] }}">
+                                            <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote->foto1) }}"
+                                                class="mx-auto" alt="{{ $lote->titulo }}">
                                         </div>
                                     @endforeach
 
@@ -218,8 +241,16 @@
     @endif
 
 
-    @if (count($subastasFin))
-        <section class="w-full md:max-w-7xl  gap-4 flex flex-col">
+
+
+
+    @if ($subastasFin->count())
+        {{-- <p class="md:text-3xl  text-lg font-bold md:text-center   text-start w-full px-4  md:mb-0 -mb-2">
+                subastas pasadas
+            </p> --}}
+
+        <section class="w-full md:max-w-5xl  gap-4 flex flex-col">
+
 
             <x-fancy-heading text="s{u}bast{a}s p{a}sa{d}as" variant="italic mx-[0.5px] font-normal"
                 class=" md:text-[32px] text-[20px]  text-center text-wrap font-normal " />
@@ -233,10 +264,10 @@
                     <div class="flex  gap-x-12">
 
                         <div class="flex  flex-col justify-between items-start g-red-100 w-full  bg-rd-50 ">
-                            <p class="font-caslon md:text-4xl text-[26px]  mb-3">{{ $subF['subasta']['titulo'] }}</p>
+                            <p class="font-caslon md:text-4xl text-[26px]  mb-3">{{ $subF->titulo }}</p>
 
                             @php
-                                $fechaFin = \Carbon\Carbon::parse($subF['subasta']['fecha_fin']);
+                                $fechaFin = \Carbon\Carbon::parse($subF->fecha_fin);
                                 $diaFin = $fechaFin->translatedFormat('d'); // 06
                                 $mesFin = Str::upper($fechaFin->translatedFormat('M')); // AGO
                                 $horaFin = $fechaFin->format('H'); // 11
@@ -258,16 +289,16 @@
                             </div>
 
                             @php
-                                $routePas = route('subasta-pasadas.lotes', $subF['subasta']['id']);
+                                $routePas = route('subasta-pasadas.lotes', $subF->id);
                             @endphp
 
                             <div class="flex flex-col g-violet-400 w-full md:w-fit">
 
-                                <p class="md:text-xl text-sm ">{{ $subF['subasta']['descripcion'] }} </p>
+                                <p class="md:text-xl text-sm ">{{ $subF->descripcion }} </p>
 
-                                @if ($subF['subasta']['desc_extra'])
-                                    <x-modal-desc-extra :titulo="$subF['subasta']['titulo']" :desc="$subF['subasta']['desc_extra']" :route="$routePas" />
-                                    {{-- <x-modal-desc-extra :titulo="$subF['subasta']['titulo']" :desc="$subF->desc_extra" route="routePas" /> --}}
+                                @if ($subF->desc_extra)
+                                    <x-modal-desc-extra :titulo="$subF->titulo" :desc="$subF->desc_extra" :route="$routePas" />
+                                    {{-- <x-modal-desc-extra :titulo="$subF->titulo" :desc="$subF->desc_extra" route="routePas" /> --}}
                                 @endif
 
                             </div>
@@ -284,17 +315,20 @@
 
                     </div>
 
-                    @if ($subF['lotes']->isNotEmpty())
-                        <div class="flex justify-center md:mt-8 mt-6 md:max-h-39 max-h-24   w-full overflow-hidden">
+
+                    @php
+                        $lotesFin = $subF->lotesPasadosDestacadosFoto()->get();
+                    @endphp
+                    @if ($lotesFin->count() > 0)
+                        <div class="flex justify-center md:mt-8 mt-6 md:h-39   w-full overflow-hidden">
 
                             <div class="swiper-destacados-img   w-full " id="swiper-subastas-{{ $loop->index }}">
 
                                 <div class="swiper-wrapper  b-orange-500">
-                                    @foreach ($subF['lotes'] as $lote)
+                                    @foreach ($lotesFin as $lote)
                                         <div class="swiper-slide border-gray-700">
-                                            <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote['foto']) }}"
-                                                class=" w-full max-w-full max-h-full object-contain  "
-                                                alt="{{ $lote['titulo'] }}">
+                                            <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote->foto1) }}"
+                                                class="mx-auto" alt="{{ $lote->titulo }}">
                                         </div>
                                     @endforeach
                                 </div>
@@ -306,6 +340,8 @@
 
 
 
+
+
                 </article>
             @endforeach
         </section>
@@ -313,10 +349,7 @@
 
 
 
-
-
-
-
+    {{-- </div> --}}
 
 
 </div>

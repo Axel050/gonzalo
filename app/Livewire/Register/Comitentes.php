@@ -30,7 +30,8 @@ class Comitentes extends Component
       'mail' => 'required|email|unique:comitentes,mail',
       'domicilio' => 'required',
       'CUIT' => 'unique:comitentes,CUIT',
-      'terminos' => 'accepted'
+      'terminos' => 'accepted',
+      'foto'     => 'nullable|image|mimes:jpg,jpeg,png|max:14048',
     ];
 
     if (!$this->g_recaptcha_response) {
@@ -61,6 +62,9 @@ class Comitentes extends Component
       "domicilio.required" => "Ingrese domicilio.",
       "g_recaptcha_response" => "Corfirme que no es un robot.",
       "terminos" => "Acepte términos y condiciones.",
+      'foto.image'     => 'Imagen invalida',
+      'foto.mimes'     => 'Imagen invalida',
+      'foto.max'     => 'menor a 14mbs',
 
     ];
   }
