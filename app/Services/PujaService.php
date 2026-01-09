@@ -135,7 +135,7 @@ class PujaService
     $tiempoFinalizacion = "";
 
     if (now()->gt($subasta->fecha_fin)) {
-      info(["Contratl lotes NOW " => "ddddddd"]);
+      // info(["Contratl lotes NOW " => "ddddddd"]);
       $contratoLote->update([
         'tiempo_post_subasta_fin' => now()->addMinutes($subasta->tiempo_post_subasta),
       ]);

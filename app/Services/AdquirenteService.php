@@ -31,30 +31,30 @@ class AdquirenteService
 
 
 
-    $filename = '';
+    // $filename = '';
 
     // Manejar la subida de la imagen
-    if (isset($data['foto']) && $data['foto']) {
-      $manager = new ImageManager(new Driver());
-      $image = $manager->read($data['foto']);
+    // if (isset($data['foto']) && $data['foto']) {
+    //   $manager = new ImageManager(new Driver());
+    //   $image = $manager->read($data['foto']);
 
-      // Determinar la extensión del archivo
-      $extension = 'png'; // Extensión por defecto
-      if ($data['foto'] instanceof UploadedFile) {
-        $extension = $data['foto']->getClientOriginalExtension();
-      } elseif (is_string($data['foto']) && preg_match('/^data:image\/(\w+);base64,/', $data['foto'], $matches)) {
-        $extension = $matches[1] ?? 'png';
-        $data['foto'] = base64_decode(preg_replace('/^data:image\/\w+;base64,/', '', $data['foto']));
-        $image = $manager->read($data['foto']);
-      } else {
-        throw new \InvalidArgumentException('Formato de imagen no soportado.');
-      }
 
-      $filename = time() . '.' . $extension;
-      $destino = public_path("storage/imagenes/adquirentes/");
-      $image->scale(width: 400);
-      $image->save($destino . $filename);
-    }
+    //   $extension = 'png'; // Extensión por defecto
+    //   if ($data['foto'] instanceof UploadedFile) {
+    //     $extension = $data['foto']->getClientOriginalExtension();
+    //   } elseif (is_string($data['foto']) && preg_match('/^data:image\/(\w+);base64,/', $data['foto'], $matches)) {
+    //     $extension = $matches[1] ?? 'png';
+    //     $data['foto'] = base64_decode(preg_replace('/^data:image\/\w+;base64,/', '', $data['foto']));
+    //     $image = $manager->read($data['foto']);
+    //   } else {
+    //     throw new \InvalidArgumentException('Formato de imagen no soportado.');
+    //   }
+
+    //   $filename = time() . '.' . $extension;
+    //   $destino = public_path("storage/imagenes/adquirentes/");
+    //   $image->scale(width: 400);
+    //   $image->save($destino . $filename);
+    // }
 
 
     $user = User::create([

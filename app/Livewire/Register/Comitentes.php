@@ -31,7 +31,7 @@ class Comitentes extends Component
       'domicilio' => 'required',
       'CUIT' => 'unique:comitentes,CUIT',
       'terminos' => 'accepted',
-      'foto'     => 'nullable|image|mimes:jpg,jpeg,png|max:14048',
+      // 'foto'     => 'nullable|image|mimes:jpg,jpeg,png|max:14048',
     ];
 
     if (!$this->g_recaptcha_response) {
@@ -89,7 +89,7 @@ class Comitentes extends Component
         'CBU' => $this->CBU,
         'alias_bancario' => $this->alias_bancario,
         'observaciones' => $this->observaciones,
-        'foto' => $this->foto,
+        // 'foto' => $this->foto,
       ];
 
       $comitente = $comitenteService->createComitente($data);

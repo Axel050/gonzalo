@@ -10,7 +10,7 @@ class LoteActivoDTO
     public int $id,
     public string $titulo,
     public ?string $foto,
-    public ?string $descripcion,
+    public string $descripcion,
     public float $precio_base,
     public int $moneda_id,
     public ?float $puja_actual = null,
@@ -24,7 +24,7 @@ class LoteActivoDTO
       id: $lote->id,
       titulo: $lote->titulo,
       foto: $lote->foto1 ??  false,
-      descripcion: $lote->descripcion,
+      descripcion: $lote->descripcion ?? "",
       precio_base: (float) $lote->precio_base,
       moneda_id: $lote->moneda_id,
       puja_actual: in_array($type, ['pujas', 'completo'])

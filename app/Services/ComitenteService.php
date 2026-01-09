@@ -26,6 +26,8 @@ class ComitenteService
   {
     info(["DARA SER" => $data]);
     // CAPA 1: Validamos que 'foto' sea realmente una imagen (mimes:jpg,png,etc)
+
+
     $rules = array_merge($this->rules(), [
       'foto' => 'nullable|image|mimes:jpg,jpeg,png|max:5120',
     ]);
@@ -43,28 +45,26 @@ class ComitenteService
       $manager = new ImageManager(new Driver());
 
       try {
-        // CAPA 2: Forzamos la extensión a .jpg. 
-        // No importa si el atacante manda "image/php", nosotros guardaremos ".jpg"
+
         $extension = 'jpg';
-        $filename = Str::random(20) . '.' . $extension; // Nombre aleatorio no predecible
+        $filename = Str::random(20) . '.' . $extension;
         $destino = public_path("storage/imagenes/comitentes/");
 
         if (!file_exists($destino)) {
           mkdir($destino, 0755, true);
         }
 
-        // Procesar según el origen (Archivo o Base64)
+
         if ($data['foto'] instanceof UploadedFile) {
           $image = $manager->read($data['foto']->getRealPath());
         } else {
-          // Limpiamos el string base64 por seguridad
           $base64Data = preg_replace('/^data:image\/\w+;base64,/', '', $data['foto']);
           $image = $manager->read(base64_decode($base64Data));
         }
 
         $image->scale(width: 400);
 
-        // CAPA 3: Re-codificamos la imagen. 
+
         // Esto convierte el archivo a un JPG real y elimina scripts PHP ocultos.
         $image->toJpeg(80)->save($destino . $filename);
       } catch (\Exception $e) {
@@ -87,7 +87,7 @@ class ComitenteService
       'CBU' => $data['CBU'] ?? null,
       'alias_bancario' => $data['alias_bancario'] ?? null,
       'observaciones' => $data['observaciones'] ?? null,
-      'foto' => $filename,
+      // 'foto' => $filename,
     ]);
 
     info('Comitente creado', ['id' => $comitente->id]);

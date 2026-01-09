@@ -270,8 +270,8 @@ class DesactivarLotesExpirados implements ShouldQueue
           "subasta" => $orden->subasta,
         ];
 
-        info(["data mail JOB " => $dataMail]);
-        info(["ANTES MAIL mail JOB "]);
+        // info(["data mail JOB " => $dataMail]);
+        // info(["ANTES MAIL mail JOB "]);
 
         if ($adquirente?->alias) {
           $mail = $adquirente?->alias?->adquirente?->user?->email;
@@ -293,7 +293,7 @@ class DesactivarLotesExpirados implements ShouldQueue
           // Pero el job continúa ejecutándose
         }
 
-        info("PASO MAILL  WWWWWW");        // NUEVA LÓGICA: Actualizar CarritoLote a 'en_orden' después de crear la orden
+        // NUEVA LÓGICA: Actualizar CarritoLote a 'en_orden' después de crear la orden
         foreach ($carritoLotesGanadores as $item) {
           $pujaFinal = $item->lote->getPujaFinal();
           if ($pujaFinal && $pujaFinal->adquirente_id === $adquirenteId) {

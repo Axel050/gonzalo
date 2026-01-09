@@ -29,9 +29,27 @@
 
 
     <div
-        class="flex md:flex-wrap md:flex-row flex-col   md:gap-12 gap-2 place-content-center justify-center max-w-8xl  w-full items-stretch md:px-0 x-2  ">
+        class="flex md:flex-wrap md:flex-row flex-col     place-content-center justify-center max-w-8xl  w-full items-stretch md:px-0 x-2  ">
+
+        @if (!count($lotes))
+            <div
+                class="flex flex-col bg-casa-black justify-center items-center md:text-4xl text-2xl font-bold text-casa-base-2  md:py-8 py-4 md:px-40 px-2 col-span-3">
+                <p>¡Sin lotes agregados aun!</p>
 
 
+                <a href="{{ route('subastas') }}"
+                    class=" flex   rounded-4xl md:px-4 md:text-xl text-lg  px-2 py-1 md:py-1.5  bg-casa-base hover:bg-casa-base-2  text-casa-black md:mt-8 mt-6 items-center"
+                    title="Ir a subastas">
+                    Subastas
+                    <svg class="md:size-[26px] size-[24px] md:ml-8 ml-5">
+                        <use xlink:href="#arrow-right1"></use>
+                    </svg>
+
+                </a>
+
+
+            </div>
+        @endif
         {{-- @if (isset($lotes) && count($lotes)) --}}
         @foreach ($lotes as $lote)
             @if ($loop->first && !$lote['esGanador'])

@@ -120,7 +120,7 @@
             </div>
 
 
-            <div class= 'items-start  lg:w-60 w-full lg:mx-auto  '>
+            {{-- <div class= 'items-start  lg:w-60 w-full lg:mx-auto  '>
                 <label class="w-full text-start text-casa-black  text-base mb-1.5 font-bold">Foto</label>
                 <div class="relative w-full ">
                     <input type="file" wire:model="foto"
@@ -128,9 +128,9 @@
                         placeholder="3022211550111" />
                     <x-input-error for="foto" class="top-full py-0 leading-[12px] text-red-500" />
                 </div>
-            </div>
+            </div> --}}
 
-            <div class= 'items-center   w-full lg:mx-auto  bg-red-00 lg:col-span-2 '>
+            <div class= 'items-center   w-full lg:mx-auto  bg-ed-500 lg:col-span-2  self-end'>
                 <div class="relative w-full  flex items-center">
                     <input type="checkbox" wire:model="terminos" class = 'lg:size-5 mr-2 cursor-pointer' />
                     <label class="w-full text-start text-casa-black  text-base ">He leído y acepto <a

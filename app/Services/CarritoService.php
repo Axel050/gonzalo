@@ -221,6 +221,9 @@ class CarritoService
   public function getLotesDetallados(Adquirente $adquirente): Collection
   {
 
+
+
+
     $estadoPrioridad = [
       CarritoLoteEstados::ACTIVO     => 0,
       CarritoLoteEstados::EN_ORDEN   => 1,
@@ -230,7 +233,7 @@ class CarritoService
 
 
 
-    $lotes = $adquirente->carrito->lotesFiltrados()
+    $lotes = $adquirente->carrito?->lotesFiltrados()
       ->with([
         'pujas' => fn($q) => $q->orderBy('id', 'desc'),
         'ultimoContrato.subasta',
@@ -245,6 +248,10 @@ class CarritoService
         }
       ])
       ->get();
+
+    if (!$lotes) {
+      return collect();
+    }
 
     return $lotes
       ->map(fn($lote) => PantallaPujasDTO::fromModel($lote, $adquirente->id))
