@@ -260,7 +260,7 @@ class DetalleLote extends Component
       $exists = false;
       if ($carrito) {
         $exists = $carrito->carritoLo()->where('lote_id', $this->lote->id)->exists();
-        info(["aaaaa" => $exists]);
+        // info(["aaaaa" => $exists]);
         $this->inCart = $exists;
       }
     }

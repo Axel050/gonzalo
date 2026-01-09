@@ -67,7 +67,7 @@ class PantallaPujas extends Component
     // Si lo encuentra, actualizar solo ese elemento
     if ($index !== false) {
 
-      info(["INDEX FINALIZA" => $event['tiempoFinalizacion']]);
+      // info(["INDEX FINALIZA" => $event['tiempoFinalizacion']]);
       $this->lotes[$index]['tiempoFinalizacion'] = $event['tiempoFinalizacion'];
       $this->lotes[$index]['ofertaActual'] = $nuevoMonto;
       $this->lotes[$index]['esGanador'] = false;

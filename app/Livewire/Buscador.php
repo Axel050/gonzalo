@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Subasta;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -12,6 +13,8 @@ class Buscador extends Component
 {
   public $subasta_id;
   public $search;
+
+  #[Locked]
   public $route;
   public $todas;
   public $abiertas;
@@ -19,6 +22,8 @@ class Buscador extends Component
   public $from;
   public $titulo;
 
+
+  #[Locked]
   public Subasta $subasta;
 
 

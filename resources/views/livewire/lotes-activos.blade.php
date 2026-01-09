@@ -124,8 +124,8 @@
                         @if ($lote['tienePujas'])
                             <x-hammer />
                         @else
+                            <x-hammer-fix />
                         @endif
-                        <x-hammer-fix />
 
                     </div>
 
