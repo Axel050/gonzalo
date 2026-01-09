@@ -26,14 +26,25 @@ class AppServiceProvider extends ServiceProvider
     // Carbon::setLocale('es');
     // setlocale(LC_TIME, 'es_ES.UTF-8');
 
-    VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
+    // VerifyEmail::toMailUsing(function (object $notifiable, string $url) {
+    //   return (new MailMessage)
+    //     ->subject('Verifica tu email en CASABLANCA.AR')
+    //     ->view('emails.verify-email', [  // Usa tu vista custom
+    //       'url' => $url,
+    //       'appName' => 'CASABLANCA.AR',
+    //     ])
+    //     ->text('emails.verify-text');
+    // });
+
+    VerifyEmail::toMailUsing(function ($notifiable, string $url) {
       return (new MailMessage)
         ->subject('Verifica tu email en CASABLANCA.AR')
-        ->view('emails.verify-email', [  // Usa tu vista custom
-          'url' => $url,
-          'appName' => 'CASABLANCA.AR',
-        ]);
+        ->view('emails.verify-email', ['url' => $url])
+        ->text('emails.verify-text', ['url' => $url])
+      ;
     });
+
+
 
     // ✅ RATE LIMITER API
     RateLimiter::for('api', function (Request $request) {

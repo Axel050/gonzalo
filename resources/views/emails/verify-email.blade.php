@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Verifica tu email en {{ $appName }}</title>
+    <title>Verifica tu email en CASABLANCA.AR</title>
 </head>
 
 <body
@@ -24,7 +24,7 @@
                             <h1 style="margin: 0; font-size: 24px; font-weight: bold; color: #333333;">
                                 ¡Hola!</h1>
                             <p style="margin: 10px 0 0; font-size: 16px; color: #666666;">Bienvenido a
-                                {{ $appName }}</p>
+                                CASABLANCA.AR</p>
                         </td>
                     </tr>
 
@@ -66,11 +66,11 @@
                             </p>
                             <p style="margin: 0; font-size: 12px; color: #999999;">
                                 Atentamente,<br>
-                                El equipo de {{ $appName }}
+                                El equipo de CASABLANCA.AR
                             </p>
                             <hr style="border: none; border-top: 1px solid #e9ecef; margin: 20px 0;">
                             <p style="margin: 0; font-size: 12px; color: #999999;">
-                                &copy; {{ date('Y') }} {{ $appName }}. Todos los derechos reservados.<br>
+                                &copy; {{ date('Y') }} CASABLANCA.AR. Todos los derechos reservados.<br>
                                 <a href="{{ config('app.url', 'https://casablanca.ar') }}"
                                     style="color: #007bff; text-decoration: underline;">casablanca.ar</a>
                             </p>
