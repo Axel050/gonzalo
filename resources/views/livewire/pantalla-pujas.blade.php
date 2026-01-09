@@ -29,7 +29,8 @@
 
 
     <div
-        class="flex md:flex-wrap md:flex-row flex-col     place-content-center justify-center max-w-8xl  w-full items-stretch md:px-0 x-2  ">
+        class="flex md:flex-wrap md:flex-row flex-col   md:gap-12 gap-2  place-content-center justify-center max-w-8xl  w-full items-stretch md:px-0 x-2  ">
+
 
         @if (!count($lotes))
             <div
@@ -46,10 +47,10 @@
                     </svg>
 
                 </a>
-
-
             </div>
         @endif
+
+
         {{-- @if (isset($lotes) && count($lotes)) --}}
         @foreach ($lotes as $lote)
             @if ($loop->first && !$lote['esGanador'])
