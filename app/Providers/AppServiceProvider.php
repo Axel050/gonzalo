@@ -41,7 +41,13 @@ class AppServiceProvider extends ServiceProvider
         ->subject('Verifica tu email en CASABLANCA.AR')
         ->view('emails.verify-email', ['url' => $url])
         ->text('emails.verify-text', ['url' => $url])
-      ;
+
+        ->withSymfonyMessage(function ($message) {
+          $message->getHeaders()->addTextHeader(
+            'List-Unsubscribe',
+            '<mailto:soporte@casablanca.ar?subject=unsubscribe>'
+          );
+        });
     });
 
 
