@@ -50,14 +50,20 @@
     sm:max-h-[70vh]
     max-h-[360px]
     flex  flex-col items-center justify-center
-    bg-[url('/public/mobile.png')]
-    sm:bg-[url('/public/desktop.png')]
-    bg-center
-    bg-no-repeat
-    bg-cover
+    {{-- bg-[url('/public/mobile.png')]
+    sm:bg-[url('/public/desktop.png')] --}}
+    {{-- bg-center --}}
+    {{-- bg-no-repeat --}}
+    {{-- bg-cover --}}
     overflow-hidden
     
   ">
+            <img src="{{ asset('img/desktop.png') }}" alt="Casa de subastas Casablanca"
+                class="absolute inset-0 w-full h-full object-cover hidden sm:block" fetchpriority="high" />
+
+            <img src="{{ asset('img/mobile.png') }}" alt="Casa de subastas Casablanca"
+                class="absolute inset-0 w-full h-full object-cover sm:hidden" />
+
             <div class="bg-oange-500 w-fit order border-yellow-800 py-0 relative sm:-translate-y-4 -translate-y-6 ">
 
 
