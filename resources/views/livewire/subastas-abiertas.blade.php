@@ -5,10 +5,11 @@
     <div class="flex flex-col   w-full   items-center   max-w-8xl ">
 
 
+        <a href="{{ route('subastas') }}">
 
-        <x-fancy-heading text="s{u}bast{a}s a{b}iert{a}s" variant="italic mx-[0.5px] font-normal"
-            class=" md:text-[32px] text-[20px]  text-center self-start sm:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
-
+            <x-fancy-heading text="s{u}bast{a}s a{b}iert{a}s" variant="italic mx-[0.5px] font-normal"
+                class=" md:text-[32px] text-[20px]  text-center self-start sm:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
+        </a>
 
 
         <div class="swiper-home-subastas     w-full  md:overflow-x-hidden md:px-0 md:pl-[1px] px-4 ">

@@ -236,9 +236,10 @@
 
                 <div class="flex flex-col   w-full   items-center   max-w-8xl ">
 
-                    <x-fancy-heading text="s{u}bast{a}s p{r}óxim{a}s" variant="italic mx-[0.5px] font-normal"
-                        class=" md:text-[32px] text-[20px]  text-center self-start sm:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
-
+                    <a href="{{ route('subastas') }}#proximas">
+                        <x-fancy-heading text="s{u}bast{a}s p{r}óxim{a}s" variant="italic mx-[0.5px] font-normal"
+                            class=" md:text-[32px] text-[20px]  text-center self-start sm:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
+                    </a>
                     <div class="swiper-home-subastas     w-full  md:overflow-x-hidden md:px-0 px-4">
 
                         <div class="swiper-wrapper  flex sm:flex-row flex-col">
@@ -324,8 +325,11 @@
 
 
                 <div class="flex flex-col   w-full   items-center   max-w-8xl">
-                    <x-fancy-heading text="s{u}bast{a}s p{a}sa{d}as" variant="italic mx-[0.5px] font-normal"
-                        class=" md:text-[32px] text-[20px]  text-center self-start sm:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
+
+                    <a href="{{ route('subastas') }}#pasadas">
+                        <x-fancy-heading text="s{u}bast{a}s p{a}sa{d}as" variant="italic mx-[0.5px] font-normal"
+                            class=" md:text-[32px] text-[20px]  text-center self-start sm:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
+                    </a>
 
                     <div class="swiper-home-subastas     w-full  md:overflow-x-hidden md:px-0 md:pl-[1px] px-4">
 

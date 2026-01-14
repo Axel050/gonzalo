@@ -40,13 +40,12 @@ class LotesSearch extends Component
 
   public function mount()
   {
-    info("mount ");
+
     $this->monedas = Moneda::all();
 
     $this->search = $this->searchParam;
 
     if ($this->search) {
-      info("MOUNT///////");
       $this->filtrar($this->search);
     }
 

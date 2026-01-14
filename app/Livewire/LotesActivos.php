@@ -88,7 +88,7 @@ class LotesActivos extends Component
     } elseif ($this->subasta->estado === 'enpuja') {
       $this->loadLotes();
     } else {
-      info("mount444 ");
+
       $this->hasMore = false;
       $this->lotes = [];
     }

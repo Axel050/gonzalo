@@ -102,7 +102,7 @@
 
     @if (count($subastasProx))
 
-        <section class="w-full md:max-w-7xl  gap-4 flex flex-col">
+        <section class="w-full md:max-w-7xl  gap-4 flex flex-col md:scroll-mt-30 scroll-mt-20" id="proximas">
 
 
             <x-fancy-heading text="s{u}bast{a}s p{r}óxi{m}as" variant="italic mx-[0.5px] font-normal"
@@ -219,7 +219,7 @@
 
 
     @if (count($subastasFin))
-        <section class="w-full md:max-w-7xl  gap-4 flex flex-col">
+        <section class="w-full md:max-w-7xl  gap-4 flex flex-col md:scroll-mt-30 scroll-mt-20" id="pasadas">
 
             <x-fancy-heading text="s{u}bast{a}s p{a}sa{d}as" variant="italic mx-[0.5px] font-normal"
                 class=" md:text-[32px] text-[20px]  text-center text-wrap font-normal " />

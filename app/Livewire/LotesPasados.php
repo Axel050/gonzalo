@@ -45,7 +45,7 @@ class LotesPasados extends Component
 
   public function mount(Subasta $subasta)
   {
-    info("mountxxxaaa ");
+
     // $this->subastaService = $subastaService;
     $this->subasta = $subasta;
 

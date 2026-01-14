@@ -8,6 +8,17 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('fav.jpg') }}">
+
+    <meta property="og:title" content="Casablanca.ar">
+    <meta property="og:description" content="Casa de subastas ">
+    <meta property="og:image" content="{{ asset('ogsmall.jpg') }}">
+    <meta property="og:url" content="https://casablanca.ar/">
+    <meta property="og:type" content="website">
+
+
+
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
@@ -73,9 +84,9 @@
 
 
 
-                <div class="lg:flex hidden   lg:col-span-2">
+                <div class="lg:flex hidden   lg:col-span-2 ">
 
-                    <div class="hidden xl:flex  gap-4 text-casa-base mr-8">
+                    <div class="hidden xl:flex  xl:gap-2 text-casa-base mr-4">
 
                         <a href="">
                             <svg fill="#fff" class="size-8 ">
@@ -99,7 +110,7 @@
 
 
                     <a href="{{ route('subastas') }}"
-                        class="over:scale-105 bg-casa-black hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black hover:text-casa-black  mr-4 h-fit text-casa-base">
+                        class="over:scale-105 bg-casa-black hover:bg-casa-fondo-h text-sm border rounded-full  xl:px-4 px-2 py-2 border-black hover:text-casa-black  mr-3 h-fit text-casa-base">
                         Subastas
                     </a>
 
@@ -108,6 +119,12 @@
                             class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black text-black h-fit">
                             ¿Primera vez?
                         </a>
+                    @else
+                        <a href="{{ route('comitentes.create') }}"
+                            class=" hover:bg-casa-fondo-h text-sm border rounded-full px-4  py-2 border-black xl:mr-2 md:mr-1 text-black  h-fit lg:flex hidden ">
+                            ¿Tenés algo para vender?
+                        </a>
+
                     @endguest
 
 
@@ -118,7 +135,7 @@
 
 
                 <a href="{{ route('home') }}">
-                    <svg fill="#fff" class="lg:w-56 xl:w-59  h-7  lg:flex hidden mx-auto">
+                    <svg fill="#fff" class="lg:w-59  h-7  lg:flex hidden mx-auto">
                         <use xlink:href="#casa-icon"></use>
                     </svg>
 
@@ -130,12 +147,12 @@
 
                 <div class="lg:flex hidden justify-end lg:col-span-2 ">
 
-                    {{-- @guest --}}
-                    <a href="{{ route('comitentes.create') }}"
-                        class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full xl:px-4 md:px-1 py-2 border-black xl:mr-8 md:mr-1 text-black  h-fit lg:flex hidden ">
-                        ¿Tenés algo para vender?
-                    </a>
-                    {{-- @endguest --}}
+                    @guest
+                        <a href="{{ route('comitentes.create') }}"
+                            class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full xl:px-4 md:px-1 py-2 border-black xl:mr-8 md:mr-1 text-black  h-fit lg:flex hidden ">
+                            ¿Tenés algo para vender?
+                        </a>
+                    @endguest
 
 
 

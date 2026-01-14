@@ -32,7 +32,6 @@ class Login extends Component
    */
   public function mount()
   {
-    info("Mount");
     if (Session::has('prefill')) {
       $this->email = Session::get('prefill.mail');
       $this->password  = Session::get('prefill.pas');
