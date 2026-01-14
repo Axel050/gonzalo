@@ -2,14 +2,21 @@
 
 namespace App\Livewire;
 
+use App\Models\Subasta;
 use App\Services\MPService;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class ModalOptionPago extends Component
 {
 
   public $adquirente;
-  public $subasta;
+
+
+  #[Locked]
+  public Subasta $subasta;
+
+  #[Locked]
   public $orden;
 
   public $monto;
@@ -33,45 +40,43 @@ class ModalOptionPago extends Component
         $this->monto += $this->montoEnvio;
       }
     } else {
-      $this->monto = $this->subasta->garantia;
+      // $subasta = Subasta::findOrFail($this->subasta);
+
+      $this->monto = $this->subasta?->garantia;
     }
   }
 
 
 
-  public function mp(MPService $mpService)
-  {
+  // public function mp(MPService $mpService)
+  // {
 
 
 
 
-    if ($this->from === "orden") {
+  //   if ($this->from === "orden") {
 
-      $route = "/subastas/";
+  //     $route = "/subastas/";
 
-      $preference = $mpService->crearPreferenciaOrden(
-        $this->adquirente,
-        $this->subasta,
-        $this->orden,
-        $route,
-        $this->conEnvio,
-        $this->montoEnvio
-      );
-    } else {
-      $route = "/subastas/" . $this->subasta->id . "/lotes";
-      // $preference = $mpService->crearPreferencia("Garantia", 1, $this->subasta->garantia, $this->adquirente->id, $this->subasta->id, null,  $route);
-    }
-
+  //     $preference = $mpService->crearPreferenciaOrden(
+  //       $this->adquirente,
+  //       $this->subasta,
+  //       $this->orden,
+  //       $route,
+  //       $this->conEnvio,
+  //       $this->montoEnvio
+  //     );
+  //   } else {
+  //     $route = "/subastas/" . $this->subasta->id . "/lotes";
+  //   }
 
 
-    if ($preference) {
-      return redirect()->away($preference->init_point);
-    }
 
+  //   if ($preference) {
+  //     return redirect()->away($preference->init_point);
+  //   }
 
-    // info(
-    // return redirect($preference['init_point']); // Redirige al checkout
-  }
+  // }
 
 
 

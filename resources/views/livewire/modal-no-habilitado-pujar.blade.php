@@ -1,4 +1,9 @@
-<div class="fixed  inset-0 flex  justify-center items-center  z-50 animate-fade-in-scale">
+<div class="fixed  inset-0 flex  justify-center items-center  z-40 animate-fade-in-scale">
+
+
+    @if ($modalPago)
+        @livewire('modal-option-pago', ['monto' => $monto, 'from' => 'detalle', 'subasta' => $subasta])
+    @endif
 
 
     <div class="absolute inset-0  bg-gray-600/70 backdrop-blur-xs transition-opacity duration-300"
@@ -10,7 +15,7 @@
       x-auto z-50 shadow-gray-400 shadow-md max-h-[95%] transition delay-150 duration-300 ease-in-out rounded-2xl "> --}}
 
     <article
-        class=" flex idden  lg:w-5/6 w-[90%]  lg:justify-center justify-start flex-col lg:mt-10 mt-6 mb-8 mx-auto lg:px-12 lg:py-12 px-6 py-10  bg-casa-fondo-h border border-casa-black z-50 h-fit">
+        class=" flex idden  lg:w-5/6 w-[90%]  lg:justify-center justify-start flex-col lg:mt-10 mt-6 mb-8 mx-auto lg:px-12 lg:py-12 px-6 py-10  bg-casa-fondo-h border border-casa-black z-40 h-fit">
 
 
         <h2 class=" font-bold lgtext-3xl  text-xl lg:text-center text-start">¿Como puedo ofertar?</h2>
@@ -51,7 +56,7 @@
 
             <button
                 class="bg-casa-black hover:bg-transparent hover:text-casa-black border border-casa-black text-gray-50 rounded-full px-4 flex items-center justify-between  py-1  col-span-3 mx-auto  lg:text-xl font-semibold text-sm lg:w-fit  w-full lg:order-2"
-                wire:click="mp">
+                {{-- wire:click="mp" --}} wire:click="cbu">
                 Quiero ofertar
                 <svg class="size-7 ml-5">
                     <use xlink:href="#arrow-right"></use>

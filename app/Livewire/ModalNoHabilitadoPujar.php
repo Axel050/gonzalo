@@ -9,13 +9,21 @@ use Livewire\Component;
 
 class ModalNoHabilitadoPujar extends Component
 {
-  public $subasta, $adquirente, $init, $lote;
+  public $subasta, $adquirente, $init, $lote, $monto, $modalPago;
 
 
 
   public function mount()
   {
+
     $this->subasta = Subasta::find($this->subasta);
+  }
+
+
+  public function cbu()
+  {
+    $this->monto = $this->subasta?->garantia ?? 0;
+    $this->modalPago = true;
   }
 
 

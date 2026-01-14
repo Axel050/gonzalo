@@ -9,11 +9,11 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Favicon -->
-    <link rel="icon" href="{{ asset('fav.jpg') }}">
+    <link rel="icon" href="{{ asset('img/fav.jpg') }}">
 
     <meta property="og:title" content="Casablanca.ar">
     <meta property="og:description" content="Casa de subastas ">
-    <meta property="og:image" content="{{ asset('ogsmall.jpg') }}">
+    <meta property="og:image" content="{{ asset('img/ogsmall.jpg') }}">
     <meta property="og:url" content="https://casablanca.ar/">
     <meta property="og:type" content="website">
 
