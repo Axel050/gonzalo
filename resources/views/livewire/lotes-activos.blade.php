@@ -1,4 +1,5 @@
-<div class="flex flex-col justify-center items-center hvh w-full  pt-12  text-casa-black md:gap-y-24 gap-y-16 md:px-24">
+<div
+    class="flex flex-col justify-center items-center hvh w-full  pt-12  text-casa-black md:gap-y-24 gap-y-16  md:px-16 xl:px-24">
 
     <div class="  w-full  [&>article]:max-w-5xl flex flex-col gap-y-4">
 
@@ -108,7 +109,8 @@
         @endif
 
 
-        <div class="flex flex-wrap   lg:gap-12 gap-2 place-content-center justify-center max-w-8xl w-full px-2 md:px-0">
+        <div
+            class="flex flex-wrap   lg:gap-12 gap-2 place-content-center justify-center max-w-8xl w-full px-2 md:px-0 ">
 
 
             @forelse ($lotes as $lote)
@@ -153,7 +155,7 @@
 
 
 
-                    <a href="{{ route('lotes.show', $lote['id']) }}" class="absolute inset-0 sm:hidden z-10"></a>
+                    <a href="{{ route('lotes.show', $lote['id']) }}" class="absolute inset-0 s:hidden z-10"></a>
 
                     <a href="{{ route('lotes.show', $lote['id']) }}"
                         class="hover:text-casa-black bg-casa-black text-casa-base  hover:bg-casa-base  border border-black rounded-full px-4 sm:flex items-center justify-between  py-2  w-full  text-xl font-bold mb-2  hidden  order-6">

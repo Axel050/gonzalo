@@ -1,4 +1,4 @@
-<div class="flex flex-col justify-center items-center  w-full  md:gap-y-24 gap-y-16 pt-12 md:px-24 px-4">
+<div class="flex flex-col justify-center items-center  w-full  md:gap-y-24 gap-y-16 pt-12  md:px-16 xl:px-24 px-4">
 
     {{-- @dump('Check counter final subasta  ') --}}
 

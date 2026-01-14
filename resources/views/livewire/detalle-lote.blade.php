@@ -5,11 +5,10 @@
     @endif
 
 
-    {{--  --}}
-    {{-- <article class=" flex lg:flex-row flex-col p-4 mt-20 g-blue-600  shadow-lg rounded-2xl mb-10 bg-green-100"> --}}
+
 
     <article
-        class=" grid lg:grid-cols-2 grid-cols-1 p-4 lg-blue-600  shadw-lg rounded-2xl  lg:w-auto w-full relative md:mt-8 mt-4 max-w-6xl">
+        class=" grid lg:grid-cols-2 grid-cols-1 p-4 lg-blue-600  shadw-lg rounded-2xl  lg:w-auto w-full relative md:mt-8 mt-4 max-w-6xl   md:px-16 xl:px-24">
 
         <button wire:click="loteAnterior"
             class=" p-2 left-2 lg:-left-2  lg:-top-10 -top-7 absolute hover:scale-105 disabled:opacity-10 disabled:cursor-default"
@@ -389,7 +388,7 @@
 
 
 
-    <div class="  w-full  [&>article]:max-w-5xl">
+    <div class="  w-full  [&>article]:max-w-5xl  md:px-16 xl:px-24">
 
 
         <livewire:buscador :subasta="$subasta" :subasta_id="$subasta->id" :route="$route" />
@@ -404,7 +403,7 @@
     {{-- </div> --}}
 
 
-    <div class="md:px-24 w-full">
+    <div class=" md:px-16 xl:px-24 w-full">
 
         <livewire:subastas-abiertas :key="'subastas-abiertas' . $lote->id" />
     </div>

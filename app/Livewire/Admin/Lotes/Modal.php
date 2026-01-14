@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Lotes;
 
 use App\Enums\LotesEstados;
+use App\Livewire\Traits\UploadSecurity;
 use App\Models\Caracteristica;
 use App\Models\Contrato;
 use App\Models\Lote;
@@ -15,6 +16,7 @@ use Livewire\Attributes\Validate;
 use Livewire\Component;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 use Livewire\Attributes\On;
@@ -26,6 +28,7 @@ class Modal extends Component
 
 
   use WithFileUploads;
+  use  UploadSecurity;
 
 
   public $qr;
@@ -109,11 +112,27 @@ class Modal extends Component
 
     $this->resetErrorBag('foto1');
     try {
+
+      if (
+        $this->isDangerousExtension($this->foto1)  ||
+        ! in_array($this->foto1->getMimeType(), [
+          'image/jpeg',
+          'image/png',
+          'image/webp',
+        ], true)
+      ) {
+        $this->addError('foto1', 'Tipo de archivo no permitido');
+        $this->reset('foto1');
+        return;
+      }
+
+
       $this->validate(
         [
-          'foto1' => 'image|max:33000|image|mimes:jpg,jpeg,png', // max:13000 limita el tamaño a 13 MB (en KB)
+          'foto1' => 'required|file|max:20000|mimetypes:image/jpeg,image/png',
+
         ],
-        ['foto1.max' => "Menor a 13mb"]
+        ['foto1.max' => "Menor a 20mb"]
 
 
       );
@@ -129,9 +148,26 @@ class Modal extends Component
 
     $this->resetErrorBag('foto2');
     try {
-      $this->validate([
-        'foto2' => 'image|max:33000|image|mimes:jpg,jpeg,png', // max:13000 limita el tamaño a 13 MB (en KB)
-      ]);
+
+      if (
+        $this->isDangerousExtension($this->foto2) ||
+        ! in_array($this->foto2->getMimeType(), [
+          'image/jpeg',
+          'image/png',
+          'image/webp',
+        ], true)
+      ) {
+        $this->addError('foto2', 'Tipo de archivo no permitido');
+        $this->reset('foto2');
+        return;
+      }
+
+      $this->validate(
+        [
+          'foto2' => 'file|max:20000|mimetypes:image/jpeg,image/png',
+        ],
+        ['foto2.max' => "Menor a 20mb"]
+      );
     } catch (\Illuminate\Validation\ValidationException $e) {
       unlink($this->foto2->getRealPath());
       $this->addError('foto2', $e->validator->errors()->first('foto2'));
@@ -143,9 +179,26 @@ class Modal extends Component
   {
     $this->resetErrorBag('foto3');
     try {
-      $this->validate([
-        'foto3' => 'image|max:33000|image|mimes:jpg,jpeg,png', // max:13000 limita el tamaño a 13 MB (en KB)
-      ]);
+
+      if (
+        $this->isDangerousExtension($this->foto3) ||
+        ! in_array($this->foto3->getMimeType(), [
+          'image/jpeg',
+          'image/png',
+          'image/webp',
+        ], true)
+      ) {
+        $this->addError('foto3', 'Tipo de archivo no permitido');
+        $this->reset('foto3');
+        return;
+      }
+
+      $this->validate(
+        [
+          'foto3' => 'file|max:20000|mimetypes:image/jpeg,image/png',
+        ],
+        ['foto3.max' => "Menor a 20mb"]
+      );
     } catch (\Illuminate\Validation\ValidationException $e) {
       unlink($this->foto3->getRealPath());
       $this->addError('foto3', $e->validator->errors()->first('foto3'));
@@ -157,9 +210,26 @@ class Modal extends Component
   {
     $this->resetErrorBag('foto4');
     try {
-      $this->validate([
-        'foto4' => 'image|max:33000|image|mimes:jpg,jpeg,png', // max:13000 limita el tamaño a 13 MB (en KB)
-      ]);
+
+      if (
+        $this->isDangerousExtension($this->foto4) ||
+        ! in_array($this->foto4->getMimeType(), [
+          'image/jpeg',
+          'image/png',
+          'image/webp',
+        ], true)
+      ) {
+        $this->addError('foto4', 'Tipo de archivo no permitido');
+        $this->reset('foto4');
+        return;
+      }
+
+      $this->validate(
+        [
+          'foto4' => 'file|max:20000|mimetypes:image/jpeg,image/png',
+        ],
+        ['foto4.max' => "Menor a 20mb"]
+      );
     } catch (\Illuminate\Validation\ValidationException $e) {
       unlink($this->foto4->getRealPath());
       $this->addError('foto4', $e->validator->errors()->first('foto4'));
@@ -381,7 +451,30 @@ class Modal extends Component
   }
 
 
+  protected function storeSafeMp3(
+    UploadedFile $file,
+    string $path,
+    int $maxSizeMb = 15
+  ): string {
+    $ext  = strtolower($file->getClientOriginalExtension());
+    $mime = $file->getMimeType();
 
+    // 🔐 Solo mp3
+    if ($ext !== 'mp3' || $mime !== 'audio/mpeg') {
+
+      throw new \RuntimeException('Solo se permiten archivos MP3');
+    }
+
+    if ($file->getSize() > ($maxSizeMb * 1024 * 1024)) {
+
+      throw new \RuntimeException('El archivo supera el tamaño permitido');
+    }
+
+    // Nombre seguro
+    $filename = uniqid('audio_') . '.mp3';
+
+    return $file->storeAs($path, $filename, 'public');
+  }
 
 
 
@@ -427,9 +520,19 @@ class Modal extends Component
                 Storage::disk('public')->delete('lotes/' . basename($existingRecord->valor));
               }
 
+
+              try {
+                $valor = $this->storeSafeMp3($valor, 'lotes', 15);
+              } catch (\RuntimeException $e) {
+                throw ValidationException::withMessages([
+                  'formData.' . $caracteristicaId => $e->getMessage(),
+                ]);
+                // return;
+              }
+
               // Generar el nombre del nuevo archivo y guardarlo
-              $filename = time() . '.' . $valor->getClientOriginalExtension();
-              $valor = $valor->storeAs("lotes", $filename, "public");
+              // $filename = time() . '.' . $valor->getClientOriginalExtension();
+              // $valor = $valor->storeAs("lotes", $filename, "public");
             } elseif (is_null($valor)) {
               // Si el valor es nulo, eliminar el archivo existente (si es tipo file) y establecer valor como null
               if ($tipo == "file" && $existingRecord && $existingRecord->valor) {
@@ -510,6 +613,33 @@ class Modal extends Component
   }
 
 
+  protected function storeSafeFile(
+    UploadedFile $file,
+    string $path,
+    array $allowedExtensions,
+    array $allowedMimes,
+    int $maxSizeMb = 10
+  ): string {
+    $ext  = strtolower($file->getClientOriginalExtension());
+    $mime = $file->getMimeType();
+
+    if (
+      ! in_array($ext, $allowedExtensions, true) ||
+      ! in_array($mime, $allowedMimes, true)
+    ) {
+      throw new \RuntimeException('Archivo no permitido');
+    }
+
+    if ($file->getSize() > ($maxSizeMb * 1024 * 1024)) {
+      throw new \RuntimeException('Archivo demasiado grande');
+    }
+
+    // 🔐 nombre seguro
+    $filename = uniqid('file_') . '.' . $ext;
+
+    return $file->storeAs($path, $filename, 'public');
+  }
+
   public function imgStoreAndSave()
   {
     $manager = new ImageManager(new Driver());
@@ -555,42 +685,6 @@ class Modal extends Component
     }
   }
 
-  public function imgStoreAndSave2()
-  {
-    $manager = new ImageManager(new Driver());
-    $photos = [$this->foto1, $this->foto2, $this->foto3, $this->foto4];
-    $filenames = [];
-    $oldFilenames = [$this->lote->foto1, $this->lote->foto2, $this->lote->foto3, $this->lote->foto4];
-    $basePathNormal = 'imagenes/lotes/normal/';
-    $basePathThumbnail = 'imagenes/lotes/thumbnail/';
-    $replacedFiles = []; // Almacena los nombres de archivo antiguos que serán reemplazados
-
-    try {
-      foreach ($photos as $index => $photo) {
-        if ($photo instanceof UploadedFile) {
-          $filename = $this->processImage($manager, $photo, $index + 1, $basePathNormal, $basePathThumbnail);
-          $filenames[$index] = $filename;
-          // Guardar el nombre de archivo antiguo que será reemplazado
-          if ($oldFilenames[$index]) {
-            $replacedFiles[] = $oldFilenames[$index];
-          }
-        }
-      }
-
-      // Actualizar nombres de archivo en el modelo
-      foreach ($filenames as $index => $filename) {
-        $this->lote->{'foto' . ($index + 1)} = $filename;
-      }
-
-      $this->lote->save();
-
-      // Eliminar solo los archivos antiguos que fueron reemplazados
-      $this->deleteOldFiles($replacedFiles, $basePathNormal, $basePathThumbnail);
-    } catch (\Exception $e) {
-      info('Error procesando imágenes: ' . $e->getMessage());
-      throw new \Exception('No se pudieron procesar las imágenes.');
-    }
-  }
 
   private function deleteOldFiles(array $replacedFilenames, string $normalPath, string $thumbnailPath): void
   {
@@ -607,8 +701,9 @@ class Modal extends Component
 
   private function processImage(ImageManager $manager, UploadedFile $photo, int $index, string $normalPath, string $thumbnailPath): string
   {
-    $extension = $photo->getClientOriginalExtension();
-    $filename = uniqid("img_{$index}_") . '.' . $extension;
+    // $extension = $photo->getClientOriginalExtension();
+    // $filename = uniqid("img_{$index}_") . '.' . $extension;
+    $filename = uniqid("img_{$index}_") . '.png';
 
     // Leer la imagen una sola vez para optimizar
     $image = $manager->read($photo);
@@ -629,21 +724,7 @@ class Modal extends Component
     return $filename;
   }
 
-  private function processImage2(ImageManager $manager, UploadedFile $photo, int $index, string $normalPath, string $thumbnailPath): string
-  {
-    $extension = $photo->getClientOriginalExtension();
-    $filename = uniqid("img_{$index}_") . '.' . $extension;
 
-    // Leer la imagen
-    $imageNormal = $manager->read($photo)->scale(width: 1080);
-    $imageThumbnail = $manager->read($photo)->scale(width: 250);
-
-    // Guardar imágenes usando Storage
-    Storage::disk('public')->put($normalPath . $filename, (string) $imageNormal->encode());
-    Storage::disk('public')->put($thumbnailPath . $filename, (string) $imageThumbnail->encode());
-
-    return $filename;
-  }
 
   public function deleteAudio($key)
   {
@@ -678,6 +759,8 @@ class Modal extends Component
     $this->dispatch("loteContrato");
     // $this->method = "";
   }
+
+
 
 
 

@@ -26,7 +26,7 @@
             }
         }
     }
-}" x-init="checkTruncate($refs.title)" class="relative ">
+}" x-init="checkTruncate($refs.title)" class="relative z-20 text-">
     <h2 x-ref="title" @click="expanded = !expanded" :class="expanded ? 'line-clamp-none' : 'line-clamp-1'"
         class="cursor-pointer transition-all duration-200 mr-1 {{ $class }}">
         {{ $text }}

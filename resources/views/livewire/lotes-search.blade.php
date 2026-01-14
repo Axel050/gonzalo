@@ -46,7 +46,8 @@
 
 
 
-        <div class="flex flex-wrap   md:gap-12 gap-2 place-content-center justify-center max-w-[1440px] px-2 md:px-0">
+        <div
+            class="flex flex-wrap   md:gap-12 gap-2 place-content-center justify-center max-w-[1440px] px-2 md:px-0  w-full">
 
 
 
@@ -56,8 +57,11 @@
                         wire:key="lote-{{ $lote['id'] }}">
 
                         <div class="flex justify-between items-center ">
-
-                            <p class="font-bold md:text-3xl text-sm w-full  mr-3">{{ $lote['titulo'] }}</p>
+                            {{-- 
+                            <p class="font-bold md:text-3xl text-sm w-full  mr-3">{{ $lote['titulo'] }}</p> --}}
+                            <x-clamp :text="$lote['titulo']" bclass=" ml-1  z-20"
+                                mas="absolute -bottom-2 -right-3 md:right-0 "
+                                menos="absolute right-2 md:top-1/2 top-full " />
 
                             @if ($lote['tipo'] == 'activo')
                                 {{-- @if ($lote['puja_actual'] > 0) --}}
@@ -72,7 +76,7 @@
 
                         <div class="flex gap-x-4 justify-center my-2">
                             <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote['foto']) }}"
-                                class="md:size-49 size-20  " />
+                                class="md:h-49 w-full  h-20  object-contain" />
                         </div>
 
 
@@ -99,6 +103,8 @@
                             <p class="text-xl font-semibold h-3"></p>
                         @endif
 
+
+                        <a href="{{ route('lotes.show', $lote['id']) }}" class="absolute inset-0 d:hidden z-10"></a>
 
 
                         {{-- <a href="{{ route('lotes.show', $lote['lote_id']) }}" --}}

@@ -63,34 +63,33 @@
 
 
 
-        <nav x-data="{ scrolled: false }" @scroll.window="scrolled = window.pageYOffset > 50"
-            :class="{ 'opacity-5 ': scrolled, 'bg-transparent': !scrolled }"
-            class=" sticky top-0 z-50  flex  w-full -200  py-4    text-gray-800  -gray-700 shadw-lg lg:h-20 lg:h30  h16 h-11 items-center hover:bg-casa-base   transition-all duration-1000 ease-in-out hover:opacity-100   mx-auto md:px-24 px-4  border-b border-casa-black ">
+        <nav {{-- x-data="{ scrolled: false }" @scroll.window="scrolled = window.pageYOffset > 50" :class="{ 'opacity-5 ': scrolled, 'bg-transparent': !scrolled }" --}}
+            class=" sticky top-0 z-50  flex  w-full -200  py-4    text-gray-800  -gray-700 shadw-lg lg:h-20 lg:h30  h16 h-11 items-center hover   bg-casa-base   transition-all duration-1000 ease-in-out hover:opacity-100   mx-auto md:px-16 xl:px-24 px-4  border-b border-casa-black ">
 
 
-            <div class="max-w-8xl  flex  w-full justify-between items-center  mx-auto">
-
-
+            <div class="max-w-8xl  grid lg:grid-cols-5 grid-cols-2  w-full justify-between items-center  mx-auto">
 
 
 
-                <div class="lg:flex hidden ">
 
-                    <div class="flex  gap-4 text-casa-base">
 
-                        <a href="" class="over:scale-105">
+                <div class="lg:flex hidden   lg:col-span-2">
+
+                    <div class="hidden xl:flex  gap-4 text-casa-base mr-8">
+
+                        <a href="">
                             <svg fill="#fff" class="size-8 ">
                                 <use xlink:href="#instagram"></use>
                             </svg>
                         </a>
 
-                        <a href="" class="over:scale-105">
+                        <a href="">
                             <svg fill="#fff" class="size-8 ">
                                 <use xlink:href="#what"></use>
                             </svg>
                         </a>
 
-                        <a href="" class="over:scale-105">
+                        <a href="">
                             <svg fill="#fff" class="size-8 ">
                                 <use xlink:href="#mail"></use>
                             </svg>
@@ -100,7 +99,7 @@
 
 
                     <a href="{{ route('subastas') }}"
-                        class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black text-black ml-8 mr-4 h-fit ">
+                        class="over:scale-105 bg-casa-black hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black hover:text-casa-black  mr-4 h-fit text-casa-base">
                         Subastas
                     </a>
 
@@ -118,8 +117,8 @@
 
 
 
-                <a href="{{ route('home') }}" class=" over:scale-105">
-                    <svg fill="#fff" class="w-59  h-7  lg:flex hidden">
+                <a href="{{ route('home') }}">
+                    <svg fill="#fff" class="lg:w-56 xl:w-59  h-7  lg:flex hidden mx-auto">
                         <use xlink:href="#casa-icon"></use>
                     </svg>
 
@@ -129,14 +128,14 @@
                 </a>
 
 
-                <div class="lg:flex hidden">
+                <div class="lg:flex hidden justify-end lg:col-span-2 ">
 
-                    @guest
-                        <a href="{{ route('comitentes.create') }}"
-                            class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full px-4 py-2 border-black mr-8 text-black  h-fit lg:flex hidden">
-                            ¿Tenés algo para vender?
-                        </a>
-                    @endguest
+                    {{-- @guest --}}
+                    <a href="{{ route('comitentes.create') }}"
+                        class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full xl:px-4 md:px-1 py-2 border-black xl:mr-8 md:mr-1 text-black  h-fit lg:flex hidden ">
+                        ¿Tenés algo para vender?
+                    </a>
+                    {{-- @endguest --}}
 
 
 
@@ -147,7 +146,7 @@
 
 
 
-                        <div class="flex justify-end ml-auto mr-4  text-black  z-50 cursor-pointer">
+                        <div class="flex justify-end ml-uto mr-4 md:mr-0  text-black  z-50 cursor-pointer">
 
                             <x-dropdownlogfront />
                         </div>
@@ -178,7 +177,7 @@
 
 
 
-                <div class="lg:hidden flex">
+                <div class="lg:hidden flex   justify-end">
                     @role('adquirente')
                         @if (!request()->routeIs('pantalla-pujas'))
                             <a href="{{ route('pantalla-pujas') }}"
@@ -201,26 +200,27 @@
 
         </nav>
 
+
+
+
+
+
+
+
         <!-- Page Content -->
 
         @livewire('counter-header')
 
-
+        {{-- 
         @if (!request()->routeIs('subastas', 'adquirentes.create', 'comitentes.create'))
             <div class="fixed right-2 md:right-5 bottom-5 md:bottom-7 z-40 flex items-center flex-col group">
-                {{-- <span
-                    class="animate-bounce transition-transform duration-300
-             group-hover:scale-120 group-hover:text-casa-black">
-
-                    <svg class="md:size-[26px] size-5   rotate-90 text-casa-black/70 ">
-                        <use xlink:href="#arrow-right1"></use>
-                    </svg>
-                </span> --}}
-                <a href="{{ route('subastas') }}" {{-- class="bg-rd-500 border md:border-2 border-casa-black rounded-4xl md:px-4 md:text-xl px-2 py-1 md:py-1.5 fixed right-2 md:right-5 bottom-5 md:bottom-7 z-40 bg-casa-base hover:bg-casa-base-2 " --}}
+      
+      
+                <a href="{{ route('subastas') }}" 
                     class="bg-rd-500 border md:border-2 border-casa-black rounded-4xl md:px-4 md:text-xl px-2 py-1 md:py-1.5  bg-casa-base hover:bg-casa-base-2 "
                     title="Ir a subastas">Subastas</a>
             </div>
-        @endif
+        @endif --}}
 
 
         <main class="relative ">

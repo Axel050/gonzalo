@@ -42,94 +42,20 @@
 
 
 
-        <section
-            class="
-    relative
-    w-full
-    h-[70vh]
-    sm:max-h-[70vh]
-    max-h-[360px]
-    flex  flex-col items-center justify-center
-    bg-[url('/public/mobile.png')]
-    sm:bg-[url('/public/desktop.png')]
-    bg-center
-    bg-no-repeat
-    bg-cover
-    overflow-hidden
-    
-  ">
-            <div class="bg-oange-500 w-fit order border-yellow-800 py-0 relative sm:-translate-y-4 -translate-y-6 ">
+        <section class="relative w-full overflow-hidden md:pt-10 pt-6 g-[#fbfbfb] bg-bue-300 md:pb-24 pb-1  ">
 
-
-                <x-fancy-heading text="S{u}bast{a}s o{n}line " variant="italic mx-[0.5px] font-normal text-black"
-                    class="text-[33px] sm:text-[57px] md:text-[59px] lg:text-[76px] xl:text-8xl  text-center text-wrap font-normal md:-mb-6 -mb-2 text-black md:!leading-[45px] !leading-[28px]  smext-green-400 mdext-red-500 lgext-blue-500 xlext-purple-700  " />
-                <x-fancy-heading text="par{a} gent{e} re{a}l." variant="italic mx-[0.5px] font-normal text-black "
-                    class="text-[33px] sm:text-[57px] md:text-[59px] lg:text-[76px] xl:text-8xl   text-center text-wrap font-normal text-black bg-red200 " />
-
-
-
-
-                <div
-                    class="md:h-32 w-full md:mx-auto bg-ed-400 pt-4 sm:pt-6 md:pt-8  lg:pt-10  order border-orange-700 text-  absolute top-full  left-1/2 -translate-x-1/2 ">
-
-                    <h2
-                        class="text-[18px] sm:text-[24px] text-xl font-bold  bg-red300 w-fi  md:mb-0 sm:text-nowrap hidden sm:flex mx-auto w-full bg-re100 text-center justify-center">
-                        Cada objeto tiene una historia.
-                    </h2>
-
-                    <h2
-                        class="text-[17px]  font-bold   sm:hidden flex mx-auto w-full bg-rd-100 text-center justify-center">
-                        Cada objeto tiene
-                    </h2>
-
-                    <h2
-                        class="text-[17px]   font-bold  sm:hidden flex mx-auto w-full bg-ed-100 text-center justify-center leading-3.5">
-                        una historia.
-                    </h2>
-
-                    <h2 class="text-[17px] sm:text-[24px] font-bold bg-yellow-00 w-fit mx-auto">
-                        Encontrá la tuya.
-                    </h2>
-
-
-                </div>
-
-
-            </div>
-
-
-
-
-
-            {{-- </div> --}}
-
-            <a href="{{ route('subastas') }}"
-                class="border rounded-4xl sm:px-3 px-2 py-1 sm:py-1.5 border-casa-black sm:mt-4 mt-2  bg-casa-black hover:bg-casa-base-2 hover:text-casa-black text-casa-base flex items-center mx-auto w-fit font-bold sm:text-base text-sm  absolute sm:bottom-3 bottom-1  left-1/2 -translate-x-1/2 "
-                title="Ir a subastas">
-                Quiero participar
-                <svg class="sm:size-[20px] size-[17px]  sm:ml-4 ml-3 ">
-                    <use xlink:href="#arrow-right1"></use>
-                </svg>
-
-
-            </a>
-        </section>
-
-
-
-
-
-
-
-        {{-- <section class="relative w-full overflow-hidden md:pt-10 pt-6 g-[#fbfbfb] bg-bue-300 md:pb-24 pb-1  hidden">
-
-
+            <!-- ========================================== -->
+            <!--  1. CAROUSEL PC (Detrás del texto)         -->
+            <!--  Hidden en mobile, Block en MD, Absolute   -->
+            <!-- ========================================== -->
             <div
                 class="hidden md:block absolute inset-0 z-0 h-40 w-[98%] swiper-home-pc translate-y-20 pointer-events-none bg-gren-300 mx-auto overflow-hidden">
                 <div class="swiper-wrapper flex items-center h-full ease-linear ">
+                    {{-- Hacemos el loop 3 veces para tener 24 slides y evitar huecos --}}
                     @for ($x = 0; $x < 3; $x++)
                         @foreach (range(1, 8) as $i)
                             <div class="swiper-slide flex justify-center items-center h-full w-fit bgcyan-950">
+                                {{-- Ajusta la opacidad (opacity-50) si quieres que el texto resalte más --}}
                                 <img src="{{ asset("home/home$i.png") }}"
                                     class="md:h-40 object-contain mx-auto opacity-80 bg-ink-400" alt="Objeto vintage" />
                             </div>
@@ -138,9 +64,13 @@
                 </div>
             </div>
 
-         
+            <!-- ========================================== -->
+            <!--  2. CONTENIDO TEXTO (Encima del Carousel)  -->
+            <!--  Relative y z-10 para flotar sobre imgs    -->
+            <!-- ========================================== -->
             <div class="relative -10 flex flex-col items-center justify-center w-full px-4 bg-rd-500 md:mt-8">
 
+                <!-- Título Principal -->
                 <div class="text-center mb-8 md:mb-12 relative w-fll bg-yelow-200 px-0 overflow-hidden">
 
                     <div class="bg-oange-500 w-fit mx-auto bg-casa-base md:px-4">
@@ -156,6 +86,10 @@
 
                 </div>
 
+                <!-- ========================================== -->
+                <!--  3. CAROUSEL MÓVIL (Entre los textos)      -->
+                <!--  Visible solo en mobile (md:hidden)        -->
+                <!-- ========================================== -->
                 <div class="md:hidden w-full mb-8 swiper-home-mb">
                     <div class="swiper-wrapper">
                         @foreach (range(1, 8) as $i)
@@ -169,6 +103,7 @@
 
 
 
+                <!-- Subtítulo -->
                 <div class="text-center md:mt-10 relative w-full">
 
                     <div
@@ -176,10 +111,13 @@
                         <div class="swiper-wrapper flex items-center h-full ease-linear  bg-green600">
                             @php
                                 $ordenAlternativo = array_merge(range(4, 8), range(1, 3));
+                                // Esto genera: [4, 5, 6, 7, 8, 1, 2, 3]
                             @endphp
 
+                            {{-- 2. Mantenemos el bucle externo para la repetición infinita --}}
                             @for ($x = 0; $x < 3; $x++)
 
+                                {{-- 3. Iteramos sobre el array desordenado --}}
                                 @foreach ($ordenAlternativo as $i)
                                     <div class="swiper-slide flex justify-center items-center h-full  bg-red-40 ax-40">
                                         <img src="{{ asset("home/home$i.png") }}"
@@ -204,7 +142,16 @@
                                 Encontrá la tuya.
                             </h2>
 
-                
+                            {{-- <a href="{{ route('subastas') }}"
+                                class="border rounded-4xl px-3 py-0.5 border-casa-black mt-4 hover:bg-casa-base-2 over:text-casa-base flex items-center md:mx-auto w-fit"
+                                title="Ir a subastas">Ver nuestras
+                                subastas
+                                <svg class="size-[20px]  ml-4 ">
+                                    <use xlink:href="#arrow-right1"></use>
+                                </svg>
+
+
+                            </a> --}}
                         </div>
                     </div>
 
@@ -212,9 +159,9 @@
                 </div>
             </div>
 
-        </section> --}}
+        </section>
 
-        <div class="w-full     [&>article]:max-w-8xl  md:px-16 xl:px-24 lg:mx-24 ">
+        <div class="w-full     [&>article]:max-w-8xl md:px-24 g-green-300">
             @livewire('subastas-abiertas')
 
 
@@ -224,24 +171,28 @@
         </div>
 
 
+        {{-- @if ($last && $contadorDestacados) --}}
+        {{-- <div class="  md:px-24  px-4 overflow-x-hidden  w-full g-blue-300 max-w-8x p-1"> --}}
 
         @if ($last)
             @livewire('destacados', ['subasta_id' => $last->id, 'titulo' => true, 'from' => 'home'])
         @endif
 
+        {{-- </div> --}}
+        {{-- @endif --}}
 
 
         @if (count($subastasProx))
-            <div class="flex flex-col   w-full   items-center   md:px-16 xl:px-24 lg:mx-24 ">
+            <div class="flex flex-col   w-full   items-center  md:px-24 ">
 
-                <div class="flex flex-col   w-full   items-center   max-w-8xl ">
+                <div class="flex flex-col   w-full   items-center   max-w-8xl">
 
                     <x-fancy-heading text="s{u}bast{a}s p{r}óxim{a}s" variant="italic mx-[0.5px] font-normal"
-                        class=" md:text-[32px] text-[20px]  text-center self-start sm:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
+                        class=" md:text-[32px] text-[20px]  text-center self-start md:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
 
                     <div class="swiper-home-subastas     w-full  md:overflow-x-hidden md:px-0 px-4">
 
-                        <div class="swiper-wrapper  flex sm:flex-row flex-col">
+                        <div class="swiper-wrapper  flex md:flex-row flex-col">
                             @foreach ($subastasProx as $item)
                                 <a href="{{ route('subasta-proximas.lotes', $item->id) }}"
                                     class="flex flex-col bg-casa-black text-casa-base md:p-6 p-4  swiper-slide  md:mb-0 mb-4">
@@ -249,13 +200,11 @@
 
                                     <div class="flex justify-between items-center md:mb-4 mb-2">
 
-                                        <p
-                                            class="text-[26px]  md:text-[30px] lg:text-[36px] xl:text-[40px] font-caslon leading-[40px]">
-
+                                        <p class="text-[26px]  md:text-[40px] font-caslon leading-[40px] ">
                                             {{ $item->titulo }}
                                         </p>
 
-                                        <svg class="size-[26px] ml-5 lg:ml-8 self-start flex-shrink-0">
+                                        <svg class="size-[26px]  ml-8 self-start flex-shrink-0">
                                             <use xlink:href="#arrow-right1"></use>
                                         </svg>
 
@@ -275,7 +224,7 @@
 
                                     @endphp
 
-                                    <div class="flex justify-between md:text-[17px] lg:text-lg xl:text-xl text-sm">
+                                    <div class="flex justify-between md:text-xl text-sm">
 
                                         <div class="flex flex-col mb-1.5">
                                             <p>Desde el</p>
@@ -320,16 +269,16 @@
 
 
         @if (count($subastasFin))
-            <div class="flex flex-col   w-full   items-center md:px-16 xl:px-24 lg:mx-24 ">
+            <div class="flex flex-col   w-full   items-center md:px-24   ">
 
 
                 <div class="flex flex-col   w-full   items-center   max-w-8xl">
                     <x-fancy-heading text="s{u}bast{a}s p{a}sa{d}as" variant="italic mx-[0.5px] font-normal"
-                        class=" md:text-[32px] text-[20px]  text-center self-start sm:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
+                        class=" md:text-[32px] text-[20px]  text-center self-start md:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
 
                     <div class="swiper-home-subastas     w-full  md:overflow-x-hidden md:px-0 md:pl-[1px] px-4">
 
-                        <div class="swiper-wrapper  flex sm:flex-row flex-col   ">
+                        <div class="swiper-wrapper  flex md:flex-row flex-col   ">
 
                             @foreach ($subastasFin as $item)
                                 <a href="{{ route('subasta-pasadas.lotes', $item->id) }}"
@@ -339,13 +288,11 @@
 
                                     <div class="flex justify-between items-center md:mb-4 mb-2">
 
-                                        <p
-                                            class="text-[26px]  md:text-[30px] lg:text-[36px] xl:text-[40px] font-caslon leading-[40px]">
-
+                                        <p class="text-2xl  md:text-[40px] font-caslon leading-[40px]">
                                             {{ $item->titulo }}
                                         </p>
 
-                                        <svg class="size-[26px] ml-5 lg:ml-8 self-start flex-shrink-0">
+                                        <svg class="size-[26px]  ml-8 self-start flex-shrink-0">
                                             <use xlink:href="#arrow-right1"></use>
                                         </svg>
 
@@ -366,9 +313,9 @@
                                     @endphp
 
 
-                                    <div class="flex justify-between md:text-[17px] lg:text-lg xl:text-xl text-sm">
-                                        <div class="flex
-                                        flex-col mb-1.5">
+                                    <div class="flex justify-between">
+
+                                        <div class="flex flex-col mb-1.5">
                                             <p>Desde el</p>
                                             <p class="font-bold"> {{ $diaIni }} de {{ $mesIni }} |
                                                 {{ $horaIni }}hs</p>
@@ -406,10 +353,10 @@
         @endif
 
 
-        {{-- 
+
         @guest
             <x-primera-vez />
-        @endguest --}}
+        @endguest
 
 
 

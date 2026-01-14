@@ -12,7 +12,7 @@
         <p class="lg:text-xl text-sm">Registrate para poder subastar tu bienes.</p>
 
 
-        <form wire:submit.prevent="save" class="grid lg:grid-cols-3  grid-cols-1 gap-y-2 gap-x-8 mt-5 ">
+        <form wire:submit.prevent="save" class="grid  md:grid-cols-2 lg:grid-cols-3  grid-cols-1 gap-y-2 gap-x-8 mt-5 ">
 
 
             <div class= 'items-start  lg:w-60 w-full lg:mx-auto  '>

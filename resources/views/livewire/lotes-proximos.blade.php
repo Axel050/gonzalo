@@ -75,7 +75,7 @@
 
 
 
-                    <a href="{{ route('lotes.show', $lote['id']) }}" class="absolute inset-0 md:hidden z-10"></a>
+                    <a href="{{ route('lotes.show', $lote['id']) }}" class="absolute inset-0 d:hidden z-10"></a>
 
                     <a href="{{ route('lotes.show', $lote['id']) }}"
                         class="hover:text-casa-black bg-casa-black text-casa-base  hover:bg-casa-base  border border-black rounded-full px-4 md:flex items-center justify-between  py-2  w-full  text-xl font-bold mb-2  hidden  order-6">

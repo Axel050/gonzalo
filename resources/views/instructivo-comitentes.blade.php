@@ -100,13 +100,13 @@
                 participar en futuras subastas de Casablanca.ar.
             </p>
 
-            <button onclick="window.close();"
+            <a href="{{ route('home') }}"
                 class="bg-casa-black hover:bg-casa-black-h text-gray-50 rounded-full px-4 flex items-center justify-between gap-x-5 py-1  lg:w-fit w-full mt-6 mx-auto">
-                Vovlver
-                <svg class="size-8 lg:ml-8">
+                <svg class="size-8 sm:mr-8 rotate-180">
                     <use xlink:href="#arrow-right"></use>
                 </svg>
-            </button>
+                Volver
+            </a>
 
         </div>
     </div>

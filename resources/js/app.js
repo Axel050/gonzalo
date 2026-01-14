@@ -27,23 +27,30 @@ function initSwiperAbiertasHome() {
     if (window.innerWidth >= 640) {
       console.log("INNNEEEEadd")
       new Swiper(el, {
-        slidesPerView: 3,
+        slidesPerView: 2,
 
         centerInsufficientSlides: true,
-        spaceBetween: 50,
+        spaceBetween: 30,
         loop: slides > 3 ? true : false,
         autoplay: slides > 3 ? { delay: 5000 } : false,
 
 
-        // breakpoints: {
-        //   420: {
-        //     slidesPerView: 3,
-        //   },
-        // },
+        breakpoints: {
+          640: {
+            slidesPerView: 2,
+
+
+          },
+          940: {
+            slidesPerView: 3,
+
+          },
+        },
         modules: [Autoplay],
 
       });
     }
+
     else {
       console.log("MOBILE ")
       // En móvil quitamos clases de Swiper para que se vea como flex-col
@@ -76,10 +83,16 @@ function initSwiperDestacados() {
         loop: slides > 3,
         autoplay: slides > 3 ? { delay: 5000 } : false,
 
+
         breakpoints: {
-          420: {
+          640: {
+            slidesPerView: 2,
+
+
+          },
+          940: {
             slidesPerView: 3,
-            spaceBetween: 50,
+
           },
         },
 

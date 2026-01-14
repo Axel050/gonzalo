@@ -1,4 +1,4 @@
-<div class="w-full bg-casa-black flex lg:flex-row flex-col text-white pt-2 lg:pb-4 pb-5 justify-between lg:px-24 px-4  items-center relative "
+<div class="w-full bg-casa-black flex lg:flex-row flex-col text-white pt-2 lg:pb-4 pb-5 justify-between md:px-16 xl:px-24 l px-4  items-center relative "
     x-data="{ open: true }">
     {{-- class="w-full bg-casa-black flex lg:flex-row flex-col text-white pt-4 lg:pb-8 pb-10 justify-between lg:px-24 px-4 items-center relative"> --}}
 

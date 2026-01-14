@@ -110,7 +110,7 @@
 
 
                                             <input type ="file" wire:model="formData.{{ $item->id }}"
-                                                id="sound" accept=".wav,.mp3,.m4a,.wma"
+                                                id="sound" accept=".mp3"
                                                 class="hidden lg:w-60 h-6 rounded-md border border-gray-400 w-full text-gray-500 pl-2 text-sm bg-gray-100 disabled:bg-gray-300 disabled:text-gray-600      "
                                                 @disabled($method === 'view') />
                                             @if ($method == 'update')
@@ -120,7 +120,7 @@
                                             @endif
 
                                             {{-- @dump($formData) --}}
-                                            <x-input-error for=""
+                                            <x-input-error for="formData.{{ $item->id }}"
                                                 class="top-full py-0 leading-[12px] text-red-500" />
                                         </div>
                                     </div>

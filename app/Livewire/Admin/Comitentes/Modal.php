@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Admin\Comitentes;
 
+use App\Livewire\Traits\UploadSecurity;
 use App\Models\Comitente;
 use App\Models\ComitentesAlias;
 use Illuminate\Support\Facades\Storage;
@@ -15,6 +16,7 @@ class Modal extends Component
 {
 
   use WithFileUploads;
+  use UploadSecurity;
 
   public $title;
   public $id;
@@ -45,6 +47,45 @@ class Modal extends Component
     }
   }
 
+
+  public function updatedFoto()
+  {
+
+    $this->resetErrorBag('foto');
+    try {
+
+      if (
+        $this->isDangerousExtension($this->foto) ||
+        ! in_array($this->foto->getMimeType(), [
+          'image/jpeg',
+          'image/png',
+          'image/webp',
+        ], true)
+      ) {
+        $this->addUploadSecurityError('foto');
+        $this->reset('foto');
+        return;
+      }
+
+
+      $this->validate(
+        [
+          'foto' => 'file|max:20000|mimetypes:image/jpeg,image/png',
+
+        ],
+        [
+          'foto.max' => "Menor a 20mb",
+          'foto.mimetypes' => 'archivo invalido'
+        ]
+
+
+      );
+    } catch (\Illuminate\Validation\ValidationException $e) {
+      unlink($this->foto->getRealPath());
+      $this->addError('foto', $e->validator->errors()->first('foto'));
+      $this->reset('foto');
+    }
+  }
 
 
   protected function rules()
@@ -184,7 +225,9 @@ class Modal extends Component
     if ($this->foto instanceof UploadedFile) {
       $manager = new ImageManager(new Driver());
       $image = $manager->read($this->foto);
-      $filename =  time() . '.' . $this->foto->getClientOriginalExtension();
+      // $filename =  time() . '.' . $this->foto->getClientOriginalExtension();
+      $filename = time() . '.png';
+
       $destino = public_path("storage/imagenes/comitentes/");
       $image->scale(width: 400);
       $image->save($destino . $filename);
@@ -261,7 +304,8 @@ class Modal extends Component
       if ($this->foto instanceof UploadedFile) {
         $manager = new ImageManager(new Driver());
         $image = $manager->read($this->foto);
-        $filename =  time() . '.' . $this->foto->getClientOriginalExtension();
+        // $filename =  time() . '.' . $this->foto->getClientOriginalExtension();
+        $filename = time() . '.png';
         $destino = public_path("storage/imagenes/comitentes/");
         $image->scale(width: 400);
         $image->save($destino . $filename);
@@ -328,6 +372,8 @@ class Modal extends Component
       $this->dispatch('comitenteDeleted');
     }
   }
+
+
 
 
 

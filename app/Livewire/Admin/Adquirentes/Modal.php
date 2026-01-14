@@ -3,11 +3,13 @@
 namespace App\Livewire\Admin\Adquirentes;
 
 use App\Enums\CarritoLoteEstados;
+use App\Livewire\Traits\UploadSecurity;
 use App\Models\Adquirente;
 use App\Models\AdquirentesAlias;
 use App\Models\CondicionIva;
 use App\Models\EstadosAdquirente;
 use App\Models\User;
+
 use Illuminate\Http\UploadedFile;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
@@ -18,6 +20,7 @@ class Modal extends Component
 {
 
   use WithFileUploads;
+  use UploadSecurity;
 
   public $owner = false;
   public $email_alias;
@@ -45,6 +48,71 @@ class Modal extends Component
   public $typePass = "password";
 
   public $autorizados;
+
+
+  public function updatedFoto()
+  {
+
+    $this->resetErrorBag('foto');
+    try {
+
+      if (
+        $this->isDangerousExtension($this->foto) ||
+        ! in_array($this->foto->getMimeType(), [
+          'image/jpeg',
+          'image/png',
+          'image/webp',
+        ], true)
+      ) {
+        $this->addUploadSecurityError('foto');
+        $this->reset('foto');
+        return;
+      }
+
+
+      $this->validate(
+        [
+          'foto' => 'file|max:20000|mimetypes:image/jpeg,image/png',
+
+        ],
+        [
+          'foto.max' => "Menor a 20mb",
+          'foto.mimetypes' => 'archivo invalido'
+        ]
+
+
+      );
+    } catch (\Illuminate\Validation\ValidationException $e) {
+      unlink($this->foto->getRealPath());
+      $this->addError('foto', $e->validator->errors()->first('foto'));
+      $this->reset('foto');
+    }
+  }
+
+
+
+  private function isDangerousExtensioeeen(UploadedFile $file): bool
+  {
+    $ext = strtolower($file->getClientOriginalExtension());
+
+    return in_array($ext, [
+      'php',
+      'php3',
+      'php4',
+      'php5',
+      'phtml',
+      'phar',
+      'exe',
+      'sh',
+      'bat',
+      'cmd',
+      'js',
+      'html',
+      'htm'
+    ]);
+  }
+
+
 
 
   public function updatedAliasId($value)
@@ -207,13 +275,13 @@ class Modal extends Component
     // VER ESTADO_ID PARA AGREGAR ROLE LUEGO
     $this->validate();
 
-
     $filename = '';
 
     if ($this->foto instanceof UploadedFile) {
       $manager = new ImageManager(new Driver());
       $image = $manager->read($this->foto);
-      $filename =  time() . '.' . $this->foto->getClientOriginalExtension();
+      // $filename =  time() . '.' . $this->foto->getClientOriginalExtension();
+      $filename = time() . '.png';
       $destino = public_path("storage/imagenes/adquirentes/");
       $image->scale(width: 400);
       $image->save($destino . $filename);
@@ -311,7 +379,9 @@ class Modal extends Component
       if ($this->foto instanceof UploadedFile) {
         $manager = new ImageManager(new Driver());
         $image = $manager->read($this->foto);
-        $filename =  time() . '.' . $this->foto->getClientOriginalExtension();
+        // $filename =  time() . '.' . $this->foto->getClientOriginalExtension();
+        $filename = time() . '.png';
+
         $destino = public_path("storage/imagenes/adquirentes/");
         $image->scale(width: 400);
         $image->save($destino . $filename);

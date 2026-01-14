@@ -69,7 +69,7 @@
                 <div class="flex flex-col items-start gap-2 justify-start">
 
                     <a href="{{ route('subastas') }}"
-                        class=" text-sm border rounded-full px-3 py-1 border-black text-black  h-fit w-fit ">
+                        class=" text-sm border rounded-full px-3 py-1 border-black hover:text-casa-black bg-casa-black text-casa-base  h-fit w-fit ">
                         Subastas
                     </a>
 
@@ -127,7 +127,7 @@
                         class="w-full mx-3 focus:outline-0 placeholder:text-gray-600   placeholder:text-sm"
                         wire:model.live.debounce.500ms="search" placeholder="¿Qué buscas?" />
 
-                    <input type="hidden" name="from" value="1">
+                    <input type="hidden" name="from" value="home">
 
                     <button
                         class="bg-casa-black text-gray-50 rounded-full px-2 flex items-center justify-between  py-1 "

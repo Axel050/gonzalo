@@ -2205,3 +2205,15 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in C:\xampp\htdocs\casablanca12\public\in.php on line 3
+[12-Jan-2026 20:00:06 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting "," or ";" in C:\xampp\htdocs\casablanca12\public\in.php on line 3
+[12-Jan-2026 20:00:23 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting "," or ";" in C:\xampp\htdocs\casablanca12\public\in.php on line 3
+[12-Jan-2026 20:00:31 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting "," or ";" in C:\xampp\htdocs\casablanca12\public\in.php on line 3
+[12-Jan-2026 20:00:32 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting "," or ";" in C:\xampp\htdocs\casablanca12\public\in.php on line 3
+[12-Jan-2026 20:01:26 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting "," or ";" in C:\xampp\htdocs\casablanca12\public\in.php on line 3
+[12-Jan-2026 20:01:26 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting "," or ";" in C:\xampp\htdocs\casablanca12\public\in.php on line 3
+[12-Jan-2026 20:03:00 UTC] PHP Parse error:  syntax error, unexpected end of file, expecting "," or ";" in C:\xampp\htdocs\casablanca12\public\in222.php on line 3
+[12-Jan-2026 19:20:27 America/Argentina/Buenos_Aires] PHP Fatal error:  Trait "App\Traits\UploadSecurity" not found in C:\xampp\htdocs\casablanca12\app\Livewire\Admin\Adquirentes\Modal.php on line 18
+[12-Jan-2026 19:20:33 America/Argentina/Buenos_Aires] PHP Fatal error:  Trait "App\Traits\UploadSecurity" not found in C:\xampp\htdocs\casablanca12\app\Livewire\Admin\Adquirentes\Modal.php on line 18
+[12-Jan-2026 19:21:30 America/Argentina/Buenos_Aires] PHP Fatal error:  Trait "App\Traits\UploadSecurity" not found in C:\xampp\htdocs\casablanca12\app\Livewire\Admin\Adquirentes\Modal.php on line 18
+[12-Jan-2026 19:23:15 America/Argentina/Buenos_Aires] PHP Fatal error:  Trait "App\Traits\UploadSecurity" not found in C:\xampp\htdocs\casablanca12\app\Livewire\Admin\Adquirentes\Modal.php on line 19
+[12-Jan-2026 19:23:17 America/Argentina/Buenos_Aires] PHP Fatal error:  Trait "App\Traits\UploadSecurity" not found in C:\xampp\htdocs\casablanca12\app\Livewire\Admin\Adquirentes\Modal.php on line 19

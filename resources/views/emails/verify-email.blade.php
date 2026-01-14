@@ -64,12 +64,12 @@
                                 <a href="{{ $url }}"
                                     style="color: #007bff; text-decoration: underline;">{{ $url }}</a>
                             </p>
-                            <p style="margin: 0; font-size: 12px; color: #999999;">
+                            <p style="margin: 0; font-size: 13px; color: #999999;">
                                 Atentamente,<br>
                                 El equipo de CASABLANCA.AR
                             </p>
                             <hr style="border: none; border-top: 1px solid #e9ecef; margin: 20px 0;">
-                            <p style="margin: 0; font-size: 12px; color: #999999;">
+                            <p style="margin: 0; font-size: 13px; color: #999999;">
                                 &copy; {{ date('Y') }} CASABLANCA.AR. Todos los derechos reservados.<br>
                                 <a href="{{ config('app.url', 'https://casablanca.ar') }}"
                                     style="color: #007bff; text-decoration: underline;">casablanca.ar</a>

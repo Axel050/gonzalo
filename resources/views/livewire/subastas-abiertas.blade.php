@@ -1,19 +1,19 @@
-<div class="flex flex-col   w-full items-center   ">
+<div class="flex flex-col   w-full items-center  ">
     {{-- <p class="md:text-3xl  text-lg font-bold md:text-center   text-start w-full px-4 mb-4 md:mb-8">subastas abiertas</p> --}}
 
 
-    <div class="flex flex-col   w-full   items-center   max-w-8xl">
+    <div class="flex flex-col   w-full   items-center   max-w-8xl ">
 
 
 
         <x-fancy-heading text="s{u}bast{a}s a{b}iert{a}s" variant="italic mx-[0.5px] font-normal"
-            class=" md:text-[32px] text-[20px]  text-center self-start md:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
+            class=" md:text-[32px] text-[20px]  text-center self-start sm:self-center md:ml-0 ml-6  text-wrap font-normal  mb-4" />
 
 
 
-        <div class="swiper-home-subastas     w-full  md:overflow-x-hidden md:px-0 md:pl-[1px] px-4">
+        <div class="swiper-home-subastas     w-full  md:overflow-x-hidden md:px-0 md:pl-[1px] px-4 ">
 
-            <div class="swiper-wrapper  flex md:flex-row flex-col">
+            <div class="swiper-wrapper  flex sm:flex-row flex-col ">
 
                 @foreach ($subastasAct as $subA)
                     <a href="{{ route('subasta.lotes', $subA->id) }}"
@@ -22,8 +22,10 @@
 
                         <div class="flex justify-between items-center md:mb-4 mb-2">
 
-                            <p class="text-[26px]  md:text-[40px] font-caslon leading-[40px]">{{ $subA->titulo }} </p>
-                            <svg fill="#fff" class="size-[26px]  ml-8 shrink-0 self-start">
+                            <p
+                                class="text-[26px]  md:text-[30px] lg:text-[36px] xl:text-[40px] font-caslon leading-[40px]">
+                                {{ $subA->titulo }} </p>
+                            <svg fill="#fff" class="size-[26px]   ml-5 lg:ml-8 shrink-0 self-start">
                                 <use xlink:href="#arrow-right1"></use>
                             </svg>
                         </div>
@@ -35,7 +37,7 @@
                             $hora = $fecha->format('H'); // 11
                         @endphp
 
-                        <div class="flex flex-col">
+                        <div class="flex flex-col md:text-[17px] lg:text-lg xl:text-xl text-sm">
                             <p>Hasta el</p>
 
 

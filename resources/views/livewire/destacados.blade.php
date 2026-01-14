@@ -1,6 +1,6 @@
-<div class="  lg:px-24  px-4 overflow-x-hidden  w-full g-blue-300 max-w-8x p-1 " wire:show="contador">
+<div class="   md:px-16 xl:px-24  px-4 overflow-x-hidden  w-full g-blue-300 max-w-8x p-1 " wire:show="contador">
 
-    <div class="swiper-destacados   overflow-x-hidden w-full   d:px-24 max-w-8xl mx-auto" wire:ignore>
+    <div class="swiper-destacados   overflow-x-hidden w-full   d:px-24 max-w-8xl mx-auto  pr-0.5" wire:ignore>
 
         {{-- <div class="flex flex-col   w-full   items-center lg:pb-24 lg:px-24 lg:mt-0  mt-10 "> --}}
 
@@ -25,21 +25,21 @@
 
 
 
-        <div class="swiper-wrapper ">
+        <div class="swiper-wrapper">
 
 
             @foreach ($destacados as $des)
                 {{-- @for ($i = 0; $i < 1; $i++) --}}
                 <div
-                    class=" bg-casa-base-2 flex flex-col lg:px-4 lg:py-8 px-2 py-2 gap-y-4 lg:border border-casa-black swiper-slide text-casa-black">
+                    class=" bg-casa-base-2 flex flex-col lg:px-4   lg:py-8 px-2 py-2 gap-y-4 lg:border border-casa-black swiper-slide text-casa-black ">
 
-                    <a href="{{ route('lotes.show', $des['id']) }}" class="absolute inset-0 lg:hidden z-10"></a>
+                    <a href="{{ route('lotes.show', $des['id']) }}" class="absolute inset-0 l:hidden z-10"></a>
 
-                    <div class="flex lg:flex-row flex-col gap-x-4 ">
+                    <div class="flex xl:flex-row flex-col gap-x-4 ">
 
                         {{-- <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $des['foto']) }}" class="size-36 obje " /> --}}
                         <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $des['foto']) }}"
-                            class="md:size-36 size-25 mx-auto" />
+                            class="md:h-34 xl:h-36 h-25 w-full mx-auto object-contain  xl:max-w-36 " />
 
                         {{-- <p class="font-semibold lg:text-xl text-sm  w-full  block lg:hidden ">{{ $des['titulo'] }} </p> --}}
 
@@ -48,7 +48,7 @@
 
                         <div class="flex flex-col bg-purple grow">
 
-                            <div class="flex lg:items-center  items-end  mb-3 ">
+                            <div class="flex lg:items-center  items-end  mb-3  justify-between ">
                                 {{-- <p class="font-semibold lg:text-xl text-sm  w-full  lg:mt-0 mt-2  ">{{ $des['titulo'] }}
                             </p> --}}
                                 <x-clamp :text="$des['titulo']" bclass=" mr-1 "
