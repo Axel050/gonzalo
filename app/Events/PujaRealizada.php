@@ -31,7 +31,7 @@ class PujaRealizada implements ShouldBroadcast
 
   public function __construct($loteId = null, $monto = null, $puja = null, $ultimoAdquirente = null, $signo = null, $adquirenteId = null, $tiempoFinalizacion = null)
   {
-    info("ENVENTO  PUJA COSNTRUC");
+    // info("ENVENTO  PUJA COSNTRUC");
     $this->loteId = $loteId;
     $this->monto = $monto;
     $this->ultimoAdquirente = $ultimoAdquirente;
@@ -48,7 +48,7 @@ class PujaRealizada implements ShouldBroadcast
 
   public function broadcastOn(): array
   {
-    info("ENVENTO  PUJA");
+    // info("ENVENTO  PUJA");
     return [
       new Channel('my-channel'),
       // new Channel('subasta.' . $this->subasta->id),

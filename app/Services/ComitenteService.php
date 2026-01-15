@@ -24,7 +24,7 @@ class ComitenteService
 
   public function createComitente(array $data): Comitente
   {
-    info(["DARA SER" => $data]);
+    // info(["DARA SER" => $data]);
     // CAPA 1: Validamos que 'foto' sea realmente una imagen (mimes:jpg,png,etc)
 
 

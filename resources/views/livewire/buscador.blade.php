@@ -8,12 +8,12 @@
         @if ($todas)
             {{-- Subastas --}}
 
-            <x-fancy-heading text="S{u}bast{a}s" variant="italic mx-[0.5px] font-normal"
+            <x-fancy-heading tag="h1" text="S{u}bast{a}s" variant="italic mx-[0.5px] font-normal"
                 class=" md:text-[64px] text-[37px] leading-9 md:text-center text-start   md:mb-1 text-wrap font-normal" />
         @elseif($view)
             {{-- Lotes --}}
 
-            <x-fancy-heading text="L{o}te{s}" variant="italic mr-[1px]"
+            <x-fancy-heading tag="h1" text="L{o}te{s}" variant="italic mr-[1px]"
                 class=" md:text-[64px] text-[37px] leading-9 text-center  md:mb-1 text-wrap " />
         @else
             {{-- <h2

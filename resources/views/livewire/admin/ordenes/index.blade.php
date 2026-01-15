@@ -119,7 +119,7 @@
                                         class="divide-x-2 divide-y-2 divide-gray-400 [&>td]:pl-2 [&>td]:pr-1 [&>td]:lg:pl-4 [&>td]:text-start ">
 
                                         <td class="py-2">{{ $dep->id }}</td>
-                                        <td>{{ number_format($dep->total_neto, 0, ',', '.') }}</td>
+                                        <td>{{ number_format($dep->total_final, 0, ',', '.') }}</td>
                                         <td>{{ $dep->estado }}</td>
 
                                         <td>

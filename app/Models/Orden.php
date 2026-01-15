@@ -47,4 +47,15 @@ class Orden extends Model implements Auditable
   {
     return OrdenesEstados::getLabel($this->estado);
   }
+
+
+  public function getSubtotalAttribute()
+  {
+    return $this->lotes()->sum('precio_final');
+  }
+
+  public function getTotalFinalAttribute()
+  {
+    return $this->subtotal + ($this->monto_envio ?? 0) - ($this->descuento ?? 0);
+  }
 }

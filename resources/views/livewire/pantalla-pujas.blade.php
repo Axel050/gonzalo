@@ -86,6 +86,7 @@
                             <img src="{{ $lote['fotoUrl'] }}" {{-- class="md:size-49 size-20 " --}}
                                 class="md:h-49 w-full  h-20  object-contain" />
 
+
                         </div>
 
                         <div class="flex flex-col w-full md:pl-0 pl-2 ">
@@ -125,7 +126,6 @@
 
                                     <li
                                         class="md:px-3 px-2 md:py-2 py-0.5 rounded-full border border-casa-rojo md:text-sm text-xs text-casa-rojo font-semibold hover:bg-casa-rojo hover:text-casa-base">
-                                        {{-- <a href="{{ route($lote['subastaActiva'] ? 'subasta.lotes' : 'subasta-pasadas.lotes', 1) }}" --}}
                                         <a href="{{ route($lote['subastaActiva'] ? 'subasta.lotes' : 'subasta-pasadas.lotes', $lote['subastaId']) }}"
                                             title="Ir a subasta">Subasta: {{ $lote['subastaTitulo'] }}</a>
                                     </li>
@@ -150,13 +150,20 @@
                     </div>
 
                     <div class=" flex flex-col gap-y-2">
-                        <div class=" text-sm md:text-xl md:mt-2"> Fracción minima :
+                        {{-- <div class=" text-sm md:text-xl md:mt-2"> Fracción minima :
                             {{ $lote['monedaSigno'] }} {{ number_format($lote['fraccionMin'], 0, ',', '.') }}
-                        </div>
+                        </div> --}}
 
+
+                        {{--
+                        @dump($lote['subastaEnPuja'] && $lote['tiempoFinalizacion'] > now())
+                        @dump($lote['subastaEnPuja'])
+                        @dump($lote['subastaFinalizada'])
+                        @dump($lote['subastaActiva']) --}}
                         {{-- @dump($lote['esGanador']) --}}
-                        {{-- @dump($lote['subastaFinalizada']) --}}
-                        @if (!$lote['subastaFinalizada'])
+                        {{-- @dump($lote['loteEnPuja']) --}}
+
+                        @if ($lote['subastaActiva'])
                             {{-- ================= SUBASTA NO FINALIZADA ================= --}}
 
                             @if ($lote['esGanador'])
@@ -228,9 +235,115 @@
                                 </div>
                                 {{-- @endif --}}
                             @endif
-                        @else
-                            {{-- ================= SUBASTA FINALIZADA ================= --}}
 
+                            {{-- EN PUJA --}}
+                        @elseif ($lote['subastaEnPuja'])
+                            @if ($lote['esGanador'] && !$lote['loteEnPuja'])
+                                <span
+                                    class="bg-casa-black border border-casa-black text-casa-base rounded-full px-4 flex items-center justify-between md:py-1.5 py-1  w-full md:text-xl 
+                                    text-sm font-bold order-10 md:mt-1 mdorder-11">
+                                    {{-- class="bg-casa-black border border-casa-black text-casa-base rounded-full px-4 flex items-center justify-between md:py-2 py-1 w-full md:text-xl 
+                                    text-sm font-bold order-10 md:mt-1 md:order-11"> --}}
+                                    Preparando orden ...
+                                    <svg class="md:size-7 size-6 text-casa-base animate-[spin_3s_linear_infinite]">
+                                        <use xlink:href="#loader"></use>
+                                    </svg>
+                                </span>
+
+                                <h2
+                                    class="text-casa-black border border-black rounded-full px-4 md:py-1.5 py-1 w-full md:text-xl text-sm font-bold text-center mt-0 animate-reverse-pulse">
+                                    ¡Ganaste este <lote!></lote!>
+                                </h2>
+
+
+                                {{-- }}} --}}
+                            @elseif ($lote['esGanador'] && $lote['loteEnPuja'])
+                                <p
+                                    class="text-casa-black border border-black rounded-full px-4 md:py-2 py-1 md:flex items-center justify-center w-full md:text-xl text-sm bg-casa-base mt-auto">
+                                    Ofertaste:
+                                    <b class="ml-1">
+                                        {{ $lote['monedaSigno'] }} {{ $lote['ofertaActualFormateada'] }}
+                                    </b>
+                                </p>
+
+                                <h2
+                                    class="text-casa-black border border-black rounded-full px-4 md:py-2 py-1 w-full md:text-xl text-sm font-bold text-center relative">
+                                    Tu puja es la última
+                                </h2>
+                            @elseif (!$lote['esGanador'] && $lote['loteEnPuja'])
+                                <div class="flex flex-col md:gap-3 gap-2">
+                                    <div class="flex bg-base border border-casa-black text-casa-black rounded-full px-4 md:text-xl text-sm font-semibold focus-within:border-casa-black focus-within:ring-1 focus-within:ring-casa-black transition"
+                                        x-data="{
+                                            valor: @entangle('ofertas.' . $lote['id']),
+                                            maxDigits: 12,
+                                            limpiar() {
+                                                let clean = (this.valor ?? '').toString().replace(/\D/g, '');
+                                                if (clean.length > this.maxDigits) {
+                                                    clean = clean.slice(0, this.maxDigits);
+                                                }
+                                                return clean;
+                                            },
+                                            formatear() {
+                                                let clean = this.limpiar();
+                                                this.valor = clean ?
+                                                    clean.replace(/\B(?=(\d{3})+(?!\d))/g, '.') :
+                                                    '';
+                                            }
+                                        }" x-init="formatear()">
+
+                                        <span class="mr-1 py-1.5">{{ $lote['monedaSigno'] }}</span>
+
+                                        <input type="text" class="md:py-1.5 py-1 w-full outline-none bg-transparent"
+                                            placeholder="Tu oferta" x-model="valor"
+                                            x-on:input=" let clean = limpiar();
+                                                                $wire.set('ofertas.{{ $lote['id'] }}', clean, true);"
+                                            x-on:blur="formatear()" x-on:change="formatear()" inputmode="numeric"
+                                            autocomplete="off">
+                                    </div>
+
+                                    <button
+                                        class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-casa-base rounded-full px-4 flex items-center justify-between md:py-1.5 py-1 w-full md:text-xl text-sm font-bold disabled:cursor-none disabled:hover:bg-casa-black disabled:hover:text-casa-base"
+                                        wire:click="registrarPuja({{ $lote['id'] }}, {{ $lote['ofertaActual'] }})"
+                                        wire:loading.attr="disabled">
+
+                                        <span wire:loading.remove
+                                            wire:target="registrarPuja({{ $lote['id'] }}, {{ $lote['ofertaActual'] }})">
+                                            Pujar
+                                        </span>
+
+                                        <span wire:loading
+                                            wire:target="registrarPuja({{ $lote['id'] }}, {{ $lote['ofertaActual'] }})">
+                                            Procesando...
+                                        </span>
+
+                                        <svg class="md:size-[26px] size-[22px]">
+                                            <use xlink:href="#arrow-right1"></use>
+                                        </svg>
+                                    </button>
+
+                                    <x-input-error-front for="puja.{{ $lote['id'] }}"
+                                        class="text-red-500 text-md" />
+                                </div>
+                            @else
+                                <div class="flex flex-col md:gap-2 gap-1 items-center mt-auto">
+                                    <span
+                                        class="text-casa-base border bg-casa-rojo rounded-full px-4 md:py-1.5 py-1 w-full md:text-xl text-sm font-bold text-center">
+                                        Puja finalizada
+                                    </span>
+
+                                    <span
+                                        class="text-casa-black border border-black rounded-full px-4 md:py-1.5 py-1 w-full md:text-xl text-sm font-bold text-center mt-1">
+                                        Alguien ofertó más
+                                    </span>
+                                </div>
+                            @endif
+
+
+
+
+
+                            {{-- ================= SUBASTA FINALIZADA ================= --}}
+                        @elseif ($lote['subastaFinalizada'])
                             @if ($lote['esGanador'])
                                 <a href="{{ route('carrito') }}"
                                     class="bg-casa-green hover:bg-casa-fondo border border-green-500 hover:text-casa-green text-casa-base rounded-full px-4 flex items-center justify-between md:py-1.5 py-1 w-full md:text-xl text-sm font-bold mt-auto">
@@ -248,7 +361,7 @@
                                 <div class="flex flex-col md:gap-2 gap-1 items-center mt-auto">
                                     <span
                                         class="text-casa-base border bg-casa-rojo rounded-full px-4 md:py-1.5 py-1 w-full md:text-xl text-sm font-bold text-center">
-                                        Puja finalizada
+                                        Subasta finalizada
                                     </span>
 
                                     <span
@@ -284,7 +397,7 @@
                             // $nextTick espera a que Livewire termine de actualizar el DOM
                             // antes de ejecutar nuestro código. Esto es más seguro que setTimeout.
                             $nextTick(() => {
-                                console.log('DOM actualizado, re-inicializando el timer para lote {{ $lote['id'] }}');
+                                // console.log('DOM actualizado, re-inicializando el timer para lote {{ $lote['id'] }}');
                                 init(); // Llama a init de nuevo para leer el nuevo valor
                             });
                         })"
@@ -293,7 +406,6 @@
 
                         <p
                             class="flex justify-between items-center bg-casa-black w-full md:py-2 py-1 border-casa-black text-casa-base md:px-6 px-2 text-sm">
-                            s
                             Tiempo restante:
                             <span x-text="timeRemaining" class="text-casa-base font-extrabold"></span>
                         </p>

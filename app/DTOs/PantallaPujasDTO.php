@@ -23,10 +23,12 @@ readonly class PantallaPujasDTO implements Wireable
     public int $subastaId,
     public string $subastaTitulo,
     public bool $subastaFinalizada,
+    public bool $subastaEnPuja,
     public string $ofertaActualFormateada,
     public string $precioBaseFormateado,
     public bool $tienePujas, // Asegúrate de agregar esta si la usas en el blade
     public string $estado,
+    public string $loteEnPuja,
   ) {}
 
   // Esta función dice cómo convertir el objeto a algo que Livewire entienda (array)
@@ -66,6 +68,12 @@ readonly class PantallaPujasDTO implements Wireable
     // $fechaFin222 = $lote->ultimoConLote?->tiempo_post_subasta_fin;
     $fechaFin222 = $contratoLoteActual?->tiempo_post_subasta_fin;
 
+
+    $tiempoPost = $fechaFin222 ? \Carbon\Carbon::parse($fechaFin222)->toDateTimeString() : null;
+    $enPuja = ($subasta?->estado === SubastaEstados::ENPUJA);
+
+
+
     return new self(
       id: $lote->id,
       titulo: $lote->titulo,
@@ -78,10 +86,15 @@ readonly class PantallaPujasDTO implements Wireable
       // subastaActiva: $fechaFin ? \Carbon\Carbon::parse($fechaFin222)->gte(now()) : false,
       subastaActiva: $subasta->isActivaCarrito(),
       // tiempoFinalizacion: $fechaFin ? \Carbon\Carbon::parse($fechaFin)->toDateTimeString() : null,
-      tiempoFinalizacion: $fechaFin222 ? \Carbon\Carbon::parse($fechaFin222)->toDateTimeString() : null,
+      // tiempoFinalizacion: $fechaFin222 ? \Carbon\Carbon::parse($fechaFin222)->toDateTimeString() : null,
+      tiempoFinalizacion: $tiempoPost,
+
       subastaId: (int) $subasta?->id,
       subastaTitulo: $subasta?->titulo ?? 'N/A',
       subastaFinalizada: ($subasta?->estado === SubastaEstados::FINALIZADA),
+      subastaEnPuja: $enPuja,
+      loteEnPuja: ($enPuja && $tiempoPost > now()),
+
       ofertaActualFormateada: number_format($montoActual, 0, ',', '.'),
       // precioBaseFormateado: number_format($lote->ultimoConLote?->precio_base ?? 0, 0, ',', '.'),
       precioBaseFormateado: number_format($contratoLoteActual?->precio_base ?? 0, 0, ',', '.'),

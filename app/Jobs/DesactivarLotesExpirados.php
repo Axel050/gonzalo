@@ -38,7 +38,7 @@ class DesactivarLotesExpirados implements ShouldQueue
             info("Error: fecha_fin es null para subasta ID: {$subasta->id}");
             return;
           }
-          info("Antes  tLotesACT");
+          // info("Antes  tLotesACT");
 
           $lotesActualizados = false;
           $lotes = $subasta->lotes()->with([
@@ -47,19 +47,19 @@ class DesactivarLotesExpirados implements ShouldQueue
           ])->where('estado', LotesEstados::EN_SUBASTA) // Solo procesar lotes en subasta
             ->get();
 
-          info("Antes  trans");
+          // info("Antes  trans");
           DB::transaction(function () use ($subasta, &$lotesActualizados, $lotes) {
             // info(["IN  trans lotes " => $lotes]);
 
             foreach ($lotes as $lote) {
               $contratoLote = $lote->ultimoConLote;
 
-              info("Antes HJASSS");
+              // info("Antes HJASSS");
               if (!$contratoLote || $contratoLote->estado !== 'activo') {
                 info("NUlllllll");
                 continue;
               }
-              info("HJASSS");
+              // info("HJASSS");
               $hasPujas = $lote->pujas()->where('subasta_id', $subasta->id)->exists();
 
               if ($hasPujas && !$contratoLote->tiempo_post_subasta_fin) {
@@ -266,8 +266,14 @@ class DesactivarLotesExpirados implements ShouldQueue
           'message' => "Creación",
           'lotes' => $orden->lotes,
           'adquirente' => $adquirente,
-          "orden" => $orden,
-          "subasta" => $orden->subasta,
+          "subasta_id" => $orden->subasta?->id,
+          "subasta_titulo" => $orden->subasta?->titulo,
+          "orden_id" => $orden->id,
+          "descuento" => $orden->descuento,
+          "envio" => $orden->monto_envio,
+          "subtotal" => $orden->subtotal,
+          "total" => $orden->total_final,
+
         ];
 
         // info(["data mail JOB " => $dataMail]);

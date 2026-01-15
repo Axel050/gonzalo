@@ -129,7 +129,7 @@ class MPController extends Controller
     $nuevoEstado = match ($payment->status) {
       'approved' => OrdenesEstados::PAGADA,
       'pending', 'in_process' => OrdenesEstados::PENDIENTE,
-      'rejected', 'cancelled' => OrdenesEstados::RECHAZADA,
+      // 'rejected', 'cancelled' => OrdenesEstados::RECHAZADA,
       default => $orden->estado,
     };
 

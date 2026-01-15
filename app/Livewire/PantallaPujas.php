@@ -19,12 +19,6 @@ class PantallaPujas extends Component
   public array $fraccion_min = [];
   public array $ofertas = [];
 
-
-
-  public $baseModal;
-
-
-  public $modal;
   public $adquirente;
   public $lotes;
   public $lote_id;
@@ -66,11 +60,12 @@ class PantallaPujas extends Component
 
     // Si lo encuentra, actualizar solo ese elemento
     if ($index !== false) {
-
+      // info(["INDEX FINALIZA" => $event['tiempoFinalizacion']]);
       // info(["INDEX FINALIZA" => $event['tiempoFinalizacion']]);
       $this->lotes[$index]['tiempoFinalizacion'] = $event['tiempoFinalizacion'];
       $this->lotes[$index]['ofertaActual'] = $nuevoMonto;
       $this->lotes[$index]['esGanador'] = false;
+      $this->lotes[$index]['tienePujas'] = true;
       $this->lotes[$index]['ofertaActualFormateada'] = number_format($nuevoMonto, 0, ',', '.');
       $this->ofertas[$id] = $nuevoMonto + $this->lotes[$index]['fraccionMin'];
       // $this->dispatch('lotes-updated');
@@ -101,14 +96,6 @@ class PantallaPujas extends Component
 
 
 
-  public function modalOpen($loteId, $base)
-  {
-    info("modalalalalal");
-    $this->baseModal = $base;
-    $this->modal = $loteId;
-  }
-
-
   public function mount(CarritoService $service)
   {
 
@@ -124,7 +111,7 @@ class PantallaPujas extends Component
 
 
 
-  #[On('registrarPujaModal')]
+
   public function registrarPuja(PujaService $pujaService, $loteId, $ultimoMontoVisto)
   {
 
@@ -177,7 +164,7 @@ class PantallaPujas extends Component
         $valorLimpio,
         $ultimoMontoVisto
       );
-      -
+
 
       // session()->flash('success', 'Puja registrada correctamente.');
 
@@ -189,19 +176,26 @@ class PantallaPujas extends Component
       });
 
       // Si lo encuentra, actualizar solo ese elemento
+      // info([" INDEX  entero " => $index]);
+      // info([" INDEX  entero  array antes" => $this->lotes[$index]]);
       if ($index !== false) {
+        // info("INTO INDEX");
         $this->lotes[$index]['ofertaActual'] = $result['message']['monto_final'];
 
         $this->lotes[$index]['ofertaActualFormateada'] = number_format($result['message']['monto_final'], 0, ',', '.');
+        // info(["is ganado" => $this->lotes[$index]['esGanador']]);
         $this->lotes[$index]['esGanador'] = true;
+        $this->lotes[$index]['tienePujas'] = true;
+        // info(["is ganado2222" => $this->lotes[$index]['esGanador']]);
         $this->lotes[$index]['tiempoFinalizacion'] = $result['message']['tiempoFinalizacion'];
       }
+      // info([" INDEX  entero  array antes" => $this->lotes[$index]]);
 
-      $this->dispatch('lotes-updated');
+      // $this->dispatch('lotes-updated');
 
 
       $this->dispatch('puja-exitosa', loteId: $loteId);
-      $this->dispatch('puja-registrada', loteId: $loteId);
+      // $this->dispatch('puja-registrada', loteId: $loteId);
     } catch (ModelNotFoundException | InvalidArgumentException | DomainException $e) {
       if ($ultimoMontoVisto == 0) {
 
@@ -225,9 +219,10 @@ class PantallaPujas extends Component
   }
 
 
-
+  // #[On('lotes-updated')]
   public function loadLotes(CarritoService $carritoService)
   {
+    // info("ñapdLOAD");
     $this->lotes = $carritoService->getLotesDetallados($this->adquirente)
       ->map(function ($dto) {
         return (array) $dto;

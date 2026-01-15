@@ -17,5 +17,6 @@ Artisan::command('inspire', function () {
 Schedule::job(new ActivarLotes)->everyMinute();
 Schedule::job(new DesactivarLotesExpirados)->everyMinute();
 Schedule::job(new ActualizarCarritoPerdidos)->daily();
+// Schedule::job(new ActualizarCarritoPerdidos)->everyThirtySeconds();
 // Schedule::job(new DesactivarLotesExpirados)->everyThirtySeconds();
 // Schedule::job(new DesactivarLotesExpirados)->everyFifteenSeconds();

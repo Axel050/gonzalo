@@ -191,7 +191,7 @@ class Subasta extends Model implements Auditable
     }
 
     if ($this->estado === SubastaEstados::ENPUJA) {
-      return true;
+      // return true;
     }
 
     return false;

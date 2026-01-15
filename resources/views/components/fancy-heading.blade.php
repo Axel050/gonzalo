@@ -1,7 +1,4 @@
-@props([
-    'text',
-    'variant' => 'italic', // Por defecto será itálica (Book Italic)
-])
+@props(['text', 'variant' => 'italic', 'tag' => 'h2'])
 
 @php
     // Inyectamos la variable $variant dentro de la clase del span.
@@ -11,6 +8,6 @@
     $formattedText = preg_replace('/\{(.*?)\}/', '<span class="' . $spanClasses . '">$1</span>', e($text));
 @endphp
 
-<h2 {{ $attributes->merge(['class' => 'font-helvetica leading-tight ']) }}>
+<{{ $tag }} {{ $attributes->merge(['class' => 'font-helvetica leading-tight ']) }}>
     {!! $formattedText !!}
-</h2>
+    </{{ $tag }}>

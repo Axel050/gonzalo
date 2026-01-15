@@ -104,16 +104,25 @@ Route::get('/test-mail-orden/{ordenId}/{adquirenteId}', function ($ordenId, $adq
   $orden = Orden::with(['lotes.lote',  'subasta'])->findOrFail($ordenId);
   $adquirente = Adquirente::findOrFail($adquirenteId);
 
+
+
+  info(["sub" => $orden->subtotal]);
+  info(["new" => $orden->total_final]);
   $fakeData = [
     'message' => "Creación",
     'lotes' => $orden->lotes,
     'adquirente' => $adquirente,
-    "orden" => $orden,
-    "subasta" => $orden->subasta,
+    "orden_id" => $orden->id,
+    "subtotal" => $orden->subtotal,
+    "total" => $orden->total_final,
+    "descuento" => $orden->descuento,
+    "envio" => $orden->monto_envio,
+    "subasta_id" => $orden->subasta?->id,
+    "subasta_titulo" => $orden->subasta?->titulo,
   ];
 
   if (app()->environment('production')) {
-    mail::to($adquirente->user?->email)->send(new OrdenEmail($fakeData));
+    // mail::to($adquirente->user?->email)->send(new OrdenEmail($fakeData));
   }
   return new OrdenEmail($fakeData); // Se renderiza directamente en el navegador
 });
@@ -135,7 +144,9 @@ Route::get('/test-puja-superada/{loteId}/{adquirenteId}', function ($loteId, $ad
   // if (app()->environment('production')) {
   // mail::to($adquirente->user?->email)->send(new PujaSuperadaEmail($dataMail));
   // }
-  return new PujaSuperadaEmail($dataMail); // Se renderiza directamente en el navegador
+  // return new PujaSuperadaEmail($dataMail);
+
+  // Se renderiza directamente en el navegador
 });
 
 
@@ -146,15 +157,15 @@ Route::get('/comitentes/crear', [ComitenteController::class, "create"])->name('c
 
 Route::get('/adquirentes/crear', [AdquirenteController::class, "create"])->name('adquirentes.create');
 
-Route::get('/comitentes/test', function () {
-  return response()->json(['message' => 'Ruta de test funcionando correctamente']);
-});
+// Route::get('/comitentes/test', function () {
+//   return response()->json(['message' => 'Ruta de test funcionando correctamente']);
+// });
 
-Route::post('/comitentes/store', [ComitenteController::class, 'store'])->name('comitentes.store');
+// Route::post('/comitentes/store', [ComitenteController::class, 'store'])->name('comitentes.store');
 
-Route::get('/csrf-token', function () {
-  return response()->json(['csrf_token' => csrf_token()]);
-});
+// Route::get('/csrf-token', function () {
+//   return response()->json(['csrf_token' => csrf_token()]);
+// });
 
 
 
@@ -216,27 +227,26 @@ Route::get('/instructivo-comitentes', function () {
 
 
 // MP
-Route::get(
-  '/success',
-  function () {
-    return redirect()->route('lotes.show', ['id' => 17]);
-    // return "<h1> SUCEESS</h1>";
-  }
-);
+// Route::get(
+//   '/success',
+//   function () {
+//     return redirect()->route('lotes.show', ['id' => 17]);
+//   }
+// );
 
-Route::get(
-  '/failure',
-  function () {
-    return "<h1> failure</h1>";
-  }
-);
+// Route::get(
+//   '/failure',
+//   function () {
+//     return "<h1> failure</h1>";
+//   }
+// );
 
-Route::get(
-  '/pending',
-  function () {
-    return "<h1> pending</h1>";
-  }
-);
+// Route::get(
+//   '/pending',
+//   function () {
+//     return "<h1> pending</h1>";
+//   }
+// );
 
 // Route::post('/gonza', [MPController::class, 'notificacion'])->name('subasta.lotes')->middleware(['auth']);
 // Route::post('/notification', [MPController::class, 'notification']);

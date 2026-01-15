@@ -1,7 +1,7 @@
 <div class="flex  flex-col  items-center  w-full  lg:min-h-[95vh] ">
 
     @if ($method)
-        @livewire('register.modal-success', ['pas' => $pasP, 'mail' => $mailP, 'from' => 'adquirentes'])
+        @livewire('register.modal-success-adquirente', ['pas' => $pasP, 'mail' => $mailP])
         {{-- @livewire('register.modal-success', ['pas' => '12345678', 'mail' => 'test@example.com', 'from' => 'adquirentes']) --}}
     @endif
 

@@ -16,11 +16,8 @@
                 <h1 style="font-size: 24px; color: #1a73e8; margin: 0 0 20px 0; text-align: center;">CASABLANCA.AR</h1>
                 <table width="100%">
                     <tr style="font-size: 14px;">
-                        <td>Adquirente: {{ $data['adquirente']['nombre'] }}</td>
-                        {{-- <td>Fecha: {{ $data['fecha'] }}</td> --}}
-                        {{-- <td>Fecha: 88/88/11</td> --}}
-                        <td>Orden: {{ $data['orden']['id'] }}</td>
-                        <td>Subasta: {{ $data['subasta']['id'] }} - {{ $data['subasta']['titulo'] }}</td>
+                        <td>Orden: {{ $data['orden_id'] }}</td>
+                        <td>Subasta: {{ $data['subasta_id'] }} - {{ $data['subasta_titulo'] }}</td>
                     </tr>
                 </table>
                 {{-- ADDD BTON --}}
@@ -59,22 +56,32 @@
                                     {{ $item->lote?->moneda_signo }} {{ $item->precio_final ?? 'N/A' }}</td>
                             </tr>
                         @endforeach
-                        @if ($data['orden']['monto_envio'] > 0)
+
+
+                        <tr>
+                            <td style="text-align: center" colspan="4">Subtotal:
+                                ${{ $data['subtotal'] }}
+                            </td>
+                        </tr>
+
+                        @if ($data['envio'] > 0)
                             <tr>
                                 <td style="text-align: center" colspan="4">Envío:
-                                    ${{ $data['orden']['monto_envio'] }}
+                                    ${{ $data['envio'] }}
                                 </td>
                             </tr>
                         @endif
 
-                        @if ($data['orden']['descuento'] > 0)
+                        @if ($data['descuento'] > 0)
                             <tr>
-                                <td style="text-align: center" colspan="4">Depósito: $2555 </td>
+                                <td style="text-align: center" colspan="4">Depósito:
+                                    -${{ $data['descuento'] }}</td>
                             </tr>
                         @endif
 
                         <tr>
-                            <td style="text-align: center" colspan="4"><b>Total: ${{ $data['orden']['total'] }}</b>
+                            <td style="text-align: center" colspan="4"><b>Total:
+                                    ${{ $data['total'] }}</b>
                             </td>
                         </tr>
                     </tbody>
