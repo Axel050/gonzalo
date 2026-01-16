@@ -105,10 +105,10 @@ Route::get('/test-mail/{contratoId}/{email}', function (int $contratoId, string 
 
 
 
-Route::get('/test-mail-orden/{ordenId}', function ($ordenId) {
+Route::get('/test-mail-orden/{ordenId}/{adquirenteId}', function ($ordenId, $adquirenteId) {
 
   $orden = Orden::with(['lotes.lote',  'subasta'])->findOrFail($ordenId);
-  $adquirente = $orden->adquirente;
+  $adquirente = Adquirente::findOrFail($adquirenteId);
 
   $fakeData = [
     'message' => "Creación",
