@@ -61,14 +61,14 @@
                                     {{ $item->lote?->descripcion ?? 'Sin descripción' }}</td>
 
 
-                                    @php
-                                        $route = app()->environment('production')
-                                            ? 'https://casablanca.ar'
-                                            : 'http://127.0.0.1:8000';
-                                    @endphp
+                                @php
+                                    $route = app()->environment('production')
+                                        ? 'https://casablanca.ar'
+                                        : 'http://127.0.0.1:8000';
+                                @endphp
 
                                 <td style="border: 1px solid #cccccc; padding: 10px;">
-                                    <img src="{{ $route . '/storage/imagenes/lotes/thumbnail/' . $item->lote?->foto1) }}"
+                                    <img src="{{ $route . '/storage/imagenes/lotes/thumbnail/' . $item->lote?->foto1 }}"
                                         class="img-lote"
                                         style="width: auto; height: auto; border-radius: 4px; display: inline-block;max-height:60px" />
                                 </td>
