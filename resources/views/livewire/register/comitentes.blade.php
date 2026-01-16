@@ -81,7 +81,7 @@
             <div class= 'items-start  lg:w-60 w-full lg:mx-auto  '>
                 <label class="w-full text-start text-casa-black  text-base mb-1.5 font-bold">Banco</label>
                 <div class="relative w-full ">
-                    <input wire:model="banco "
+                    <input wire:model="banco"
                         class = 'lg:w-60  rounded-full border border-casa-black w-full text-gray-800 px-3  text-sm  py-1 lg:text-lg'
                         placeholder="santander" />
                     <x-input-error for="banco" class="top-full py-0 leading-[12px] text-red-500" />

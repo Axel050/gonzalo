@@ -112,7 +112,8 @@
                                             <img class="max-w-[50px] max-h-[50px]"
                                                 src="{{ Storage::url('imagenes/lotes/default.png') }}">
                                         @endif
-                                        {{ $lote->titulo }} - ${{ number_format($lote->precio_base, 0, ',', '.') }}
+                                        {{ $lote->titulo }} -
+                                        ${{ number_format($lote->ultimoConLote?->precio_base, 0, ',', '.') }}
                                     </li>
                                 @endforeach
                                 @if (strlen($search) > 1 && count($lotes) === 0)

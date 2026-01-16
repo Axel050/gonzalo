@@ -2,11 +2,13 @@
 
 namespace App\Livewire\Admin\Ordenes;
 
+use App\Enums\CarritoLoteEstados;
 use App\Enums\LotesEstados;
 use App\Enums\MotivosCancelaciones;
 use App\Enums\OrdenesEstados;
 use App\Mail\ContratoEmail;
 use App\Models\Adquirente;
+use App\Models\CarritoLote;
 use App\Models\Contrato;
 use App\Models\ContratoLote;
 use App\Models\Garantia;
@@ -116,7 +118,6 @@ class Modal extends Component
     $this->ordenSeleccionada = new Orden();
     $this->estado = 'pendiente';
     $this->tempLotes = [];
-    info("2222222222222");
     // Cargar listas para selects
     // $this->adquirentes = User::where('rol', 'adquirente')
     //   ->orWhere('rol', 'usuario')
@@ -211,8 +212,9 @@ class Modal extends Component
   public function loteSelected($loteId)
   {
     // $lote = Lote::with('moneda')->find($loteId);
-    $lote = Lote::with('ultimoConLote.moneda')->find($loteId);
 
+    // $lote = Lote::with('ultimoConLote.moneda', 'ultimoConLote.precio_base')->find($loteId);
+    $lote = Lote::find($loteId);
     if (!$lote) {
       return;
     }
@@ -226,7 +228,7 @@ class Modal extends Component
 
       $this->tempLotes[] = [
         'lote' => $lote->toArray(),
-        'precio_final' => $lote->precio_base,
+        'precio_final' => $lote->ultimoConLote?->precio_base,
         'moneda_id' => $monedaId,
         'moneda_signo' => $lote->ultimoConLote->moneda->signo ?? '$', // Guardar el signo también
         'moneda_titulo' => $lote->ultimoConLote->moneda->titulo ?? 'Pesos' // Guardar el título
@@ -306,6 +308,8 @@ class Modal extends Component
   }
 
 
+
+
   public function create()
   {
     // Validaciones para creación
@@ -347,6 +351,8 @@ class Modal extends Component
     $this->dispatch("ordenCreated");
   }
 
+
+
   public function update()
   {
     // Validar que al menos quede un lote si no está cancelada
@@ -381,8 +387,71 @@ class Modal extends Component
     $this->ordenSeleccionada->refresh();
     // $this->tempLotes = $this->ordenSeleccionada->lotes->toArray();
 
+
+
+
+    $this->actualizarEstadosPorOrden();
+
+
     $this->dispatch("ordenUpdated");
   }
+
+
+  public function actualizarEstadosPorOrden()
+  {
+    $estadoOrden = $this->ordenSeleccionada->estado;
+
+    $mapaEstados = [
+      'pagada' => [
+        'lote' => LotesEstados::PAGADO,
+        'carrito_lote' => CarritoLoteEstados::PAGADO,
+      ],
+      'cancelada' => [
+        'lote' => LotesEstados::STANDBY,
+        'carrito_lote' => CarritoLoteEstados::CANCELADO,
+      ],
+      'pendiente' => [
+        'lote' => LotesEstados::VENDIDO,
+        'carrito_lote' => CarritoLoteEstados::EN_ORDEN,
+      ],
+    ];
+
+    if (!isset($mapaEstados[$estadoOrden])) {
+      return;
+    }
+
+    foreach ($this->ordenSeleccionada->lotes as $ordenLote) {
+      $lote = $ordenLote->lote;
+
+      if (!$lote) {
+        continue;
+      }
+
+      // Actualizar lote
+      if ($lote->estado !== $mapaEstados[$estadoOrden]['lote']) {
+        $lote->update([
+          'estado' => $mapaEstados[$estadoOrden]['lote'],
+        ]);
+      }
+
+      // Actualizar carrito lote
+      $carritoLote = CarritoLote::where('lote_id', $lote->id)
+        ->whereHas(
+          'carrito',
+          fn($q) =>
+          $q->where('adquirente_id', $this->ordenSeleccionada->adquirente_id)
+        )
+        ->first();
+
+      if ($carritoLote && $carritoLote->estado !== $mapaEstados[$estadoOrden]['carrito_lote']) {
+        $carritoLote->update([
+          'estado' => $mapaEstados[$estadoOrden]['carrito_lote'],
+        ]);
+      }
+    }
+  }
+
+
 
   public function render()
   {

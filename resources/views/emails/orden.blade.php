@@ -5,6 +5,17 @@
     <title>Test Email</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style type="text/css">
+        /* Estilos para móviles */
+
+        img {
+            max-width: 100% !important;
+            height: auto !important;
+            display: block;
+        }
+    </style>
+
 </head>
 
 <body
@@ -50,7 +61,8 @@
                                     {{ $item->lote?->descripcion ?? 'Sin descripción' }}</td>
                                 <td style="border: 1px solid #cccccc; padding: 10px;">
                                     <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $item->lote?->foto1) }}"
-                                        style="width:70px" />
+                                        class="img-lote"
+                                        style="width: auto; height: auto; border-radius: 4px; display: inline-block;max-height:60px" />
                                 </td>
                                 <td style="font-size: 14px; color: #333333; border: 1px solid #cccccc; padding: 10px;">
                                     {{ $item->lote?->moneda_signo }} {{ $item->precio_final ?? 'N/A' }}</td>

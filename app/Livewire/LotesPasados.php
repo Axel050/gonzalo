@@ -8,6 +8,7 @@ use App\Livewire\Traits\WithSearchAndPagination;
 use App\Models\Moneda;
 use App\Models\Subasta;
 use App\Services\SubastaService;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -19,6 +20,8 @@ class LotesPasados extends Component
 
 
   public $monedas;
+
+  #[Locked]
   public Subasta $subasta;
   public $error = null;
 

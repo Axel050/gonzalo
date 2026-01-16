@@ -8,6 +8,7 @@ use App\Livewire\Traits\WithSearchAndPagination;
 use App\Models\Moneda;
 use App\Models\Subasta;
 use App\Services\SubastaService;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -20,6 +21,7 @@ class LotesProximos extends Component
   public $modal;
   public $monedas;
 
+  #[Locked]
   public Subasta $subasta;
 
   protected function searchType(): string

@@ -7,6 +7,7 @@ use App\Livewire\Traits\WithSearchAndPagination;
 use App\Models\Moneda;
 use App\Models\Subasta;
 use App\Services\SubastaService;
+use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -21,6 +22,8 @@ class LotesActivos extends Component
   public $modalPago;
   public $adquirente;
   public $monedas;
+
+  #[Locked]
   public Subasta $subasta;
 
   public $error = null;

@@ -6,6 +6,7 @@ use App\Models\Lote;
 use App\Models\Moneda;
 use App\Models\Subasta;
 use App\Services\SubastaService;
+use Livewire\Attributes\Locked;
 use Livewire\Component;
 
 class Destacados extends Component
@@ -15,6 +16,8 @@ class Destacados extends Component
   public $route;
 
   public $titulo;
+
+  #[Locked]
   public Subasta $subasta;
   public $subasta_id;
   public $monedas;

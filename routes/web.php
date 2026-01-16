@@ -80,34 +80,36 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-// TESTER MAIL 
-Route::get('/test-mail', function () {
+// TESTER MAIL  Contrato
+Route::get('/test-mail/{contratoId}/{email}', function (int $contratoId, string $email) {
 
-  $contratoLotes = ContratoLote::where('contrato_id', 6)->get();
-  $contrato = Contrato::find(5);
+  $contrato = Contrato::findOrFail($contratoId);
+  $contratoLotes = ContratoLote::where('contrato_id', $contratoId)->get();
+
   $data = [
-    'message' => 'Este es un mensaje de prueba',
-    'lotes' => $contratoLotes,
+    'message'   => 'Este es un mensaje de prueba',
+    'lotes'     => $contratoLotes,
     'comitente' => $contrato->comitente?->nombre . " " . $contrato->comitente?->apellido,
-    "id" => $contrato->id,
-    "subasta" => $contrato->subasta_id,
-    "fecha" => $contrato->fecha_firma,
+    'id'        => $contrato->id,
+    'subasta'   => $contrato->subasta_id,
+    'fecha'     => $contrato->fecha_firma,
   ];
 
-  Mail::to("axeldavidpaz@gmail.com")->send(new ContratoEmail($data));
+  if ($email) {
+    Mail::to($email)->send(new ContratoEmail($data));
+  }
+
+  // Devolvemos la vista renderizada para previsualizar en el navegador
   return (new ContratoEmail($data))->render();
-});
+})->name('test.mail');
 
 
-Route::get('/test-mail-orden/{ordenId}/{adquirenteId}', function ($ordenId, $adquirenteId) {
+
+Route::get('/test-mail-orden/{ordenId}', function ($ordenId) {
 
   $orden = Orden::with(['lotes.lote',  'subasta'])->findOrFail($ordenId);
-  $adquirente = Adquirente::findOrFail($adquirenteId);
+  $adquirente = $orden->adquirente;
 
-
-
-  info(["sub" => $orden->subtotal]);
-  info(["new" => $orden->total_final]);
   $fakeData = [
     'message' => "Creación",
     'lotes' => $orden->lotes,
@@ -122,7 +124,7 @@ Route::get('/test-mail-orden/{ordenId}/{adquirenteId}', function ($ordenId, $adq
   ];
 
   if (app()->environment('production')) {
-    // mail::to($adquirente->user?->email)->send(new OrdenEmail($fakeData));
+    mail::to($adquirente->user?->email)->send(new OrdenEmail($fakeData));
   }
   return new OrdenEmail($fakeData); // Se renderiza directamente en el navegador
 });
@@ -144,15 +146,13 @@ Route::get('/test-puja-superada/{loteId}/{adquirenteId}', function ($loteId, $ad
   // if (app()->environment('production')) {
   // mail::to($adquirente->user?->email)->send(new PujaSuperadaEmail($dataMail));
   // }
-  // return new PujaSuperadaEmail($dataMail);
+  return new PujaSuperadaEmail($dataMail);
 
   // Se renderiza directamente en el navegador
 });
 
 
 
-
-// dd("TTTTEEST EL POST ; CREAR UN FORMULARIO CON PSOT ; SIMPLE PARA ASFGURA EL CSRF TOKEN");
 Route::get('/comitentes/crear', [ComitenteController::class, "create"])->name('comitentes.create');
 
 Route::get('/adquirentes/crear', [AdquirenteController::class, "create"])->name('adquirentes.create');
