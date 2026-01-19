@@ -5,13 +5,11 @@
     <div class="  w-full  [&>article]:max-w-5xl flex flex-col gap-y-4">
 
         @livewire('buscador', ['subasta_id' => 1, 'search' => $search, 'view' => true])
-        {{-- <x-search-message :search="$search" /> --}}
-
 
 
         <div class=" bg-casa-black flex  border rounded-full   w-fit  mx-auto pl-3 pr-1 py-0.5 items-center  border-casa-black  {{ $existFrom ? 'justify-between' : 'justify-center' }} "
             wire:show="filtered">
-            {{-- @dump($existFrom) --}}
+
             <p class="text-nowrap text-casa-base-2 ml-2">Resultados para <b>"{{ $search }}"</b></span>
             </p>
 
@@ -35,9 +33,6 @@
 
 
 
-    {{-- @dump($te) --}}
-
-
     {{-- @role('adquirente') --}}
     @if (auth()->user())
         {{-- @if (auth()->user()?->adquirente?->estado_id == 1 || auth()->user()?->adquirente?->garantia($subasta->id) || !auth()->user()?->hasRole('adquirente')) --}}
@@ -57,14 +52,12 @@
                         wire:key="lote-{{ $lote['id'] }}">
 
                         <div class="flex justify-between items-center ">
-                            {{-- 
-                            <p class="font-bold md:text-3xl text-sm w-full  mr-3">{{ $lote['titulo'] }}</p> --}}
+
                             <x-clamp :text="$lote['titulo']" bclass=" ml-1  z-20"
                                 mas="absolute -bottom-2 -right-3 md:right-0 "
                                 menos="absolute right-2 md:top-1/2 top-full " />
 
                             @if ($lote['tipo'] == 'activo')
-                                {{-- @if ($lote['puja_actual'] > 0) --}}
                                 @if ($lote['tienePujas'])
                                     <x-hammer />
                                 @else
@@ -83,14 +76,13 @@
                         <p class="text-xl mb-2 md:block hidden md:order-3">{{ $lote['descripcion'] }}. </p>
 
 
-                        {{-- @dump($lote['base']) --}}
+
 
                         @php
                             $signo;
                         @endphp
                         <p class="md:text-xl text-sm  mt-auto md:order-4 order-3">Base:
                             {{ $lote['precio_base'] }}
-                            {{-- {{ $this->getMonedaSigno($lote['moneda_id']) }}{{ $lote['base'] }} --}}
                         </p>
 
                         @if ($lote['tipo'] == 'activo')
@@ -107,7 +99,7 @@
                         <a href="{{ route('lotes.show', $lote['id']) }}" class="absolute inset-0 d:hidden z-10"></a>
 
 
-                        {{-- <a href="{{ route('lotes.show', $lote['lote_id']) }}" --}}
+
                         <a href="{{ route('lotes.show', $lote['id']) }}"
                             class="hover:text-casa-black bg-casa-black text-gray-50  hover:bg-casa-base  border border-black rounded-full px-4 md:flex items-center justify-between  py-2  w-full  text-xl font-bold mb-2  hidden  order-6">
                             Ver detalle

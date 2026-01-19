@@ -74,11 +74,11 @@ class DesactivarLotesExpirados implements ShouldQueue
                 $nuevoTiempo = $subasta->fecha_fin->addMinutes($minutos);
                 $contratoLote->update(['tiempo_post_subasta_fin' => $nuevoTiempo]);
                 $lote->update(['estado' => LotesEstados::EN_SUBASTA]);
-                info("Asignado tiempo_post_subasta_fin: {$nuevoTiempo} para lote ID: {$lote->id} en subasta ID: {$subasta->id}");
+                // info("Asignado tiempo_post_subasta_fin: {$nuevoTiempo} para lote ID: {$lote->id} en subasta ID: {$subasta->id}");
                 $lotesActualizados = true;
               } elseif ($hasPujas && $contratoLote->tiempo_post_subasta_fin && now()->gt($contratoLote->tiempo_post_subasta_fin)) {
                 // Lote vendido
-                info("Desactivando lote ID: {$lote->id} (vendido, tiempo post-subasta expirado: {$contratoLote->tiempo_post_subasta_fin}, nuevo estado: vendido)");
+                // info("Desactivando lote ID: {$lote->id} (vendido, tiempo post-subasta expirado: {$contratoLote->tiempo_post_subasta_fin}, nuevo estado: vendido)");
                 $contratoLote->update(['estado' => 'inactivo']);
                 $lote->update(['estado' => LotesEstados::VENDIDO]);
                 $lotesActualizados = true;
@@ -87,7 +87,7 @@ class DesactivarLotesExpirados implements ShouldQueue
 
                 //  VER EN DONDE VUELVO A PONER EN ACTIVO EL CONTRATO LOTE  ,  CREO QUE VA DE ACTIVO - a INACTIVO CUANDO TERMINA LA SUBASTA ; SEBERIA VOLVER A PONERLO ACTIVO CUANDO SE CREE EL NUEVO CONTRATO ; ENTONCES YA SERIA UN NUEVO CONTRATO LO TE; ASI QUE UNA VE Z QUE SE PONE INACTIVO ; NO DEBERIA VOLVER A PONERSE ACTIVO ; YA QUE SE PONE INACTIVO CUANDO SE VENDE , o STANDBY ; Y ENTEONES LOEGO SE CREARA OTRO CONTRATO LOTE y CONTATO 
 
-                info("Desactivando lote ID: {$lote->id} (sin pujas, nuevo estado: standby) en subasta ID: {$subasta->id}");
+                // info("Desactivando lote ID: {$lote->id} (sin pujas, nuevo estado: standby) en subasta ID: {$subasta->id}");
                 $contratoLote->update(['estado' => 'inactivo']);
                 $lote->update(['estado' => LotesEstados::STANDBY]);
                 $lotesActualizados = true;
@@ -122,20 +122,20 @@ class DesactivarLotesExpirados implements ShouldQueue
               ->exists();
 
 
-            info("Subasta ID: {$subasta->id} tiene lotes activos con pujas: " . ($hasActiveLotesWithPujas ? 'Sí' : 'No'));
-            info("Subasta ID: {$subasta->id} tiene lotes activos: " . ($hasActiveLotes ? 'Sí' : 'No'));
+            // info("Subasta ID: {$subasta->id} tiene lotes activos con pujas: " . ($hasActiveLotesWithPujas ? 'Sí' : 'No'));
+            // info("Subasta ID: {$subasta->id} tiene lotes activos: " . ($hasActiveLotes ? 'Sí' : 'No'));
 
             if ($hasActiveLotesWithPujas && $subasta->estado !== SubastaEstados::ENPUJA) {
               info("Cambiando subasta ID: {$subasta->id} a estado 'enpuja'");
               $subasta->update(['estado' => SubastaEstados::ENPUJA]);
             } elseif (!$hasActiveLotes && $subasta->estado !== 'inactiva') {
-              info("Desactivando subasta ID: {$subasta->id}");
-              info("ADFFFFFFFF5555");
+              // info("Desactivando subasta ID: {$subasta->id}");
+              // info("ADFFFFFFFF5555");
               $subasta->update(['estado' => SubastaEstados::FINALIZADA]);
-              info("ADFFFFFFFF");
+              // info("ADFFFFFFFF");
 
               $this->crearOrdenesParaSubastaFinalizada($subasta);
-              info("ADFFFFFFF222222222F");
+              // info("ADFFFFFFF222222222F");
             }
           });
 
@@ -157,7 +157,7 @@ class DesactivarLotesExpirados implements ShouldQueue
   // MÉTODO ACTUALIZADO: Crea órdenes con descuento = monto de garantía + Actualiza CarritoLote
   private function crearOrdenesParaSubastaFinalizada(Subasta $subasta)
   {
-    info("CREARRRRRR");
+    // info("CREARRRRRR");
     // Obtener todos los lotes VENDIDO de esta subasta
     $lotesVendidos = $subasta->lotes()
       ->where('estado', LotesEstados::VENDIDO)
@@ -304,12 +304,12 @@ class DesactivarLotesExpirados implements ShouldQueue
           $pujaFinal = $item->lote->getPujaFinal();
           if ($pujaFinal && $pujaFinal->adquirente_id === $adquirenteId) {
             $item->update(['estado' => CarritoLoteEstados::EN_ORDEN]);
-            info("CarritoLote ID: {$item->id} actualizado a 'en_orden' para lote ID: {$item->lote_id} en orden ID: {$orden->id} (ganador: {$pujaFinal->adquirente_id})");
+            // info("CarritoLote ID: {$item->id} actualizado a 'en_orden' para lote ID: {$item->lote_id} en orden ID: {$orden->id} (ganador: {$pujaFinal->adquirente_id})");
           }
         }
 
         $totalNeto = $total - $montoDescuento;
-        info("Creada orden ID: {$orden->id} para adquirente ID: {$adquirenteId} con total: {$total}, descuento (garantía): {$montoDescuento}, total neto: {$totalNeto} en subasta ID: {$subasta->id}");
+        // info("Creada orden ID: {$orden->id} para adquirente ID: {$adquirenteId} con total: {$total}, descuento (garantía): {$montoDescuento}, total neto: {$totalNeto} en subasta ID: {$subasta->id}");
       }
     });
   }

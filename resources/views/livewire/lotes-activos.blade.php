@@ -3,7 +3,6 @@
 
     <div class="  w-full  [&>article]:max-w-5xl flex flex-col gap-y-4">
 
-        {{-- @livewire('buscador', ['subasta_id' => $subasta->id, 'search' => $search]) --}}
         <livewire:buscador :subasta="$subasta" :subasta_id="$subasta->id" :search="$search" />
         <x-search-message :search="$search" />
 
@@ -11,8 +10,6 @@
 
 
 
-    {{-- @dump('check hammer move'd) --}}
-    {{-- @role('adquirente') --}}
     @if (auth()->user())
         {{-- @if (auth()->user()?->adquirente?->estado_id == 1 || auth()->user()?->adquirente?->garantia($subasta->id) || !auth()->user()?->hasRole('adquirente')) --}}
 
@@ -50,11 +47,10 @@
                 !auth()->user()?->hasRole('adquirente')
             ))
 
-            {{-- <x-registrate monto="{{ $subasta->garantia }}" subasta={{}} /> --}}
 
             <article
-                class="g-red-500 flex idden   w-full  lg:justify-center justify-start flex-col  mx-auto lg:px-12 lg:py-12 px-6 py-10  bg-casa-fondo-h border border-casa-black  max-w-8xl">
-                {{-- <h2 class=" font-bold lgtext-3xl  text-xl lg:text-center text-start">¿Como puedo ofertar?</h2> --}}
+                class="flex  w-full  lg:justify-center justify-start flex-col  mx-auto lg:px-12 lg:py-12 px-6 py-10  bg-casa-fondo-h border border-casa-black  max-w-8xl">
+
                 <button
                     class="bg-casa-black hover:bg-transparent hover:text-casa-black border border-casa-black text-casa-base rounded-full px-4 flex items-center justify-between  py-1  col-span-3 mx-auto lg:text-2xl font-semibold text-sm lg:w-fit lg w-full  "
                     wire:click="$set('modalPago',true)">
@@ -92,20 +88,14 @@
                             Si ganás, coordinamos la entrega con vos.</p>
                     </div>
 
-
-
-
                 </div>
 
 
-
-
-                @if ($modalPago)
-                    @livewire('modal-option-pago', ['subasta' => $subasta, 'adquirente' => $adquirente, 'from' => 'lotes'])
-                @endif
-
             </article>
 
+            @if ($modalPago)
+                @livewire('modal-option-pago', ['subasta' => $subasta, 'adquirente' => $adquirente, 'from' => 'lotes'])
+            @endif
         @endif
 
 

@@ -36,7 +36,7 @@ class PantallaPujas extends Component
   #[On('echo:my-channel,SubastaEstado')]
   public function test2(CarritoService $carritoService)
   {
-    // info("SUBASTA ESTADO Evento");
+    info("SUBASTA ESTADO Evento");
     // $this->lotes  =$this->adquirente?->carrito?->lotesFiltrados;
     $this->loadLotes($carritoService);
     $this->dispatch('lotes-updated');
@@ -191,7 +191,7 @@ class PantallaPujas extends Component
       }
       // info([" INDEX  entero  array antes" => $this->lotes[$index]]);
 
-      // $this->dispatch('lotes-updated');
+      $this->dispatch('lotes-updated');
 
 
       $this->dispatch('puja-exitosa', loteId: $loteId);

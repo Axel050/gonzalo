@@ -23,8 +23,7 @@
             {{--  --}}
             <div class="flex  justify-between md:flex-row flex-col md:mt-0 mt-5 ">
                 <div class="flex flex-col md:text-lg lg:text-xl text-sm">
-                    <p>Completá el formulario, contanos qué querés rematar y lo evaluamos sin compromiso.</p>
-                    <p>Podés vender objetos únicos, antiguos, en desuso o con valor histórico o práctico.</p>
+                    <p>Convertí tus objetos en oportunidades reales de venta, nosotros nos ocupamos del resto.</p>
                 </div>
 
                 <a href="{{ route('comitentes.create') }}"
@@ -53,8 +52,7 @@
             <div class="flex  justify-between md:flex-row flex-col md:mt-0 mt-5 ">
 
                 <div class="flex flex-col md:text-lg lg:text-xl  text-sm">
-                    <p>Lorem ipsum dolor sit amet consectetur. Arcu sagittis ornare aliquet morbi justo. </p>
-                    <p>Fringilla egestas nunc nulla eros sed nulla tristique.</p>
+                    <p>Consultanos sobre el proceso, tiempos, comisiones y cualquier detalle que necesites saber.</p>
                 </div>
 
                 <a href="mailto:info@casablanca.ar"
@@ -131,7 +129,8 @@
                         </a>
                     </li>
                     <li>
-                        <a href="" target="_blank">
+                        <a href="https://www.facebook.com/profile.php?id=61586654246260&rdid=VB7wE43ebenqdLPn&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1AVDgpgN6W%2F#"
+                            target="_blank">
                             <svg class="size-8  ">
                                 <use xlink:href="#face-foo"></use>
                             </svg>

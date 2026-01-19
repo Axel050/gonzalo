@@ -80,7 +80,8 @@
                             </svg>
                         </a>
 
-                        <a href="" target="_blank">
+                        <a href="https://www.facebook.com/profile.php?id=61586654246260&rdid=VB7wE43ebenqdLPn&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1AVDgpgN6W%2F#"
+                            target="_blank">
                             <svg fill="#fff" class="size-8 ">
                                 <use xlink:href="#face"></use>
                             </svg>

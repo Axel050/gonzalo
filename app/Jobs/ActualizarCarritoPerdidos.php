@@ -29,6 +29,6 @@ class ActualizarCarritoPerdidos implements ShouldQueue
         'carrito_lotes.updated_at' => now(),
       ]);
 
-    info("ActualizarCarritoLotesPerdidos: {$updated} registros marcados como PERDIDO.");
+    // info("ActualizarCarritoLotesPerdidos: {$updated} registros marcados como PERDIDO.");
   }
 }

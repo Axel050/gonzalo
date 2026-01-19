@@ -1,11 +1,7 @@
 <div class="flex flex-col justify-center items-center  w-full    text-casa-black md:gap-y-24 gap-y-16 pt-12">
 
-
-
-
-
     <div class="  w-full  [&>article]:max-w-5xl flex flex-col gap-y-4">
-        {{-- @livewire('buscador', ['subasta_id' => $subasta->id, 'search' => $search]) --}}
+
         <livewire:buscador :subasta="$subasta" :subasta_id="$subasta->id" :search="$search" />
 
         <x-search-message :search="$search" />
@@ -15,9 +11,6 @@
     {{-- @role('adquirente') --}}
     @if (auth()->user())
         {{-- @if (auth()->user()?->adquirente?->estado_id == 1 || auth()->user()?->adquirente?->garantia($subasta->id) || !auth()->user()?->hasRole('adquirente')) --}}
-
-
-
 
 
 
@@ -45,7 +38,6 @@
 
 
 
-                    {{-- <a href="{{ route('lotes.show', $lote['id']) }}" class="absolute inset-0 md:hidden z-10"></a> --}}
 
 
                     @if ($lote['estado'] == 'vendido')
@@ -54,14 +46,6 @@
                             VENDIDO
                         </p>
                     @else
-                        {{-- <a href="{{ route('lotes.show', $lote['id']) }}"
-                                class="hover:text-casa-black bg-casa-black text-gray-50  hover:bg-casa-base  border border-black rounded-full px-4 flex items-center justify-between  py-2  w-full  text-xl font-bold mb-2 ">
-                                Ver detalle
-                                <svg class="size-8 ">
-                                    <use xlink:href="#arrow-right"></use>
-                                </svg>
-                            </a> --}}
-
                         <a href="{{ route('lotes.show', $lote['id']) }}" class="absolute inset-0 d:hidden z-10"></a>
 
                         <a href="{{ route('lotes.show', $lote['id']) }}"

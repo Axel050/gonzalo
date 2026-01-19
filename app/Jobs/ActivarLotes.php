@@ -26,7 +26,7 @@ class ActivarLotes implements ShouldQueue
         ->where('fecha_inicio', '<=', now())
         ->where('fecha_fin', '>=', now())
         ->each(function ($subasta) {
-          info("Procesando subasta ID: {$subasta->id}, Título: {$subasta->titulo}, Estado: {$subasta->estado}, Fecha inicio: {$subasta->fecha_inicio}");
+          // info("Procesando subasta ID: {$subasta->id}, Título: {$subasta->titulo}, Estado: {$subasta->estado}, Fecha inicio: {$subasta->fecha_inicio}");
 
           if (!$subasta->fecha_inicio || !$subasta->fecha_fin) {
             info("Error: fecha_inicio o fecha_fin es null para subasta ID: {$subasta->id}");
@@ -44,7 +44,7 @@ class ActivarLotes implements ShouldQueue
             )
             ->get();
 
-          info("Antes transacción para subasta ID: {$subasta->id}, lotes: " . $lotes->pluck('id')->toJson());
+          // info("Antes transacción para subasta ID: {$subasta->id}, lotes: " . $lotes->pluck('id')->toJson());
 
           DB::transaction(function () use ($subasta, &$lotesActualizados, $lotes) {
             // Activar la subasta
@@ -56,14 +56,14 @@ class ActivarLotes implements ShouldQueue
 
             // Activar lotes
             foreach ($lotes as $lote) {
-              info("Activando lote ID: {$lote->id} (nuevo estado: ensubasta) en subasta ID: {$subasta->id}");
+              // info("Activando lote ID: {$lote->id} (nuevo estado: ensubasta) en subasta ID: {$subasta->id}");
               $lote->update(['estado' => LotesEstados::EN_SUBASTA]);
               $lotesActualizados = true;
             }
           });
 
           if ($lotesActualizados) {
-            info("Emitiendo evento SubastaEstadoActualizado para subasta ID: {$subasta->id}");
+            // info("Emitiendo evento SubastaEstadoActualizado para subasta ID: {$subasta->id}");
             event(new SubastaEstadoActualizado($subasta));
           }
         });

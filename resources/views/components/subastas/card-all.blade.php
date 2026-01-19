@@ -18,7 +18,7 @@
         ],
         'proxima' => [
             'container' => 'bg-casa-black text-casa-base',
-            'cta' => 'bg-casa-base text-casa-black hover:bg-casa-black hover:text-casa-base',
+            'cta' => 'bg-casa-base text-casa-black hover:bg-casa-black hover:text-casa-base hover:border-casa-base ',
             'label' => 'Ver',
             'enlaceModal' => 'text-casa-base hover:text-casa-base-2',
             'loading' => 'eager',
@@ -76,7 +76,7 @@
         </div>
 
         <a href="{{ $route }}"
-            class="rounded-full px-4 py-2 font-bold h-fit md:relative absolute bottom-3 md:bottom-0 md:w-70 w-[90%] md:text-xl text-md flex items-center justify-between transition-colors duration-300 {{ $config['cta'] }}">
+            class="rounded-full px-4 py-2 font-bold h-fit md:relative absolute bottom-3 md:bottom-0 md:w-70 w-[90%] md:text-xl text-md flex items-center justify-between transition-colors duration-300 border  border-casa-black {{ $config['cta'] }}">
             {{ $config['label'] }}
             <svg class="size-[26px]">
                 <use xlink:href="#arrow-right1"></use>

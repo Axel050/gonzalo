@@ -155,30 +155,14 @@
                         </div>
 
 
-                        {{--
-                        @dump($lote['subastaEnPuja'] && $lote['tiempoFinalizacion'] > now())
-                        @dump($lote['subastaEnPuja'])
-                        @dump($lote['subastaFinalizada'])
-                        @dump($lote['subastaActiva']) --}}
-                        {{-- @dump($lote['esGanador']) --}}
-                        {{-- @dump($lote['loteEnPuja']) --}}
+
 
                         @if ($lote['subastaActiva'])
                             {{-- ================= SUBASTA NO FINALIZADA ================= --}}
 
                             @if ($lote['esGanador'])
-                                <p
-                                    class="text-casa-black border border-black rounded-full px-4 md:py-2 py-1 md:flex items-center justify-center w-full md:text-xl text-sm bg-casa-base mt-auto">
-                                    Ofertaste:
-                                    <b class="ml-1">
-                                        {{ $lote['monedaSigno'] }} {{ $lote['ofertaActualFormateada'] }}
-                                    </b>
-                                </p>
-
-                                <h2
-                                    class="text-casa-black border border-black rounded-full px-4 md:py-2 py-1 w-full md:text-xl text-sm font-bold text-center relative">
-                                    Tu puja es la última
-                                </h2>
+                                <x-front.ofertaste :moneda="$lote['monedaSigno']" :oferta="$lote['ofertaActualFormateada']" />
+                                <x-front.tupujaultima />
                             @else
                                 {{-- @if ($lote['subastaActiva']) --}}
                                 <div class="flex flex-col md:gap-3 gap-2">
@@ -252,24 +236,14 @@
 
                                 <h2
                                     class="text-casa-black border border-black rounded-full px-4 md:py-1.5 py-1 w-full md:text-xl text-sm font-bold text-center mt-0 animate-reverse-pulse">
-                                    ¡Ganaste este <lote!></lote!>
+                                    ¡Ganaste este lote!
                                 </h2>
 
 
                                 {{-- }}} --}}
                             @elseif ($lote['esGanador'] && $lote['loteEnPuja'])
-                                <p
-                                    class="text-casa-black border border-black rounded-full px-4 md:py-2 py-1 md:flex items-center justify-center w-full md:text-xl text-sm bg-casa-base mt-auto">
-                                    Ofertaste:
-                                    <b class="ml-1">
-                                        {{ $lote['monedaSigno'] }} {{ $lote['ofertaActualFormateada'] }}
-                                    </b>
-                                </p>
-
-                                <h2
-                                    class="text-casa-black border border-black rounded-full px-4 md:py-2 py-1 w-full md:text-xl text-sm font-bold text-center relative">
-                                    Tu puja es la última
-                                </h2>
+                                <x-front.ofertaste :moneda="$lote['monedaSigno']" :oferta="$lote['ofertaActualFormateada']" />
+                                <x-front.tupujaultima />
                             @elseif (!$lote['esGanador'] && $lote['loteEnPuja'])
                                 <div class="flex flex-col md:gap-3 gap-2">
                                     <div class="flex bg-base border border-casa-black text-casa-black rounded-full px-4 md:text-xl text-sm font-semibold focus-within:border-casa-black focus-within:ring-1 focus-within:ring-casa-black transition"
@@ -384,6 +358,7 @@
                     </div>
                 </div>
 
+
                 <!-- Timer Section -->
                 @if (!empty($lote['tiempoFinalizacion']))
                     <div x-data="countdownTimer({
@@ -392,7 +367,7 @@
                     })" {{-- Guardamos el valor dinámico en un atributo que Alpine puede leer --}}
                         data-end-time="{{ $lote['tiempoFinalizacion'] }}" x-init="init(); // Llama a init en la carga inicial
                         $wire.on('lotes-updated', () => {
-                            console.log('Evento lotes-updated recibido para lote {{ $lote['id'] }}');
+                            {{-- console.log('Evento lotes-updated recibido para lote {{ $lote['id'] }}'); --}}
                         
                             // $nextTick espera a que Livewire termine de actualizar el DOM
                             // antes de ejecutar nuestro código. Esto es más seguro que setTimeout.
@@ -417,30 +392,12 @@
                 <div class="hidden md:block md:w-[30%]"></div>
             @endif
         @endforeach
-        {{-- @endif --}}
-
-
-        {{-- @else
-            <div class="flex flex-col bg-casa-black px-5 py-10 font-semibold text-casa-base my-30 gap-y-8">
-
-                <h2 class="bg-casa-black md:px-15  mx-auto md:text-3xl text-xl">
-                    ¡Agrega lotes para empezar a pujar!</h2>
-                <a href="{{ route('subastas') }}"
-                    class="bg-casa-base-2 text-casa-black text-xl px-8 py-2 rounded-full w-fit mx-auto text-center">Subastas</a>
-            </div>
-
-        @endif
- --}}
-
-
 
 
     </div>
 
 
     @if ($tieneOrdenes)
-        {{-- <div class="w-full   bg-green-900  "> --}}
-
         <div class="w-full max-w-8xl flex md:flex-row flex-col gap-3  ">
 
             <p class="md:text-3xl font-bold text-sm md:w-1/2 md:text-start text-center w-full">Tenés lotes para
@@ -455,7 +412,6 @@
             </a>
 
         </div>
-        {{-- </div> --}}
     @endif
 
 
@@ -511,11 +467,11 @@
                                 this.timeRemaining = '00:00';
                                 this.isValid = false; // Oculta el contador
                                 clearInterval(this.interval);
-                                console.log(
-                                    `Temporizador detenido para lote ${loteId}: tiempo agotado`);
+                                // console.log(
+                                //     `Temporizador detenido para lote ${loteId}: tiempo agotado`);
 
-                                console.log(
-                                    `Despachando evento 'timer-expired' para el lote ${loteId}`);
+                                // console.log(
+                                //     `Despachando evento 'timer-expired' para el lote ${loteId}`);
                                 this.$dispatch('timer-expired', {
                                     loteId: loteId
                                 });

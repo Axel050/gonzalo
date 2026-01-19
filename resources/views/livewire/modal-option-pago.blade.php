@@ -20,12 +20,18 @@
 
             <div class="flex flex-col   md:px-4 mb-3 col-span-2  ">
                 <h3 class="font-bold text-center  md:mb-1 mb-0.5">Transferencia bancaria.</h3>
-                <p class="text-pretty text-center ">
-                    Podés abonar transfiriendo a : </p>
-                <p class="text-pretty text-center ">alias: <b class="font-semibold">casa-blanca.ar.mp</b>
-                </p>
-                <p class="text-pretty text-center ">CBU: <b class="font-semibold">1212212121</b></p>
-                <p class="text-pretty text-center ">Monto: <b
+                <p class="text-pretty text-center mb-2 ">Podés abonar transfiriendo a : </p>
+                {{-- Titular: Gonzalo San Martín Vivares
+Banco: Santander
+Cuenta: 014-025920/4
+CBU: 0720014488000002592040
+Alias: casablanca.ar
+ --}}
+                <p class="text-pretty text-start ">Titular: <b class="font-semibold">Gonzalo San Martín Vivares</b></p>
+                <p class="text-pretty text-start ">Cuenta: <b class="font-semibold">014-025920/4</b></p>
+                <p class="text-pretty text-start ">CBU: <b class="font-semibold">0720014488000002592040</b></p>
+                <p class="text-pretty text-start ">Alias: <b class="font-semibold">casablanca.ar</b>
+                <p class="text-pretty text-start ">Monto: <b
                         class="font-semibold">${{ number_format($monto, 0, ',', '.') }}</b></p>
 
             </div>

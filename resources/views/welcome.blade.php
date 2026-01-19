@@ -49,7 +49,7 @@
                 <x-fancy-heading text="S{u}bast{a}s o{n}line " variant="italic mx-[0.5px] font-normal text-black "
                     class="text-[33px] sm:text-[57px] md:text-[59px] lg:text-[76px] xl:text-8xl  text-center text-wrap font-normal md:-mb-6 -mb-2 text-black md:!leading-[45px] !leading-[28px]  "
                     tag="h1" />
-                <x-fancy-heading text="par{a} gent{e} re{a}l." variant="italic mx-[0.5px] font-normal text-black "
+                <x-fancy-heading text="par{a} gent{e} re{a}l" variant="italic mx-[0.5px] font-normal text-black "
                     class="text-[33px] sm:text-[57px] md:text-[59px] lg:text-[76px] xl:text-8xl   text-center text-wrap font-normal text-black bg-red200 " />
 
 
