@@ -80,36 +80,6 @@ class LotesProximos extends Component
 
 
 
-  public function loadLotes2()
-  {
-    $search = $this->fallbackAll ? null : $this->search;
-    $conCaracteristicas = !empty($this->search);
-
-
-    $paginator = app(SubastaService::class)->getLotesProximos(
-      $this->subasta,
-      $search,
-      $conCaracteristicas,
-      $this->page,
-      $this->perPage
-    );
-
-    $items = collect($paginator->items())->map(fn($lote) => [
-      'id' => $lote->id,
-      'titulo' => $lote->titulo,
-      'foto' => $lote->foto1,
-      'descripcion' => $lote->descripcion,
-      'precio_base' => $lote->precio_base,
-      'moneda_id' => $lote->moneda_id,
-    ])->toArray();
-
-    $this->lotes = array_merge($this->lotes, $items);
-    $this->hasMore = $paginator->hasMorePages();
-    if ($this->filtered) {
-      $this->filtered = count($this->lotes);
-    }
-  }
-
   public function loadLotes()
   {
     $paginator = $this->fetchData(

@@ -11,6 +11,7 @@ use App\Services\CarritoService;
 use App\Services\SubastaService;
 use DomainException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 use InvalidArgumentException;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -185,7 +186,13 @@ class DetalleLote extends Component
 
 
     $this->subastaService = $subastaService;
-    $this->adquirente = auth()->user()?->adquirente;
+
+
+    $user  = Auth::user();
+
+    $this->adquirente = $user?->adquirente;
+
+
     // $this->lote = Lote::find($this->id);
     // $this->lote = Lote::with([
     //   'tipo.caracteristicas',

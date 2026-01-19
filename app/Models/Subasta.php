@@ -530,4 +530,66 @@ class Subasta extends Model implements Auditable
 
     return $this->lotesPasados()->exists();
   }
+
+
+
+  public function scopeProximas($q)
+  {
+    return $q->where('fecha_inicio', '>=', now());
+  }
+
+  public function scopeFinalizadas($q)
+  {
+    return $q->where('estado', 'finalizada');
+  }
+
+  public function scopeAbiertas($q)
+  {
+    return $q->whereIn('estado', ['activa', 'en_puja']);
+  }
+
+  public function scopeProximasDesc($q)
+  {
+    return $q
+      ->where('fecha_inicio', '>=', now())
+      ->orderBy('id', 'desc');
+  }
+
+  public function scopeFinalizadasDesc($q)
+  {
+    return $q
+      ->where('estado', 'finalizada')
+      ->orderBy('id', 'desc');
+  }
+
+  public function scopeAbiertasDesc($q)
+  {
+    return $q
+      ->whereIn('estado', ['activa', 'en_puja'])
+      ->orderBy('id', 'desc');
+  }
+
+  public function getFechaInicioHumanaAttribute(): ?string
+  {
+    if (!$this->fecha_inicio) return null;
+
+    return sprintf(
+      '%s de %s | %shs',
+      $this->fecha_inicio->translatedFormat('d'),
+      strtoupper($this->fecha_inicio->translatedFormat('M')),
+      $this->fecha_inicio->format('H')
+    );
+  }
+
+  public function getFechaFinHumanaAttribute(): ?string
+  {
+    if (!$this->fecha_fin) return null;
+
+    return sprintf(
+      '%s de %s | %shs',
+      $this->fecha_fin->translatedFormat('d'),
+      strtoupper($this->fecha_fin->translatedFormat('M')),
+      $this->fecha_fin->format('H')
+    );
+  }
 }

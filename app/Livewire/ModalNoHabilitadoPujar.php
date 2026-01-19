@@ -27,30 +27,21 @@ class ModalNoHabilitadoPujar extends Component
   }
 
 
-  public function mp(MPService $mpService)
-  {
+  // public function mp(MPService $mpService)
+  // {
 
-    $route = "/lotes/" . $this->lote;
+  //   $route = "/lotes/" . $this->lote;
 
-    // info(["ROUTE" => $route]);
-    // $subasta = Subasta::find($this->subasta);
-    // info([
-    //   "ANTES PREFERENCE MODAL " => "aaa",
-    //   "subasta garantia" => $subasta->garantia,
-    //   "adquirente" => $this->adquirente,
-    //   "subasta" => $this->subasta,
-    //   "lote" => $this->lote,
-    //   "rpute" => $route,
-    // ]);
 
-    $preference = $mpService->crearPreferencia("Garantia", 1, $this->subasta->garantia, $this->adquirente, $this->subasta->id, $this->lote,  $route);
 
-    if ($preference) {
-      // $this->init = $preference->init_point;
-      return redirect()->away($preference->init_point);
-    }
-    // info(["PPPP" => $preference]);
-  }
+  //   $preference = $mpService->crearPreferencia("Garantia", 1, $this->subasta->garantia, $this->adquirente, $this->subasta->id, $this->lote,  $route);
+
+  //   if ($preference) {
+
+  //     return redirect()->away($preference->init_point);
+  //   }
+
+  // }
 
 
   public function render()

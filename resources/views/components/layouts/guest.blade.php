@@ -31,34 +31,8 @@
     @livewireStyles
 
     <style>
-        .swiper-destacados .swiper-wrapper {
-            /* overflow: hidden; */
-
-            /* background-color: blue; */
-
-        }
-
-        .swiper-subastas .swiper-slide {
-            /* background-color: gray; */
-            width: fit-content;
-        }
-
-
-
-        .swiper-home-subastas .swiper-wrapper {
-            /* background-color: yellow; */
-            /* width: fit-content; */
-
-            /* margin: 0; */
-            /* padding: 0; */
-        }
-
         .swiper-home-subastas .swiper-slide {
             height: auto;
-        }
-
-        .swiper-home-subastas .swiper-slide:last-child {
-            margin-right: 0px !important;
         }
     </style>
 
@@ -88,21 +62,27 @@
 
                     <div class="hidden xl:flex  xl:gap-2 text-casa-base mr-4">
 
-                        <a href="">
+                        <a href="https://www.instagram.com/casablanca.ar.subastasonline/" target="_blank">
                             <svg fill="#fff" class="size-8 ">
                                 <use xlink:href="#instagram"></use>
                             </svg>
                         </a>
 
-                        <a href="">
+                        <a href="https://wa.me/+541130220449" target="_blank">
                             <svg fill="#fff" class="size-8 ">
                                 <use xlink:href="#what"></use>
                             </svg>
                         </a>
 
-                        <a href="">
+                        <a href="mailto:info@casablanca.ar">
                             <svg fill="#fff" class="size-8 ">
                                 <use xlink:href="#mail"></use>
+                            </svg>
+                        </a>
+
+                        <a href="" target="_blank">
+                            <svg fill="#fff" class="size-8 ">
+                                <use xlink:href="#face"></use>
                             </svg>
                         </a>
 
@@ -250,8 +230,6 @@
 
         {{-- </div> --}}
 
-        {{-- Route::get('/adquirentes/crear', [AdquirenteController::class, "create"])->name('adquirentes.create'); --}}
-
 
         @if (!request()->routeIs('adquirentes.create', 'comitentes.create'))
             <x-footer />
@@ -265,7 +243,6 @@
 
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 
-    {{-- <script src="resources/js/echo.js'"></script> --}}
 
     @stack('captcha')
     @stack('timer')

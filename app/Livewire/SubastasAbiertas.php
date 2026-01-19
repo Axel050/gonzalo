@@ -10,7 +10,8 @@ class SubastasAbiertas extends Component
   public function render()
   {
 
-    $subastasAct = Subasta::whereIn('estado', ["activa", "enpuja"])->get();
+    // $subastasAct = Subasta::whereIn('estado', ["activa", "enpuja"])->get();
+    $subastasAct = Subasta::abiertas()->get();
 
     if (!count($subastasAct)) {
       return "<div style='display:none'></div>";

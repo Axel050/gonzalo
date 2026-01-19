@@ -110,23 +110,30 @@
 
                 <ul class="flex  gap-3 col-span-1   justify-end md:order-3  order-2">
                     <li>
-                        <a href="">
+                        <a href="https://www.instagram.com/casablanca.ar.subastasonline/" target="_blank">
                             <svg class="size-8  ">
                                 <use xlink:href="#instagram-foo"></use>
                             </svg>
                         </a>
                     </li>
                     <li>
-                        <a href="">
+                        <a href="https://wa.me/+541130220449" target="_blank">
                             <svg class="size-8  ">
                                 <use xlink:href="#whtz-foo"></use>
                             </svg>
                         </a>
                     </li>
                     <li>
-                        <a href="">
+                        <a href="mailto:info@casablanca.ar">
                             <svg class="size-8  ">
                                 <use xlink:href="#mail-foo"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="" target="_blank">
+                            <svg class="size-8  ">
+                                <use xlink:href="#face-foo"></use>
                             </svg>
                         </a>
                     </li>

@@ -22,78 +22,7 @@
                 class=" md:text-[32px] text-[20px]  text-center text-wrap font-normal " />
 
             @foreach ($subastas as $item)
-                <article
-                    class="w-full flex flex-col md:p-8 md:pb-8 p-4 pb-20 gap-y-1 border border-casa-black relative text-casa-black">
-
-                    <div class="flex gap-x-12">
-
-                        <div class="flex flex-col justify-between items-start w-full">
-
-                            <p class="font-caslon md:text-4xl text-[26px] mb-3">
-                                {{ $item['subasta']['titulo'] }}
-                            </p>
-
-
-                            @php
-                                $fecha = \Carbon\Carbon::parse($item['subasta']['fecha_fin']);
-                                $dia = $fecha->translatedFormat('d'); // 06
-                                $mes = Str::upper($fecha->translatedFormat('M')); // AGO
-                                $hora = $fecha->format('H'); // 11
-                            @endphp
-
-                            <p class="mb-2 md:text-xl text-sm ">Abierta hasta el
-                                <b>{{ $dia }} de {{ $mes }} | {{ $hora }}hs</b>
-                            </p>
-
-
-                            @php
-                                $routeAbi = route('subasta.lotes', $item['subasta']['id']);
-                            @endphp
-
-                            <div class="flex flex-col g-violet-400 w-full md:w-fit ">
-
-                                <p class="md:text-xl text-sm ">{{ $item['subasta']['descripcion'] }} </p>
-
-                                @if ($item['subasta']['desc_extra'])
-                                    <x-modal-desc-extra :titulo="$item['subasta']['titulo']" :desc="$item['subasta']['desc_extra']" :route="$routeAbi" />
-                                @endif
-
-                            </div>
-
-                        </div>
-
-                        <a href="{{ $routeAbi }}"
-                            class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-casa-base rounded-full px-4 flex md:relative absolute bottom-3 md:bottom-0  items-center justify-between  py-2  md:w-70 w-[90%]  md:text-xl text-md font-bold h-fit">
-                            Quiero entrar
-                            <svg class="size-[26px]">
-                                <use xlink:href="#arrow-right1"></use>
-                            </svg>
-                        </a>
-
-                    </div>
-
-
-                    @if ($item['lotes']->isNotEmpty())
-                        <div class="flex justify-center md:mt-8 mt-6 md:max-h-39 max-h-24  w-full overflow-hidden">
-
-                            <div class="swiper-destacados-img   w-full " id="swiper-subastas-{{ $loop->index }}">
-
-                                <div class="swiper-wrapper  ">
-                                    @foreach ($item['lotes'] as $lote)
-                                        <div class="swiper-slide  g-red-500 p-0">
-                                            <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote['foto']) }}"
-                                                class=" w-full max-w-full max-h-full object-contain  "
-                                                alt="{{ $lote['titulo'] }}">
-                                        </div>
-                                    @endforeach
-
-                                </div>
-                            </div>
-
-
-                        </div>
-                    @endif
-                </article>
+                <x-subastas.card-all :subasta="$item['subasta']" tipo="abierta" :lotes="$item['lotes']" :route="route('subasta.lotes', $item['subasta']['id'])" />
             @endforeach
 
         </section>
@@ -110,7 +39,8 @@
 
 
             @foreach ($subastasProx as $subP)
-                <article
+                <x-subastas.card-all :subasta="$subP['subasta']" tipo="proxima" :lotes="$subP['lotes']" :route="route('subasta-proximas.lotes', $subP['subasta']['id'])" />
+                {{-- <article
                     class="w-full bg-casa-black flex flex-col   gap-y-1  md:p-8  md:pb-8  p-4 pb-20 text-casa-base relative">
 
 
@@ -212,7 +142,7 @@
 
 
 
-                </article>
+                </article> --}}
             @endforeach
         </section>
     @endif
@@ -226,7 +156,8 @@
 
 
             @foreach ($subastasFin as $subF)
-                <article
+                <x-subastas.card-all :subasta="$subF['subasta']" tipo="pasada" :lotes="$subF['lotes']" :route="route('subasta-pasadas.lotes', $subF['subasta']['id'])" />
+                {{-- <article
                     class="w-full bg-casa-base-2 flex flex-col md:p-8  md:pb-8  p-4 pb-20   gap-y-1 border border-casa-black/50  relative text-casa-black">
 
 
@@ -267,7 +198,7 @@
 
                                 @if ($subF['subasta']['desc_extra'])
                                     <x-modal-desc-extra :titulo="$subF['subasta']['titulo']" :desc="$subF['subasta']['desc_extra']" :route="$routePas" />
-                                    {{-- <x-modal-desc-extra :titulo="$subF['subasta']['titulo']" :desc="$subF->desc_extra" route="routePas" /> --}}
+                                    
                                 @endif
 
                             </div>
@@ -306,7 +237,7 @@
 
 
 
-                </article>
+                </article> --}}
             @endforeach
         </section>
     @endif

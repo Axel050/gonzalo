@@ -22,7 +22,8 @@ class Destacados extends Component
   public $subasta_id;
   public $monedas;
   public $lote;
-  public $destacados;
+  public $destacados = [];
+
   public $from;
   protected $subastaService;
   public $contador  = false;
@@ -40,12 +41,14 @@ class Destacados extends Component
     $this->subasta = $subasta;
     $this->monedas = Moneda::all();
     // $this->lote = Lote::find(8);
+
     $this->loadLotes();
   }
 
 
   public function loadLotes()
   {
+
     try {
 
 

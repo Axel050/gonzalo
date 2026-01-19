@@ -2,12 +2,8 @@
 
 namespace App\Livewire;
 
-use App\Http\Resources\SubastaHomeResource;
 use App\Http\Resources\SubastasHomeResource;
-use App\Http\Resources\TestResource;
-use App\Models\Subasta;
 use App\Services\SubastaService;
-use Carbon\Carbon;
 
 use Livewire\Component;
 

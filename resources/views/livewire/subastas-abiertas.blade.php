@@ -31,18 +31,11 @@
                             </svg>
                         </div>
 
-                        @php
-                            $fecha = \Carbon\Carbon::parse($subA->fecha_fin);
-                            $dia = $fecha->translatedFormat('d'); // 06
-                            $mes = Str::upper($fecha->translatedFormat('M')); // AGO
-                            $hora = $fecha->format('H'); // 11
-                        @endphp
-
                         <div class="flex flex-col md:text-[17px] lg:text-lg xl:text-xl text-sm">
                             <p>Hasta el</p>
 
 
-                            <b>{{ $dia }} de {{ $mes }} | {{ $hora }}hs</b>
+                            <b>{{ $subA->fecha_fin_humana }}</b>
                         </div>
 
                         <p class="text-xl line-clamp-3">{{ $subA->descripcion }} </p>
@@ -55,7 +48,6 @@
 
 
                     </a>
-                    {{-- @endfor --}}
                 @endforeach
 
             </div>

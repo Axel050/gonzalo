@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Adquirente;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
@@ -11,14 +12,13 @@ class Notificaciones extends Component
   #[On('echo:my-channel,PujaRealizada')]
   public function mostrarNotificacion($event)
   {
-    // info(["TE ALL" => $event]);
-    $user = auth()->user();
+    $user  = Auth::user();
 
     if (!$user) {
       return; // invitado no logueado, no notificamos
     }
 
-    $adquirente = Adquirente::where("user_id", $user->id)->first();
+    $adquirente = $user?->adquirente;
 
     // 🔹 Comprueba si el adquirente actual es el mismo que fue superado
     if ($adquirente && $adquirente->id == $event['ultimoAdquirente']) {

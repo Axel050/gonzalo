@@ -87,21 +87,27 @@
 
                 <div class="flex  gap-3 ">
 
-                    <a href="" class="over:scale-105">
+                    <a href="https://www.instagram.com/casablanca.ar.subastasonline/" target="_blank">
                         <svg fill="#fff" class="size-6 ">
                             <use xlink:href="#instagram"></use>
                         </svg>
                     </a>
 
-                    <a href="" class="over:scale-105">
+                    <a href="https://wa.me/+541130220449" target="_blank">
                         <svg fill="#fff" class="size-6 ">
                             <use xlink:href="#what"></use>
                         </svg>
                     </a>
 
-                    <a href="" class="over:scale-105">
+                    <a href="mailto:info@casablanca.ar">
                         <svg fill="#fff" class="size-6 ">
                             <use xlink:href="#mail"></use>
+                        </svg>
+                    </a>
+
+                    <a href="" target="_blank">
+                        <svg fill="#fff" class="size-6 ">
+                            <use xlink:href="#face"></use>
                         </svg>
                     </a>
 

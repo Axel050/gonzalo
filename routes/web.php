@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdquirenteController;
 use App\Http\Controllers\ComitenteController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SubastaController;
 use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
@@ -15,13 +16,14 @@ use App\Models\Contrato;
 use App\Models\ContratoLote;
 use App\Models\Lote;
 use App\Models\Orden;
-use App\Models\Subasta;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Mail;
 
 Route::get('/test', function () {
   return view('livewire.auth.role-desactivated');
 });
+
+
+
 
 
 Route::get('/dashboard', function () {
@@ -32,32 +34,8 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'active.role'])->name('dashboard');
 
 
-Route::get('/', function () {
-  $subastasProx = Subasta::where('fecha_inicio', '>=', Carbon::now())->get();
-  // $subastasAct = Subasta::whereIn('estado', ["activa", "enpuja"])->get();
-  $subastasFin = Subasta::whereIn('estado', ["finalizada"])->get();
-  $last = Subasta::whereIn('estado', ['activa', 'en_puja'])
-    ->where('fecha_fin', '>', Carbon::now())
-    ->orderBy('fecha_fin', 'asc')
-    ->first();
-  // info(["subastas " => $subastas]);
+Route::get('/',  HomeController::class)->name('home');
 
-
-
-  // $destacados = app(SubastaService::class)->getLotesActivosDestacadosHome()->toArray();
-
-
-  // $contadorDestacados = !empty($destacados);
-
-
-  $showVerifiedModal = request()->has('verified') && request()->query('verified') == 1;
-
-  return view('welcome', compact("last", "showVerifiedModal", 'subastasProx', 'subastasFin'));
-
-
-  // return view('welcome', compact("subastasProx", "subastasAct", "subastasFin", "last", "contadorDestacados", "showVerifiedModal"));
-
-})->name('home');
 
 
 // Route::view('dashboard', 'dashboard')
@@ -157,17 +135,6 @@ Route::get('/comitentes/crear', [ComitenteController::class, "create"])->name('c
 
 Route::get('/adquirentes/crear', [AdquirenteController::class, "create"])->name('adquirentes.create');
 
-// Route::get('/comitentes/test', function () {
-//   return response()->json(['message' => 'Ruta de test funcionando correctamente']);
-// });
-
-// Route::post('/comitentes/store', [ComitenteController::class, 'store'])->name('comitentes.store');
-
-// Route::get('/csrf-token', function () {
-//   return response()->json(['csrf_token' => csrf_token()]);
-// });
-
-
 
 Route::get('/adquirentes/perfil', [AdquirenteController::class, "perfil"])->name('adquirentes.perfil')->middleware('adquirente.logged');
 
@@ -182,7 +149,7 @@ Route::get('/adquirentes/perfil', [AdquirenteController::class, "perfil"])->name
 
 Route::get('/lotes/{id}', function ($id) {
   return view('detalle-lotes', compact("id"));
-})->name('lotes.show')->middleware(['auth', 'verified']);;
+})->name('lotes.show')->middleware(['auth', 'verified']);
 
 Route::get('/pantalla-pujas', function () {
   return view('pantalla-pujas');

@@ -9,6 +9,13 @@
     <style type="text/css">
         /* Estilos para móviles */
 
+        @media only screen and (max-width: 600px) {
+            .main-table {
+                width: 100% !important;
+            }
+
+        }
+
         img {
             max-width: 100% !important;
             height: auto !important;
@@ -20,18 +27,22 @@
 
 <body
     style="font-family: Arial, Helvetica, sans-serif; color: #333333; margin: 0; padding: 20px; background-color: #f4f4f4;">
-    <table align="center" width="600" cellpadding="0" cellspacing="0"
-        style="background-color: #ffffff; border: 1px solid #dddddd; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" class="main-table">
         <tr>
             <td style="padding: 20px;">
                 <h1 style="font-size: 24px; color: #1a73e8; margin: 0 0 20px 0; text-align: center;">CASABLANCA.AR</h1>
+
+
                 <table width="100%">
                     <tr style="font-size: 14px;">
                         <td>Orden: {{ $data['orden_id'] }}</td>
-                        <td>Subasta: {{ $data['subasta_id'] }} - {{ $data['subasta_titulo'] }}</td>
+                        <td style="text-align: right">Subasta: {{ $data['subasta_id'] }} - {{ $data['subasta_titulo'] }}
+                        </td>
                     </tr>
                 </table>
-                {{-- ADDD BTON --}}
+
+
+
                 <br>
 
                 <p style="font-size: 16px; line-height: 1.5; margin: 0 0 20px 0;">{{ $data['message'] }} de orden.

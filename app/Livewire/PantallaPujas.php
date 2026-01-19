@@ -100,7 +100,7 @@ class PantallaPujas extends Component
   {
 
     $this->user  = Auth::user();
-    $this->adquirente = $this->user->adquirente;
+    $this->adquirente = $this->user?->adquirente;
     $this->adquirente_id = $this->adquirente?->id;
 
     $this->loadLotes($service);

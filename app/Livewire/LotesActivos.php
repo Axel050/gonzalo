@@ -7,6 +7,7 @@ use App\Livewire\Traits\WithSearchAndPagination;
 use App\Models\Moneda;
 use App\Models\Subasta;
 use App\Services\SubastaService;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Locked;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -71,7 +72,11 @@ class LotesActivos extends Component
   public function mount(Subasta $subasta)
   {
 
-    $this->adquirente = auth()->user()?->adquirente;
+    $user  = Auth::user();
+
+    $this->adquirente = $user?->adquirente;
+
+
     // info(["porametro " => $this->searchParam]);
     // $this->subastaService = $subastaService;
     $this->subasta = $subasta;
@@ -99,39 +104,6 @@ class LotesActivos extends Component
 
 
 
-  public function loadLotes2()
-  {
-    info("LOadssssssssssssssssssssa");
-    $search = $this->fallbackAll ? null : $this->search;
-    $conCaracteristicas = ! empty($this->search);
-
-    $paginator = app(SubastaService::class)->getLotesActivos(
-      $this->subasta,
-      $search,
-      $conCaracteristicas,
-      $this->page,
-      $this->perPage
-    );
-
-    $items = collect($paginator->items())->map(fn($lote) => [
-      'id' => $lote->id,
-      'titulo' => $lote->titulo,
-      'foto' => $lote->foto1,
-      'descripcion' => $lote->descripcion,
-      'precio_base' => $lote->precio_base,
-      'puja_actual' => $lote->pujas->first()?->monto,
-      'tiempo_post_subasta_fin' => $lote->tiempo_post_subasta_fin,
-      'moneda_id' => $lote->moneda_id,
-      // 'tienePujas' => (bool) $lote->pujas_exists,
-      'tienePujas' => (bool) $lote->pujas->isNotEmpty(),
-    ])->toArray();
-
-    $this->lotes = array_merge($this->lotes, $items);
-    $this->hasMore = $paginator->hasMorePages();
-    if ($this->filtered) {
-      $this->filtered = count($this->lotes);
-    }
-  }
 
   public function loadLotes()
   {
