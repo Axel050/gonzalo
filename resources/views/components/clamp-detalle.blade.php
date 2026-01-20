@@ -20,7 +20,7 @@
     <a href="{{ route($route, $subastaId) }}" title="Ir a subasta" class="flex items-center gap-1 min-w-0">
         <!-- Texto fijo -->
         <span class="whitespace-nowrap">
-            Subastasss:
+            Subasta:
         </span>
 
         <!-- Texto truncado -->
