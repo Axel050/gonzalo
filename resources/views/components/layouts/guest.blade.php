@@ -52,7 +52,7 @@
             class=" sticky top-0 z-50  flex  w-full -200  py-4    text-gray-800  -gray-700 shadw-lg lg:h-20 lg:h30  h16 h-11 items-center hover   bg-casa-base   transition-all duration-1000 ease-in-out hover:opacity-100   mx-auto md:px-16 xl:px-24 px-4  border-b border-casa-black ">
 
 
-            <div class="max-w-8xl  grid lg:grid-cols-5 grid-cols-2  w-full justify-between items-center  mx-auto">
+            <div class="max-w-8xl  md:grid md:grid-cols-5 flex   w-full justify-between items-center  mx-auto">
 
 
 
@@ -152,15 +152,23 @@
                         @role('adquirente')
                             @if (!request()->routeIs('pantalla-pujas'))
                                 <a href="{{ route('pantalla-pujas') }}"
-                                    class=" px-2   hover:scale-105  pt-0.5 flex  items-center rounded-3xl border border-casa-black text-sm"
+                                    class=" px-2   hover:scale-105  pt-0.5 flex  items-center rounded-3xl border border-casa-black text-sm ml-3"
                                     title="Pantalla pujas">
-                                    {{-- <svg fill="#000" class="size-7">
-                                    <use xlink:href="#cart"></use>
-                                </svg> --}}
                                     <x-hammer-icon />
-                                    <span class="pr-0.5">
+                                    <span class="pr-0.5 ">
                                         Pujas
                                     </span>
+                                </a>
+                            @endif
+
+
+                            @if (!request()->routeIs('carrito'))
+                                <a href="{{ route('carrito') }}"
+                                    class=" px-1.5   hover:scale-105  pt-0.5 flex  items-center rounded-3xl border border-casa-black text-sm ml-3 bg-casa-black text-casa-base"
+                                    title="Carrito">
+                                    <svg class="size-7">
+                                        <use xlink:href="#cart"></use>
+                                    </svg>
                                 </a>
                             @endif
                         @endrole
@@ -179,15 +187,28 @@
                     @role('adquirente')
                         @if (!request()->routeIs('pantalla-pujas'))
                             <a href="{{ route('pantalla-pujas') }}"
-                                class=" px-2   mr-3 flex items-center rounded-3xl border border-casa-black  h-7"
+                                class=" pl-2 pr-1   mr-3 flex items-center rounded-3xl border border-casa-black  h-7"
                                 title="Pantalla pujas">
                                 {{-- <svg fill="#fff" class="size-7">
                                 <use xlink:href="#cart"></use>
                             </svg> --}}
                                 <x-hammer-icon />
-                                <span clas="text-xs">Pujas</span>
+                                {{-- <span clas="text-xs">Pujas</span> --}}
                             </a>
                         @endif
+
+                        @if (!request()->routeIs('carrito'))
+                            <a href="{{ route('carrito') }}"
+                                class=" px-2    mr-3 flex items-center rounded-3xl border border-casa-black  h-7 bg-casa-black text-casa-base"
+                                title="Carrito">
+                                <svg class="size-7">
+                                    <use xlink:href="#cart"></use>
+                                </svg>
+
+                            </a>
+                        @endif
+
+
                     @endrole
 
                     <x-dropdownlogfront-mb />

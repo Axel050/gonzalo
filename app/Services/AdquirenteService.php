@@ -4,12 +4,9 @@ namespace App\Services;
 
 use App\Models\Adquirente;
 use App\Models\User;
-use App\Rules\RecaptchaRule;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Http\UploadedFile;
-use Intervention\Image\Drivers\Gd\Driver;
-use Intervention\Image\ImageManager;
+
 
 class AdquirenteService
 {

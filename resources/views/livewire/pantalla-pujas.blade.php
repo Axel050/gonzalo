@@ -13,15 +13,15 @@
         </h3>
 
 
-        @if ($tieneOrdenes)
-            <a href="{{ route('carrito') }}"
-                class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-casa-base rounded-full md:px-4 px-1 flex items-center justify-between  md:py-2 py-0.5 md:text-xl text-xs font-bold  w-fit md: absolute md:right-0 md:top-2  -top-5 right-1  mx-auto -4 md:mt-0">
-                Ver tu carrito
-                <svg class="md:size-[26px] size-[18px] md:ml-5 ml-2">
-                    <use xlink:href="#arrow-right1"></use>
-                </svg>
-            </a>
-        @endif
+        {{-- @if ($tieneOrdenes) --}}
+        <a href="{{ route('carrito') }}"
+            class="bg-casa-black hover:bg-casa-fondo-h border border-casa-black hover:text-casa-black text-casa-base rounded-full md:px-4 px-1 flex items-center justify-between  md:py-2 py-0.5 md:text-xl text-xs font-bold  w-fit md: absolute md:right-0 md:top-2  -top-5 right-1  mx-auto -4 md:mt-0">
+            Ver tu carrito
+            <svg class="md:size-[26px] size-[18px] md:ml-5 ml-2">
+                <use xlink:href="#arrow-right1"></use>
+            </svg>
+        </a>
+        {{-- @endif --}}
     </article>
 
 
@@ -116,22 +116,22 @@
                             </div>
 
                             <!-- Etiquetas y Links -->
-                            <div class=" flex w-full justify-between ">
-                                <ul class="flex gap-4 text-sm mb-2 mt-1 md:mt-0">
+                            <div class=" flex w-full justify-between  ">
+                                <ul class="flex gap-2 text-sm mb-2 mt-1 md:mt-0 overflow-x-hidden pr-1 items-center">
                                     <li
-                                        class="md:px-3 px-2 md:py-2 py-0.5 rounded-full border border-casa-black md:text-sm text-xs">
+                                        class="md:px-3 px-2 md:py-2 py-0.5 rounded-full border border-casa-black md:text-sm text-xs text-nowrap">
                                         <a href="{{ route('lotes.show', $lote['id']) }}" title="Ir a lote">Lote:
                                             {{ $lote['id'] }}</a>
                                     </li>
 
-                                    <li
-                                        class="md:px-3 px-2 md:py-2 py-0.5 rounded-full border border-casa-rojo md:text-sm text-xs text-casa-rojo font-semibold hover:bg-casa-rojo hover:text-casa-base">
-                                        <a href="{{ route($lote['subastaActiva'] ? 'subasta.lotes' : 'subasta-pasadas.lotes', $lote['subastaId']) }}"
-                                            title="Ir a subasta">Subasta: {{ $lote['subastaTitulo'] }}</a>
-                                    </li>
+                                    <x-clamp-sub-puja :subasta_titulo="$lote['subastaTitulo']" :activa="$lote['subastaActiva']" :subasta_id="$lote['subastaId']" />
+
+
+
                                 </ul>
 
-                                <div class="md:inline-block hidden">
+                                <div class="md:inline-block
+                                                hidden">
                                     @if ($lote['subastaActiva'])
                                         @if ($lote['tienePujas'])
                                             <x-hammer />

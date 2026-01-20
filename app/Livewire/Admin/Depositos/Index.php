@@ -86,15 +86,22 @@ class Index extends Component
 
   public function render()
   {
+
+    $terms = $this->query
+      ? preg_split('/\s+/', trim($this->query))
+      : [];
+
     if ($this->query) {
       switch ($this->searchType) {
         case 'id':
           $depositos = Garantia::where("depositos.id", "like", '%' . $this->query . '%');
           break;
         case 'adquirente':
-          $depositos = Garantia::whereHas('adquirente', function ($query) {
-            $query->where('nombre', 'like', '%' . $this->query . '%');
-            $query->orWhere('apellido', 'like', '%' . $this->query . '%');
+          $depositos = Garantia::whereHas('adquirente', function ($query) use ($terms) {
+            $fullSearch = '%' . implode('%', $terms) . '%'; // Ej: '%Juan%Pérez%'
+
+            $query->whereRaw("CONCAT(nombre, ' ', apellido) LIKE ?", [$fullSearch])
+              ->orWhereRaw("CONCAT(apellido, ' ', nombre) LIKE ?", [$fullSearch]);
           });
           break;
         case 'alias':
@@ -117,10 +124,15 @@ class Index extends Component
         case 'todos':
           $depositos = Garantia::where("depositos.id", "like", '%' . $this->query . '%')
             ->orWhere("estado", "like", '%' . $this->query . '%')
-            ->orWhereHas('adquirente', function ($query) {
-              $query->where('nombre', 'like', '%' . $this->query . '%');
-              $query->orWhere('apellido', 'like', '%' . $this->query . '%');
+
+            ->orWhereHas('adquirente', function ($query) use ($terms) {
+              $fullSearch = '%' . implode('%', $terms) . '%';
+              $query->whereRaw("CONCAT(nombre, ' ', apellido) LIKE ?", [$fullSearch])
+                ->orWhereRaw("CONCAT(apellido, ' ', nombre) LIKE ?", [$fullSearch]);
             })
+
+
+
             ->orWhereHas('adquirente.alias', function ($query) {
               $query->where('nombre', 'like', '%' . $this->query . '%');
             })

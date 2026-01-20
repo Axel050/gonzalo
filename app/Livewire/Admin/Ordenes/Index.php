@@ -90,8 +90,15 @@ class Index extends Component
   public function render()
   {
 
+
+
+
     $ordenes = Orden::query();
 
+
+    $terms = $this->query
+      ? preg_split('/\s+/', trim($this->query))
+      : [];
 
     if ($this->query) {
       switch ($this->searchType) {
@@ -100,9 +107,11 @@ class Index extends Component
           break;
 
         case 'adquirente':
-          $ordenes->whereHas('adquirente', function ($query) {
-            $query->where('nombre', 'like', '%' . $this->query . '%')
-              ->orWhere('apellido', 'like', '%' . $this->query . '%');
+          $ordenes->whereHas('adquirente', function ($query) use ($terms) {
+            $fullSearch = '%' . implode('%', $terms) . '%'; // Ej: '%Juan%Pérez%'
+
+            $query->whereRaw("CONCAT(nombre, ' ', apellido) LIKE ?", [$fullSearch])
+              ->orWhereRaw("CONCAT(apellido, ' ', nombre) LIKE ?", [$fullSearch]);
           });
           break;
 
@@ -119,14 +128,17 @@ class Index extends Component
           break;
 
         case 'todos':
-          $ordenes->where(function ($query) {
+          $ordenes->where(function ($query) use ($terms) {
             $query->where('ordens.id', 'like', '%' . $this->query . '%')
               ->orWhere('fecha_pago', 'like', '%' . $this->query . '%')
               ->orWhere('subasta_id', 'like', '%' . $this->query . '%')
-              ->orWhereHas('adquirente', function ($q) {
-                $q->where('nombre', 'like', '%' . $this->query . '%')
-                  ->orWhere('apellido', 'like', '%' . $this->query . '%');
-              });
+
+              ->orWhereHas('adquirente', function ($q) use ($terms) {
+                $fullSearch = '%' . implode('%', $terms) . '%';
+                $q->whereRaw("CONCAT(nombre, ' ', apellido) LIKE ?", [$fullSearch])
+                  ->orWhereRaw("CONCAT(apellido, ' ', nombre) LIKE ?", [$fullSearch]);
+              })
+            ;
           });
           break;
       }

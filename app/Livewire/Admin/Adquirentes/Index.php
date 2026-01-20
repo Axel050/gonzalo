@@ -128,29 +128,35 @@ class Index extends Component
           });
           break;
         case 'todos':
-          // $adquirentes = Adquirente::join('users', 'adquirentes.user_id', '=', 'users.id')
-          //   ->where(function ($query) {
-          //     $query->where("adquirentes.id", "like", '%' . $this->query . '%')
-          //       ->orWhere("adquirentes.nombre", "like", '%' . $this->query . '%')
-          //       ->orWhere("adquirentes.apellido", "like", '%' . $this->query . '%')
-          //       ->orWhere("adquirentes.telefono", "like", '%' . $this->query . '%')
-          //       ->orWhere("adquirentes.CUIT", "like", '%' . $this->query . '%')
-          //       ->orWhere("users.email", "like", '%' . $this->query . '%')
-          //       ->orWhereHas('alias', function ($query) {
-          //         $query->where('nombre', 'like', '%' . $this->query . '%');
-          //       });
-          //   });
+
+
+          $terms = preg_split('/\s+/', trim($this->query));
+
           $adquirentes = Adquirente::join('users', 'adquirentes.user_id', '=', 'users.id')
-            ->select('adquirentes.*')  // Add this to avoid ID conflict
-            ->where(function ($query) {
-              $query->where("adquirentes.id", "like", '%' . $this->query . '%')
-                ->orWhere("adquirentes.nombre", "like", '%' . $this->query . '%')
-                ->orWhere("adquirentes.apellido", "like", '%' . $this->query . '%')
-                ->orWhere("adquirentes.telefono", "like", '%' . $this->query . '%')
-                ->orWhere("adquirentes.CUIT", "like", '%' . $this->query . '%')
-                ->orWhere("users.email", "like", '%' . $this->query . '%')
-                ->orWhereHas('alias', function ($q) {  // Note: Renamed to $q to avoid shadowing
-                  $q->where('nombre', 'like', '%' . $this->query . '%');
+            ->select('adquirentes.*')
+            ->where(function ($query) use ($terms) {
+
+              $search = '%' . $this->query . '%';
+
+              $query->where("adquirentes.id", "like", $search)
+                ->orWhere("adquirentes.telefono", "like", $search)
+                ->orWhere("adquirentes.CUIT", "like", $search)
+                ->orWhere("users.email", "like", $search)
+
+                // 🔥 NOMBRE + APELLIDO POR PALABRAS
+                ->orWhere(function ($q) use ($terms) {
+                  foreach ($terms as $term) {
+                    $like = '%' . $term . '%';
+
+                    $q->where(function ($qq) use ($like) {
+                      $qq->where('adquirentes.nombre', 'like', $like)
+                        ->orWhere('adquirentes.apellido', 'like', $like);
+                    });
+                  }
+                })
+
+                ->orWhereHas('alias', function ($q) use ($search) {
+                  $q->where('nombre', 'like', $search);
                 });
             });
           break;

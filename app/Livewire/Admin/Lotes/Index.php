@@ -296,29 +296,7 @@ class Index extends Component
           });
           break;
         case 'todos':
-          // $lotes->where(function ($query) {
-          //   $query->where('id', 'like', '%' . $this->query . '%')
-          //     ->orWhereHas('comitente', function ($q) {
-          //       $q->where('nombre', 'like', '%' . $this->query . '%')
-          //         ->orWhere('apellido', 'like', '%' . $this->query . '%');
-          //     })
-          //     ->orWhereHas('comitente.alias', function ($q) {
-          //       $q->where('nombre', 'like', '%' . $this->query . '%');
-          //     })
-          //     ->orWhereHas('tipo', function ($q) {
-          //       $q->where('nombre', 'like', '%' . $this->query . '%');
-          //     })
-          //     ->orWhereHas('tipo.encargado', function ($q) {
-          //       $q->where('nombre', 'like', '%' . $this->query . '%')
-          //         ->orWhere('apellido', 'like', '%' . $this->query . '%');
-          //     })
-          //     ->orWhereHas('ultimoContrato', function ($q) {
-          //       $q->where('subasta_id', 'like', '%' . $this->query . '%');
-          //     })
-          //     // ->orWhere('estado', 'like', '%' . $this->query . '%')
-          //     ->orWhere('ultimo_contrato', 'like', '%' . $this->query . '%')
-          //     ->orWhere('titulo', 'like', '%' . $this->query . '%');
-          // });
+
           $lotes->where(function ($query) use ($searchTerm) {
             $query->where('id', 'like', $searchTerm)
               ->orWhereHas('comitente', function ($q) use ($searchTerm) {

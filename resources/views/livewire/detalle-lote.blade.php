@@ -8,7 +8,7 @@
 
 
     <article
-        class=" grid lg:grid-cols-2 grid-cols-1 p-4 lg-blue-600  shadw-lg rounded-2xl  lg:w-auto w-full relative md:mt-8 mt-4 max-w-6xl   md:px-16 xl:px-24">
+        class=" grid lg:grid-cols-2 grid-cols-1 p-4 lg-blue-600  shadw-lg rounded-2xl  lg:w-auto w-full relative md:mt-8 mt-4 max-w-6xl   md:px-16  ">
 
         <button wire:click="loteAnterior"
             class=" p-2 left-2 lg:-left-2  lg:-top-10 -top-7 absolute hover:scale-105 disabled:opacity-10 disabled:cursor-default"
@@ -187,7 +187,7 @@
 
 
         {{-- SECOND --}}
-        <div class="flex flex-col lg:ml-18 pt-4 pl-2  g-red-300 max-w-150  lg:col-start-2   lg:row-end-2 row-start-1">
+        <div class="flex flex-col lg:ml-18 pt-4 pl-2  g-red-300 max-w-150  lg:col-start-2   lg:row-end-2 row-start-1 ">
             <h2
                 class="font-helvetica font-bold lg:text-[30px] text-lg lg:leading-[1.4] tracking-normal   justify-between pr-2  flex">
                 {{ ucfirst($lote->titulo) }}
@@ -205,14 +205,16 @@
 
             </h2>
             <ul
-                class="flex space-x-2 [&>li]:rounded-2xl  [&>li]:px-3 [&>li]:lg:py-1.5 [&>li]:py-0.5  [&>li]:tet-sm my-2 lg:text-base text-sm font-semibold">
+                class="flex space-x-1 [&>li]:rounded-2xl  [&>li]:px-3 [&>li]:lg:py-1.5 [&>li]:py-0.5  [&>li]:tet-sm my-2 lg:text-base text-sm font-semibold overflow-hidden">
                 <li class="">{{ $lote->tipo?->nombre }}</li>
-                <li class="">Lote: {{ $lote->id }}</li>
+                <li class="text-nowrap">Lote: {{ $lote->id }}</li>
 
-                <li class="border border-gray-600">
+                {{-- <li class="border border-gray-600 text-center">
                     <a href="{{ route($route, $subasta->id) }}" title="Ir a subasta {{ $subasta->titulo }}">Subasta:
                         {{ $subasta->titulo }}</a>
-                </li>
+                </li> --}}
+                <x-clamp-detalle :subasta_titulo="$subasta->titulo" :route="$route" :subasta_id="$subasta->id" />
+
 
 
             </ul>

@@ -85,6 +85,10 @@ class Index extends Component
   public function render()
   {
 
+    $terms = $this->query
+      ? preg_split('/\s+/', trim($this->query))
+      : [];
+
 
     if ($this->query) {
 
@@ -94,9 +98,11 @@ class Index extends Component
           $contratos = Contrato::where("id", "like", '%' . $this->query . '%');
           break;
         case 'comitente':
-          $contratos = Contrato::whereHas('comitente', function ($query) {
-            $query->where('nombre', 'like', '%' . $this->query . '%');
-            $query->orWhere('apellido', 'like', '%' . $this->query . '%');
+          $contratos = Contrato::whereHas('comitente', function ($query) use ($terms) {
+            $fullSearch = '%' . implode('%', $terms) . '%'; // Ej: '%Juan%Pérez%'
+
+            $query->whereRaw("CONCAT(nombre, ' ', apellido) LIKE ?", [$fullSearch])
+              ->orWhereRaw("CONCAT(apellido, ' ', nombre) LIKE ?", [$fullSearch]);
           });
           break;
         case 'alias':
@@ -113,9 +119,10 @@ class Index extends Component
 
         case 'todos':
           $contratos = Contrato::where("id", "like", '%' . $this->query . '%')
-            ->orWhereHas('comitente', function ($query) {
-              $query->where('nombre', 'like', '%' . $this->query . '%');
-              $query->orWhere('apellido', 'like', '%' . $this->query . '%');
+            ->orWhereHas('comitente', function ($query) use ($terms) {
+              $fullSearch = '%' . implode('%', $terms) . '%';
+              $query->whereRaw("CONCAT(nombre, ' ', apellido) LIKE ?", [$fullSearch])
+                ->orWhereRaw("CONCAT(apellido, ' ', nombre) LIKE ?", [$fullSearch]);
             })
             ->orWhereHas('comitente.alias', function ($query) {
               $query->where('nombre', 'like', '%' . $this->query . '%');

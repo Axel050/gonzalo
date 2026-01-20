@@ -4,16 +4,21 @@
     :class="{ ' block idden lock transition-all duration-1000': !openSide }"> --}}
 
 
-    <div class="flex   justify-start items-center py-1  border-1  rounded-2xl  border-casa-black  px-2 h-7"
+    <div class="flex   justify-start items-center py-1  border-1  rounded-2xl  border-casa-black  px-1.5 h-7"
         :class="{ 'bg-casa-fondo-h ': open }" @click="open = ! open">
 
         <span class="text-sm text-gray-800" x-show="!open">
-            Menu
+            {{-- Menu --}}
+            <svg fill="#fff" class="size-7 ">
+                <use xlink:href="#menu"></use>
+            </svg>
         </span>
 
         <!-- Cuando está abierto muestra una X -->
         <span class="text-sm text-gray-800" x-show="open">
-            ✖ Cerrar
+            <svg fill="#fff" class="size-7 ">
+                <use xlink:href="#close"></use>
+            </svg>
         </span>
 
     </div>
@@ -27,7 +32,7 @@
 
         <div class=" mx-0 my-2   w-full flex flex-col">
 
-            <div class="flex justify-between  px-2 pt-1  pb-2 border-b border-accent">
+            <div class="flex justify-between  px-1.5 pt-1  pb-2 border-b border-accent">
                 @auth
 
                     <p class="flex justify-between  items-center ">
@@ -50,7 +55,7 @@
 
                     @role(['admin', 'super-admin'])
                         <a href="{{ url('/dashboard') }}"
-                            class="rounded-full px-2 py-0.5  bg-casa-black text-casa-base text-sm flex items-center">
+                            class="rounded-full px-1.5 py-0.5  bg-casa-black text-casa-base text-sm flex items-center">
                             Admin
                         </a>
                     @endrole
@@ -66,7 +71,8 @@
 
 
             <div class="flex justify-between  p-2 border-b border-accent">
-                <div class="flex flex-col items-start gap-2 justify-start">
+
+                <div class="flex flex-col items-start gap-2 justify-start ">
 
                     <a href="{{ route('subastas') }}"
                         class=" text-sm border rounded-full px-3 py-1 border-black hover:text-casa-black bg-casa-black text-casa-base  h-fit w-fit ">
@@ -79,13 +85,13 @@
                     </a>
 
                     <a href="{{ route('comitentes.create') }}"
-                        class=" text-sm border rounded-full px-3 py-1 border-black mr-8 text-black  h-fit  w-fit">
+                        class=" text-sm border rounded-full px-3 py-1 border-black mr-0 text-black  h-fit   text-nowrap">
                         ¿Tenés algo para vender?
                     </a>
 
                 </div>
 
-                <div class="flex  gap-3 ">
+                <div class="flex  gap-3  -translate-x-2">
 
                     <a href="https://www.instagram.com/casablanca.ar.subastasonline/" target="_blank">
                         <svg fill="#fff" class="size-6 ">
