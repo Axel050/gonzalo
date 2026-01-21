@@ -206,14 +206,16 @@
             </h2>
             <ul
                 class="flex space-x-1 [&>li]:rounded-2xl  [&>li]:px-3 [&>li]:lg:py-1.5 [&>li]:py-0.5  [&>li]:tet-sm my-2 lg:text-base text-sm font-semibold overflow-hidden">
-                <li class="">{{ $lote->tipo?->nombre }}</li>
+                <li class="line-clamp-1">{{ $lote->tipo?->nombre }}</li>
                 <li class="text-nowrap">Lote: {{ $lote->id }}</li>
 
                 {{-- <li class="border border-gray-600 text-center">
                     <a href="{{ route($route, $subasta->id) }}" title="Ir a subasta {{ $subasta->titulo }}">Subasta:
                         {{ $subasta->titulo }}</a>
                 </li> --}}
-                <x-clamp-detalle :subasta_titulo="$subasta->titulo" :route="$route" :subasta_id="$subasta->id" />
+                @if ($subasta)
+                    <x-clamp-detalle :subasta_titulo="$subasta->titulo" :route="$route" :subasta_id="$subasta->id" />
+                @endif
 
 
 
@@ -392,13 +394,16 @@
 
     <div class="  w-full  [&>article]:max-w-5xl  md:px-16 xl:px-24">
 
-
-        <livewire:buscador :subasta="$subasta" :subasta_id="$subasta->id" :route="$route" />
+        @if ($subasta)
+            <livewire:buscador :subasta="$subasta" :subasta_id="$subasta->id" :route="$route" />
+        @endif
     </div>
 
 
 
-    <livewire:destacados :subasta="$subasta" :route="$route" :key="'destacados-subasta-' . $lote->id" />
+    @if ($subasta)
+        <livewire:destacados :subasta="$subasta" :route="$route" :key="'destacados-subasta-' . $lote->id" />
+    @endif
 
 
     {{-- @livewire('destacados', ['subasta_id' => $subasta->id, 'route' => $route]) --}}

@@ -45,7 +45,10 @@
 
                 <br>
 
-                <p style="font-size: 16px; line-height: 1.5; margin: 0 0 20px 0;">{{ $data['message'] }} de orden.
+                {{-- <p style="font-size: 16px; line-height: 1.5; margin: 0 0 20px 0;">{{ $data['message'] }} de orden.
+                </p> --}}
+                <p style="font-size: 16px; line-height: 1.5; margin: 0 0 20px 0;">Estos son los detalles de lo que tenes
+                    que abonar.
                 </p>
 
                 <p style="font-size: 16px; font-weight: bold; margin: 0 0 10px 0;">Lotes:</p>
@@ -116,6 +119,43 @@
                             </td>
                         </tr>
                     </tbody>
+                </table>
+
+
+
+
+                <table width="100%" cellpadding="10" cellspacing="0"
+                    style="border-collapse: collapse; border: 1px solid #cccccc; margin-top:10px;">
+                    <tr>
+                        <td>
+                            Podés abonar transfiriendo a :
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            Titular : <b>Gonzalo San Martín Vivares</b>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            Cuenta : <b>014-025920/4</b>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            CBU : <b>0720014488000002592040</b>
+                        </td>
+
+                    </tr>
+                    <tr>
+                        <td>
+                            Alias : <b>casablanca.ar</b>
+                        </td>
+
+                    </tr>
                 </table>
             </td>
         </tr>

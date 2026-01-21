@@ -213,6 +213,12 @@ class DetalleLote extends Component
     $this->base = $this->lote?->ultimoConLote?->precio_base;
     $this->subasta = Subasta::find($this->lote?->ultimoContrato?->subasta_id);
 
+    if (!$this->subasta) {
+      // info($this->lote);
+      // info($this->subasta);
+      // info($this->lote->ultimoContrato() ?? "naa");
+      // dd("aaa");
+    }
     $this->ultimaOferta = $this->lote?->getPujaFinal()?->monto;
     $this->tienePujas = $this->lote->pujas()->exists();
 
@@ -230,25 +236,29 @@ class DetalleLote extends Component
 
     try {
 
+
       $canti = 0;
-      switch ($this->lote->estado) {
-        case LotesEstados::EN_SUBASTA:
-          $canti = $subastaService->getLotesActivosIds($this->subasta, $this->lote->id);
-          break;
+      if ($this->subasta) {
 
-        case LotesEstados::ASIGNADO:
-          $canti = $subastaService->getLotesProximosIds($this->subasta, $this->lote->id);
-          break;
+        switch ($this->lote->estado) {
+          case LotesEstados::EN_SUBASTA:
+            $canti = $subastaService->getLotesActivosIds($this->subasta, $this->lote->id);
+            break;
 
-        case LotesEstados::STANDBY || LotesEstados::DISPONIBLE:
-          $canti = $subastaService->getLotesPasadosIds($this->subasta, $this->lote->id);
-          break;
+          case LotesEstados::ASIGNADO:
+            $canti = $subastaService->getLotesProximosIds($this->subasta, $this->lote->id);
+            break;
+
+          case LotesEstados::STANDBY || LotesEstados::DISPONIBLE:
+            $canti = $subastaService->getLotesPasadosIds($this->subasta, $this->lote->id);
+            break;
+        }
       }
 
 
 
-
-      $this->cantidadLotes = count($canti);
+      // $this->cantidadLotes = count($canti);
+      $this->cantidadLotes = 1;
     } catch (\Exception $e) {
       // Manejar la excepción lanzada desde getLotesPasadosIds (ej. 'Subasta no activa')
 

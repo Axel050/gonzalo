@@ -35,7 +35,11 @@
                                     <option value="">Elija adquirente</option>
                                     @foreach ($adquirentes as $adq)
                                         <option value="{{ $adq->id }}">
-                                            {{ $adq->alias?->nombre }} - {{ $adq->nombre }} {{ $adq->apellido }}
+                                            @if ($adq->alias)
+                                                {{ $adq->alias->nombre }} -
+                                            @endif
+                                            {{ $adq->nombre }} {{ $adq->apellido }}
+
                                         </option>
                                     @endforeach
                                 </select>

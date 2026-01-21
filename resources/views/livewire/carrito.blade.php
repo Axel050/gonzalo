@@ -102,8 +102,9 @@
 
             <div class="flex flex-col   md:p-8 xl:p-12 p-4 border border-casa-black  md:self-stretch ">
                 <h3 class="font-bold md:text-3xl   text-md mb-4">Resumen</h3>
-                <p class="md:text-xl text-sm font-semibold">Lorem ipsum</p>
-                <p class="md:text-xl text-sm mb-3">Vehicula adipiscing pellentesque volutpat dui rhoncus neque urna</p>
+                {{-- <p class="md:text-xl text-sm font-semibold">Lorem ipsum</p> --}}
+                {{-- <p class="md:text-xl text-sm mb-3">Abona los lotes que ganaste</p> --}}
+
 
 
 

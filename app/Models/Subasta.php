@@ -41,6 +41,11 @@ class Subasta extends Model implements Auditable
 
 
 
+  public function depositos()
+  {
+    return $this->hasMany(Garantia::class);
+  }
+
   public function contratos()
   {
     return $this->hasMany(Contrato::class, 'subasta_id');

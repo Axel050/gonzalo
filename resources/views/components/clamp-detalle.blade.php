@@ -36,7 +36,7 @@
         $nextTick(() => check())
     "
             class="ml-0 flex-shrink-0 w-4 h-4
-           flex items-center justify-center pb-1
+           flex items-center justify-center md:pb-1
            text-sm font-bold
            border border-current rounded-full
            hover:bg-white hover:text-casa-rojo

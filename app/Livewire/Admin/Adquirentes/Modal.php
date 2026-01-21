@@ -449,38 +449,47 @@ class Modal extends Component
       // Dentro del método delete()
 
       // check que pasa con los soft delettes , si los boramos al borrar al padre o  que 
+      if ($this->adquirente->carrito?->carritoLotes()->activos()->exists()) {
+        $this->addError('tieneDatos', 'Adquirente con lotes  estado:activo en carrito.');
+        return;
+      }
 
       if ($this->adquirente->carrito?->carritoLotes()->adjudicados()->exists()) {
-        $this->addError('tieneDatos', 'Adquirente  tiene lotes con estado:adjudicado en carrito.).');
+        $this->addError('tieneDatos', 'Adquirente  con lotes estado:adjudicados en carrito.');
         return;
       }
 
       if ($this->adquirente->carrito?->carritoLotes()->enOrden()->exists()) {
-        $this->addError('tieneDatos', 'Adquirente  tiene lotes con estado:en_orden en carrito.');
+        $this->addError('tieneDatos', 'Adquirente con lotes  estado:en_orden en carrito.');
         return;
       }
 
 
-      if ($this->adquirente->garantias()->withTrashed()->pagada()->exists()) {
-        $this->addError('tieneDatos', 'Adquirente con  garantías pagadas.');
+
+      if ($this->adquirente->garantias()->exists()) {
+        $this->addError('tieneDatos', 'Adquirente con  garantías.');
         return;
       }
 
-      if ($this->adquirente->ordenes()->withTrashed()->exists()) {
+      if ($this->adquirente->ordenes()->exists()) {
         $this->addError('tieneDatos', 'Adquirente con  ordenes asociadas.');
         return;
       }
 
-
-      $this->addError('tieneDatos', 'Nquirente porque tiene un carrito asociado.');
-      return;
-
-
-
+      if ($this->adquirente->autorizados()->exists()) {
+        $this->addError('tieneDatos', 'Adquirente con  autorizados creados.');
+        return;
+      }
 
 
-      $this->adquirente->autorizados()->delete();
-      $this->adquirente->user()->delete();
+
+
+
+      if (!$this->adquirente?->carrito()->exists()) {
+        $this->adquirente->user()->delete();
+      }
+
+
       $this->adquirente->delete();
       $this->dispatch('adquirenteDeleted');
     }

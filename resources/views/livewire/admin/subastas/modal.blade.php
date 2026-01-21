@@ -20,7 +20,7 @@
                         </p>
 
 
-                        @error('tieneContratos')
+                        @error('deletedError')
                             <div class ='flex items-center text-base text-red-600  '>
 
                                 <svg class="w-4 h-3.5 mr-1">
