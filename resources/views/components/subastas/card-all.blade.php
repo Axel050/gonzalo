@@ -103,5 +103,3 @@
         </div>
     @endif
 </article>
-
-<a href="{{ $route }}" class="inset-0 absolute z-10"></a>
