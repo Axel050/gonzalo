@@ -17,74 +17,74 @@ class PersonalSeeder extends Seeder
   {
     $personals = [
       [
-        'nombre' => 'Ignacion',
-        'apellido' => 'Fernández',
-        'alias' => 'IFernandez',
-        'role_id' => 2,
-        'CUIT' => '20-54321678-5',
-        'domicilio' => 'Las Heras 345, Mendoza',
-        'telefono' => '3456789012',
+        'nombre' => 'Gonzalo gmail',
+        'apellido' => 'San Martin',
+        'alias' => 'Gon',
+        'role_id' => 1,
+        'CUIT' => '2020',
+        'domicilio' => 'test',
+        'telefono' => '0111544400448',
         'user' => [
-          'name' => 'igncacio FernándezP',
-          'email' => 'ignacion.fernandez@casablanca.com',
-          'password' => bcrypt('12345678'),
+          'name' => 'Gonzalo gmail',
+          'email' => 'gonzismvivares@gmail.com',
+          'password' => bcrypt('gonza12345678'),
         ]
-      ],
-      [
-        'nombre' => 'Marta',
-        'apellido' => 'García',
-        'alias' => 'MGarcia',
-        'role_id' => 2,
-        'CUIT' => '27-34567890-3',
-        'domicilio' => 'Mitre 789, Salta',
-        'telefono' => '7890123456',
-        'user' => [
-          'name' => 'marta GarcíaP',
-          'email' => 'marta.garcia@casablanca.com',
-          'password' => bcrypt('12345678'),
-        ]
-      ],
-      [
-        'nombre' => 'Enzo',
-        'apellido' => 'Pérez',
-        'alias' => 'EPerez',
-        'role_id' => 2,
-        'CUIT' => '20-98765432-1',
-        'domicilio' => 'Roca 123, Tucumán',
-        'telefono' => '1239876543',
-        'user' => [
-          'name' => 'Martín PérezP',
-          'email' => 'martin.perez@casablanca.com',
-          'password' => bcrypt('12345678'),
-        ]
-      ],
-      [
-        'nombre' => 'Mirian',
-        'apellido' => 'Ramírez',
-        'alias' => 'MRamirez',
-        'role_id' => 2,
-        'CUIT' => '27-87654321-9',
-        'domicilio' => 'Corrientes 456, Chaco',
-        'telefono' => '4567891234',
-        'user' => [
-          'name' => 'Mirian RamírezP',
-          'email' => 'mirian.ramirez@casablanca.com',
-          'password' => bcrypt('12345678'),
-        ]
-      ],
-      [
-        'nombre' => 'Lucho',
-        'apellido' => 'González',
-        'alias' => 'LGonzalez',
-        'role_id' => 2,
-        'CUIT' => '20-45612378-5',
-        'domicilio' => 'Belgrano 890, Formosa',
-        'telefono' => '8901234567',
-        'user' => [
-          'name' => 'Lucho GonzálezP',
-          'email' => 'lucho.gonzalez@casablanca.com',
-          'password' => bcrypt('12345678'),
-        ]
+        // ],
+        // [
+        //   'nombre' => 'Marta',
+        //   'apellido' => 'García',
+        //   'alias' => 'MGarcia',
+        //   'role_id' => 2,
+        //   'CUIT' => '27-34567890-3',
+        //   'domicilio' => 'Mitre 789, Salta',
+        //   'telefono' => '7890123456',
+        //   'user' => [
+        //     'name' => 'marta GarcíaP',
+        //     'email' => 'marta.garcia@casablanca.com',
+        //     'password' => bcrypt('12345678'),
+        //   ]
+        // ],
+        // [
+        //   'nombre' => 'Enzo',
+        //   'apellido' => 'Pérez',
+        //   'alias' => 'EPerez',
+        //   'role_id' => 2,
+        //   'CUIT' => '20-98765432-1',
+        //   'domicilio' => 'Roca 123, Tucumán',
+        //   'telefono' => '1239876543',
+        //   'user' => [
+        //     'name' => 'Martín PérezP',
+        //     'email' => 'martin.perez@casablanca.com',
+        //     'password' => bcrypt('12345678'),
+        //   ]
+        // ],
+        // [
+        //   'nombre' => 'Mirian',
+        //   'apellido' => 'Ramírez',
+        //   'alias' => 'MRamirez',
+        //   'role_id' => 2,
+        //   'CUIT' => '27-87654321-9',
+        //   'domicilio' => 'Corrientes 456, Chaco',
+        //   'telefono' => '4567891234',
+        //   'user' => [
+        //     'name' => 'Mirian RamírezP',
+        //     'email' => 'mirian.ramirez@casablanca.com',
+        //     'password' => bcrypt('12345678'),
+        //   ]
+        // ],
+        // [
+        //   'nombre' => 'Lucho',
+        //   'apellido' => 'González',
+        //   'alias' => 'LGonzalez',
+        //   'role_id' => 2,
+        //   'CUIT' => '20-45612378-5',
+        //   'domicilio' => 'Belgrano 890, Formosa',
+        //   'telefono' => '8901234567',
+        //   'user' => [
+        //     'name' => 'Lucho GonzálezP',
+        //     'email' => 'lucho.gonzalez@casablanca.com',
+        //     'password' => bcrypt('12345678'),
+        //   ]
       ]
     ];
 

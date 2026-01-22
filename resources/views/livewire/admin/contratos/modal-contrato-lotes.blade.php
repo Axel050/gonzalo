@@ -227,6 +227,17 @@
             </div>
 
 
+            @error('tieneDatos')
+                <div class ='flex items-center text-base text-red-600  '>
+
+                    <svg class="w-4 h-3.5 mr-1">
+                        <use xlink:href="#error-icon"></use>
+                    </svg>
+                    <p class="lg:max-w-200 leading-[12px]">
+                        {{ $message }}
+                    </p>
+                </div>
+            @enderror
 
             <div
                 class="flex

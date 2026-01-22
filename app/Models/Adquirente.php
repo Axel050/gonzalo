@@ -30,6 +30,7 @@ class Adquirente extends Model implements Auditable
     'banco',
     'alias_bancario',
   ];
+
   public function lotesActivosOAdjudicadosOEnOrdenOCerrados()
   {
     return $this->carrito?->lotes()

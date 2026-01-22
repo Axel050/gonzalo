@@ -70,7 +70,7 @@ class Index extends Component
 
 
 
-  #[On(['comitenteCreated', 'comitenteUpdated', 'comitenteDeleted', 'loteCreated'])]
+  #[On(['comitenteCreated', 'comitenteUpdated', 'comitenteDeleted', 'loteCreated', 'autorizadoCreated'])]
   public function mount()
   {
 

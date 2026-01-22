@@ -69,6 +69,16 @@
                 @endif
 
 
+                @error('tieneDatos')
+                    <div class ='flex items-center !flex-row justify-center text-base text-red-600  '>
+                        <svg class="w-4 h-3.5 mr-1">
+                            <use xlink:href="#error-icon"></use>
+                        </svg>
+                        {{ $message }}
+                    </div>
+                @enderror
+
+
 
 
                 <div class="flex !flex-row gap-6 justify-center lg:text-base text-sm">

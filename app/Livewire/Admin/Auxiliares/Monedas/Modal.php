@@ -108,6 +108,13 @@ class Modal extends Component
     if (!$this->moneda) {
       $this->dispatch('monedaNotExits');
     } else {
+
+
+      if ($this->moneda->contratoLotes()->exists()) {
+        $this->addError('tieneDatos', 'Moneda con contratos  asociados');
+        return;
+      }
+
       $this->moneda->delete();
       $this->dispatch('monedaDeleted');
     }

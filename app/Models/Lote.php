@@ -259,4 +259,22 @@ class Lote extends Model implements Auditable
       'lotes.ultimo_contrato'
     );
   }
+
+
+  public function puedeEliminarse(): ?string
+  {
+    if (Puja::where('lote_id', $this->id)->exists()) {
+      return 'PUJAS';
+    }
+
+    if (CarritoLote::where('lote_id', $this->id)->exists()) {
+      return 'CARRITO';
+    }
+
+    if (OrdenLote::where('lote_id', $this->id)->exists()) {
+      return 'ORDEN';
+    }
+
+    return null;
+  }
 }

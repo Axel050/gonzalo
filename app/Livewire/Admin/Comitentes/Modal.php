@@ -360,14 +360,20 @@ class Modal extends Component
       $this->dispatch('comitenteNotExits');
     } else {
 
-      $tieneContratos = $this->comitente->contrato()->withTrashed()->exists();
+      $tieneContratos = $this->comitente->contrato()->exists();
       if ($tieneContratos) {
         $this->addError('tieneContratos', 'Comitente con contratos  asociados');
         return;
       }
 
 
-      $this->comitente->autorizados()->delete();
+      if ($this->comitente->autorizados()->exists()) {
+        $this->addError('tieneContratos', 'Comitente con  autorizados asociados.');
+        return;
+      }
+
+
+
       $this->comitente->delete();
       $this->dispatch('comitenteDeleted');
     }

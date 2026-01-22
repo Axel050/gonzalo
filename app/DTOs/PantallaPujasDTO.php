@@ -84,7 +84,7 @@ readonly class PantallaPujasDTO implements Wireable
       monedaSigno: $contratoLoteActual?->moneda?->signo ?? '$',
       esGanador: $ultimaPuja?->adquirente_id === $adquirenteId,
       // subastaActiva: $fechaFin ? \Carbon\Carbon::parse($fechaFin222)->gte(now()) : false,
-      subastaActiva: $subasta->isActivaCarrito(),
+      subastaActiva: $subasta?->isActivaCarrito() ?? false,
       // tiempoFinalizacion: $fechaFin ? \Carbon\Carbon::parse($fechaFin)->toDateTimeString() : null,
       // tiempoFinalizacion: $fechaFin222 ? \Carbon\Carbon::parse($fechaFin222)->toDateTimeString() : null,
       tiempoFinalizacion: $tiempoPost,

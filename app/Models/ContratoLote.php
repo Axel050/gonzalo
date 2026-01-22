@@ -10,7 +10,7 @@ use OwenIt\Auditing\Contracts\Auditable;
 class ContratoLote extends Model implements Auditable
 {
   use HasFactory;
-  // use SoftDeletes;
+  use SoftDeletes;
   use \OwenIt\Auditing\Auditable;
 
   protected $fillable = ['contrato_id', 'lote_id', 'precio_base', 'moneda_id', 'tiempo_post_subasta_fin', 'estado'];

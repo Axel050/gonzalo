@@ -239,6 +239,28 @@ class Modal extends Component
     if (!$this->personal) {
       $this->dispatch('personalNotExits');
     } else {
+
+
+      if (
+        $this->personal->tiposBienEncargado()->exists()
+      ) {
+        $this->addError(
+          'delete',
+          'Personal  asignado como ENCARGADO en uno o más tipos de bien.'
+        );
+        return;
+      }
+
+      if (
+        $this->personal->tiposBienSuplente()->exists()
+      ) {
+        $this->addError(
+          'delete',
+          'Personal  asignado como SUPLENTE en uno o más tipos de bien.'
+        );
+        return;
+      }
+
       $this->personal->user->delete();
       $this->personal->delete();
       $this->dispatch('personalDeleted');

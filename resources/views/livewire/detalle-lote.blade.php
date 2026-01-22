@@ -205,9 +205,8 @@
 
             </h2>
             <ul
-                class="flex space-x-1 [&>li]:rounded-2xl  [&>li]:px-3 [&>li]:lg:py-1.5 [&>li]:py-0.5  [&>li]:tet-sm my-2 lg:text-base text-sm font-semibold overflow-hidden">
-                <li class="line-clamp-1">{{ $lote->tipo?->nombre }}</li>
-                <li class="text-nowrap">Lote: {{ $lote->id }}</li>
+                class="flex space-x-2 [&>li]:rounded-2xl  [&>li]:px-3 [&>li]:lg:py-1.5 [&>li]:py-0.5  [&>li]:tet-sm my-2 lg:text-base text-sm font-semibold overflow-hidden">
+                <li class="text-nowrap !px-0 !pr-3">Lote: {{ $lote->id }}</li>
 
                 {{-- <li class="border border-gray-600 text-center">
                     <a href="{{ route($route, $subasta->id) }}" title="Ir a subasta {{ $subasta->titulo }}">Subasta:
@@ -225,6 +224,8 @@
         <div
             class="flex flex-col lg:ml-18 pt-4 pl-2  g-red-300 max-w-150  lg:col-start-2  lg:row-start-2 lg:row-end-3 row-start-3">
 
+
+            <p class="line-clamp-1">{{ $lote->tipo?->nombre }}</p>
 
             <div class="lg:order-1 order-2">
 

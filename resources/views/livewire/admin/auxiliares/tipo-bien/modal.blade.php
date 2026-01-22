@@ -1,6 +1,6 @@
 <x-modal>
 
-    <div class="bg-gray-200  pb-6 text-gray-700  text-start rounded-xl ml-0">
+    <div class="bg-gray-200  pb-8 text-gray-700  text-start rounded-xl ml-0">
         <div class="flex  flex-col justify-center items-center  ">
             <h2 class="lg:text-2xl text-xl mb-2  w-full text-center py-1  border-b border-gray-300 text-white rounded-t-lg"
                 style="{{ $bg }}">
@@ -68,12 +68,19 @@
 
 
 
-
-
-
                 @endif
 
-                <div class="flex !flex-row gap-6 justify-center lg:text-base text-sm">
+                @error('tieneDatos')
+                    <div class ='flex items-center !flex-row justify-center text-base text-red-600  '>
+                        <svg class="w-4 h-3.5 mr-1">
+                            <use xlink:href="#error-icon"></use>
+                        </svg>
+                        {{ $message }}
+                    </div>
+                @enderror
+
+
+                <div class="flex !flex-row gap-6 justify-center lg:text-base text-sm mt-6">
                     <button type="button"
                         class="bg-orange-600 hover:bg-orange-700 mt-4 rounded-lg px-2 lg:py-1 py-0.5 "
                         wire:click="$parent.$set('method',false)">

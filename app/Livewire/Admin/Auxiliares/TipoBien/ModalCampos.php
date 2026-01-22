@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Auxiliares\TipoBien;
 use Livewire\Component;
 use App\Models\Caracteristica;
 use App\Models\TiposBien;
+use App\Models\ValoresCataracteristica;
 use Livewire\Attributes\On;
 
 class ModalCampos extends Component
@@ -91,11 +92,76 @@ class ModalCampos extends Component
   }
 
 
-
-
   public function save()
   {
+    if (! $this->tipo) {
+      return;
+    }
+
+    $actualIds = $this->tipo->tbcaracteristicas
+      ->pluck('id')
+      ->toArray();
+
+    $nuevosIds = collect($this->tempCampos)
+      ->pluck('id')
+      ->toArray();
+
+    /**
+     * 2️⃣ Características que se están quitando
+     */
+    $quitadas = array_diff($actualIds, $nuevosIds);
+
+    /**
+     * 3️⃣ Validar que las quitadas NO estén usadas en lotes
+     */
+    foreach ($quitadas as $caracteristicaId) {
+
+      $usada = ValoresCataracteristica::where('caracteristica_id', $caracteristicaId)
+        ->whereHas('lote', function ($q) {
+          $q->where('tipo_bien_id', $this->tipo->id);
+        })
+        ->exists();
+
+      if ($usada) {
+        $nombre = Caracteristica::find($caracteristicaId)?->nombre;
+
+        $this->addError(
+          'campos',
+          "Campo utilizado en uno o más lotes."
+        );
+        return;
+      }
+    }
+
+    /**
+     * 4️⃣ Preparar data para sync
+     */
     $syncData = [];
+
+    foreach ($this->tempCampos as $campo) {
+      $syncData[$campo['id']] = [
+        'requerido' => $campo['pivot']['requerido'] ?? false,
+      ];
+    }
+
+    /**
+     * 5️⃣ Sincronizar (agrega, actualiza y quita)
+     */
+    $this->tipo->tbcaracteristicas()->sync($syncData);
+
+    /**
+     * 6️⃣ OK
+     */
+    $this->dispatch('campoCreated');
+  }
+
+
+
+  public function save3()
+  {
+    $syncData = [];
+
+
 
     foreach ($this->tempCampos as $campo) {
       $syncData[$campo['id']] = [

@@ -24,39 +24,40 @@ class DatabaseSeeder extends Seeder
 
     $user = User::factory()->create([
       'name' => 'Test User',
-      'email' => 'test@example.com',
-      'password' => bcrypt('12345678'),
+      'email' => 'testcasa92@blanca.com',
+      'password' => bcrypt('blanca_4321'),
     ]);
 
     $user->assignRole("super-admin");
 
-    $this->call(SubastasTableSeeder::class);
+    $this->call(PersonalSeeder::class);
     $this->call(EstadoAdquirenteSeeder::class);
     $this->call(CondicionIvaSeeder::class);
-    $this->call(ComitentesSeeder::class);
-    $this->call(AdquirentesSeeder::class);
-    $this->call(AutorizadosSeeder::class);
     $this->call(MonedaSeeder::class);
+
+    // $this->call(SubastasTableSeeder::class);
+    // $this->call(ComitentesSeeder::class);
+    // $this->call(AdquirentesSeeder::class);
+    // $this->call(AutorizadosSeeder::class);
 
     // $this->call(DeparatamentoPersonalSeeder::class);
 
-    $this->call(PersonalSeeder::class);
-    $this->call(CaracteristicaSeeder::class);
-    $this->call(TipoBienSeeder::class);
-    $this->call(TipoBienCaracteristicaSeeder::class);
+    // $this->call(CaracteristicaSeeder::class);
+    // $this->call(TipoBienSeeder::class);
+    // $this->call(TipoBienCaracteristicaSeeder::class);
     $this->call(EstadosLoteSeeder::class);
-    $this->call(ContratoSeeder::class);
+    // $this->call(ContratoSeeder::class);
 
-    $this->call(LoteSeeder::class);
+    // $this->call(LoteSeeder::class);
 
-    $this->call(ValoresCaracteristicaSeeder::class);
-    $this->call(ProveedorSeeder::class);
-    $this->call(DevolucionSeeder::class);
-    $this->call(FacturaSeeder::class);
-    $this->call(DepositoSeeder::class);
-    $this->call(LoteSubastaSeeder::class);
+    // $this->call(ValoresCaracteristicaSeeder::class);
+    // $this->call(ProveedorSeeder::class);
+    // $this->call(DevolucionSeeder::class);
+    // $this->call(FacturaSeeder::class);
+    // $this->call(DepositoSeeder::class);
+    // $this->call(LoteSubastaSeeder::class);
 
-    $this->call(ContratoLoteSeeder::class);
+    // $this->call(ContratoLoteSeeder::class);
     // $this->call(PujaSeeder::class);
 
     // $this->call(OrdenSeeder::class,);

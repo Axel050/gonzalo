@@ -433,6 +433,9 @@ window.addEventListener('modalOpenedTipoBien', (event) => {
   const selectTomEncargado = document.querySelector("#select-tom-tipo-bien-encargado");
   if (selectTomEncargado) {
     new TomSelect("#select-tom-tipo-bien-encargado", {
+      allowEmptyOption: true,
+      placeholder: 'Elija encargado',
+
       sortField: {
         field: "text",
         direction: "asc"
@@ -451,12 +454,17 @@ window.addEventListener('modalOpenedTipoBien', (event) => {
   const selectTomSuplente = document.querySelector("#select-tom-tipo-bien-suplente");
   if (selectTomSuplente) {
     new TomSelect("#select-tom-tipo-bien-suplente", {
+      allowEmptyOption: true,
+      placeholder: 'Elija encargado',
+      plugins: ['clear_button'],
+
+
       sortField: {
         field: "text",
         direction: "asc"
       },
       onChange: function (value) {
-        Livewire.dispatch('setSuplente', { id: value });
+        Livewire.dispatch('setSuplente', { id: value === '' ? null : value });
       },
       onInitialize: function () {
         if (suplenteId) this.setValue(suplenteId);

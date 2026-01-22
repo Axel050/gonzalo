@@ -22,14 +22,14 @@
                 </h2>
 
                 <div
-                    class=" w-full  flex flex-col lg:grid lg:grid-cols-4 gap-2 lg:gap-x-12 llg:text-lg  text-base lg:px-10 px-2 text-gray-200  [&>div]:flex
+                    class=" w-full  flex flex-col lg:grid lg:grid-cols-4 gap-2 lg:gap-x-12 lg:text-lg  text-base lg:px-10 px-2 text-gray-200  [&>div]:flex
                       [&>div]:flex-col   pt-4 max-h-[85vh] overflow-y-auto">
 
 
 
 
                     @if ($method == 'delete')
-                        <p class="text-center text-gray-600 lg:px-10 px-6 col-span-4"> Esta seguro de eliminar el lote
+                        <p class="text-center text-gray-600 lg:px-10 px-6 col-span-4 "> Esta seguro de eliminar el lote
                             <b>{{ $lote->id }}</b>?
                         </p>
                     @else
@@ -231,9 +231,24 @@
 
 
 
+
+
+
                     @endif
 
-                    <div class="flex !flex-row gap-6 !justify-center lg:text-base text-sm lg:col-span-4  mt-12">
+                    @error('tieneDatos')
+                        <div class ='flex !flex-row items-center  justify-center text-base text-red-600  lg:col-span-4'>
+
+                            <svg class="w-4 h-3.5 mr-1">
+                                <use xlink:href="#error-icon"></use>
+                            </svg>
+                            <p class="lg:max-w-80 leading-[12px]">
+                                {{ $message }}
+                            </p>
+                        </div>
+                    @enderror
+
+                    <div class="flex !flex-row gap-6 !justify-center lg:text-base text-sm lg:col-span-4  mt-6">
 
                         <div class=" flex justify-center gap-x-5 lg:gap-x-8">
 

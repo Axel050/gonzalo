@@ -41,9 +41,20 @@
                     <x-form-item label="Password" model="password" />
                     <x-form-item label="Confirme password" model="password_confirmation" />
 
-
-
                 @endif
+
+
+                @error('delete')
+                    <div
+                        class ='flex items-center !flex-row justify-center text-base text-red-600  lg:col-span-4 grid-cols-1'>
+                        <svg class="w-4 h-3.5 mr-1">
+                            <use xlink:href="#error-icon"></use>
+                        </svg>
+                        {{ $message }}
+                    </div>
+                @enderror
+
+
 
                 <div
                     class="flex

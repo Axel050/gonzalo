@@ -166,6 +166,19 @@ class Modal extends Component
     if (!$this->contrato) {
       $this->dispatch('contratoNotExits');
     } else {
+
+
+
+      if ($this->contrato->contratoLotes()->exists()) {
+        $this->addError(
+          'tieneDatos',
+          "Contrato con lotes asociados."
+        );
+        return;
+      }
+
+
+
       $this->contrato->delete();
       $this->dispatch('contratoDeleted');
     }

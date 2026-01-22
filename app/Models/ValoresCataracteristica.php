@@ -16,4 +16,9 @@ class ValoresCataracteristica extends Model
   {
     return $this->belongsTo(Caracteristica::class, 'caracteristica_id');
   }
+
+  public function lote()
+  {
+    return $this->belongsTo(Lote::class);
+  }
 }

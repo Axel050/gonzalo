@@ -4,10 +4,13 @@ namespace App\Livewire\Admin\Contratos;
 
 use App\Enums\LotesEstados;
 use App\Mail\ContratoEmail;
+use App\Models\CarritoLote;
 use App\Models\Contrato;
 use App\Models\ContratoLote;
 use App\Models\Lote;
 use App\Models\Moneda;
+use App\Models\OrdenLote;
+use App\Models\Puja;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -125,7 +128,9 @@ class ModalContratoLotes extends Component
       $array['moneda_id'] = $lote->ultimoConLote?->moneda_id;
       return $array;
     })->toArray();
-    // info($this->tempLotes);
+    info("tempLotes");
+    info($this->tempLotes);
+    info("EMND");
 
     $this->method = "";
   }
@@ -245,8 +250,7 @@ class ModalContratoLotes extends Component
   {
 
     $this->validate([
-      'tempLotes' => 'required|array|min:1', // Ensures tempLotes is an array with at least one element
-    ], [
+      // 'tempLotes' => 'required|array|min:1',
       'tempLotes.required' => 'Debe agregar al menos un lote.',
       'tempLotes.min' => 'Debe agregar al menos un lote.',
     ]);
@@ -259,6 +263,24 @@ class ModalContratoLotes extends Component
 
 
     $lotesToDelete = array_diff($existingIds, $tempIds);
+
+
+    foreach ($lotesToDelete as $loteId) {
+
+      if (
+        Puja::where('lote_id', $loteId)->exists()
+        || CarritoLote::where('lote_id', $loteId)->exists()
+        || OrdenLote::where('lote_id', $loteId)->exists()
+      ) {
+        $this->addError(
+          'tieneDatos',
+          "El lote ID {$loteId} no puede quitarse del contrato porque ya tuvo actividad."
+        );
+        return;
+      }
+    }
+
+
     if (!empty($lotesToDelete)) {
 
       ContratoLote::where('contrato_id', $this->contrato->id)
@@ -266,27 +288,40 @@ class ModalContratoLotes extends Component
         ->delete();
 
       Lote::whereIn('id', $lotesToDelete)
-        ->update(['estado' => LotesEstados::DISPONIBLE]);
+        ->update([
+          'estado' => LotesEstados::DISPONIBLE,
+          'ultimo_contrato' => null,
+        ]);
     }
 
     foreach ($this->tempLotes as $tempLote) {
+
 
       if ($tempLote['id']) {
 
 
 
-        $contratoLote = ContratoLote::where('contrato_id', $this->contrato->id)
+
+        $contratoLote = ContratoLote::withTrashed()->where('contrato_id', $this->contrato->id)
           ->where('lote_id', $tempLote['id'])
           ->first();
 
         if ($contratoLote) {
-          info(["INTOOOO" => $tempLote['precio_base']]);
+
+
+          if ($contratoLote->trashed()) {
+            $contratoLote->restore();
+            Lote::find($tempLote['id'])->update(['ultimo_contrato' => $this->contrato->id, "estado"  => LotesEstados::ASIGNADO]);
+          }
+
+
+          // info(["INTOOOO" => $tempLote['precio_base']]);
           $contratoLote->update([
             'precio_base' => $tempLote['precio_base'],
             'moneda_id' => $tempLote['moneda_id'],
           ]);
         } else {
-          info("INTOOOO eeeslllllllseeee");
+          // info("INTOOOO eeeslllllllseeee");
           ContratoLote::create([
             "contrato_id" => $this->contrato->id,
             "lote_id" => $tempLote['id'],

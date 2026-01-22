@@ -477,7 +477,7 @@ class Modal extends Component
       }
 
       if ($this->adquirente->autorizados()->exists()) {
-        $this->addError('tieneDatos', 'Adquirente con  autorizados creados.');
+        $this->addError('tieneDatos', 'Adquirente con  autorizados asociados.');
         return;
       }
 

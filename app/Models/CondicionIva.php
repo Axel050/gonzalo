@@ -7,9 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class CondicionIva extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = [
-        'nombre', 
-    ];
+  protected $fillable = [
+    'nombre',
+  ];
+
+  public function adquirentes()
+  {
+    return $this->hasMany(Adquirente::class, 'condicion_iva_id');
+  }
 }

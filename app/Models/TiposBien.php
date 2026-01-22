@@ -55,4 +55,9 @@ class TiposBien extends Model
   //           return $this->hasMany(TipoBienCataracteristica::class,"tipo_bien_id");
   // }
 
+
+  public function lotes()
+  {
+    return $this->hasMany(Lote::class, 'tipo_bien_id');
+  }
 }

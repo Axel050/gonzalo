@@ -55,7 +55,7 @@
                     <p>Consultanos sobre el proceso, tiempos, comisiones y cualquier detalle que necesites saber.</p>
                 </div>
 
-                <a href="mailto:info@casablanca.ar"
+                <a href="https://wa.me/+541130220449" target="_blank"
                     class="bg-casa-fondo hover:bg-transparent hover:text-casa-base text-casa-black rounded-full px-4 flex items-center justify-between gap-x-5 py-2  border border-casa-fondo-h text-nowrap md:text-lg lg::text-xl  text-sm font-bold h-fit self-start md:w-fit w-full md:mt-0 mt-5">
                     Contactanos
                     <svg fill="#fff" class="size-[26px]    md:ml-3 lg:ml-8 ">

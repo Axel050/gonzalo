@@ -142,6 +142,19 @@ class Modal extends Component
     if (!$this->tipo) {
       $this->dispatch('tipoNotExits');
     } else {
+
+      // 2️⃣ Tiene opciones definidas
+      if ($this->tipo->lotes()->exists()) {
+        $this->addError('tieneDatos', 'Tipo de bien asociado con lotes.');
+        return;
+      }
+
+      if ($this->tipo->tbcaracteristicas()->exists()) {
+        $this->addError('tieneDatos', 'Tipo de bien asociado con campos.');
+        return;
+      }
+
+
       $this->tipo->tbcaracteristicas()->delete();
       $this->tipo->delete();
       $this->dispatch('tipoDeleted');

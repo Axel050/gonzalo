@@ -3,6 +3,8 @@
 namespace App\Livewire\Admin\Auxiliares\Caracteristicas;
 
 use App\Models\Caracteristica;
+use App\Models\ValoresCataracteristica;
+use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 
 class Modal extends Component
@@ -150,6 +152,21 @@ class Modal extends Component
 
       if ($this->tipo === 'select') {
         // Eliminar opciones existentes
+
+        $opcionesEnUso = ValoresCataracteristica::where('caracteristica_id', $this->caracteristica->id)
+          ->pluck('valor')
+          ->unique()
+          ->toArray();
+
+        $opcionesEliminadas = array_diff($opcionesEnUso, $this->opciones);
+
+        if (!empty($opcionesEliminadas)) {
+          $this->addError('tieneDatos', 'Opción asociada a lotes.');
+          $this->mount();
+          return;
+        }
+
+
         $this->caracteristica->opciones()->delete();
         // Crear nuevas opciones
         foreach ($this->opciones as $opcion) {
@@ -173,6 +190,42 @@ class Modal extends Component
     if (!$this->caracteristica) {
       $this->dispatch('caracteristicaNotExits');
     } else {
+
+      if (
+        DB::table('tipo_bien_caracteristicas')
+        ->where('caracteristica_id', $this->caracteristica->id)
+        ->exists()
+      ) {
+        $this->addError(
+          'tieneDatos',
+          'Característica está asociada a uno o más tipos de bien.'
+        );
+        return;
+      }
+
+      // 2️⃣ Tiene opciones definidas
+      if ($this->caracteristica->opciones()->exists()) {
+        $this->addError(
+          'tieneDatos',
+          'Característica tiene opciones configuradas.'
+        );
+        return;
+      }
+
+      // 3️⃣ Fue usada en algún lote
+      if (
+        DB::table('valores_cataracteristicas')
+        ->where('caracteristica_id', $this->caracteristica->id)
+        ->exists()
+      ) {
+        $this->addError(
+          'tieneDatos',
+          'Característica ya fue utilizada en lotes.'
+        );
+        return;
+      }
+
+
       $this->caracteristica->delete();
       $this->dispatch('caracteristicaDeleted');
     }

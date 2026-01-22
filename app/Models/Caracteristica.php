@@ -26,4 +26,9 @@ class Caracteristica extends Model
   //     // ->withPivot('requerido')
   //     ->withTimestamps();
   // }
+
+
+
+
+
 }

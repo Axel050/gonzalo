@@ -739,7 +739,6 @@ class Modal extends Component
 
   public function deleteImg($mod)
   {
-    info($mod);
     $this->reset($mod);
   }
 
@@ -749,6 +748,29 @@ class Modal extends Component
     if (!$this->lote) {
       $this->dispatch('loteNotExits');
     } else {
+
+
+
+
+      $motivo = $this->lote->puedeEliminarse();
+
+      if ($motivo) {
+        $mensajes = [
+          'PUJAS'   => 'Lote tiene pujas registradas.',
+          'CARRITO' => 'Lote está o estuvo en un carrito.',
+          'ORDEN'   => 'Lote  asociado a una orden.',
+        ];
+
+        $this->addError('tieneDatos', $mensajes[$motivo]);
+        return;
+      }
+
+
+      $this->deleteLoteImages($this->lote);
+
+
+
+      dd("aaa");
       $this->lote->delete();
       $this->dispatch('loteDeleted');
     }
@@ -761,6 +783,22 @@ class Modal extends Component
   }
 
 
+
+  protected function deleteLoteImages(Lote $lote): void
+  {
+    $paths = [
+      'imagenes/lotes/normal/',
+      'imagenes/lotes/thumbnail/',
+    ];
+
+    foreach (['foto1', 'foto2', 'foto3', 'foto4'] as $field) {
+      if ($lote->$field) {
+        foreach ($paths as $path) {
+          Storage::disk('public')->delete($path . $lote->$field);
+        }
+      }
+    }
+  }
 
 
 

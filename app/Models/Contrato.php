@@ -36,6 +36,12 @@ class Contrato extends Model implements Auditable
   public function lotes()
   {
     return $this->belongsToMany(Lote::class, 'contrato_lotes', 'contrato_id', 'lote_id')
-      ->withPivot('precio_base'); // Incluir el campo adicional de la tabla pivote
+      ->withPivot('precio_base')
+      ->wherePivotNull('deleted_at');
+  }
+
+  public function contratoLotes()
+  {
+    return $this->hasMany(ContratoLote::class);
   }
 }

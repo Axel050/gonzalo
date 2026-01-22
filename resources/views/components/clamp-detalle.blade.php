@@ -35,15 +35,20 @@
         expanded = !expanded;
         $nextTick(() => check())
     "
-            class="ml-0 flex-shrink-0 w-4 h-4
-           flex items-center justify-center md:pb-1
-           text-sm font-bold
-           border border-current rounded-full
+            class="ml-0 flex-shrink-0 
+                          rounded-4xl
            hover:bg-white hover:text-casa-rojo
            transition"
             type="button" aria-label="Expandir / contraer" title="">
-            <span x-show="!expanded" title="ver mas">+</span>
-            <span x-show="expanded" title="ver menos">−</span>
+            {{-- <span x-show="!expanded" title="ver mas">+</span> --}}
+            <svg class="md:size-[24px] size-[22px]" x-show="!expanded" title="ver mas">
+                <use xlink:href="#plus"></use>
+            </svg>
+
+            <svg class="md:size-[24px] size-[22px]" x-show="expanded" title="ver menos"
+                :class="{ 'bg-casa-rojo rounded-4xl text-casa-base hover:text-casa-rojo hover:bg-casa-base': expanded }">
+                <use xlink:href="#minus"></use>
+            </svg>
         </button>
 
 
