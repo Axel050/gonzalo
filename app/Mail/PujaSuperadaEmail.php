@@ -33,7 +33,7 @@ class PujaSuperadaEmail extends Mailable
   {
     return new Envelope(
       // from: 'info@casablanca.ar',
-      from: new Address('info@casablanca.ar', 'CASABLANCA'),
+      from: new Address('info@casablanca.ar', 'Casablanca'),
       subject: 'Puja superada',
     );
   }

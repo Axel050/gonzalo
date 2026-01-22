@@ -768,9 +768,6 @@ class Modal extends Component
 
       $this->deleteLoteImages($this->lote);
 
-
-
-      dd("aaa");
       $this->lote->delete();
       $this->dispatch('loteDeleted');
     }

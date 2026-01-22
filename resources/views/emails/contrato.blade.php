@@ -130,9 +130,7 @@
                 </div>
 
                 <br>
-                <p style="font-size: 12px; color: #999; text-align: center;">
-                    Este es un correo automático, por favor no responda.
-                </p>
+
             </td>
         </tr>
     </table>
