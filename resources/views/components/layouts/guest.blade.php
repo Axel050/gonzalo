@@ -101,7 +101,7 @@
                             ¿Primera vez?
                         </a>
                     @else
-                        <a href="{{ route('comitentes.create') }}"
+                        <a href="{{ route('terminos-comitentes') }}"
                             class=" hover:bg-casa-fondo-h text-sm border rounded-full px-4  py-2 border-black xl:mr-2 md:mr-1 text-black  h-fit lg:flex hidden ">
                             ¿Tenés algo para vender?
                         </a>

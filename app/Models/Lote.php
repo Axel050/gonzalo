@@ -31,7 +31,11 @@ class Lote extends Model implements Auditable
     'comitente_id',
     'ultimo_contrato',
     "destacado",
-    'desc_extra'
+    'desc_extra',
+    'foto5',
+    'foto6',
+    'foto7',
+    'foto8',
   ];
 
   public function valoresCaracteristicas()

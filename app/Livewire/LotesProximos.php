@@ -94,7 +94,7 @@ class LotesProximos extends Component
 
     $this->lotes   = array_merge($this->lotes, $dto->data);
     $this->hasMore = $dto->has_more;
-    info(["LOTES PROXIMOS" => $this->lotes]);
+    // info(["LOTES PROXIMOS" => $this->lotes]);
 
     if ($this->filtered !== null) {
       $this->filtered = count($this->lotes);

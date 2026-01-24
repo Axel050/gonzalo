@@ -20,6 +20,9 @@ use Illuminate\Support\Facades\Route;
 
 // Route::post('/adquirentes/store', [AdquirenteController::class, 'store'])->name('adquirentes.store');
 
+// Route::middleware('auth:sanctum')->get('/adquirentes/perfil', [AdquirenteController::class, 'perfilGet'])->name('adquirentes.perfil');
+// Route::middleware('auth:sanctum')->put('/adquirentes/perfil', [AdquirenteController::class, 'perfilUpd'])->name('adquirentes.perfil');
+
 
 
 // Route::middleware('auth:sanctum')->get('/subastas/{subasta}/lotes', [SubastaController::class, 'getLotesActivos']);

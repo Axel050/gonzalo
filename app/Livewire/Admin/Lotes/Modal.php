@@ -36,10 +36,9 @@ class Modal extends Component
 
   public $historial;
 
-  public $foto1;
-  public $foto2;
-  public $foto3;
-  public $foto4;
+  public $foto1, $foto2, $foto3, $foto4;
+  public $foto5, $foto6, $foto7, $foto8;
+
 
   public $comitente;
 
@@ -80,6 +79,7 @@ class Modal extends Component
   public $titulo;
 
   public $formData = [];
+
   public $rules  = [
     'comitente_id' => 'required',
     'tipo_bien_id' => 'required|exists:tipos_biens,id',
@@ -88,10 +88,7 @@ class Modal extends Component
     'estado' => 'required',
     'fraccion_min' => 'required|numeric|min:1',
     'moneda_id' => 'required',
-
   ];
-
-
 
 
 
@@ -143,99 +140,82 @@ class Modal extends Component
     }
   }
 
+
+
+  protected function validateFoto(string $field): void
+  {
+    $this->resetErrorBag($field);
+
+    try {
+      $file = $this->{$field};
+
+      if (! $file) {
+        return;
+      }
+
+      if (
+        $this->isDangerousExtension($file) ||
+        ! in_array($file->getMimeType(), [
+          'image/jpeg',
+          'image/png',
+          'image/webp',
+        ], true)
+      ) {
+        $this->addError($field, 'Tipo de archivo no permitido');
+        $this->reset($field);
+        return;
+      }
+
+      $this->validate(
+        [
+          $field => 'file|max:20000|mimetypes:image/jpeg,image/png,image/webp',
+        ],
+        [
+          "$field.max" => 'Menor a 20mb',
+        ]
+      );
+    } catch (\Illuminate\Validation\ValidationException $e) {
+      if ($this->{$field}) {
+        @unlink($this->{$field}->getRealPath());
+      }
+
+      $this->addError($field, $e->validator->errors()->first($field));
+      $this->reset($field);
+    }
+  }
+
+
+
   public function updatedFoto2()
   {
-
-    $this->resetErrorBag('foto2');
-    try {
-
-      if (
-        $this->isDangerousExtension($this->foto2) ||
-        ! in_array($this->foto2->getMimeType(), [
-          'image/jpeg',
-          'image/png',
-          'image/webp',
-        ], true)
-      ) {
-        $this->addError('foto2', 'Tipo de archivo no permitido');
-        $this->reset('foto2');
-        return;
-      }
-
-      $this->validate(
-        [
-          'foto2' => 'file|max:20000|mimetypes:image/jpeg,image/png',
-        ],
-        ['foto2.max' => "Menor a 20mb"]
-      );
-    } catch (\Illuminate\Validation\ValidationException $e) {
-      unlink($this->foto2->getRealPath());
-      $this->addError('foto2', $e->validator->errors()->first('foto2'));
-      $this->reset('foto2');
-    }
+    $this->validateFoto('foto2');
   }
-
   public function updatedFoto3()
   {
-    $this->resetErrorBag('foto3');
-    try {
-
-      if (
-        $this->isDangerousExtension($this->foto3) ||
-        ! in_array($this->foto3->getMimeType(), [
-          'image/jpeg',
-          'image/png',
-          'image/webp',
-        ], true)
-      ) {
-        $this->addError('foto3', 'Tipo de archivo no permitido');
-        $this->reset('foto3');
-        return;
-      }
-
-      $this->validate(
-        [
-          'foto3' => 'file|max:20000|mimetypes:image/jpeg,image/png',
-        ],
-        ['foto3.max' => "Menor a 20mb"]
-      );
-    } catch (\Illuminate\Validation\ValidationException $e) {
-      unlink($this->foto3->getRealPath());
-      $this->addError('foto3', $e->validator->errors()->first('foto3'));
-      $this->reset('foto3');
-    }
+    $this->validateFoto('foto3');
   }
-
   public function updatedFoto4()
   {
-    $this->resetErrorBag('foto4');
-    try {
-
-      if (
-        $this->isDangerousExtension($this->foto4) ||
-        ! in_array($this->foto4->getMimeType(), [
-          'image/jpeg',
-          'image/png',
-          'image/webp',
-        ], true)
-      ) {
-        $this->addError('foto4', 'Tipo de archivo no permitido');
-        $this->reset('foto4');
-        return;
-      }
-
-      $this->validate(
-        [
-          'foto4' => 'file|max:20000|mimetypes:image/jpeg,image/png',
-        ],
-        ['foto4.max' => "Menor a 20mb"]
-      );
-    } catch (\Illuminate\Validation\ValidationException $e) {
-      unlink($this->foto4->getRealPath());
-      $this->addError('foto4', $e->validator->errors()->first('foto4'));
-      $this->reset('foto4');
-    }
+    $this->validateFoto('foto4');
   }
+
+  public function updatedFoto5()
+  {
+    $this->validateFoto('foto5');
+  }
+  public function updatedFoto6()
+  {
+    $this->validateFoto('foto6');
+  }
+  public function updatedFoto7()
+  {
+    $this->validateFoto('foto7');
+  }
+  public function updatedFoto8()
+  {
+    $this->validateFoto('foto8');
+  }
+
 
   protected function messages()
   {
@@ -379,6 +359,10 @@ class Modal extends Component
       $this->foto2 =  $this->lote->foto2;
       $this->foto3 =  $this->lote->foto3;
       $this->foto4 =  $this->lote->foto4;
+      $this->foto5 =  $this->lote->foto5;
+      $this->foto6 =  $this->lote->foto6;
+      $this->foto7 =  $this->lote->foto7;
+      $this->foto8 =  $this->lote->foto8;
 
       $this->tipo_bien_id =  $this->lote->tipo_bien_id;
       if ($this->tipo_bien_id) {
@@ -444,6 +428,25 @@ class Modal extends Component
 
     if ($this->foto4 && !Storage::disk('public')->exists("imagenes/lotes/thumbnail/" . $this->foto4) && !$this->foto4 instanceof UploadedFile) {
       $this->addError('foto4', 'Elija foto');
+      return false;
+    }
+
+    if ($this->foto5 && !Storage::disk('public')->exists("imagenes/lotes/thumbnail/" . $this->foto5) && !$this->foto5 instanceof UploadedFile) {
+      $this->addError('foto5', 'Elija foto');
+      return false;
+    }
+
+    if ($this->foto6 && !Storage::disk('public')->exists("imagenes/lotes/thumbnail/" . $this->foto6) && !$this->foto6 instanceof UploadedFile) {
+      $this->addError('foto6', 'Elija foto');
+      return false;
+    }
+    if ($this->foto7 && !Storage::disk('public')->exists("imagenes/lotes/thumbnail/" . $this->foto7) && !$this->foto7 instanceof UploadedFile) {
+      $this->addError('foto7', 'Elija foto');
+      return false;
+    }
+
+    if ($this->foto8 && !Storage::disk('public')->exists("imagenes/lotes/thumbnail/" . $this->foto8) && !$this->foto8 instanceof UploadedFile) {
+      $this->addError('foto8', 'Elija foto');
       return false;
     }
 
@@ -643,9 +646,9 @@ class Modal extends Component
   public function imgStoreAndSave()
   {
     $manager = new ImageManager(new Driver());
-    $photos = [$this->foto1, $this->foto2, $this->foto3, $this->foto4];
+    $photos = [$this->foto1, $this->foto2, $this->foto3, $this->foto4, $this->foto5, $this->foto6, $this->foto7, $this->foto8];
     $filenames = [];
-    $oldFilenames = [$this->lote->foto1, $this->lote->foto2, $this->lote->foto3, $this->lote->foto4];
+    $oldFilenames = [$this->lote->foto1, $this->lote->foto2, $this->lote->foto3, $this->lote->foto4, $this->foto5, $this->foto6, $this->foto7, $this->foto8];
     $basePathNormal = 'imagenes/lotes/normal/';
     $basePathThumbnail = 'imagenes/lotes/thumbnail/';
     $replacedFiles = []; // Almacena los nombres de archivo antiguos que serán reemplazados

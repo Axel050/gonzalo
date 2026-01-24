@@ -211,8 +211,7 @@
 
 
                         <div
-                            class="  lg:col-span-4  col-span-1  !grid lg:grid-cols-4 grid-cols-1  [&>div]:flex
-                      [&>div]:flex-col gap-2 lg:gap-x-12 ">
+                            class="lg:col-span-4  col-span-1  !grid lg:grid-cols-4 grid-cols-1  [&>div]:flex [&>div]:flex-col gap-2 lg:gap-x-12">
 
                             <x-form-item-imagen label="Foto 1" :method="$method" model="foto1" :foto="$foto1"
                                 w="150" h="150" folder="lotes/thumbnail/" required="true" />
@@ -228,6 +227,43 @@
 
                         </div>
 
+
+
+
+
+                        <div x-data="{ morePhotos: @js($foto5 || $foto6 || $foto7 || $foto8) }" class="lg:col-span-4 col-span-1 mt-2">
+
+                            <div class="mb-2 text-center">
+                                <button type="button" x-show="!morePhotos" @click="morePhotos = true"
+                                    class="text-sm text-blue-600 hover:underline">
+                                    + Agregar más fotos
+                                </button>
+
+                                <button type="button" x-show="morePhotos" @click="morePhotos = false"
+                                    class="text-sm text-gray-600 hover:underline">
+                                    − Ocultar fotos adicionales
+                                </button>
+                            </div>
+
+
+                            <!-- Fotos 5–8 -->
+                            <div x-show="morePhotos" x-transition
+                                class="grid lg:grid-cols-4 grid-cols-1 [&>div]:flex [&>div]:flex-col gap-2 lg:gap-x-12 mt-4">
+
+                                <x-form-item-imagen label="Foto 5" :method="$method" model="foto5"
+                                    :foto="$foto5" w="150" h="150" folder="lotes/thumbnail/" />
+
+                                <x-form-item-imagen label="Foto 6" :method="$method" model="foto6"
+                                    :foto="$foto6" w="150" h="150" folder="lotes/thumbnail/" />
+
+                                <x-form-item-imagen label="Foto 7" :method="$method" model="foto7"
+                                    :foto="$foto7" w="150" h="150" folder="lotes/thumbnail/" />
+
+                                <x-form-item-imagen label="Foto 8" :method="$method" model="foto8"
+                                    :foto="$foto8" w="150" h="150" folder="lotes/thumbnail/" />
+                            </div>
+
+                        </div>
 
 
 

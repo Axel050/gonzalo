@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use App\Models\Adquirente;
 use App\Services\AdquirenteService;
 
 use Illuminate\Http\Request;
@@ -25,13 +25,66 @@ class AdquirenteController extends Controller
   /**
    * Show the form for creating a new resource.
    */
+  public function perfilGet()
+  {
+
+    $user = Auth::user();
+    // info(["USER" => $user->adquirente]);
+
+    $ad = $user->adquirente;
+
+    if (!$ad) {
+      return response()->json([
+        'message' => 'adquirente no encontrado',
+      ], 401);
+    }
+
+    return response()->json([
+      'message' => 'adquirente encontrado',
+      'adquirente' => $ad,
+    ], 201);
+  }
+
+
+  public function perfilUpd(Request $request)
+  {
+    $ad = Adquirente::findOrFail($request['adquirente_id']);
+
+
+    $data = $request->only([
+      'nombre',
+      'apellido',
+      'telefono',
+      'CUIT',
+      'domicilio',
+      'domicilio_envio',
+      'banco',
+      'numero_cuenta',
+      'CBU',
+      'alias_bancario',
+      'condicion_iva_id',
+    ]);
+
+    $data['id'] = $ad->id;
+    $adquirente = $this->adquirenteService->updateAdquirente($data);
+
+
+
+    return response()->json([
+      'message' => 'adquirente actualizado con éxito',
+      'adquirente' => $ad,
+    ], 201);
+  }
+
+
   public function perfil()
   {
-    $user  = Auth::user();
-    $adquirente = $user?->adquirente;
+
+    // $user  = Auth::user();
+    // $adquirente = $user?->adquirente;
 
     // if (auth()->user()->hasPermissionTo('adquirente-logged')) {
-    return view('perfil', compact(["user", "adquirente"]));
+    return view('perfil');
     // }
 
   }

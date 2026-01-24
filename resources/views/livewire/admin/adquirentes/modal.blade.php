@@ -88,7 +88,9 @@
                     <x-form-item label="Telefono" :method="$method" model="telefono" />
 
 
-                    <x-form-item label="Domicilio" :method="$method" model="domicilio" />
+                    <x-form-item label="Domicilio real" :method="$method" model="domicilio" />
+
+                    <x-form-item label="Domicilio envio" :method="$method" model="domicilio_envio" />
 
                     <x-form-item label="Comision" :method="$method" model="comision" type="number" step="0.1"
                         min=0 />

@@ -8,7 +8,7 @@
 
 
     <article
-        class=" grid lg:grid-cols-2 grid-cols-1 p-4 lg-blue-600  shadw-lg rounded-2xl  lg:w-auto w-full relative md:mt-8 mt-4 max-w-6xl   md:px-16  ">
+        class=" grid lg:grid-cols-2 grid-cols-1 p-4 lg-blue-600  shadw-lg rounded-2xl  lg:w-auto w-full relative md:mt-8 mt-4 max-w-6xl   md:px-10  ">
 
         <button wire:click="loteAnterior"
             class=" p-2 left-2 lg:-left-2  lg:-top-10 -top-7 absolute hover:scale-105 disabled:opacity-10 disabled:cursor-default"
@@ -27,42 +27,12 @@
 
 
 
-
-
-        {{-- <img src="{{ Storage::url('imagenes/lotes/default.png') }}"> --}}
-
         @php
             $defaultImage = Storage::url('imagenes/lotes/default.png');
         @endphp
 
-        {{--  --}} {{--  --}}
-        {{--  --}}
-        <div {{-- x-data="{
-            records: @js($records),
-            currentIndex: 0,
-            touchStartX: 0,
-            touchEndX: 0,
-            next() {
-                this.currentIndex = (this.currentIndex + 1) % this.records.length;
-            },
-            prev() {
-                this.currentIndex = (this.currentIndex - 1 + this.records.length) % this.records.length;
-            },
-            goTo(index) {
-                this.currentIndex = index;
-            },
-            handleSwipe() {
-                const swipeThreshold = 50;
-                const diff = this.touchStartX - this.touchEndX;
-                if (Math.abs(diff) > swipeThreshold) {
-                    if (diff > 0) {
-                        this.next();
-                    } else {
-                        this.prev();
-                    }
-                }
-            }
-        }" --}} x-data="{
+
+        <div x-data="{
             records: @js($records),
             currentIndex: 0,
             touchStartX: 0,
@@ -91,11 +61,9 @@
                 }
             }
         }"
-            class="flex flex-col items-center col-start-1 lg:row-start-1 lg:row-end-4 row-start-2">
-            {{-- Imagen principal --}}
+            class="flex flex-col items-center col-start-1 lg:row-start-1 lg:row-end-4 row-start-2 ">
+
             <div class="relative w-full flex justify-center max-w-150 ">
-                {{-- <button @click="prev"
-                    class="absolute lg:inline-block hidden left-0 top-1/2 -translate-y-1/2 z-10 rounded-full px-2 py-1 hover:scale-105"> --}}
 
                 <button @click="prev" :disabled="!hasMultiple"
                     :class="!hasMultiple
@@ -115,8 +83,6 @@
 
 
                 <figure class=" lg:w-150 w-full flex justify-center items-center relative">
-                    <!-- Contenedor con el tamaño exacto de la imagen -->
-                    {{-- <div class="relative group size-111" wire:click="$set('modal_foto',records[currentIndex].image )"> --}}
                     <div class="relative group lg:size-111 w-full"
                         x-on:click="
                         @this.set('modal_index', currentIndex);
@@ -124,8 +90,6 @@
                     "
                         x-on:touchstart="touchStartX = $event.touches[0].clientX"
                         x-on:touchend="touchEndX = $event.changedTouches[0].clientX; handleSwipe()">
-                        <!-- Imagen -->
-                        {{-- <img :src="records[currentIndex].image" onerror="this.src='{{ $defaultImage }}'" --}}
                         <img :src="records[currentIndex].image"
                             onerror="this.src='{{ Storage::url('imagenes/lotes/default.png') }}'"
                             class="lg:size-111
@@ -133,20 +97,21 @@
                             mx-auto cursor-pointer lg:mt-0 mt-2"
                             x-transition:enter="opacity-0 scale-90" x-transition:enter-end="opacity-100 scale-100"
                             x-transition:leave="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-90">
-                        <!-- Capa de superposición: solo aparece al hacer hover SOBRE la imagen -->
+
                         <span
                             class="absolute inset-0 bg-gray-800/60 text-casa-base-2 text-4xl font-bold
                                       flex justify-center items-center opacity-0 group-hover:opacity-100 transition-opacity duration-900
                                       pointer-events-none cursor-pointer ">
                             Agrandar
                         </span>
+
                     </div>
                 </figure>
+
                 @if ($modal_foto)
                     <x-modal-foto-detalle :records="$records" :current-index="$modal_index" />
                 @endif
-                {{-- <button @click="next"
-                    class="absolute lg:inline-block hidden right-0 top-1/2 -translate-y-1/2 z-10 bgwhite/70 rounded-full px-2 py-1 hover:scale-105"> --}}
+
                 <button @click="next" :disabled="!hasMultiple"
                     :class="!hasMultiple
                         ?
@@ -163,7 +128,7 @@
                 </button>
             </div>
             {{-- Miniaturas --}}
-            <div class="hidden lg:flex gap-2 mt-4">
+            <div class="hidden lg:flex gap-2 mt-4  overflow-x-auto  overflow-y-hidden p-1 ">
                 <template x-for="(record, index) in records" :key="index">
                     <img :src="record.thumb ?? record.image" onerror="this.src='{{ $defaultImage }}'"
                         @click="goTo(index)"
@@ -181,13 +146,13 @@
                 </template>
             </div>
         </div>
-        {{--  --}}
-        {{--  OLD --}}
+
+
 
 
 
         {{-- SECOND --}}
-        <div class="flex flex-col lg:ml-18 pt-4 pl-2  g-red-300 max-w-150  lg:col-start-2   lg:row-end-2 row-start-1 ">
+        <div class="flex flex-col lg:ml-18 pt-4 pl-2  g-red-300 max-w-150  lg:col-start-2   lg:row-end-2 row-start-1">
             <h2
                 class="font-helvetica font-bold lg:text-[30px] text-lg lg:leading-[1.4] tracking-normal   justify-between pr-2  flex">
                 {{ ucfirst($lote->titulo) }}
@@ -222,7 +187,7 @@
         </div>
 
         <div
-            class="flex flex-col lg:ml-18 pt-4 pl-2  g-red-300 max-w-150  lg:col-start-2  lg:row-start-2 lg:row-end-3 row-start-3">
+            class="flex flex-col lg:ml-18 pt-4 pl-2  g-red-300 max-w-150  lg:col-start-2  lg:row-start-2 lg:row-end-3 row-start-3 ">
 
 
             <p class="line-clamp-1">{{ $lote->tipo?->nombre }}</p>
@@ -305,7 +270,7 @@
 
 
             @endif
-            {{-- @dump($lote->estado) --}}
+
 
 
 
@@ -407,10 +372,6 @@
     @endif
 
 
-    {{-- @livewire('destacados', ['subasta_id' => $subasta->id, 'route' => $route]) --}}
-    {{-- </div> --}}
-
-
     <div class=" md:px-16 xl:px-24 w-full">
 
         <livewire:subastas-abiertas :key="'subastas-abiertas' . $lote->id" />
@@ -433,57 +394,30 @@
 
 
 
-
-
-
-
-
-
-    {{--  --}}
     <article class="bg-cyan-950/35 rounded-2xl p-5 hidden lex lg:flex-row flex-col gap-x-2 relative lg:mt-32 mt-10">
 
 
-
-
         <div class="bg-cyn-700 flex flex-col pl-2">
-
-
-
 
 
             @role('adquirente')
                 <div class="flex  flex-col  relative pb-4">
                     @if (auth()->user()?->adquirente?->estado_id == 1 ||
                             auth()->user()?->adquirente?->garantia($lote->ultimoContrato?->subasta_id))
-                        {{-- @if ($own || $pujado)
                         <button
-                            class="bg-green-400 px-4 py-2 rounded-2xl mx-auto text-white mt-8 font-bold text-xl cursor-not-allowed">
-                            Tu oferta es la ultima
-                        </button>
-                    @else --}}
-                        <button
-                            class="bg-green-500 px-4 py-2 rounded-2xl mx-auto text-white mt-8 font-bold text-xl hover:bg-green-700"
-                            {{-- wire:click.debounce.500ms="registrarPuja(1,500)" wire:loading.attr="disabled"
-                wire:loading.class="opacity-50 cursor-not-allowed" wire:target="registrarPuja" --}}>
-                            {{-- Muestra/oculta SÓLO cuando 'registrarPuja' está en ejecución --}}
+                            class="bg-green-500 px-4 py-2 rounded-2xl mx-auto text-white mt-8 font-bold text-xl hover:bg-green-700">
+
                             {{-- <span wire:loading.remove wire:target="registrarPuja">Agregar al carrito para Pujar</span> --}}
                             {{-- <span wire:loading.remove wire:target="addCarrito">Agregar al carrito para Pujar</span> --}}
                             <span wire:click="addCarrito">Agregar al carrito para Pujar</span>
-                            {{-- <span wire:loading wire:target="registrarPuja">Procesando...</span> --}}
                         </button>
                         <div class="flex bg-red-300">
-
                             <x-input-error for="puja" class="absolute bottom-0 text-red-600 " />
                         </div>
-                        {{-- @endif --}}
                     @else
                         <button wire:click="$set('method', 'noHabilitado')"
                             class="bg-red-800 px-4 py-2 rounded-2xl mx-auto text-white mt-8 font-bold text-xl ">No
                             habilitado para esta subasta</button>
-                        {{-- <button
-                        class="bg-green-500 px-4 py-2 rounded-2xl mx-auto text-white mt-8 font-bold text-xl hover:bg-green-700">
-                        <span wire:click="addCarrito">Agregar al carrito para Pujar</span>
-                    </button> --}}
                     @endif
 
                     @if (session('message'))
@@ -505,11 +439,11 @@
 
         </div>
 
-        @if (!empty($lote->ultimoConLote?->tiempo_post_subasta_fin))
+        {{-- @if (!empty($lote->ultimoConLote?->tiempo_post_subasta_fin))
             <div x-data="countdownTimer({
                 // El valor inicial se puede pasar aquí o leerlo desde el data attribute en init
                 loteId: '{{ $lote['id'] }}'
-            })" {{-- Guardamos el valor dinámico en un atributo que Alpine puede leer --}}
+            })"
                 data-end-time="{{ $lote->ultimoConLote?->tiempo_post_subasta_fin }}" x-init="init(); // Llama a init en la carga inicial
                 $wire.on('lotes-updated', () => {
                     console.log('Evento lotes-updated recibido para lote {{ $lote['id'] }}');
@@ -527,7 +461,7 @@
                     <span x-text="timeRemaining" class="text-white font-extrabold"></span>
                 </p>
             </div>
-        @endif
+        @endif --}}
 
     </article>
 
@@ -562,15 +496,15 @@
                     timeRemaining: '00:00',
                     isValid: false,
                     interval: null,
-                    // Quitamos endTime del objeto inicial, lo leeremos del DOM
+
 
                     init() {
-                        // Limpiar cualquier intervalo existente para evitar duplicados
+
                         if (this.interval) {
                             clearInterval(this.interval);
                         }
 
-                        // Leemos el valor actualizado directamente desde el atributo data-* del elemento
+
                         const endTimeString = this.$el.dataset.endTime;
 
                         const now = new Date();
@@ -587,12 +521,9 @@
 
                                 if (diff <= 0) {
                                     this.timeRemaining = '00:00';
-                                    this.isValid = false; // Oculta el contador
+                                    this.isValid = false;
                                     clearInterval(this.interval);
-                                    // console.log(`Temporizador detenido para lote ${loteId}: tiempo agotado`);
 
-                                    // console.log(
-                                    //     `Despachando evento 'timer-expired' para el lote ${loteId}`);
                                     this.$dispatch('timer-expired', {
                                         loteId: loteId
                                     });
@@ -606,7 +537,7 @@
                                     `${String(remainingMinutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
                             };
 
-                            updateTimer(); // Ejecuta una vez inmediatamente
+                            updateTimer();
                             this.interval = setInterval(updateTimer, 1000);
                         } else {
                             this.timeRemaining = '00:00';

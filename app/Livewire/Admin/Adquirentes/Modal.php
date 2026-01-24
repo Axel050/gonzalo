@@ -37,7 +37,7 @@ class Modal extends Component
   public $adquirente;
   public $alias_id;
 
-  public $nombre, $apellido, $alias, $CUIT, $domicilio, $telefono, $mail, $banco, $numero_cuenta, $CBU, $alias_bancario, $foto, $estado_id;
+  public $nombre, $apellido, $alias, $CUIT, $domicilio, $telefono, $mail, $banco, $numero_cuenta, $CBU, $alias_bancario, $foto, $estado_id, $domicilio_envio;
   public $password;
   public  $password_confirmation;
   public $comision = 20;
@@ -224,6 +224,7 @@ class Modal extends Component
       $this->telefono =  $this->adquirente->telefono;
       $this->CUIT =  $this->adquirente->CUIT;
       $this->domicilio =  $this->adquirente->domicilio;
+      $this->domicilio_envio =  $this->adquirente->domicilio_envio;
       $this->condicion_iva_id =  $this->adquirente->condicion_iva_id;
       $this->estado_id =  $this->adquirente->estado_id;
       $this->foto =  $this->adquirente->foto;
@@ -306,6 +307,7 @@ class Modal extends Component
         "telefono" => $this->telefono,
         "CUIT" => $this->CUIT,
         "domicilio" => $this->domicilio,
+        "domicilio_envio" => $this->domicilio_envio,
         "comision" => $this->comision,
         "estado_id" => $this->estado_id,
         "foto" => $filename,
@@ -402,6 +404,7 @@ class Modal extends Component
       $this->adquirente->telefono = $this->telefono;
       $this->adquirente->CUIT = $this->CUIT;
       $this->adquirente->domicilio = $this->domicilio;
+      $this->adquirente->domicilio_envio = $this->domicilio_envio;
       $this->adquirente->comision = $this->comision;
       $this->adquirente->estado_id = $this->estado_id;
       $this->adquirente->condicion_iva_id = $this->condicion_iva_id;

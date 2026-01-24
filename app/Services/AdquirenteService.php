@@ -17,6 +17,67 @@ class AdquirenteService
   {
     //
   }
+
+
+
+  public function updateAdquirente(array $data)
+  {
+    $adquirente = Adquirente::findOrFail($data['id']);
+
+    $validator = Validator::make($data, $this->rulesUpd($adquirente->id), $this->messages());
+    if ($validator->fails()) {
+      info('Validación fallida', ['errors' => $validator->errors()]);
+      throw new ValidationException($validator);
+    }
+
+
+
+    $adquirente->user->update([
+      'name' => $data['nombre'],
+    ]);
+
+
+    // $a->sendEmail
+    // if ($user) {
+
+
+    // $user->sendEmailVerificationNotification();
+    $adquirente->update([
+      'nombre' => $data['nombre'],
+      'apellido' => $data['apellido'],
+      'telefono' => $data['telefono'],
+      'CUIT' => $data['CUIT'] ?? null,
+      'domicilio' => $data['domicilio'],
+      'domicilio_envio' => $data['domicilio_envio'],
+      'banco' => $data['banco'] ?? null,
+      'numero_cuenta' => $data['numero_cuenta'] ?? null,
+      'CBU' => $data['CBU'] ?? null,
+      'alias_bancario' => $data['alias_bancario'] ?? null,
+      "condicion_iva_id" => $data['condicion_iva_id'],
+    ]);
+    // }
+
+
+
+    if ($adquirente) {
+      // $user->assignRole("adquirente");
+    }
+
+    info('Adquirente creado', ['id' => $adquirente->id]);
+
+    return $adquirente;
+  }
+
+
+
+
+
+
+
+
+
+
+
   public function createAdquirente(array $data): Adquirente
   {
 
@@ -99,6 +160,17 @@ class AdquirenteService
     return $adquirente;
   }
 
+
+
+  protected function rulesUpd($id)
+  {
+    return [
+      'nombre' => 'required',
+      'apellido' => 'required',
+      'telefono' => 'required|unique:adquirentes,telefono,' . $id,
+      'CUIT' => 'unique:adquirentes,CUIT,' . $id,
+    ];
+  }
 
 
   protected function rules()

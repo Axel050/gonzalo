@@ -9,6 +9,7 @@ use App\Events\SubastaEstado;
 use App\Models\Subasta;
 use App\Events\SubastaEstadoActualizado;
 use App\Mail\OrdenEmail;
+use App\Models\Adquirente;
 use App\Models\CarritoLote;
 use App\Models\Orden;
 use App\Models\OrdenLote;
@@ -152,6 +153,9 @@ class DesactivarLotesExpirados implements ShouldQueue
       throw $e;
     }
   }
+
+
+
 
 
   // MÉTODO ACTUALIZADO: Crea órdenes con descuento = monto de garantía + Actualiza CarritoLote
@@ -312,5 +316,85 @@ class DesactivarLotesExpirados implements ShouldQueue
         // info("Creada orden ID: {$orden->id} para adquirente ID: {$adquirenteId} con total: {$total}, descuento (garantía): {$montoDescuento}, total neto: {$totalNeto} en subasta ID: {$subasta->id}");
       }
     });
+
+
+    // $this->notificarPerdedoresConGarantia($subasta);
+  }
+
+
+
+
+
+
+
+  private function notificarPerdedoresConGarantia(Subasta $subasta)
+  {
+    // Evitar mails duplicados (recomendado)
+    if ($subasta->garantias_notificadas_at ?? false) {
+      return;
+    }
+
+    // 1️⃣ Adquirentes que pagaron garantía en esta subasta
+    $adquirentesConGarantia = Adquirente::whereHas('garantias', function ($q) use ($subasta) {
+      $q->where('subasta_id', $subasta->id)
+        ->where('estado', 'pagado')
+        ->where('monto', '>', 0);
+    })->get();
+
+    if ($adquirentesConGarantia->isEmpty()) {
+      return;
+    }
+
+    // 2️⃣ IDs de adquirentes ganadores (tienen orden)
+    $adquirentesGanadoresIds = Orden::where('subasta_id', $subasta->id)
+      ->pluck('adquirente_id')
+      ->unique();
+
+    // 3️⃣ Perdedores = con garantía y sin orden
+    $perdedores = $adquirentesConGarantia->reject(function ($adquirente) use ($adquirentesGanadoresIds, $subasta) {
+      return $adquirentesGanadoresIds->contains($adquirente->id)
+        || $adquirente->garantiaMonto($subasta->id) <= 0;
+    });
+
+    if ($perdedores->isEmpty()) {
+      return;
+    }
+
+    // 4️⃣ Enviar mails
+    foreach ($perdedores as $adquirente) {
+
+      $mail = $adquirente?->alias
+        ? $adquirente->alias->adquirente->user?->email
+        : $adquirente->user?->email;
+
+      if (!$mail) {
+        continue;
+      }
+
+      $dataMail = [
+        'adquirente' => $adquirente,
+        'subasta' => $subasta,
+        'monto_garantia' => $adquirente->garantiaMonto($subasta->id),
+      ];
+
+      try {
+        // Mail::to($mail)->send(
+        //   new \App\Mail\GarantiaDevolucionEmail($dataMail)
+        // );
+
+        info("Mail devolución garantía enviado | adquirente {$adquirente->id} | subasta {$subasta->id}");
+      } catch (\Exception $e) {
+        info("Error mail devolución garantía", [
+          'adquirente_id' => $adquirente->id,
+          'subasta_id' => $subasta->id,
+          'error' => $e->getMessage(),
+        ]);
+      }
+    }
+
+    // 5️⃣ Marcar subasta como notificada
+    $subasta->update([
+      'garantias_notificadas_at' => now(),
+    ]);
   }
 }

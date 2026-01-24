@@ -3,13 +3,13 @@
         Perfil
     </x-slot>
 
-    {{-- @livewire('adquirentes.perfil') --}}
-    <h1 class="text-5xl text-casa-black mx-auto my-52 text-center font-bold">Perfil adquirente logeado </h1>
+    @livewire('adquirentes.perfil')
+    {{-- <h1 class="text-5xl text-casa-black mx-auto my-52 text-center font-bold">Perfil adquirente logeado </h1> --}}
 
     {{-- @dump($user->toArray()) --}}
-    <h2 class="text-gray-50 text-xl mt-8 font-semibold mx-auto text-center">{{ $user->name }}</h2>
-    <hr>
+    {{-- <h2 class="text-gray-50 text-xl mt-8 font-semibold mx-auto text-center">{{ $user->name }}</h2>
+    <hr> --}}
 
-    {{-- @dump($adquirente->toArray()) --}}
+    {{-- @dump($adquirente->toArray())v --}}
 
 </x-layouts.guest>

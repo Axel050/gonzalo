@@ -29,6 +29,7 @@ class Adquirente extends Model implements Auditable
     'numero_cuenta',
     'banco',
     'alias_bancario',
+    'domicilio_envio',
   ];
 
   public function lotesActivosOAdjudicadosOEnOrdenOCerrados()

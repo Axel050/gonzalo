@@ -253,12 +253,13 @@ class DetalleLote extends Component
             $canti = $subastaService->getLotesPasadosIds($this->subasta, $this->lote->id);
             break;
         }
+
+        $this->cantidadLotes = count($canti);
       }
 
 
 
-      // $this->cantidadLotes = count($canti);
-      $this->cantidadLotes = 1;
+      // $this->cantidadLotes = 1;
     } catch (\Exception $e) {
       // Manejar la excepción lanzada desde getLotesPasadosIds (ej. 'Subasta no activa')
 
@@ -312,6 +313,22 @@ class DetalleLote extends Component
         'image' => asset('storage/imagenes/lotes/normal/' . $this->lote->foto4),
         'thumb' => asset('storage/imagenes/lotes/thumbnail/' . $this->lote->foto4),
       ],
+      [
+        'image' => asset('storage/imagenes/lotes/normal/' . $this->lote->foto5),
+        'thumb' => asset('storage/imagenes/lotes/thumbnail/' . $this->lote->foto5),
+      ],
+      [
+        'image' => asset('storage/imagenes/lotes/normal/' . $this->lote->foto6),
+        'thumb' => asset('storage/imagenes/lotes/thumbnail/' . $this->lote->foto6),
+      ],
+      [
+        'image' => asset('storage/imagenes/lotes/normal/' . $this->lote->foto7),
+        'thumb' => asset('storage/imagenes/lotes/thumbnail/' . $this->lote->foto7),
+      ],
+      [
+        'image' => asset('storage/imagenes/lotes/normal/' . $this->lote->foto8),
+        'thumb' => asset('storage/imagenes/lotes/thumbnail/' . $this->lote->foto8),
+      ],
     ];
 
 
@@ -320,6 +337,10 @@ class DetalleLote extends Component
       $this->lote->foto2,
       $this->lote->foto3,
       $this->lote->foto4,
+      $this->lote->foto5,
+      $this->lote->foto6,
+      $this->lote->foto7,
+      $this->lote->foto8,
     ];
 
     // Filtrar solo las fotos no vacías

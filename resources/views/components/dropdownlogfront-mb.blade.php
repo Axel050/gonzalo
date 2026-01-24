@@ -84,7 +84,7 @@
                         ¿Primera vez?
                     </a>
 
-                    <a href="{{ route('comitentes.create') }}"
+                    <a href="{{ route('terminos-comitentes') }}"
                         class=" text-sm border rounded-full px-3 py-1 border-black mr-0 text-black  h-fit   text-nowrap">
                         ¿Tenés algo para vender?
                     </a>

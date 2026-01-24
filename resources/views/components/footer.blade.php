@@ -26,7 +26,7 @@
                     <p>Convertí tus objetos en oportunidades reales de venta, nosotros nos ocupamos del resto.</p>
                 </div>
 
-                <a href="{{ route('comitentes.create') }}"
+                <a href="{{ route('terminos-comitentes') }}"
                     class="bg-casa-black hover:bg-transparent hover:text-casa-black text-casa-base rounded-full px-4 flex items-center justify-between gap-x-5 py-2  border border-gray-800 text-nowrap md:text-lg lg::text-xl text-sm font-bold   h-fit self-start  md:w-fit w-full md:mt-0 mt-5">
                     Quiero tasar
                     <svg fill="#fff" class="size-[26px]   md:ml-3 lg:ml-8 ">
@@ -99,7 +99,7 @@
                                 vez?</a>
                         </li>
                     @endguest
-                    <li><a href="{{ route('comitentes.create') }}"
+                    <li><a href="{{ route('terminos-comitentes') }}"
                             class="border border-casa-fondo-h rounded-full px-3 py-1 hover:bg-casa-black hover:text-casa-fondo-h">¿Tenés
                             algo para vender?</a>
                     </li>
