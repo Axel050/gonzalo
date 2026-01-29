@@ -12,7 +12,7 @@ return Application::configure(basePath: dirname(__DIR__))
     health: '/up',
     then: function () {
       // Route::middleware('web', 'auth', 'active.role') // <-- Aplica el grupo de middleware 'web' (u otro que necesites, ej: 'auth', ['web', 'auth'])
-      Route::middleware('web', 'auth', 'active.role') // <-- Aplica el grupo de middleware 'web' (u otro que necesites, ej: 'auth', ['web', 'auth'])
+      Route::middleware('web', 'auth', \App\Http\Middleware\CheckActiveRole::class) // <-- Aplica el grupo de middleware 'web' (u otro que necesites, ej: 'auth', ['web', 'auth'])
         ->prefix('admin')   // <-- Opcional: Añade el prefijo /admin a todas las rutas del archivo
         ->name('admin.')    // <-- Opcional: Añade el prefijo 'admin.' a los nombres de las rutas
         ->group(base_path('routes/admin.php')); // <-- Ahora sí, group() carga el archivo dentro del contexto del middleware/prefijo
@@ -38,8 +38,13 @@ return Application::configure(basePath: dirname(__DIR__))
     $middleware->alias([
       'active.role' => \App\Http\Middleware\CheckActiveRole::class,
       'adquirente.logged' => \App\Http\Middleware\CheckAdquirenteLogged::class,
+      'optional.verified' => \App\Http\Middleware\OptionalVerified::class,
+      'admin.only' => \App\Http\Middleware\CheckIsAdmin::class,
     ]);
   })
+
+
+
   ->withExceptions(function (Exceptions $exceptions) {
     //
     $exceptions->render(function (

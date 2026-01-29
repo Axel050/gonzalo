@@ -41,7 +41,7 @@ class Modal extends Component
   public $password;
   public  $password_confirmation;
   public $comision = 20;
-  public $condicion_iva_id;
+  public $condicion_iva_id = 4;
   public $estados = [];
   public $condiciones = [];
   public $ver = false;

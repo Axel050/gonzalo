@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="x-apple-disable-message-reformatting">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Verificá tu email · CASABLANCA.AR</title>
+    <title>Restablecer contraseña · CASABLANCA.AR</title>
 </head>
 
 <body style="margin:0; padding:0; background:#f4f4f4; font-family:Arial, Helvetica, sans-serif; color:#333333;">
@@ -29,7 +29,7 @@
                                 </a>
                             </h1>
                             <p style="margin:0;font-size:13px;color:#777;">
-                                Subastas online · Verificación de email
+                                Subastas online · Seguridad de cuenta
                             </p>
                         </td>
                     </tr>
@@ -43,12 +43,12 @@
                                     <td style="padding:30px 25px; text-align:center;">
 
                                         <h2 style="margin:0 0 15px 0;font-size:22px;color:#262626;">
-                                            ¡Bienvenido!
+                                            Restablecer contraseña
                                         </h2>
 
                                         <p style="font-size:15px;line-height:1.6;margin:0 0 25px 0;color:#555;">
-                                            Para activar tu cuenta necesitás verificar tu dirección de email.
-                                            Solo tenés que hacer clic en el botón de abajo.
+                                            Recibimos una solicitud para restablecer tu contraseña.
+                                            Para continuar, hacé clic en el botón de abajo.
                                         </p>
 
                                         <!-- CTA -->
@@ -57,14 +57,14 @@
                                                 <td style="background:#262626;border-radius:25px;">
                                                     <a href="{{ $url }}"
                                                         style="display:inline-block;padding:14px 32px;font-size:16px;font-weight:600;color:#ffffff;text-decoration:none;">
-                                                        Verificar email
+                                                        Restablecer contraseña
                                                     </a>
                                                 </td>
                                             </tr>
                                         </table>
 
                                         <p style="margin:25px 0 0;font-size:13px;color:#777;line-height:1.5;">
-                                            Si no creaste una cuenta en Casablanca.ar, podés ignorar este mensaje.
+                                            Si no solicitaste este cambio, podés ignorar este mensaje.
                                         </p>
 
                                         <!-- FALLBACK LINK -->

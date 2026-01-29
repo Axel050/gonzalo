@@ -22,12 +22,16 @@
                 <h3 class="font-bold text-center  md:mb-1 mb-0.5">Transferencia bancaria.</h3>
                 <p class="text-pretty text-center mb-2 ">Podés abonar transfiriendo a : </p>
 
-                <p class="text-pretty text-start ">Titular: <b class="font-semibold">Gonzalo San Martín Vivares</b></p>
-                <p class="text-pretty text-start ">Cuenta: <b class="font-semibold">014-025920/4</b></p>
-                <p class="text-pretty text-start ">CBU: <b class="font-semibold">0720014488000002592040</b></p>
-                <p class="text-pretty text-start ">Alias: <b class="font-semibold">casablanca.ar</b>
-                <p class="text-pretty text-start ">Monto: <b
-                        class="font-semibold">${{ number_format($monto, 0, ',', '.') }}</b></p>
+                <div class="bg-casa-base-2 md:p-4 p-2 rounded-lg">
+
+                    <p class="text-pretty text-start ">Titular: <b class="font-semibold">Gonzalo San Martín Vivares</b>
+                    </p>
+                    <p class="text-pretty text-start ">Cuenta: <b class="font-semibold">014-025920/4</b></p>
+                    <p class="text-pretty text-start ">CBU: <b class="font-semibold">0720014488000002592040</b></p>
+                    <p class="text-pretty text-start ">Alias: <b class="font-semibold">casablanca.ar</b>
+                    <p class="text-pretty text-start ">Monto: <b
+                            class="font-semibold">${{ number_format($monto, 0, ',', '.') }}</b></p>
+                </div>
 
             </div>
 
@@ -56,7 +60,7 @@
 
 
             <button
-                class="bg-casa-fondo-h hover:bg-casa-black hover:text-casa-base border border-casa-black text-casa-black  rounded-full px-4 flex items-center justify-between  md:py-0.5 py-1 col-span-3 mx-auto  md:text-xl font-semibold text-sm md:w-fit lg w-full h-fit"
+                class="bg-casa-black hover:bg-casa-base hover:text-casa-black border border-casa-black text-casa-base  rounded-full px-4 flex items-center justify-between  md:py-0.5 py-1 col-span-3 mx-auto  md:text-xl font-semibold text-sm md:w-fit lg w-full h-fit"
                 wire:click="$parent.$set('modalPago',false)">
                 Salir
                 <span class=" ml-3 md:h-8 h-6 mt-0.5">X</span>

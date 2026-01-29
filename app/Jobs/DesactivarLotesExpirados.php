@@ -265,6 +265,7 @@ class DesactivarLotesExpirados implements ShouldQueue
 
         OrdenLote::insert($ordenLotesData);
 
+        $faltantes = $adquirente->datosFiscalesFaltantes();
         // $contratoLotes = ContratoLote::where('contrato_id', $this->contrato->id)->get();
         $dataMail = [
           'message' => "Creación",
@@ -277,6 +278,7 @@ class DesactivarLotesExpirados implements ShouldQueue
           "envio" => $orden->monto_envio,
           "subtotal" => $orden->subtotal,
           "total" => $orden->total_final,
+          "faltantes" => $faltantes,
 
         ];
 
@@ -316,9 +318,10 @@ class DesactivarLotesExpirados implements ShouldQueue
         // info("Creada orden ID: {$orden->id} para adquirente ID: {$adquirenteId} con total: {$total}, descuento (garantía): {$montoDescuento}, total neto: {$totalNeto} en subasta ID: {$subasta->id}");
       }
     });
+    // info("anntntes");
 
-
-    // $this->notificarPerdedoresConGarantia($subasta);
+    $this->notificarPerdedoresConGarantia($subasta);
+    // info("anntntesxxxxxxxxxxx");
   }
 
 
@@ -355,7 +358,7 @@ class DesactivarLotesExpirados implements ShouldQueue
       return $adquirentesGanadoresIds->contains($adquirente->id)
         || $adquirente->garantiaMonto($subasta->id) <= 0;
     });
-
+    info(["perdideres" => $perdedores]);
     if ($perdedores->isEmpty()) {
       return;
     }
@@ -378,9 +381,9 @@ class DesactivarLotesExpirados implements ShouldQueue
       ];
 
       try {
-        // Mail::to($mail)->send(
-        //   new \App\Mail\GarantiaDevolucionEmail($dataMail)
-        // );
+        Mail::to($mail)->send(
+          new \App\Mail\GarantiaDevolucionEmail($dataMail)
+        );
 
         info("Mail devolución garantía enviado | adquirente {$adquirente->id} | subasta {$subasta->id}");
       } catch (\Exception $e) {

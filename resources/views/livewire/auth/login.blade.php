@@ -20,13 +20,13 @@
         <!-- Password -->
         <div class="relative">
             <flux:input wire:model="password" :label="__('Password')" type="password" required
-                autocomplete="current-password" :placeholder="__('Password')" />
+                autocomplete="current-password" :placeholder="__('Password')" viewable />
 
-            {{-- @if (Route::has('password.request'))
+            @if (Route::has('password.request'))
                 <flux:link class="absolute right-0 top-0 text-sm" :href="route('password.request')" wire:navigate>
-                    {{ __('Ovida your password?') }}
+                    {{ __('Olvidaste tu password?') }}
                 </flux:link>
-            @endif --}}
+            @endif
         </div>
 
         <!-- Remember Me -->

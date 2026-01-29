@@ -20,9 +20,9 @@ class CheckActiveRole
       return response()->view('livewire.auth.noautorizado', [], 403);
     }
 
-    if (auth()->user()->hasRole('adquirente')) {
-      return response()->view('livewire.auth.noautorizado', [], 403);
-    }
+    // if (auth()->user()->hasRole('adquirente')) {
+    //   return response()->view('livewire.auth.noautorizado', [], 403);
+    // }
 
     if (!auth()->user()?->hasActiveRole()) {
 

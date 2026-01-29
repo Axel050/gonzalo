@@ -44,10 +44,12 @@
                 <span x-html="notif.mensaje2" class="lg:text-lg text-sm  lg:leading-5"></span>
             </div>
 
-            <a href="{{ route('pantalla-pujas') }}" class=" px-2 rounded  hover:scale-105  " title="Pantalla pujas">
-                <svg fill="#fff" class="size-8">
+            <a href="{{ route('pantalla-pujas') }}" class=" px-2 rounded  hover:scale-105  text-casa-base "
+                title="Pantalla pujas">
+                {{-- <svg fill="#fff" class="size-8">
                     <use xlink:href="#cart"></use>
-                </svg>
+                </svg> --}}
+                <x-hammer-icon />
             </a>
         </div>
     </template>

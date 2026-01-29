@@ -4,25 +4,13 @@
 
 
     <article class=" flex  w-full md:justify-center justify-start flex-col  md:px-0 px-4">
-
-        {{-- <svg fill="#fff" class="w-[262px] h-[47px] mx-auto mb-2 md:block hidden">
-            <use xlink:href="#tucarrito"></use>
-        </svg> --}}
-
         <x-fancy-heading text="t{u}  c{a}rri{t}o" variant="italic mx-[1px] font-normal"
             class=" md:text-[64px] text-[36px]  md:text-center text-start text-wrap font-medium md:mb-0 mb-2" />
-
-        {{-- <h2 class="md:hidden text-4xl font-helvetica">tu carrito</h2> --}}
-
-
-
         <h3
             class="font-helvetica font-semibold md:text-3xl text-sm leading-[1] tracking-normal md:text-center md:mt-3 mb-2 ">
             Pagá por los
             lotes que ganaste.
         </h3>
-        {{-- <p class="md:text-center md:text-3xl text-sm">Vehicula adipiscing pellentesque volutpat dui rhoncus neque urna.
-        </p> --}}
     </article>
 
     @if ($modalPago)
@@ -38,7 +26,6 @@
 
 
             <div class="flex  flex-col     mb-2 md:mb-0  w-full gap-2  ">
-                {{-- lotes card --}}
                 @if (isset($carrito['lotes']) && count($carrito['lotes']))
                     @foreach ($carrito['lotes'] as $lote)
                         <div
@@ -100,7 +87,7 @@
 
 
 
-            <div class="flex flex-col   md:p-8 xl:p-12 p-4 border border-casa-black  md:self-stretch ">
+            <div class="flex flex-col   md:p-8 xl:p-12 p-4 border border-casa-black  self-stretch ">
                 <h3 class="font-bold md:text-3xl   text-md mb-4">Resumen</h3>
                 {{-- <p class="md:text-xl text-sm font-semibold">Lorem ipsum</p> --}}
                 {{-- <p class="md:text-xl text-sm mb-3">Abona los lotes que ganaste</p> --}}
@@ -125,8 +112,8 @@
                                             Lote #{{ $lote['lote_id'] }} - {{ $lote['titulo'] }}
                                         </span>
                                         <span>
-                                            {{-- {{ $lote['<moned></moned>a'] }} --}}
-                                            {{ number_format($lote['precio_final'], 0, ',', '.') }}
+
+                                            $|{{ number_format($lote['precio_final'], 0, ',', '.') }}
                                         </span>
                                     </li>
                                 @endif
@@ -144,7 +131,6 @@
                         @if ($orden['garantia'])
                             <p class="flex justify-between text-sm">
                                 Deposito:
-                                {{-- {{ $garantia['subasta_titulo'] }} --}}
                                 <span>-${{ number_format($orden['garantia']['monto'], 0, ',', '.') }}</span>
                             </p>
                         @endif
@@ -158,14 +144,7 @@
                             </div>
                         @endif
 
-                        {{-- @php
-                        $total = $orden->lotes->sum('precio_final') - ($garantia['monto'] ?? 0);
-                        
 
-                        if ($envios[$orden->id] ?? false) {
-                            $total += $orden->subasta->envio;
-                        }
-                    @endphp --}}
                         <p class="flex justify-between border-t border-black pt-2 text-xl font-bold">
                             Total
                             <span>
@@ -174,9 +153,9 @@
                         </p>
 
                         <button wire:click="mp({{ $orden['orden_id'] }})"
-                            class="bg-casa-black text-casa-base font-bold rounded-full px-4 py-2 mt-4 inline-flex items-center justify-center hover:bg-casa-base-2 hover:text-casa-black m:w-fit w-full border border-casa-black">
+                            class="bg-casa-black text-casa-base font-bold rounded-full px-4 py-2 mt-4 inline-flex items-center justify-center hover:bg-casa-base-2 hover:text-casa-black m:w-fit w-full border border-casa-black text-nowrap">
                             Pagar esta subasta
-                            <svg class="size-[26px] md:ml-auto ml-2 ">
+                            <svg class="size-[26px] md:ml-8 ml-auto ">
                                 <use xlink:href="#arrow-right1"></use>
                             </svg>
                         </button>

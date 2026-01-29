@@ -119,7 +119,7 @@ class ModalContratoLotes extends Component
     // $this->monedas = Moneda::all();
     $this->monedas = Moneda::all()->keyBy('id');
 
-    info(["oprevio mont contrato " => $this->id]);
+    // info(["oprevio mont contrato " => $this->id]);
     $this->contrato = Contrato::find($this->id);
     // $this->tempLotes = $this->contrato->lotes->toArray();
     $this->tempLotes = $this->contrato->lotes->map(function ($lote) {
@@ -128,9 +128,9 @@ class ModalContratoLotes extends Component
       $array['moneda_id'] = $lote->ultimoConLote?->moneda_id;
       return $array;
     })->toArray();
-    info("tempLotes");
+    // info("tempLotes");
     info($this->tempLotes);
-    info("EMND");
+    // info("EMND");
 
     $this->method = "";
   }
@@ -366,6 +366,8 @@ class ModalContratoLotes extends Component
         'message' => $message,
         'lotes' => $contratoLotes,
         'comitente' => $this->contrato->comitente?->nombre . " " . $this->contrato->comitente?->apellido,
+        'cuit' => $this->contrato->comitente?->CUIT,
+        'domicilio' => $this->contrato->comitente?->domicilio,
         "id" => $this->contrato->id,
         "subasta" => $this->contrato->subasta_id,
         "fecha" => $this->contrato->fecha_firma,

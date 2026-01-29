@@ -11,12 +11,23 @@
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('img/fav.jpg') }}">
 
-    <meta property="og:title" content="Casablanca.ar">
-    <meta property="og:description" content="Casa de subastas ">
-    <meta property="og:image" content="{{ asset('img/ogsmall.jpg') }}">
-    <meta property="og:url" content="https://casablanca.ar/">
-    <meta property="og:type" content="website">
+    <meta name="description"
+        content="Subastas online, subastamos todo tipo de objetos. El mejor sitio de subastas online.">
+    <meta name="keywords" content="Subastas. Subastas online. Vender. Remates. ">
+    <meta name="url" content="https://casablanca.ar/">
+    <meta name="category" content="Subastas online">
+    <meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+    <meta name="revisit" content="14 days">
+    <link rel="canonical" href="https://casablanca.ar/">
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Casablanca.ar - Subastas online" />
+    <meta property="og:description"
+        content="Subastas online, subastamos todo tipo de objetos. El mejor sitio de subastas online." />
+    <meta property="og:url" content="https://casablanca.ar/" />
+    <meta property="og:site_name" content="Subastas online | El mejor sitio mde subastas | Casablanca.ar" />
 
+    <meta property="og:image" content="{{ asset('img/ogsmall.jpg') }}">
 
 
     <!-- Fonts -->
@@ -190,7 +201,7 @@
                                 class=" pl-2 pr-1   mr-3 flex items-center rounded-3xl border border-casa-black  h-7"
                                 title="Pantalla pujas">
                                 {{-- <svg fill="#fff" class="size-7">
-                                <use xlink:href="#cart"></use>
+                                <use xlink:href="#cart"></use>  
                             </svg> --}}
                                 <x-hammer-icon />
                                 {{-- <span clas="text-xs">Pujas</span> --}}

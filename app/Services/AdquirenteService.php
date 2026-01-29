@@ -141,6 +141,7 @@ class AdquirenteService
         // 'alias_bancario' => $data['alias_bancario'] ?? null,
         // 'foto' => $filename,
         'user_id' => $user->id,
+        "condicion_iva_id" => 4,
         // "condicion_iva_id" => $data['condicion_iva_id'],
 
         // "estado_id" =>  2,//nuevo

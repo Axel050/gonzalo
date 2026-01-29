@@ -8,8 +8,11 @@ use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\ServiceProvider;
+use Symfony\Component\Mailer\Bridge\Brevo\Transport\BrevoTransportFactory;
+use Symfony\Component\Mailer\Transport\Dsn;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -36,9 +39,25 @@ class AppServiceProvider extends ServiceProvider
     //     ->text('emails.verify-text');
     // });
 
+    // NEW
+    Mail::extend('brevo', function (array $config) {
+      return (new BrevoTransportFactory())->create(
+        new Dsn(
+          'brevo+api',
+          'default',
+          config('services.brevo.key')
+        )
+      );
+    });
+    // NEW
+
     VerifyEmail::toMailUsing(function ($notifiable, string $url) {
       return (new MailMessage)
-        ->subject('Verifica tu email en casablanca.ar')
+        ->from(
+          address: 'info@casablanca.ar',
+          name: 'Casablanca'
+        )
+        ->subject('Verifica tu email')
         ->view('emails.verify-email', ['url' => $url])
         ->text('emails.verify-text', ['url' => $url])
 

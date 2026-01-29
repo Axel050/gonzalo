@@ -1,139 +1,210 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
-    <title>Contrato</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style type="text/css">
-        /* Estilos para móviles */
-        @media only screen and (max-width: 600px) {
-            .main-table {
-                width: 100% !important;
-            }
-
-            .content-padding {
-                padding: 10px !important;
-            }
-
-            .lote-table {
-                font-size: 12px !important;
-            }
-
-            .lote-table th,
-            .lote-table td {
-                padding: 5px !important;
-            }
-
-            .img-lote {
-                width: 40px !important;
-            }
-        }
-
-        .scroll-container {
-            -webkit-overflow-scrolling: touch;
-            overflow-x: auto;
-        }
-
-        img {
-            max-width: 100% !important;
-            height: auto !important;
-            display: block;
-        }
-    </style>
+    <meta name="x-apple-disable-message-reformatting">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Contrato</title>
 </head>
 
-<body style="font-family: Arial, sans-serif; color: #333333; margin: 0; padding: 0; background-color: #f4f4f4;">
-    <!-- Contenedor principal centrado -->
-    <table align="center" border="0" cellpadding="0" cellspacing="0" width="600" class="main-table"
-        style="background-color: #ffffff; border: 1px solid #dddddd; margin-top: 20px; margin-bottom: 20px;">
+<body style="margin:0; padding:0; background:#ffffff; font-family:Arial, Helvetica, sans-serif; color:#333333;">
+
+    <!-- FULL WIDTH WRAPPER -->
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" role="presentation">
         <tr>
-            <td class="content-padding" style="padding: 30px;">
+            <td align="center" style="padding:20px 0px;">
 
-                <h1 style="font-size: 24px; color: #1a73e8; margin: 0 0 20px 0; text-align: center; font-weight: bold;">
-                    CASABLANCA.AR</h1>
+                <!-- MAIN CONTAINER -->
+                <table width="600" cellpadding="0" cellspacing="0" border="0" role="presentation"
+                    style="width:100%; max-width:600px; background:#F6F2EE; padding-bottom:30px;">
 
-                <table width="100%" style="font-size: 13px; color: #666;">
+                    <!-- HEADER -->
                     <tr>
-                        <td style="padding-bottom: 5px;"><strong>Comitente:</strong> {{ $data['comitente'] }}</td>
-                        <td style="padding-bottom: 5px; text-align: right;"><strong>Fecha:</strong> {{ $data['fecha'] }}
+                        <td style="padding:25px; text-align:center;">
+                            <h1 style="margin:0 0 10px 0;font-size:26px;font-weight:700;letter-spacing:1px;">
+                                <a href="https://casablanca.ar" style="text-decoration:none;color:#262626;">
+                                    CASABLANCA.AR
+                                </a>
+                            </h1>
+                            <p style="margin:0;font-size:13px;color:#777;">
+                                Subastas online - Contrato.
+                            </p>
                         </td>
                     </tr>
+
+                    <!-- CONTENT CARD -->
                     <tr>
-                        <td><strong>Contrato:</strong> #{{ $data['id'] }}</td>
-                        <td></td>
-                    </tr>
-                </table>
-
-
-
-
-                <hr style="border: 0; border-top: 1px solid #eeeeee; margin: 20px 0;">
-
-                <p style="font-size: 15px; line-height: 1.5; margin: 0 0 20px 0;">
-                    {{ $data['message'] }} de contrato.
-                </p>
-
-                <p style="font-size: 16px; font-weight: bold; margin: 0 0 10px 0;">Lotes:</p>
-
-                <!-- Contenedor con scroll solo si es estrictamente necesario -->
-                <div class="scroll-container">
-                    <table class="lote-table" width="100%" cellpadding="0" cellspacing="0"
-                        style="border-collapse: collapse; border: 1px solid #cccccc; font-size: 13px; table-layout: fixed;">
-                        <thead>
-                            <tr style="background-color: #f8f8f8;">
-                                <th style="text-align: left; padding: 10px; border: 1px solid #cccccc; width: 25%;">
-                                    Título</th>
-                                <th style="text-align: left; padding: 10px; border: 1px solid #cccccc; width: 35%;">
-                                    Descripción</th>
-                                <th style="text-align: center; padding: 10px; border: 1px solid #cccccc; width: 20%;">
-                                    Precio</th>
-                                <th style="text-align: center; padding: 10px; border: 1px solid #cccccc; width: 20%;">
-                                    Foto</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($data['lotes'] as $item)
+                        <td style="padding:0 10px;">
+                            <table width="100%" cellpadding="0" cellspacing="0" role="presentation"
+                                style="background:#ffffff;border-radius:8px;">
                                 <tr>
-                                    <td style="padding: 10px; border: 1px solid #cccccc; word-break: break-word;">
-                                        {{ $item->lote?->titulo ?? 'Sin título' }}
-                                    </td>
-                                    <td
-                                        style="padding: 10px; border: 1px solid #cccccc; word-break: break-word; color: #666; font-size: 12px;">
-                                        {{ \Illuminate\Support\Str::limit($item->lote?->descripcion ?? 'Sin descripción', 60) }}
-                                    </td>
-                                    <td style="padding: 10px; border: 1px solid #cccccc; text-align: center;">
-                                        {{ $item->precio_base ?? 'N/A' }}
-                                    </td>
+                                    <td style="padding:30px 15px;">
 
+                                        <!-- RESUMEN -->
+                                        <table width="100%" role="presentation"
+                                            style="background:#f1f3f4;border-radius:6px;margin-bottom:25px;">
+                                            <tr>
+                                                <td style="padding:15px;font-size:13px;color:#444;">
+                                                    <strong>Contrato Nº:</strong> #{{ $data['id'] }}<br>
+                                                </td>
+                                                <td style="padding:15px;font-size:13px;color:#444;text-align:end">
+                                                    <strong>Fecha:</strong> {{ $data['fecha'] }}<br>
+                                                </td>
+                                            </tr>
+                                        </table>
 
-                                    @php
-                                        $route = app()->environment('production')
-                                            ? 'https://casablanca.ar'
-                                            : 'http://127.0.0.1:8000';
-                                    @endphp
+                                        <p style="font-size:15px;line-height:1.6;margin:0 0 25px 0;color:#555;">
+                                            Hola, estos son los detalles de los lotes que serán incluidos en una futura
+                                            subasta.
+                                        </p>
 
-                                    <td style="padding: 5px; border: 1px solid #cccccc; text-align: center;">
-                                        @if ($item->lote?->foto1)
-                                            <img src="{{ $route . '/storage/imagenes/lotes/thumbnail/' . $item->lote->foto1 }}"
-                                                class="img-lote"
-                                                style="width: auto; height: auto; border-radius: 4px; display: inline-block;max-height:60px"
-                                                alt="Lote" />
-                                        @else
-                                            <span style="color: #999; font-size: 10px;">N/A</span>
-                                        @endif
+                                        <!-- LOTES -->
+                                        <h3 style="margin:0 0 15px 0;font-size:18px;color:#111;">
+                                            Lotes incluidos
+                                        </h3>
+
+                                        <table width="100%" cellpadding="0" cellspacing="0" role="presentation"
+                                            style="border-collapse:collapse;font-size:13px;">
+                                            <thead>
+                                                <tr style="background:#f1f3f4;">
+                                                    <th
+                                                        style="padding:12px;border-bottom:1px solid #ddd;text-align:left;">
+                                                        Título</th>
+                                                    <th
+                                                        style="padding:12px;border-bottom:1px solid #ddd;text-align:left;">
+                                                        Descripción</th>
+                                                    <th
+                                                        style="padding:12px;border-bottom:1px solid #ddd;text-align:center;">
+                                                        Precio base</th>
+                                                    <th
+                                                        style="padding:12px;border-bottom:1px solid #ddd;text-align:center;">
+                                                        Foto</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach ($data['lotes'] as $item)
+                                                    <tr>
+                                                        <td style="padding:10px;border-bottom:1px solid #eee;">
+                                                            {{ $item->lote?->titulo ?? 'Sin título' }}
+                                                        </td>
+                                                        <td
+                                                            style="padding:10px;border-bottom:1px solid #eee;color:#666;font-size:12px;">
+                                                            {{ \Illuminate\Support\Str::limit($item->lote?->descripcion ?? 'Sin descripción', 60) }}
+                                                        </td>
+                                                        <td
+                                                            style="padding:10px;border-bottom:1px solid #eee;text-align:center;font-weight:600;">
+                                                            $ {{ number_format($item->precio_base ?? 0, 0, ',', '.') }}
+                                                        </td>
+                                                        <td
+                                                            style="padding:8px;border-bottom:1px solid #eee;text-align:center;">
+                                                            @php
+                                                                $route = app()->environment('production')
+                                                                    ? 'https://casablanca.ar'
+                                                                    : 'http://127.0.0.1:8000';
+                                                            @endphp
+
+                                                            @if ($item->lote?->foto1)
+                                                                <img src="{{ $route . '/storage/imagenes/lotes/thumbnail/' . $item->lote->foto1 }}"
+                                                                    alt="Lote"
+                                                                    style="max-height:60px;border-radius:6px;border:1px solid #ddd;">
+                                                            @else
+                                                                <span style="font-size:11px;color:#999;">N/A</span>
+                                                            @endif
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+
+                                        <!-- CONTRATO LEGAL -->
+                                        <table width="100%" role="presentation"
+                                            style="margin-top:35px;background:#fafafa;border:1px solid #e0e0e0;">
+                                            <tr>
+                                                <td style="padding:18px;text-align:center;font-size:18px;color:#333;">
+                                                    <strong>Contrato</strong>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td
+                                                    style="padding:10px;font-size:13px;line-height:1.6;color:#555;text-align:justify;">
+                                                    Entre el Sr./Sra. <b>{{ $data['comitente'] }}</b>, CUIT
+                                                    <b>{{ $data['cuit'] }}</b>,
+                                                    domiciliado en <b>{{ $data['domicilio'] }}</b>, en adelante “El
+                                                    comitente” y el Sr. Gonzalo San Martin Vivares, CUIT 20139153503,
+                                                    domiciliado en Franklin D. Roosevelt 2225, CABA, en su calidad de
+                                                    titular del sitio de subastas online denominado Casablanca.ar, en
+                                                    adelante “Casablanca.ar” celebran el presente contrato de comisión y
+                                                    mandato para la venta de bienes mediante subasta online, bajo las
+                                                    siguientes cláusulas:
+
+                                                    <br><br>
+
+                                                    I.- El presente contrato formaliza las Instrucciones, Términos y
+                                                    Condiciones que "El comitente" leyó y aceptó en el momento de
+                                                    registrarse y que forman parte del presente contrato.<br>
+                                                    II.- "El comitente" entrega y "Casablanca.ar" recibe en su
+                                                    domicilio, los bienes descriptos más arriba a los efectos de que
+                                                    "Casablanca.ar" los presente en su sitio de subastas online para ser
+                                                    vendidos por cuenta y orden de "El comitente". <br>
+                                                    III.- Los lotes deberán permanecer en el domicilio de
+                                                    "Casablanca.ar" hasta que se
+                                                    entreguen a los compradores. En el caso de no haber recibido ofertas
+                                                    por alguno de ellos, "El comitente" podrá retirarlos o dejarlos para
+                                                    futuras subastas para lo cual se conformará un nuevo contrato. <br>
+                                                    IV.-Las fechas, duración y horarios de las subastas serán
+                                                    establecidos por "Casablanca.ar".<br>
+                                                    V.- Los honorarios por los servicios prestados
+                                                    por "Casablanca.ar" serán del 20% del valor de la oferta final, o
+                                                    precio de martillo de cada lote. <br>
+                                                    VI.- La liquidación se efectuará
+                                                    mediante transferencia bancaria dentro de los diez (10) días hábiles
+                                                    posteriores a la finalización de la subasta. <br>
+                                                    VII.- En el eventual
+                                                    caso de que un comprador no formalice el pago de su compra, la
+                                                    responsabilidad de “Casablanca.ar” se limita a devolver el bien a
+                                                    “El comitente”.<br>
+                                                    VIII.- “Casablanca.ar” no será responsable por
+                                                    pérdidas o daños derivados de caso fortuito o fuerza mayor, salvo
+                                                    dolo o culpa grave.<br>
+
+                                                    IX.- “El comitente” puede solicitar la
+                                                    contratación de un seguro teniendo en cuenta la cláusula anterior.
+                                                    Este seguro será a cargo de “El comitente”. <br>
+                                                    X.- Los gastos
+                                                    extraordinarios (logística, restauración, seguros, etc.) serán a
+                                                    cargo del Comitente, previa aceptación expresa. <br>
+                                                    XI.- La vigencia de
+                                                    este contrato se fija en la Ciudad Autónoma de Buenos Aires, desde
+                                                    la fecha en que "El comitente" recibe el correo electrónico que lo
+                                                    contiene hasta que "Casablanca.ar" haya liquidado los lotes vendidos
+                                                    o devueltos los que quedaron sin oferta.
+                                                </td>
+                                            </tr>
+                                        </table>
+
                                     </td>
                                 </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                            </table>
+                        </td>
+                    </tr>
 
-                <br>
+                    <!-- FOOTER -->
+                    <tr>
+                        <td style="padding:25px 20px 0 20px;">
+                            <p style="margin:0;font-size:11px;color:#888;text-align:center;">
+                                Casablanca.ar · Subastas online ·<br>
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
 
             </td>
         </tr>
     </table>
+
 </body>
 
 </html>

@@ -10,8 +10,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Address;
 
-
-class ContratoEmail extends Mailable
+class GarantiaDevolucionEmail extends Mailable
 {
   use Queueable, SerializesModels;
 
@@ -23,6 +22,7 @@ class ContratoEmail extends Mailable
   public function __construct($data)
   {
     $this->data = $data;
+    // info(["dddaaa" => $this->data]);
   }
 
   /**
@@ -32,18 +32,18 @@ class ContratoEmail extends Mailable
   {
     return new Envelope(
       from: new Address('info@casablanca.ar', 'Casablanca'),
-      // from: new Address('axel_505050@hotmail.com', 'Casablanca'),
-      subject: 'Contrato',
+      subject: 'Garantia Devolucion ',
     );
   }
 
-  /** 
+  /**
    * Get the message content definition.
    */
   public function content(): Content
   {
     return new Content(
-      view: 'emails.contrato',
+      view: 'emails.garantia-devolucion',
+
     );
   }
 

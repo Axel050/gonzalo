@@ -9,7 +9,8 @@
 
 
 
-    <div class="flex flex-col bg-casa-base-2 lg:p-8 p-4 border border-casa-black text-casa-black  lg:mt-[50px] mt-8">
+    <div
+        class="flex flex-col bg-casa-base-2 lg:p-8 p-4 border border-casa-black text-casa-black  lg:mt-[50px] mt-8 mb-8">
 
         <h1 class="lg:text-3xl text-lg   font-bold  mb-4 text-start">Registrate</h1>
         <h2 class="font-bold lg:text-xl text-sm">Adquirentes</h2>

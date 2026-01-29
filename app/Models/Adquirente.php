@@ -103,4 +103,21 @@ class Adquirente extends Model implements Auditable
   {
     return $this->hasMany(Orden::class);
   }
+
+
+
+  public function datosFiscalesFaltantes(): array
+  {
+    $campos = [
+      'CUIT' => 'CUIT',
+      'domicilio' => 'Domicilio',
+      'domicilio_envio' => 'Domicilio de envío',
+      'condicion_iva_id' => 'Condición IVA',
+    ];
+
+    return collect($campos)
+      ->filter(fn($_, $campo) => empty($this->{$campo}))
+      ->values()
+      ->toArray();
+  }
 }

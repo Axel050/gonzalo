@@ -2217,3 +2217,6 @@ Stack trace:
 [12-Jan-2026 19:21:30 America/Argentina/Buenos_Aires] PHP Fatal error:  Trait "App\Traits\UploadSecurity" not found in C:\xampp\htdocs\casablanca12\app\Livewire\Admin\Adquirentes\Modal.php on line 18
 [12-Jan-2026 19:23:15 America/Argentina/Buenos_Aires] PHP Fatal error:  Trait "App\Traits\UploadSecurity" not found in C:\xampp\htdocs\casablanca12\app\Livewire\Admin\Adquirentes\Modal.php on line 19
 [12-Jan-2026 19:23:17 America/Argentina/Buenos_Aires] PHP Fatal error:  Trait "App\Traits\UploadSecurity" not found in C:\xampp\htdocs\casablanca12\app\Livewire\Admin\Adquirentes\Modal.php on line 19
+[24-Jan-2026 19:45:48 UTC] PHP Warning:  Unknown: Failed to open stream: No such file or directory in Unknown on line 0
+[24-Jan-2026 19:45:48 UTC] PHP Fatal error:  Failed opening required 'C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Foundation\Console/../resources/server.php' (include_path='.;C:\php\pear') in Unknown on line 0
+[25-Jan-2026 21:48:53 UTC] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\casablanca12\bootstrap\app.php on line 44

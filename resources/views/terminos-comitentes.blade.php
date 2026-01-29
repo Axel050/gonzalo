@@ -33,7 +33,7 @@
 
             <ul class="list-disc pl-5">
                 <li> fotografías claras de los bienes que deseás vender</li>
-                <li>una breve descripción de cada pieza</li>
+                <li> una breve descripción de cada pieza</li>
                 <li> el valor que considerás que podrían alcanzar</li>
             </ul>
 
@@ -60,10 +60,12 @@
                 Lo mismo ocurrirá si, eventualmente, fuera necesario contratar un seguro.
             </p>
 
-            <p>de incluirlos en la subasta. Y, si estás de acuerdo, se lo puede incluir en una
+            <p>Si un lote no llegara a venderse, no te cobramos un peso por los servicios
+                de incluirlos en la subasta. Y, si estás de acuerdo, se lo puede incluir en una
                 futura subasta, con una reducción de la base, mediante un nuevo contrato.
                 Si decidieras no volver a presentarlo y retirarlo, el departamento de logística
-                se comunicará con vos para coordinar día y horario de entrega.</p>
+                se comunicará con vos para coordinar día y horario de entrega.
+            </p>
 
             <p>Una vez finalizada la subasta se te enviará un mail con el detalle de los lotes
                 que hayan sido vendidos, el valor de venta de cada uno y el valor total a
@@ -122,8 +124,9 @@
 
             <p>
                 3.- Si El Comitente decide retirar algún lote antes de que se realice la subasta, sin justificar un
-                motivo fundado, deberá abonar a Casablanca.ar el 50% de la base fijada en concepto de gastos
-                administrativos. Esto lo podrá hacer hasta un día antes del inicio del remate.
+                motivo fundado, deberá abonar a Casablanca.ar el 50% de la base fijada en concepto de
+                penalidad compensatoria por gastos administrativos. Esto lo podrá hacer hasta un día antes del
+                inicio del remate.
             </p>
 
             <p>
@@ -143,7 +146,8 @@
 
             <p>
                 6.- Los derechos de imagen de las fotografías, videos, audios o cualquier otro archivo digital de
-                los bienes son propiedad de Casablanca.ar.
+                los bienes son propiedad de Casablanca.ar, para su utilización comercial, publicitaria y
+                promocional sin límite temporal.
             </p>
 
             <p>
@@ -154,7 +158,8 @@
 
             <p>
                 8.- Casablanca.ar se reserva el derecho de emprender las eventuales acciones judiciales que
-                considere, sentando jurisdicción en la Ciudad Autónoma de Buenos Aires.
+                considere, sentando jurisdicción en la Ciudad Autónoma de Buenos Aires, con renuncia a
+                cualquier otro fuero o jurisdicción que pudiera corresponder.
             </p>
 
 

@@ -29,6 +29,7 @@ class AdquirenteController extends Controller
   {
 
     $user = Auth::user();
+
     // info(["USER" => $user->adquirente]);
 
     $ad = $user->adquirente;
@@ -80,13 +81,13 @@ class AdquirenteController extends Controller
   public function perfil()
   {
 
-    // $user  = Auth::user();
-    // $adquirente = $user?->adquirente;
 
-    // if (auth()->user()->hasPermissionTo('adquirente-logged')) {
+    if (!auth()->user()->hasRole('adquirente')) {
+      return redirect()->route('home');
+    }
+
+
     return view('perfil');
-    // }
-
   }
 
   public function create()
@@ -94,9 +95,7 @@ class AdquirenteController extends Controller
     return view('adquirente');
   }
 
-  /**
-   * Store a newly created resource in storage.
-   */
+
   public function store(Request $request)
   {
 

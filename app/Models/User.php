@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use App\Notifications\ResetPasswordCustom;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -17,6 +18,11 @@ use Spatie\Permission\Traits\HasRoles;
 // use Laravel\Sanctum\HasApiTokens;
 
 
+/**
+ * @method bool hasRole(string|array $roles)
+ * @method bool hasAnyRole(string|array $roles)
+ * @method bool hasPermissionTo(string $permission)
+ */
 class User extends Authenticatable implements MustVerifyEmail
 {
   /** @use HasFactory<\Database\Factories\UserFactory> */
@@ -113,5 +119,13 @@ class User extends Authenticatable implements MustVerifyEmail
   public function personal()
   {
     return $this->hasOne(Personal::class, 'user_id');
+  }
+
+
+
+
+  public function sendPasswordResetNotification($token)
+  {
+    $this->notify(new ResetPasswordCustom($token));
   }
 }

@@ -1,0 +1,311 @@
+[24-Jan-2026 19:45:11 UTC] PHP Warning:  require(C:\xampp\htdocs\casablanca12\vendor\composer/../symfony/polyfill-mbstring/bootstrap.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:11 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\casablanca12\vendor\composer/../symfony/polyfill-mbstring/bootstrap.php' (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php:41
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(45): {closure}()
+#1 C:\xampp\htdocs\casablanca12\vendor\autoload.php(22): ComposerAutoloaderInit8bc62669ad1ad3dc46aac03063a35f34::getLoader()
+#2 C:\xampp\htdocs\casablanca12\artisan(10): require('...')
+#3 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:12 UTC] PHP Warning:  require(C:\xampp\htdocs\casablanca12\vendor\composer/../symfony/var-dumper/Resources/functions/dump.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:12 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\casablanca12\vendor\composer/../symfony/var-dumper/Resources/functions/dump.php' (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php:41
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(45): {closure}()
+#1 C:\xampp\htdocs\casablanca12\vendor\autoload.php(22): ComposerAutoloaderInit8bc62669ad1ad3dc46aac03063a35f34::getLoader()
+#2 C:\xampp\htdocs\casablanca12\artisan(10): require('...')
+#3 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:23 UTC] PHP Warning:  require(C:\xampp\htdocs\casablanca12\vendor\composer/../symfony/translation/Resources/functions.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:23 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\casablanca12\vendor\composer/../symfony/translation/Resources/functions.php' (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php:41
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(45): {closure}()
+#1 C:\xampp\htdocs\casablanca12\vendor\autoload.php(22): ComposerAutoloaderInit8bc62669ad1ad3dc46aac03063a35f34::getLoader()
+#2 C:\xampp\htdocs\casablanca12\artisan(10): require('...')
+#3 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:25 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../nesbot/carbon/src/Carbon/Carbon.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:45:25 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../nesbot/carbon/src/Carbon/Carbon.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:45:25 UTC] PHP Fatal error:  Uncaught Error: Class "Carbon\Carbon" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Support\Carbon.php:12
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php(576): include()
+#1 C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php(427): Composer\Autoload\{closure}()
+#2 C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Foundation\Console\Kernel.php(188): Composer\Autoload\ClassLoader->loadClass()
+#3 C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Foundation\Application.php(1234): Illuminate\Foundation\Console\Kernel->handle()
+#4 C:\xampp\htdocs\casablanca12\artisan(16): Illuminate\Foundation\Application->handleCommand()
+#5 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Support\Carbon.php on line 12
+[24-Jan-2026 19:45:28 UTC] PHP Warning:  require(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/prompts/src/helpers.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:28 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/prompts/src/helpers.php' (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php:41
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(45): {closure}()
+#1 C:\xampp\htdocs\casablanca12\vendor\autoload.php(22): ComposerAutoloaderInit8bc62669ad1ad3dc46aac03063a35f34::getLoader()
+#2 C:\xampp\htdocs\casablanca12\artisan(10): require('...')
+#3 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:31 UTC] PHP Warning:  require(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Collections/functions.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:31 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Collections/functions.php' (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php:41
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(45): {closure}()
+#1 C:\xampp\htdocs\casablanca12\vendor\autoload.php(22): ComposerAutoloaderInit8bc62669ad1ad3dc46aac03063a35f34::getLoader()
+#2 C:\xampp\htdocs\casablanca12\artisan(10): require('...')
+#3 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:33 UTC] PHP Warning:  require(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Collections/functions.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:33 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Collections/functions.php' (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php:41
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(45): {closure}()
+#1 C:\xampp\htdocs\casablanca12\vendor\autoload.php(22): ComposerAutoloaderInit8bc62669ad1ad3dc46aac03063a35f34::getLoader()
+#2 C:\xampp\htdocs\casablanca12\artisan(10): require('...')
+#3 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:35 UTC] PHP Warning:  require(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Collections/functions.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:35 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Collections/functions.php' (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php:41
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(45): {closure}()
+#1 C:\xampp\htdocs\casablanca12\vendor\autoload.php(22): ComposerAutoloaderInit8bc62669ad1ad3dc46aac03063a35f34::getLoader()
+#2 C:\xampp\htdocs\casablanca12\artisan(10): require('...')
+#3 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:37 UTC] PHP Warning:  require(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Collections/functions.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:37 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Collections/functions.php' (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php:41
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(45): {closure}()
+#1 C:\xampp\htdocs\casablanca12\vendor\autoload.php(22): ComposerAutoloaderInit8bc62669ad1ad3dc46aac03063a35f34::getLoader()
+#2 C:\xampp\htdocs\casablanca12\artisan(10): require('...')
+#3 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:38 UTC] PHP Warning:  require(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Collections/functions.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:38 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Collections/functions.php' (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php:41
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(45): {closure}()
+#1 C:\xampp\htdocs\casablanca12\vendor\autoload.php(22): ComposerAutoloaderInit8bc62669ad1ad3dc46aac03063a35f34::getLoader()
+#2 C:\xampp\htdocs\casablanca12\artisan(10): require('...')
+#3 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:40 UTC] PHP Warning:  require(C:\xampp\htdocs\casablanca12\vendor\composer/../myclabs/deep-copy/src/DeepCopy/deep_copy.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:40 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\casablanca12\vendor\composer/../myclabs/deep-copy/src/DeepCopy/deep_copy.php' (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php:41
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(45): {closure}()
+#1 C:\xampp\htdocs\casablanca12\vendor\autoload.php(22): ComposerAutoloaderInit8bc62669ad1ad3dc46aac03063a35f34::getLoader()
+#2 C:\xampp\htdocs\casablanca12\artisan(10): require('...')
+#3 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:41 UTC] PHP Warning:  require(C:\xampp\htdocs\casablanca12\vendor\composer/../phpunit/phpunit/src/Framework/Assert/Functions.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:41 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\casablanca12\vendor\composer/../phpunit/phpunit/src/Framework/Assert/Functions.php' (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php:41
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(45): {closure}()
+#1 C:\xampp\htdocs\casablanca12\vendor\autoload.php(22): ComposerAutoloaderInit8bc62669ad1ad3dc46aac03063a35f34::getLoader()
+#2 C:\xampp\htdocs\casablanca12\artisan(10): require('...')
+#3 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:44 UTC] PHP Warning:  require(C:\xampp\htdocs\casablanca12\vendor\composer/../react/promise/src/functions_include.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:44 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\casablanca12\vendor\composer/../react/promise/src/functions_include.php' (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php:41
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(45): {closure}()
+#1 C:\xampp\htdocs\casablanca12\vendor\autoload.php(22): ComposerAutoloaderInit8bc62669ad1ad3dc46aac03063a35f34::getLoader()
+#2 C:\xampp\htdocs\casablanca12\artisan(10): require('...')
+#3 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:46 UTC] PHP Warning:  require(C:\xampp\htdocs\casablanca12\vendor\composer/../phpunit/phpunit/src/Framework/Assert/Functions.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:46 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\casablanca12\vendor\composer/../phpunit/phpunit/src/Framework/Assert/Functions.php' (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php:41
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(45): {closure}()
+#1 C:\xampp\htdocs\casablanca12\vendor\autoload.php(22): ComposerAutoloaderInit8bc62669ad1ad3dc46aac03063a35f34::getLoader()
+#2 C:\xampp\htdocs\casablanca12\artisan(10): require('...')
+#3 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:49 UTC] PHP Warning:  require(C:\xampp\htdocs\casablanca12\vendor\composer/../phpunit/phpunit/src/Framework/Assert/Functions.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:49 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\casablanca12\vendor\composer/../phpunit/phpunit/src/Framework/Assert/Functions.php' (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php:41
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(45): {closure}()
+#1 C:\xampp\htdocs\casablanca12\vendor\autoload.php(22): ComposerAutoloaderInit8bc62669ad1ad3dc46aac03063a35f34::getLoader()
+#2 C:\xampp\htdocs\casablanca12\artisan(10): require('...')
+#3 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:51 UTC] PHP Warning:  require(C:\xampp\htdocs\casablanca12\vendor\composer/../phpunit/phpunit/src/Framework/Assert/Functions.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:51 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\casablanca12\vendor\composer/../phpunit/phpunit/src/Framework/Assert/Functions.php' (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php:41
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(45): {closure}()
+#1 C:\xampp\htdocs\casablanca12\vendor\autoload.php(22): ComposerAutoloaderInit8bc62669ad1ad3dc46aac03063a35f34::getLoader()
+#2 C:\xampp\htdocs\casablanca12\artisan(10): require('...')
+#3 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:54 UTC] PHP Warning:  require(C:\xampp\htdocs\casablanca12\vendor\composer/../phpunit/phpunit/src/Framework/Assert/Functions.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:54 UTC] PHP Fatal error:  Uncaught Error: Failed opening required 'C:\xampp\htdocs\casablanca12\vendor\composer/../phpunit/phpunit/src/Framework/Assert/Functions.php' (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php:41
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(45): {closure}()
+#1 C:\xampp\htdocs\casablanca12\vendor\autoload.php(22): ComposerAutoloaderInit8bc62669ad1ad3dc46aac03063a35f34::getLoader()
+#2 C:\xampp\htdocs\casablanca12\artisan(10): require('...')
+#3 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php on line 41
+[24-Jan-2026 19:45:59 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../pestphp/pest/src/Plugin.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:45:59 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../pestphp/pest/src/Plugin.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:45:59 UTC] PHP Fatal error:  Uncaught Error: Class "Pest\Plugin" not found in C:\xampp\htdocs\casablanca12\vendor\pestphp\pest-plugin-arch\src\Autoload.php:10
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(41): require()
+#1 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(45): {closure}()
+#2 C:\xampp\htdocs\casablanca12\vendor\autoload.php(22): ComposerAutoloaderInit8bc62669ad1ad3dc46aac03063a35f34::getLoader()
+#3 C:\xampp\htdocs\casablanca12\artisan(10): require('...')
+#4 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\pestphp\pest-plugin-arch\src\Autoload.php on line 10
+[24-Jan-2026 19:46:01 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../pestphp/pest/src/Plugin.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:01 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../pestphp/pest/src/Plugin.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:01 UTC] PHP Fatal error:  Uncaught Error: Class "Pest\Plugin" not found in C:\xampp\htdocs\casablanca12\vendor\pestphp\pest-plugin-arch\src\Autoload.php:10
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(41): require()
+#1 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(45): {closure}()
+#2 C:\xampp\htdocs\casablanca12\vendor\autoload.php(22): ComposerAutoloaderInit8bc62669ad1ad3dc46aac03063a35f34::getLoader()
+#3 C:\xampp\htdocs\casablanca12\artisan(10): require('...')
+#4 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\pestphp\pest-plugin-arch\src\Autoload.php on line 10
+[24-Jan-2026 19:46:03 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../pestphp/pest/src/Plugin.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:03 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../pestphp/pest/src/Plugin.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:03 UTC] PHP Fatal error:  Uncaught Error: Class "Pest\Plugin" not found in C:\xampp\htdocs\casablanca12\vendor\pestphp\pest-plugin-arch\src\Autoload.php:10
+Stack trace:
+#0 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(41): require()
+#1 C:\xampp\htdocs\casablanca12\vendor\composer\autoload_real.php(45): {closure}()
+#2 C:\xampp\htdocs\casablanca12\vendor\autoload.php(22): ComposerAutoloaderInit8bc62669ad1ad3dc46aac03063a35f34::getLoader()
+#3 C:\xampp\htdocs\casablanca12\artisan(10): require('...')
+#4 {main}
+  thrown in C:\xampp\htdocs\casablanca12\vendor\pestphp\pest-plugin-arch\src\Autoload.php on line 10
+[24-Jan-2026 19:46:03 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:03 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:03 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:04 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:04 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:04 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:05 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:05 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:05 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:06 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:06 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:06 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:07 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:07 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:07 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:08 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:08 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:08 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:09 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:09 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:09 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:10 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:10 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:10 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:11 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:11 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:11 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:11 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:11 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:11 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:12 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:12 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:12 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:13 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:13 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:13 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:13 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:13 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:13 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:13 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:13 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:13 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:14 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:14 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:14 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:15 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:15 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:15 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:15 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:15 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:15 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:16 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:16 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:16 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:17 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:17 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:17 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:17 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:17 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:17 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:18 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:18 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:18 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:18 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:18 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:18 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:19 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:19 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:19 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:19 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:19 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:19 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:20 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:20 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:20 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:20 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:20 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:20 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:21 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:21 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:21 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:21 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:21 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:21 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:22 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:22 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:22 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:22 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:22 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:22 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:23 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:23 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:23 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:24 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:24 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:24 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:24 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:24 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:24 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:25 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:25 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:25 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:25 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:25 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:25 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:26 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:26 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:26 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:26 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:26 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:26 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:27 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:27 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:27 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:27 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:27 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:27 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:28 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:28 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:28 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:28 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:28 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:28 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[24-Jan-2026 19:46:29 UTC] PHP Warning:  include(C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php): Failed to open stream: No such file or directory in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:29 UTC] PHP Warning:  include(): Failed opening 'C:\xampp\htdocs\casablanca12\vendor\composer/../laravel/framework/src/Illuminate/Support/Traits/ReflectsClosures.php' for inclusion (include_path='.;C:\php\pear') in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 576
+[24-Jan-2026 19:46:29 UTC] PHP Fatal error:  Trait "Illuminate\Support\Traits\ReflectsClosures" not found in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Container\Container.php on line 25
+[25-Jan-2026 21:48:56 UTC] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\casablanca12\bootstrap\app.php on line 44
+[25-Jan-2026 21:48:57 UTC] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\casablanca12\bootstrap\app.php on line 44
+[25-Jan-2026 21:48:57 UTC] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\casablanca12\bootstrap\app.php on line 44
+[25-Jan-2026 21:48:58 UTC] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\casablanca12\bootstrap\app.php on line 44
+[25-Jan-2026 21:48:58 UTC] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\casablanca12\bootstrap\app.php on line 44
+[25-Jan-2026 21:48:59 UTC] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\casablanca12\bootstrap\app.php on line 44
+[25-Jan-2026 21:48:59 UTC] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\casablanca12\bootstrap\app.php on line 44
+[25-Jan-2026 21:48:59 UTC] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\casablanca12\bootstrap\app.php on line 44
+[25-Jan-2026 21:49:00 UTC] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\casablanca12\bootstrap\app.php on line 44
+[25-Jan-2026 21:49:00 UTC] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\casablanca12\bootstrap\app.php on line 44
+[25-Jan-2026 21:49:01 UTC] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\casablanca12\bootstrap\app.php on line 44
+[25-Jan-2026 21:49:01 UTC] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\casablanca12\bootstrap\app.php on line 44
+[25-Jan-2026 21:49:02 UTC] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\casablanca12\bootstrap\app.php on line 44
+[25-Jan-2026 21:49:02 UTC] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\casablanca12\bootstrap\app.php on line 44
+[25-Jan-2026 21:49:03 UTC] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\casablanca12\bootstrap\app.php on line 44
+[25-Jan-2026 21:49:03 UTC] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\casablanca12\bootstrap\app.php on line 44

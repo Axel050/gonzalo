@@ -43,6 +43,9 @@ return [
     'key' => env('MP_PUBLIC_KEY'),
     'token' => env('MP_ACCES_TOKEN'),
     'host' => env('MP_HOST'),
-  ]
+  ],
+  'brevo' => [
+    'key' => env('BREVO_API_KEY'),
+  ],
 
 ];

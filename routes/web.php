@@ -8,6 +8,7 @@ use App\Livewire\Settings\Appearance;
 use App\Livewire\Settings\Password;
 use App\Livewire\Settings\Profile;
 use App\Mail\ContratoEmail;
+use App\Mail\GarantiaDevolucionEmail;
 use App\Mail\OrdenEmail;
 use App\Mail\PujaSuperadaEmail;
 use Illuminate\Support\Facades\Route;
@@ -16,6 +17,7 @@ use App\Models\Contrato;
 use App\Models\ContratoLote;
 use App\Models\Lote;
 use App\Models\Orden;
+use App\Models\Subasta;
 use Illuminate\Support\Facades\Mail;
 
 Route::get('/test', function () {
@@ -31,10 +33,13 @@ Route::get('/dashboard', function () {
     return view('dashboard');
   }
   return redirect()->route('admin.index')->with('error', 'No tienes permiso para acceder al panel de control.');
-})->middleware(['auth', 'active.role'])->name('dashboard');
+})->middleware(['auth', 'active.role', 'admin.only'])->name('dashboard');
 
 
-Route::get('/',  HomeController::class)->name('home');
+
+
+Route::middleware("optional.verified")->get('/',  HomeController::class)->name('home');
+// Route::get('/',  HomeController::class)->name('home');
 
 
 
@@ -55,38 +60,103 @@ Route::middleware(['auth'])->group(function () {
 // Route::get('/lotes/{id}', [QrCodeController::class, 'show'])->name('lotes.show');
 
 
+Route::get('/test-devolucion/{subastaId}/{adquirenteId}/{email}', function (int $subastaId, $adquirenteId, string $email) {
+  try {
+    $subasta = Subasta::findOrFail($subastaId);
+    $adquirente = Adquirente::findOrFail($adquirenteId);
 
 
+    $data = [
+      'alias_bancario' => $adquirente->alias_bancario,
+      'subasta' => $subasta->titulo,
+      'monto_garantia' => $subasta->garantia,
+    ];
 
-// TESTER MAIL  Contrato
-Route::get('/test-mail/{contratoId}/{email}', function (int $contratoId, string $email) {
+    $faltante = $adquirente->datosFiscalesFaltantes();
 
-  $contrato = Contrato::findOrFail($contratoId);
-  $contratoLotes = ContratoLote::where('contrato_id', $contratoId)->get();
+    info(["faltantes" => $faltante]);
 
-  $data = [
-    'message'   => 'Este es un mensaje de prueba',
-    'lotes'     => $contratoLotes,
-    'comitente' => $contrato->comitente?->nombre . " " . $contrato->comitente?->apellido,
-    'id'        => $contrato->id,
-    'subasta'   => $contrato->subasta_id,
-    'fecha'     => $contrato->fecha_firma,
-  ];
+    return new GarantiaDevolucionEmail($data);
 
-  if ($email) {
-    Mail::to($email)->send(new ContratoEmail($data));
+
+    // Mail::to($email)->send(new GarantiaDevolucionEmail($data));
+
+    return response()->json([
+      'success' => true,
+      'message' => 'Correo enviado exitosamente a Brevo',
+      'email'   => $email,
+    ]);
+  } catch (\Exception $e) {
+
+    info('Error enviando correo de prueba', [
+
+      'email'       => $email,
+      'error'       => $e->getMessage()
+    ]);
+
+    return response()->json([
+      'success' => false,
+      'message' => 'Error al enviar el correo',
+      'error'   => $e->getMessage(),
+      'line'    => $e->getLine()
+    ], 500);
   }
-
-  // Devolvemos la vista renderizada para previsualizar en el navegador
-  return (new ContratoEmail($data))->render();
 })->name('test.mail');
 
+
+
+
+Route::get('/test-mail/{contratoId}/{email}', function (int $contratoId, string $email) {
+  try {
+    $contrato = Contrato::findOrFail($contratoId);
+    $contratoLotes = ContratoLote::where('contrato_id', $contratoId)->get();
+
+    $data = [
+      'message'   => 'Este es un mensaje de prueba',
+      'lotes'     => $contratoLotes,
+      'comitente' => ($contrato->comitente?->nombre ?? '') . " " . ($contrato->comitente?->apellido ?? ''),
+      'id'        => $contrato->id,
+      'subasta'   => $contrato->subasta_id,
+      'fecha'     => $contrato->fecha_firma,
+      'cuit' => $contrato->comitente?->CUIT,
+      'domicilio' => $contrato->comitente?->domicilio,
+    ];
+
+
+
+    return new ContratoEmail($data);
+
+
+    // Mail::to($email)->send(new ContratoEmail($data));
+
+    return response()->json([
+      'success' => true,
+      'message' => 'Correo enviado exitosamente a Brevo',
+      'email'   => $email,
+    ]);
+  } catch (\Exception $e) {
+
+    info('Error enviando correo de prueba', [
+      'contrato_id' => $contratoId,
+      'email'       => $email,
+      'error'       => $e->getMessage()
+    ]);
+
+    return response()->json([
+      'success' => false,
+      'message' => 'Error al enviar el correo',
+      'error'   => $e->getMessage(),
+      'line'    => $e->getLine()
+    ], 500);
+  }
+})->name('test.mail');
 
 
 Route::get('/test-mail-orden/{ordenId}/{adquirenteId}', function ($ordenId, $adquirenteId) {
 
   $orden = Orden::with(['lotes.lote',  'subasta'])->findOrFail($ordenId);
   $adquirente = Adquirente::findOrFail($adquirenteId);
+  $faltantes = $adquirente->datosFiscalesFaltantes();
 
   $fakeData = [
     'message' => "Creación",
@@ -99,11 +169,14 @@ Route::get('/test-mail-orden/{ordenId}/{adquirenteId}', function ($ordenId, $adq
     "envio" => $orden->monto_envio,
     "subasta_id" => $orden->subasta?->id,
     "subasta_titulo" => $orden->subasta?->titulo,
+    "faltantes" => $faltantes,
   ];
 
-  if (app()->environment('production')) {
-    mail::to($adquirente->user?->email)->send(new OrdenEmail($fakeData));
-  }
+
+  // mail::to($adquirente->user?->email)->send(new OrdenEmail($fakeData));
+  // mail::to("axel_505050@hotmail.com")->send(new OrdenEmail($fakeData));
+  // mail::to("axeldavidpaz@gmail.com")->send(new OrdenEmail($fakeData));
+
   return new OrdenEmail($fakeData); // Se renderiza directamente en el navegador
 });
 
@@ -121,12 +194,9 @@ Route::get('/test-puja-superada/{loteId}/{adquirenteId}', function ($loteId, $ad
     "subasta" => "vinos",
   ];
 
-  // if (app()->environment('production')) {
-  // mail::to($adquirente->user?->email)->send(new PujaSuperadaEmail($dataMail));
-  // }
-  return new PujaSuperadaEmail($dataMail);
 
-  // Se renderiza directamente en el navegador
+  return new PujaSuperadaEmail($dataMail);
+  // mail::to($adquirente->user?->email)->send(new PujaSuperadaEmail($dataMail));
 });
 
 
@@ -136,7 +206,8 @@ Route::get('/comitentes/crear', [ComitenteController::class, "create"])->name('c
 Route::get('/adquirentes/crear', [AdquirenteController::class, "create"])->name('adquirentes.create');
 
 
-Route::get('/adquirentes/perfil', [AdquirenteController::class, "perfil"])->name('adquirentes.perfil')->middleware('adquirente.logged');
+Route::get('/adquirentes/perfil', [AdquirenteController::class, "perfil"])->name('adquirentes.perfil');
+// Route::get('/adquirentes/perfil', [AdquirenteController::class, "perfil"])->name('adquirentes.perfil')->middleware('auth');
 
 // Route::get('/lotes', function () {
 
@@ -159,7 +230,7 @@ Route::get('/carrito', function () {
   return view('carrito');
 })->name('carrito')->middleware(['auth', 'verified']);
 
-Route::get('/subastas', function () {
+Route::middleware("optional.verified")->get('/subastas', function () {
   return view('subastas');
 })->name('subastas');
 
