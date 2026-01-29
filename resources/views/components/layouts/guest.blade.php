@@ -140,7 +140,7 @@
                 <div class="lg:flex hidden justify-end lg:col-span-2 ">
 
                     @guest
-                        <a href="{{ route('comitentes.create') }}"
+                        <a href="{{ route('terminos-comitentes') }}"
                             class="over:scale-105 hover:bg-casa-fondo-h text-sm border rounded-full xl:px-4 md:px-1 py-2 border-black xl:mr-8 md:mr-1 text-black  h-fit lg:flex hidden ">
                             ¿Tenés algo para vender?
                         </a>

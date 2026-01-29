@@ -18,11 +18,11 @@
 
         <!-- Password -->
         <flux:input wire:model="password" :label="__('Password')" type="password" required autocomplete="new-password"
-            :placeholder="__('Password')" />
+            :placeholder="__('Password')" viewable />
 
         <!-- Confirm Password -->
         <flux:input wire:model="password_confirmation" :label="__('Confirmar password')" type="password" required
-            autocomplete="new-password" :placeholder="__('Confirmar password')" />
+            autocomplete="new-password" :placeholder="__('Confirmar password')" viewable />
 
         <div class="flex items-center justify-end">
             {{-- <flux:button type="submit" variant="primary" class="w-full">
