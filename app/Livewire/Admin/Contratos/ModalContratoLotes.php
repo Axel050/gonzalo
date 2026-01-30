@@ -91,8 +91,8 @@ class ModalContratoLotes extends Component
   public function updatedValuacion($value)
   {
     $this->precio_base = $value;
-    info(["precio base vaue" => $value]);
-    info(["precio base" => $this->precio_base]);
+    // info(["precio base vaue" => $value]);
+    // info(["precio base" => $this->precio_base]);
   }
 
   public function updatedSearch($value)
@@ -129,7 +129,7 @@ class ModalContratoLotes extends Component
       return $array;
     })->toArray();
     // info("tempLotes");
-    info($this->tempLotes);
+    // info($this->tempLotes);
     // info("EMND");
 
     $this->method = "";
@@ -371,7 +371,7 @@ class ModalContratoLotes extends Component
         "id" => $this->contrato->id,
         "subasta" => $this->contrato->subasta_id,
         "fecha" => $this->contrato->fecha_firma,
-        "comision" => $this->contrato->comision_formateada,
+        "comision" => $this->contrato->comitente?->comision_formateada,
       ];
 
 

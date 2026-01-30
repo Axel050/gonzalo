@@ -301,6 +301,8 @@ class DesactivarLotesExpirados implements ShouldQueue
             'orden_id' => $dataMail['id'] ?? null, // Ajusta según tus datos
             'trace' => $e->getTraceAsString(),
           ]);
+
+          // Pero el job continúa ejecutándose
         }
 
         // NUEVA LÓGICA: Actualizar CarritoLote a 'en_orden' después de crear la orden
@@ -374,8 +376,9 @@ class DesactivarLotesExpirados implements ShouldQueue
 
       $dataMail = [
         'adquirente' => $adquirente,
-        'subasta' => $subasta,
+        'subasta' => $subasta->titulo,
         'monto_garantia' => $adquirente->garantiaMonto($subasta->id),
+        'alias_bancario' => $adquirente->alias_bancario,
       ];
 
       try {
