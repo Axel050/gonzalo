@@ -111,6 +111,10 @@ Route::get('/test-mail/{contratoId}/{email}', function (int $contratoId, string 
     $contrato = Contrato::findOrFail($contratoId);
     $contratoLotes = ContratoLote::where('contrato_id', $contratoId)->get();
 
+
+
+
+
     $data = [
       'message'   => 'Este es un mensaje de prueba',
       'lotes'     => $contratoLotes,
@@ -120,6 +124,7 @@ Route::get('/test-mail/{contratoId}/{email}', function (int $contratoId, string 
       'fecha'     => $contrato->fecha_firma,
       'cuit' => $contrato->comitente?->CUIT,
       'domicilio' => $contrato->comitente?->domicilio,
+      'comision' => $contrato->comitente?->comision_formateada,
     ];
 
 

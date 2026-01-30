@@ -62,6 +62,20 @@ class Permisos extends Component
       'eliminar' => false,
     ],
     [
+      'name' => 'Contratos',
+      'ver' => false,
+      'crear' => false,
+      'actualizar' => false,
+      'eliminar' => false,
+    ],
+    [
+      'name' => 'Lotes',
+      'ver' => false,
+      'crear' => false,
+      'actualizar' => false,
+      'eliminar' => false,
+    ],
+    [
       'name' => 'Auxiliares',
       'ver' => false,
       'crear' => false,

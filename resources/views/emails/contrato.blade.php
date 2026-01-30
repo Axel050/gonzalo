@@ -156,7 +156,9 @@
                                                     IV.-Las fechas, duración y horarios de las subastas serán
                                                     establecidos por "Casablanca.ar".<br>
                                                     V.- Los honorarios por los servicios prestados
-                                                    por "Casablanca.ar" serán del 20% del valor de la oferta final, o
+                                                    por "Casablanca.ar" serán del <b>{{ $data['comision'] }}%</b> del
+                                                    valor de la oferta
+                                                    final, o
                                                     precio de martillo de cada lote. <br>
                                                     VI.- La liquidación se efectuará
                                                     mediante transferencia bancaria dentro de los diez (10) días hábiles

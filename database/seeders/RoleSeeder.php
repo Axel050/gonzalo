@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Models\Adquirente;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -16,6 +17,7 @@ class RoleSeeder extends Seeder
    */
   public function run(): void
   {
+
     // Reset cached roles and permissions
     app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
@@ -32,6 +34,8 @@ class RoleSeeder extends Seeder
     Permission::create(['name' => 'adquirente-logged']);
     Permission::create(['name' => 'auditoria-ver']);
     Permission::create(['name' => 'ordenes-ver']);
+    Permission::create(['name' => 'contratos-ver']);
+    Permission::create(['name' => 'lotes-ver']);
 
     // update cache to know about the newly created permissions (required if using WithoutModelEvents in seeders)
     app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();

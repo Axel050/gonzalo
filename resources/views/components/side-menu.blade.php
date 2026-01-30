@@ -142,7 +142,7 @@
             </x-li-single>
         @endcan
 
-        @can('adquirentes-ver')
+        @can('contratos-ver')
             <x-li-single :active="Request::is('admin/contratos')" route="admin.contratos">
                 <svg class="size-6">
                     <use xlink:href="#contratos"></use>
@@ -155,7 +155,7 @@
 
 
 
-        @can('adquirentes-ver')
+        @can('lotes-ver')
             <x-li-single :active="Request::is('admin/lotes')" route="admin.lotes">
 
                 <svg class="size-6">

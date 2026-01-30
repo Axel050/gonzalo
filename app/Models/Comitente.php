@@ -66,4 +66,14 @@ class Comitente extends Model implements Auditable
     )->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
       ->select('lotes.*');
   }
+
+
+  public function getComisionFormateadaAttribute()
+  {
+    $number = $this->comision;
+
+    $decimales = fmod($number, 1) == 0 ? 0 : 1;
+
+    return number_format($number, $decimales, ',', "'");
+  }
 }

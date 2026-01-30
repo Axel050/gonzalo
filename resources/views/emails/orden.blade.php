@@ -142,7 +142,7 @@
 
                                             @if ($data['descuento'] > 0)
                                                 <tr>
-                                                    <td style="padding:6px 0;">Depósito</td>
+                                                    <td style="padding:6px 0;">Devolución de garantia</td>
                                                     <td style="padding:6px 0;text-align:right;">
                                                         - $ {{ number_format($data['descuento'], 0, ',', '.') }}
                                                     </td>

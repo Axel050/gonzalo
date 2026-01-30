@@ -7,7 +7,7 @@
          </svg>
      </a>
 
-     <h2 class="text-casa-base-2 text-2xl text-center">Clave ovidada </h2>
+     <h2 class="text-casa-base-2 text-2xl text-center">Clave olvidada </h2>
      <h3 class="text-casa-base-2 text-lg text-center">Ingresa tu email y recibiras un mail para crear una
          nueva clave </h3>
 

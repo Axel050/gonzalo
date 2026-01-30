@@ -91,7 +91,11 @@
                                                             ⚠️ No tenemos registrado tu alias bancario.
                                                         </p>
                                                         <p style="margin:8px 0 0;font-size:15px;">
-                                                            Podés cargarlo desde tu perfil o escribirnos a
+                                                            Podés cargarlo desde
+                                                            <a href="{{ route('adquirentes.perfil') }}"
+                                                                style="color:#1a73e8;text-decoration:none;">tu
+                                                                perfil</a>
+                                                            o escribirnos a
                                                             <a href="mailto:info@casablanca.ar"
                                                                 style="color:#1a73e8;text-decoration:none;">
                                                                 info@casablanca.ar

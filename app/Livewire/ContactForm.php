@@ -60,7 +60,7 @@ class ContactForm extends Component
 
 
 
-    Mail::to("axeldavidpaz@gmail.com")->send(new ContactFormEmail($data));
+    Mail::to("info@casablanca.ar")->send(new ContactFormEmail($data));
 
 
 

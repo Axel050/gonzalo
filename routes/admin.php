@@ -39,11 +39,11 @@ Route::get("/garantias/{id?}", function () {
 
 Route::get("/contratos", function () {
   return view('admin.contratos');
-})->name("contratos")->can("personal-ver");
+})->name("contratos")->can("contratos-ver");
 
 Route::get("/lotes/{id?}", function () {
   return view('admin.lotes');
-})->name("lotes")->can("personal-ver");
+})->name("lotes")->can("lotes-ver");
 
 Route::get("/auditoria", function () {
   return view('admin.auditorias');

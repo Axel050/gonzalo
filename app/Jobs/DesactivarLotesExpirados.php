@@ -301,8 +301,6 @@ class DesactivarLotesExpirados implements ShouldQueue
             'orden_id' => $dataMail['id'] ?? null, // Ajusta según tus datos
             'trace' => $e->getTraceAsString(),
           ]);
-          // Opcional: Si quieres notificar de otra forma (ej. Slack, DB flag), agrégalo aquí
-          // Pero el job continúa ejecutándose
         }
 
         // NUEVA LÓGICA: Actualizar CarritoLote a 'en_orden' después de crear la orden
