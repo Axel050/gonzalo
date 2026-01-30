@@ -22,10 +22,13 @@
         <div class=" my-2 px-1 border-gray-400 w-full flex flex-col ">
             <p class="font-medium text-sm text-gray-600 p-1  truncte mb-2 ">{{ Auth::user()->email }}</p>
 
-            <a href="{{ route('adquirentes.perfil') }}"
-                class="ilex items-center   hover:text-gray-200 hover:font-bold  hover:bg-casa-black  mb-2 text-gray-800 mt-1 rounded-full px-4 py-1 border border-casa-black">
-                Perfil
-            </a>
+
+            @role(['adquirente'])
+                <a href="{{ route('adquirentes.perfil') }}"
+                    class="ilex items-center   hover:text-gray-200 hover:font-bold  hover:bg-casa-black  mb-2 text-gray-800 mt-1 rounded-full px-4 py-1 border border-casa-black">
+                    Perfil
+                </a>
+            @endrole
 
             @role(['admin', 'super-admin'])
                 <a href="{{ url('/dashboard') }}"

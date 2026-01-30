@@ -263,6 +263,11 @@ Route::get('/instructivo-comitentes', function () {
   return view('instructivo-comitentes');
 })->name('instructivo-comitentes');
 
+Route::get('/faq', function () {
+  return view('faq');
+})->name('faq');
+
+
 
 // MP
 // Route::get(

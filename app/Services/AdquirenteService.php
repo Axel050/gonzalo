@@ -169,7 +169,7 @@ class AdquirenteService
       'nombre' => 'required',
       'apellido' => 'required',
       'telefono' => 'required|unique:adquirentes,telefono,' . $id,
-      'CUIT' => 'unique:adquirentes,CUIT,' . $id,
+      'CUIT' => 'nullable|unique:adquirentes,CUIT,' . $id,
     ];
   }
 

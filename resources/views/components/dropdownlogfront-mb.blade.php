@@ -53,6 +53,16 @@
                         </a>
                     @endrole --}}
 
+
+
+
+                    @role(['adquirente'])
+                        <a href="{{ route('adquirentes.perfil') }}"
+                            class="ilex items-center   hover:text-gray-200 hover:font-bold  hover:bg-casa-black  mb-2 text-gray-800 mt-1 rounded-full px-4 py-1 border border-casa-black">
+                            Perfil
+                        </a>
+                    @endrole
+
                     @role(['admin', 'super-admin'])
                         <a href="{{ url('/dashboard') }}"
                             class="rounded-full px-1.5 py-0.5  bg-casa-black text-casa-base text-sm flex items-center">

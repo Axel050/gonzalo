@@ -67,7 +67,7 @@ class Perfil extends Component
       'nombre' => 'required',
       'apellido' => 'required',
       'telefono' => 'required|unique:adquirentes,telefono,' . $this->adquirente->id,
-      'CUIT' => 'unique:adquirentes,CUIT,' . $this->adquirente->id,
+      'CUIT' => 'nullable|unique:adquirentes,CUIT,' . $this->adquirente->id,
     ];
 
 
