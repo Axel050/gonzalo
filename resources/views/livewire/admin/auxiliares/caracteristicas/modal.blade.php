@@ -43,7 +43,7 @@
 
                                         <button type="button" wire:click="removeOpcion({{ $index }})"
                                             class=" hover:bg-red-700 bg-red-500 rounded-lg px-1 py-0.5 ml-2 lg:absolute right-[-40px] "
-                                            title="quitar" wire:show="opciones.length>1">
+                                            title="quitar">
                                             <svg class="size-5 mr-0.5">
                                                 <use xlink:href="#eliminar"></use>
                                             </svg>

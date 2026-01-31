@@ -31,7 +31,7 @@ class Modal extends Component
 
     // $rules['opciones'] = 'required_if:tipo,select|array|min:2';
     if ($this->tipo == "select") {
-      $rules['opciones'] = 'array|min:1';
+      $rules['opciones'] = 'array';
       $rules['opciones.*'] = 'required|string';
     }
 
@@ -66,7 +66,7 @@ class Modal extends Component
 
   public function removeOpcion($index)
   {
-    if (count($this->opciones) > 1) {
+    if (count($this->opciones) > 0) {
       unset($this->opciones[$index]);
       $this->opciones = array_values($this->opciones); // Reindexa el array
     }
@@ -145,10 +145,7 @@ class Modal extends Component
 
       $this->caracteristica->nombre = $this->nombre;
       $this->caracteristica->tipo = $this->tipo;
-
       $this->caracteristica->save();
-
-
 
       if ($this->tipo === 'select') {
         // Eliminar opciones existentes
@@ -184,6 +181,9 @@ class Modal extends Component
       $this->dispatch('caracteristicaUpdated');
     }
   }
+
+
+
 
   public function delete()
   {

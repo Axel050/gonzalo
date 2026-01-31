@@ -358,7 +358,7 @@ class DesactivarLotesExpirados implements ShouldQueue
       return $adquirentesGanadoresIds->contains($adquirente->id)
         || $adquirente->garantiaMonto($subasta->id) <= 0;
     });
-    info(["perdideres" => $perdedores]);
+    // info(["perdideres" => $perdedores]);
     if ($perdedores->isEmpty()) {
       return;
     }
