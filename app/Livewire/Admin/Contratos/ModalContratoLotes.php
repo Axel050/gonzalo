@@ -76,8 +76,12 @@ class ModalContratoLotes extends Component
       $this->descripcion = $lote->descripcion;
       $this->valuacion = $lote->valuacion;
       $this->foto1 = $lote->foto1;
-      $this->precio_base = (int)$lote->precio_base;
-      $this->moneda_id = $lote->ultimoContratoLote?->moneda_id ?? 1;
+
+      $this->precio_base = (int)($lote->ultimoConLote?->precio_base !== null && $lote->ultimoConLote?->precio_base !== 0
+        ? $lote->ultimoConLote?->precio_base
+        : $this->valuacion);
+
+      $this->moneda_id = $lote->ultimoConLote?->moneda_id ?? 1;
       // $ultimoContratoLote = $lote->contratosLotes()
       //   ->orderBy('id', 'desc')
       //   ->first();

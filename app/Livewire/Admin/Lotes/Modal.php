@@ -762,6 +762,7 @@ class Modal extends Component
           'PUJAS'   => 'Lote tiene pujas registradas.',
           'CARRITO' => 'Lote está o estuvo en un carrito.',
           'ORDEN'   => 'Lote  asociado a una orden.',
+          'CONTRATO'   => 'Lote  asociado a un contrato.',
         ];
 
         $this->addError('tieneDatos', $mensajes[$motivo]);
@@ -771,6 +772,7 @@ class Modal extends Component
 
       $this->deleteLoteImages($this->lote);
 
+      $this->lote->valoresCaracteristicas()->delete();
       $this->lote->delete();
       $this->dispatch('loteDeleted');
     }

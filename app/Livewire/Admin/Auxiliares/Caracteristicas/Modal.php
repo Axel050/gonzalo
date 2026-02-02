@@ -3,6 +3,7 @@
 namespace App\Livewire\Admin\Auxiliares\Caracteristicas;
 
 use App\Models\Caracteristica;
+use App\Models\CaracteristicaOpcion;
 use App\Models\ValoresCataracteristica;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
@@ -18,27 +19,27 @@ class Modal extends Component
 
   public $caracteristica;
   public $nombre;
-  // public $tipo = "text";
   public $tipo = "text";
 
-  public $opciones = [''];
+  public $opciones = [];
+
+
 
   protected function rules()
   {
     $rules = [
       'nombre' => 'required|unique:caracteristicas,nombre',
+      'tipo'   => 'required',
     ];
 
-    // $rules['opciones'] = 'required_if:tipo,select|array|min:2';
-    if ($this->tipo == "select") {
-      $rules['opciones'] = 'array';
-      $rules['opciones.*'] = 'required|string';
+    if ($this->method === 'update') {
+      $rules['nombre'] =
+        'required|unique:caracteristicas,nombre,' . $this->caracteristica->id;
     }
 
-    if ($this->method == "update") {
-      $rules["nombre"] = 'required|unique:caracteristicas,nombre,' . $this->caracteristica->id;
-    } else {
-      $rules["nombre"] = 'required|unique:caracteristicas,nombre';
+    if ($this->tipo === 'select') {
+      $rules['opciones'] = 'required|array|min:1';
+      $rules['opciones.*.valor'] = 'required|string';
     }
 
     return $rules;
@@ -49,20 +50,28 @@ class Modal extends Component
   protected function messages()
   {
     return [
-      "nombre.required" => "Ingrese nombre.",
-      "nombre.unique" => "Nombre existente.",
-      "opciones.min" => "Agregue una opción",
-      "opciones.required" => "Agregue una opción",
-      "opciones.*.required" => "Ingrese una opción",
-      "opciones.*.string" => "Ingrese una opción"
+      'nombre.required' => 'Ingrese nombre.',
+      'nombre.unique'   => 'Nombre existente.',
+      'opciones.required' => 'Agregue al menos una opción.',
+      'opciones.array' => 'Formato inválido.',
+      'opciones.*.valor.required' => 'Ingrese una opción.',
     ];
   }
 
 
+
+
+
+
   public function addOpcion()
   {
-    $this->opciones[] = ''; // Añade una nueva opción vacía
+    $this->opciones[] = [
+      'id' => null,
+      'valor' => ''
+    ];
   }
+
+
 
   public function removeOpcion($index)
   {
@@ -73,7 +82,64 @@ class Modal extends Component
   }
 
 
+
+
+
+
   public function mount()
+  {
+
+
+    if ($this->method == "save") {
+      $this->addOpcion();
+
+      $this->title = "Crear";
+      $this->btnText = "Guardar";
+      $this->bg =  "background-color: rgb(22 163 74)";
+    }
+
+    if ($this->method == "delete") {
+      $this->caracteristica = Caracteristica::find($this->id);
+      $this->id = $this->caracteristica->id;
+      $this->title = "Eliminar";
+      $this->btnText = "Eliminar";
+      $this->bg =  "background-color: rgb(239 68 68)";
+    }
+
+
+
+    if ($this->method === 'update' || $this->method === 'view') {
+      $this->caracteristica = Caracteristica::find($this->id);
+
+      $this->nombre = $this->caracteristica->nombre;
+      $this->tipo   = $this->caracteristica->tipo;
+
+      $this->opciones = $this->caracteristica->opciones
+        ->map(fn($o) => [
+          'id' => $o->id,
+          'valor' => $o->valor,
+        ])
+        ->toArray();
+
+      if (empty($this->opciones)) {
+        $this->addOpcion();
+      }
+    }
+
+
+
+    if ($this->method == "update") {
+      $this->title = "Editar";
+      $this->bg = "background-color: rgb(234 88 12)";
+      $this->btnText = "Guardar";
+    } else {
+      $this->title = "Ver";
+      $this->bg =  "background-color: rgb(31, 83, 44)";
+    }
+  }
+
+
+  public function mou33nt()
   {
 
     if ($this->method == "save") {
@@ -95,10 +161,22 @@ class Modal extends Component
       $this->nombre =  $this->caracteristica->nombre;
       $this->tipo =  $this->caracteristica->tipo;
 
-      $this->opciones = $this->caracteristica->opciones->pluck('valor')->toArray();
+      // $this->opciones = $this->caracteristica->opciones->pluck('valor')->toArray();
+      // if (empty($this->opciones)) {
+      //   $this->opciones = ['']; // Asegura al menos una opción vacía si no hay opciones
+      // }
+
+      $this->opciones = $this->caracteristica->opciones
+        ->map(fn($o) => [
+          'id' => $o->id,
+          'valor' => $o->valor,
+        ])
+        ->toArray();
+
       if (empty($this->opciones)) {
-        $this->opciones = ['']; // Asegura al menos una opción vacía si no hay opciones
+        $this->addOpcion();
       }
+
 
       if ($this->method == "update") {
         $this->title = "Editar";
@@ -126,7 +204,7 @@ class Modal extends Component
     if ($this->tipo === 'select') {
       foreach ($this->opciones as $opcion) {
         $caracteristica->opciones()->create([
-          'valor' => $opcion,
+          'valor' => $opcion['valor'], // ✅
         ]);
       }
     }
@@ -135,52 +213,178 @@ class Modal extends Component
   }
 
 
-  public function update()
+  public function update222()
   {
-
     if (!$this->caracteristica) {
       $this->dispatch('caracteristicaNotExits');
-    } else {
-      $this->validate();
+      return;
+    }
 
-      $this->caracteristica->nombre = $this->nombre;
-      $this->caracteristica->tipo = $this->tipo;
-      $this->caracteristica->save();
+    $this->validate();
 
-      if ($this->tipo === 'select') {
-        // Eliminar opciones existentes
+    // 🔒 Opciones actuales en DB
+    $opcionesDB = $this->caracteristica->opciones()
+      ->get(['id', 'valor']);
 
-        $opcionesEnUso = ValoresCataracteristica::where('caracteristica_id', $this->caracteristica->id)
-          ->pluck('valor')
-          ->unique()
-          ->toArray();
+    // 🔒 Valores usados en lotes
+    $valoresEnUso = ValoresCataracteristica::where(
+      'caracteristica_id',
+      $this->caracteristica->id
+    )
+      ->pluck('valor')
+      ->unique()
+      ->toArray();
 
-        $opcionesEliminadas = array_diff($opcionesEnUso, $this->opciones);
+    // 🔒 IDs de opciones que están en uso
+    $idsOpcionesEnUso = $opcionesDB
+      ->filter(fn($op) => in_array($op->valor, $valoresEnUso))
+      ->pluck('id')
+      ->toArray();
 
-        if (!empty($opcionesEliminadas)) {
-          $this->addError('tieneDatos', 'Opción asociada a lotes.');
-          $this->mount();
-          return;
-        }
+    // 🔒 IDs enviados desde el formulario
+    $idsFormulario = collect($this->opciones)
+      ->pluck('id')
+      ->filter()
+      ->toArray();
+
+    // ❌ SOLO si intenta eliminar una opción usada
+    $eliminadas = array_diff($idsOpcionesEnUso, $idsFormulario);
+
+    if (!empty($eliminadas)) {
+      $this->addError(
+        'tieneDatos',
+        'No puede eliminar opciones asociadas a lotes.'
+      );
+      return;
+    }
 
 
+    DB::transaction(function () {
+
+      // 1️⃣ Actualiza característica
+      $this->caracteristica->update([
+        'nombre' => $this->nombre,
+        'tipo'   => $this->tipo,
+      ]);
+
+      if ($this->tipo !== 'select') {
         $this->caracteristica->opciones()->delete();
-        // Crear nuevas opciones
-        foreach ($this->opciones as $opcion) {
-          $this->caracteristica->opciones()->create([
-            'valor' => $opcion,
-          ]);
-        }
-      } else {
-        // Si no es select, eliminar todas las opciones
-        $this->caracteristica->opciones()->delete();
+        return;
       }
 
+      // 2️⃣ Sync opciones
+      foreach ($this->opciones as $opcion) {
+        if (!empty($opcion['id'])) {
+          CaracteristicaOpcion::where('id', $opcion['id'])
+            ->update(['valor' => $opcion['valor']]);
+        } else {
+          $this->caracteristica->opciones()->create([
+            'valor' => $opcion['valor'],
+          ]);
+        }
+      }
+    });
 
-
-      $this->dispatch('caracteristicaUpdated');
-    }
+    $this->dispatch('caracteristicaUpdated');
   }
+
+
+
+  // Si modifica opcion que estaba ligada a un lote , en el modal lote , no estara seleccionada , pero en el front aun se vera el valor viejo ,  hasta que vuelva a select en el modal lote la nueva opcion 
+  public function update()
+  {
+    if (!$this->caracteristica) {
+      $this->dispatch('caracteristicaNotExits');
+      return;
+    }
+
+    $this->validate();
+
+    // 🔒 Opciones actuales en BD
+    $opcionesDB = $this->caracteristica->opciones()->get(['id', 'valor']);
+
+    // 🔒 Valores usados en lotes
+    $valoresEnUso = ValoresCataracteristica::where(
+      'caracteristica_id',
+      $this->caracteristica->id
+    )->pluck('valor')->unique()->toArray();
+
+    // 🔒 IDs de opciones en uso
+    $idsEnUso = $opcionesDB
+      ->filter(fn($op) => in_array($op->valor, $valoresEnUso))
+      ->pluck('id')
+      ->toArray();
+
+    // 🔒 IDs enviados por el formulario
+    $idsFormulario = collect($this->opciones)
+      ->pluck('id')
+      ->filter()
+      ->toArray();
+
+    // ❌ Bloquea solo si intenta borrar una opción usada
+    $eliminadasEnUso = array_diff($idsEnUso, $idsFormulario);
+
+    if (!empty($eliminadasEnUso)) {
+      $this->addError(
+        'tieneDatos',
+        'No puede eliminar opciones asociadas a lotes.'
+      );
+      return;
+    }
+
+    DB::transaction(function () use ($idsFormulario) {
+
+      // 1️⃣ Update característica
+      $this->caracteristica->update([
+        'nombre' => $this->nombre,
+        'tipo'   => $this->tipo,
+      ]);
+
+      if ($this->tipo !== 'select') {
+        $this->caracteristica->opciones()->delete();
+        return;
+      }
+
+      // 2️⃣ Eliminar opciones quitadas
+      $this->caracteristica->opciones()
+        ->whereNotIn('id', $idsFormulario)
+        ->delete();
+
+      // 3️⃣ Update / Create opciones
+      foreach ($this->opciones as $opcion) {
+        if (!empty($opcion['id'])) {
+          CaracteristicaOpcion::where('id', $opcion['id'])
+            ->update(['valor' => $opcion['valor']]);
+        } else {
+          $this->caracteristica->opciones()->create([
+            'valor' => $opcion['valor'],
+          ]);
+        }
+      }
+    });
+
+    $this->dispatch('caracteristicaUpdated');
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

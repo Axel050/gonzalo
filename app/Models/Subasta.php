@@ -551,7 +551,7 @@ class Subasta extends Model implements Auditable
 
   public function scopeAbiertas($q)
   {
-    return $q->whereIn('estado', ['activa', 'en_puja']);
+    return $q->whereIn('estado', ['activa', 'enpuja']);
   }
 
   public function scopeProximasDesc($q)
@@ -571,7 +571,7 @@ class Subasta extends Model implements Auditable
   public function scopeAbiertasDesc($q)
   {
     return $q
-      ->whereIn('estado', ['activa', 'en_puja'])
+      ->whereIn('estado', ['activa', 'enpuja'])
       ->orderBy('id', 'desc');
   }
 

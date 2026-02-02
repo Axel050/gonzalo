@@ -124,7 +124,7 @@
                                             {{ $lote['id'] }}</a>
                                     </li>
 
-                                    <x-clamp-sub-puja :subasta_titulo="$lote['subastaTitulo']" :activa="$lote['subastaActiva']" :subasta_id="$lote['subastaId']" />
+                                    <x-clamp-sub-puja :subasta_titulo="$lote['subastaTitulo']" :activa="$lote['subastaActiva'] || $lote['subastaEnPuja']" :subasta_id="$lote['subastaId']" />
 
 
 
@@ -132,7 +132,7 @@
 
                                 <div class="md:inline-block
                                                 hidden">
-                                    @if ($lote['subastaActiva'])
+                                    @if ($lote['subastaActiva'] || $lote['loteEnPuja'])
                                         @if ($lote['tienePujas'])
                                             <x-hammer />
                                         @else

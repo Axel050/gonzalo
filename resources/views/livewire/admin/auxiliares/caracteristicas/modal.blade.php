@@ -35,11 +35,14 @@
                             </div>
 
                             <div class=" w-full">
+
                                 @foreach ($opciones as $index => $opcion)
                                     <div class="flex items-center mt-2 bg-blue-200 w-full">
-                                        <input type="text" wire:model.live="opciones.{{ $index }}"
-                                            class=" lg:w-60 w-full h-6 rounded-md border border-gray-400  text-gray-500 pl-2 text-sm bg-gray-100 "
-                                            placeholder="Opción {{ $index + 1 }}">
+
+
+                                        <input type="text" wire:model.live="opciones.{{ $index }}.valor"
+                                            class="lg:w-60 w-full h-6 rounded-md border border-gray-400  text-gray-500 pl-2 text-sm bg-gray-100" />
+
 
                                         <button type="button" wire:click="removeOpcion({{ $index }})"
                                             class=" hover:bg-red-700 bg-red-500 rounded-lg px-1 py-0.5 ml-2 lg:absolute right-[-40px] "
@@ -50,10 +53,14 @@
                                         </button>
 
                                     </div>
+                                    <x-input-error for="opciones.{{ $index }}.valor" />
+
+
 
                                     <x-input-error for="opciones.{{ $index }}"
                                         class="top-full py-0 leading-[12px] text-red-500" />
                                 @endforeach
+                                <x-input-error for="opciones" />
                                 <div class="flex w-full">
                                     <button type="button" wire:click="addOpcion"
                                         class="bg-cyan-700 text-white px-2  mt-1 h-5  text-xs rounded-lg mx-auto hover:bg-cyan-900">

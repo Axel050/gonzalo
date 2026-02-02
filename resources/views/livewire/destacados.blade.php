@@ -47,9 +47,10 @@
 
                                 <div class="flex lg:items-center  items-end  mb-3  justify-between ">
 
-                                    <x-clamp :text="$des['titulo']" bclass=" mr-1 "
+                                    <x-clamp :text="$des['titulo']" class="md:text-xl text-sm font-bold" />
+                                    {{-- <x-clamp :text="$des['titulo']" bclass=" mr-1 "
                                         mas="absolute -bottom-2.5 -right-2 md:right-0 "
-                                        class="md:text-xl text-sm font-bold  " />
+                                        class="md:text-xl text-sm font-bold  " /> --}}
                                     {{-- <p class="font-semibold text-xl w-full  ">8888 -{{ $i }}</p> --}}
 
                                     {{-- <x-hammer /> --}}

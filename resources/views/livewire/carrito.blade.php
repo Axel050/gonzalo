@@ -113,7 +113,7 @@
                                         </span>
                                         <span>
 
-                                            $|{{ number_format($lote['precio_final'], 0, ',', '.') }}
+                                            ${{ number_format($lote['precio_final'], 0, ',', '.') }}
                                         </span>
                                     </li>
                                 @endif
@@ -130,7 +130,7 @@
 
                         @if ($orden['garantia'])
                             <p class="flex justify-between text-sm">
-                                Deposito:
+                                Devolución de garantia:
                                 <span>-${{ number_format($orden['garantia']['monto'], 0, ',', '.') }}</span>
                             </p>
                         @endif

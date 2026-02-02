@@ -279,6 +279,10 @@ class Lote extends Model implements Auditable
       return 'ORDEN';
     }
 
+    if (ContratoLote::where('lote_id', $this->id)->exists()) {
+      return 'CONTRATO';
+    }
+
     return null;
   }
 }
