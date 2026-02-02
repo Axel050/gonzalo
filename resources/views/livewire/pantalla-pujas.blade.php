@@ -96,7 +96,7 @@
 
                                 <div class=" flex items-center gap-2">
                                     <div class="inline-block md:hidden">
-                                        @if ($lote['subastaActiva'])
+                                        @if ($lote['subastaActiva'] || $lote['loteEnPuja'])
                                             @if ($lote['tienePujas'])
                                                 <x-hammer />
                                             @else
