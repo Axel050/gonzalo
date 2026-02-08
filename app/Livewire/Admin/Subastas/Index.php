@@ -40,11 +40,11 @@ class Index extends Component
 
   public function option($method, $id = false)
   {
-    if ($method == "delete" || $method == "update" || $method == "view") {
-      $barrio = Subasta::find($id);
+    if ($method == "delete" || $method == "update" || $method == "view" || $method == "pujas") {
+      $sub = Subasta::find($id);
 
 
-      if (!$barrio) {
+      if (!$sub) {
         $this->dispatch('paisNotExits');
       } else {
         $this->method = $method;
@@ -80,7 +80,7 @@ class Index extends Component
     $this->resetPage();
   }
 
-  public function render()
+  public function rende2r()
   {
 
 
@@ -111,6 +111,44 @@ class Index extends Component
     }
 
 
+
+    return view('livewire.admin.subastas.index', compact('subastas'));
+  }
+  public function render()
+  {
+    $subastasQuery = Subasta::query()->withCount('pujas');
+
+    if ($this->query) {
+      switch ($this->searchType) {
+        case 'id':
+          $subastasQuery->where('id', 'like', '%' . $this->query . '%');
+          break;
+
+        case 'titulo':
+          $subastasQuery->where('titulo', 'like', '%' . $this->query . '%');
+          break;
+
+        case 'inicio':
+          $subastasQuery->whereDate('fecha_inicio', $this->query);
+          break;
+
+        case 'fin':
+          $subastasQuery->whereDate('fecha_fin', $this->query);
+          break;
+
+        case 'todos':
+          $subastasQuery
+            ->where('id', 'like', '%' . $this->query . '%')
+            ->orWhere('titulo', 'like', '%' . $this->query . '%')
+            ->orWhereDate('fecha_inicio', $this->query)
+            ->orWhereDate('fecha_fin', $this->query);
+          break;
+      }
+    }
+
+    $subastas = $subastasQuery
+      ->orderBy('id', 'desc')
+      ->paginate(15);
 
     return view('livewire.admin.subastas.index', compact('subastas'));
   }

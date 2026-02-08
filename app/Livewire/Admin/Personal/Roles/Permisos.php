@@ -88,6 +88,13 @@ class Permisos extends Component
       'crear' => false,
       'actualizar' => false,
       'eliminar' => false,
+    ],
+    [
+      'name' => 'Ordenes',
+      'ver' => false,
+      'crear' => false,
+      'actualizar' => false,
+      'eliminar' => false,
     ]
 
   ];

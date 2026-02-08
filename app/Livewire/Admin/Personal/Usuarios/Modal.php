@@ -97,7 +97,10 @@ class Modal extends Component
   public function mount()
   {
 
-    $this->roles = Role::orderBy("name")->get();
+    // $this->roles = Role::orderBy("name")->get();
+    $this->roles = Role::where('name', '!=', 'adquirente')
+      ->orderBy('name')
+      ->get();
 
 
     if ($this->method == "save") {

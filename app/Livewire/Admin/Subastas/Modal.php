@@ -58,7 +58,7 @@ class Modal extends Component
       'finH' => 'required',
       'comision' => 'required|numeric|min:0',
       'tiempoPos' => 'required',
-      'garantia' => 'required|numeric|min:1',
+      'garantia' => 'numeric|min:0',
       'envio' => 'numeric|min:0',
     ];
     if ($this->method == "update") {

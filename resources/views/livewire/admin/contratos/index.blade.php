@@ -86,6 +86,7 @@
                                     <th scope="col">Fecha</th>
                                     <th scope="col">Comitente</th>
                                     <th scope="col">Alias</th>
+                                    <th scope="col">Descripción</th>
                                     <th scope="col">Subasta</th>
                                     <th scope="col">Lotes</th>
                                     <th scope="col" class="lg:w-[190px] w-[90px]">Accion</th>
@@ -96,7 +97,7 @@
 
                                 @foreach ($contratos as $cont)
                                     <tr
-                                        class="divide-x-2 divide-y-2 divide-gray-400 [&>td]:pl-2 [&>td]:pr-1 [&>td]:lg:pl-4 [&>td]:text-start ">
+                                        class="divide-x-2 divide-y-2 divide-gray-400 [&>td]:pl-2 [&>td]:pr-1 [&>td]:lg:pl-2 [&>td]:text-start ">
 
                                         <td class="py-2">{{ $cont->id }}</td>
                                         <td class="py-2">{{ $cont->fecha_firma }}</td>
@@ -114,9 +115,14 @@
                                             </a>
                                         </td>
                                         <td class="py-2">
+
+                                            {{ $cont->descripcion }}
+
+                                        </td>
+                                        <td class="py-2">
                                             <a href="{{ route('admin.subastas', ['ids' => $cont->subasta_id]) }}"
                                                 class="cursor-pointer hover:font-extrabold">
-                                                {{ $cont->subasta_id }}
+                                                {{ $cont->subasta_id }} - {{ $cont->subasta?->titulo }}
                                             </a>
                                         </td>
                                         <td class="py-2">

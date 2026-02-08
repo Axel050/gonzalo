@@ -2220,3 +2220,8 @@ Stack trace:
 [24-Jan-2026 19:45:48 UTC] PHP Warning:  Unknown: Failed to open stream: No such file or directory in Unknown on line 0
 [24-Jan-2026 19:45:48 UTC] PHP Fatal error:  Failed opening required 'C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Foundation\Console/../resources/server.php' (include_path='.;C:\php\pear') in Unknown on line 0
 [25-Jan-2026 21:48:53 UTC] PHP Parse error:  syntax error, unexpected token "<" in C:\xampp\htdocs\casablanca12\bootstrap\app.php on line 44
+[05-Feb-2026 16:04:13 America/Argentina/Buenos_Aires] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Database\Connection.php on line 611
+[05-Feb-2026 16:05:19 America/Argentina/Buenos_Aires] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in C:\xampp\htdocs\casablanca12\vendor\doctrine\inflector\src\Rules\Substitutions.php on line 13
+[05-Feb-2026 16:06:24 America/Argentina/Buenos_Aires] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Database\Connection.php on line 420
+[07-Feb-2026 17:58:02 America/Argentina/Buenos_Aires] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 429
+[07-Feb-2026 21:44:57 UTC] PHP Fatal error:  Maximum execution time of 60 seconds exceeded in C:\xampp\htdocs\casablanca12\vendor\composer\ClassLoader.php on line 429

@@ -68,7 +68,9 @@
 
                     <!-- Cabecera Desktop -->
                     <div class="md:flex hidden w-full justify-between">
-                        <x-clamp :text="$lote['titulo']" bclass=" mr-1" mas="absolute -bottom-2 -right-2 md:right-0 " />
+
+                        {{-- <x-clamp :text="$lote['titulo']" bclass=" mr-1" mas="absolute -bottom-2 -right-2 md:right-0 " /> --}}
+                        <x-clamp-mix :text="$lote['titulo']" class="md:text-3xl font-bold" variant="italic tracking-[1px]" />
 
                         <button class=" -mt-3 -mr-3 h-fit disabled:opacity-30 disabled:cursor-not-allowed"
                             wire:click="quitar({{ $lote['id'] }})"
@@ -92,7 +94,9 @@
                         <div class="flex flex-col w-full md:pl-0 pl-2 ">
                             <!-- Cabecera Mobile -->
                             <div class="md:hidden flex w-full justify-between ">
-                                <x-clamp :text="$lote['titulo']" class="text-sm font-bold " />
+                                <x-clamp-mix :text="$lote['titulo']" class=" font-bold tracking-[1px]"
+                                    variant="italic tracking-[1px]" />
+                                {{-- <x-clamp :text="$lote['titulo']" class="text-sm font-bold " /> --}}
 
                                 <div class=" flex items-center gap-2">
                                     <div class="inline-block md:hidden">

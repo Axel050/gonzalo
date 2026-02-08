@@ -44,9 +44,25 @@
 
         </div>
 
-        @if ($method)
+        {{-- @if ($method)
             @livewire('admin.subastas.modal', ['method' => $method, 'id' => $id])
+        @endif --}}
+
+        {{-- @dump($method) --}}
+        @if ($method)
+            @if ($method != 'pujas')
+                @livewire('admin.subastas.modal', ['method' => $method, 'id' => $id])
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        Livewire.dispatch('modalOpened');
+                    });
+                </script>
+            @else
+                @livewire('admin.subastas.modal-pujas', ['id' => $id], key('modal-pujas' . $id))
+            @endif
         @endif
+
+
 
 
 
@@ -153,6 +169,21 @@
 
                                         <td>
                                             <div class="flex justfy-end lg:gap-x-6 gap-x-4 text-white text-xs">
+
+
+
+
+
+                                                <button
+                                                    class=" hover:text-gray-200  hover:bg-purple-950 flex items-center py-0.5 bg-purple-900 rounded-lg px-1 cursor-pointer"
+                                                    title="Ver pujas" wire:click="option('pujas',{{ $subasta->id }})">
+                                                    @if ($subasta->pujas_count > 0)
+                                                        <x-hammer-admin />
+                                                    @else
+                                                        <x-hammer-icon />
+                                                    @endif
+                                                    <span class="hidden lg:block">Pujas</span>
+                                                </button>
 
 
                                                 <a href="{{ route('admin.garantias', ['ids' => $subasta->id]) }}"

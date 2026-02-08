@@ -104,7 +104,8 @@
                             algo para vender?</a>
                     </li>
                     <li><a href="{{ route('faq') }}"
-                            class="border border-casa-fondo-h rounded-full px-3 py-1 hover:bg-casa-black hover:text-casa-fondo-h">FAQ</a>
+                            class="border border-casa-fondo-h rounded-full px-3 py-1 hover:bg-casa-black hover:text-casa-fondo-h"
+                            title="Ir a preguntas frecuentes">FAQ</a>
                     </li>
                 </ul>
 

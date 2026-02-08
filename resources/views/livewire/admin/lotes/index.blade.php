@@ -167,7 +167,8 @@
                                         <td>{{ $lot->ultimoConLote?->moneda?->titulo }}</td>
                                         <td>
                                             <a href="{{ route('admin.subastas', ['ids' => $lot->ultimoContrato?->subasta_id]) }}"
-                                                class="cursor-pointer hover:font-extrabold">
+                                                class="cursor-pointer hover:font-extrabold"
+                                                title="{{ $lot->ultimoContrato?->subasta?->titulo }}">
                                                 {{ $lot->ultimoContrato?->subasta_id }}
                                             </a>
                                         </td>

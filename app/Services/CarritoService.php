@@ -48,7 +48,7 @@ class CarritoService
 
 
 
-    if (
+    if (($lote->ultimoContrato?->subasta?->garantia ?? 0) > 0 &&
       $adquirente?->estado_id != 1 && !$adquirente?->garantia($lote->ultimoContrato?->subasta_id)
     ) {
       throw new DomainException('No puedes participar de esta subata aun');
@@ -125,86 +125,84 @@ class CarritoService
   }
 
 
-  public function obtenerCarritoParaUsuario(int $userId)
-  {
-    // 1️⃣ Query optimizada con JOINs
-    $rows = DB::table('carritos')
-      ->join('adquirentes', 'adquirentes.id', '=', 'carritos.adquirente_id')
-      ->join('carrito_lotes', 'carrito_lotes.carrito_id', '=', 'carritos.id')
+  // public function obtenerCarritoParaUsuario(int $userId)
+  // {
+  //   $rows = DB::table('carritos')
+  //     ->join('adquirentes', 'adquirentes.id', '=', 'carritos.adquirente_id')
+  //     ->join('carrito_lotes', 'carrito_lotes.carrito_id', '=', 'carritos.id')
 
-      ->join('lotes', 'lotes.id', '=', 'carrito_lotes.lote_id')
+  //     ->join('lotes', 'lotes.id', '=', 'carrito_lotes.lote_id')
 
-      ->join('contrato_lotes', 'contrato_lotes.lote_id', '=', 'lotes.id')
-      ->join('contratos', 'contratos.id', '=', 'contrato_lotes.contrato_id')
+  //     ->join('contrato_lotes', 'contrato_lotes.lote_id', '=', 'lotes.id')
+  //     ->join('contratos', 'contratos.id', '=', 'contrato_lotes.contrato_id')
 
-      ->join('subastas', 'subastas.id', '=', 'contratos.subasta_id')
+  //     ->join('subastas', 'subastas.id', '=', 'contratos.subasta_id')
 
-      ->join('monedas', 'monedas.id', '=', 'contratos.moneda_id')
+  //     ->join('monedas', 'monedas.id', '=', 'contratos.moneda_id')
 
-      // Última puja (LEFT JOIN)
-      ->leftJoin('pujas as p', function ($join) {
-        $join->on('p.lote_id', '=', 'lotes.id')
-          ->whereRaw('p.id = (
-                        SELECT MAX(p2.id)
-                        FROM pujas p2
-                        WHERE p2.lote_id = lotes.id
-                    )');
-      })
+  //     // Última puja (LEFT JOIN)
+  //     ->leftJoin('pujas as p', function ($join) {
+  //       $join->on('p.lote_id', '=', 'lotes.id')
+  //         ->whereRaw('p.id = (
+  //                       SELECT MAX(p2.id)
+  //                       FROM pujas p2
+  //                       WHERE p2.lote_id = lotes.id
+  //                   )');
+  //     })
 
-      ->where('adquirentes.user_id', $userId)
-      ->whereIn('carrito_lotes.estado', [
-        'activo',
-        'adjudicado',
-        'en_orden',
-        'cerrado',
-      ])
+  //     ->where('adquirentes.user_id', $userId)
+  //     ->whereIn('carrito_lotes.estado', [
+  //       'activo',
+  //       'adjudicado',
+  //       'en_orden',
+  //       'cerrado',
+  //     ])
 
-      ->select([
-        'lotes.id as lote_id',
-        'lotes.titulo as lote_titulo',
-        'lotes.foto1',
+  //     ->select([
+  //       'lotes.id as lote_id',
+  //       'lotes.titulo as lote_titulo',
+  //       'lotes.foto1',
 
-        'subastas.id as subasta_id',
-        'subastas.titulo as subasta_titulo',
-        'subastas.estado as subasta_estado',
-        'subastas.tiempo_post_subasta_fin as fin_post_subasta',
+  //       'subastas.id as subasta_id',
+  //       'subastas.titulo as subasta_titulo',
+  //       'subastas.estado as subasta_estado',
+  //       'subastas.tiempo_post_subasta_fin as fin_post_subasta',
 
-        'contrato_lotes.precio_base',
-        'lotes.fraccion_min',
+  //       'contrato_lotes.precio_base',
+  //       'lotes.fraccion_min',
 
-        DB::raw('COALESCE(p.monto, contrato_lotes.precio_base) as oferta_actual'),
+  //       DB::raw('COALESCE(p.monto, contrato_lotes.precio_base) as oferta_actual'),
 
-        'monedas.signo as signo_moneda',
+  //       'monedas.signo as signo_moneda',
 
-        DB::raw('CASE WHEN p.adquirente_id = adquirentes.id THEN 1 ELSE 0 END as es_ganador'),
-      ])
-      ->orderByDesc('carrito_lotes.id')
-      ->get();
+  //       DB::raw('CASE WHEN p.adquirente_id = adquirentes.id THEN 1 ELSE 0 END as es_ganador'),
+  //     ])
+  //     ->orderByDesc('carrito_lotes.id')
+  //     ->get();
 
-    // 2️⃣ Mapeo a DTO (🔥 TU CÓDIGO)
-    return collect($rows)->map(
-      fn($row) =>
-      new PantallaPujasDTO(
-        id: $row->lote_id,
-        titulo: $row->lote_titulo,
-        foto: $row->foto1,
+  //   return collect($rows)->map(
+  //     fn($row) =>
+  //     new PantallaPujasDTO(
+  //       id: $row->lote_id,
+  //       titulo: $row->lote_titulo,
+  //       foto: $row->foto1,
 
-        subastaId: $row->subasta_id,
-        subastaTitulo: $row->subasta_titulo,
-        subastaActiva: $row->subasta_estado === 'activa',
-        subastaFinalizada: $row->subasta_estado === 'finalizada',
-        tiempoPostSubastaFin: $row->fin_post_subasta,
+  //       subastaId: $row->subasta_id,
+  //       subastaTitulo: $row->subasta_titulo,
+  //       subastaActiva: $row->subasta_estado === 'activa',
+  //       subastaFinalizada: $row->subasta_estado === 'finalizada',
+  //       tiempoPostSubastaFin: $row->fin_post_subasta,
 
-        precioBase: (float) $row->precio_base,
-        ofertaActual: (float) $row->oferta_actual,
-        fraccionMin: (float) $row->fraccion_min,
+  //       precioBase: (float) $row->precio_base,
+  //       ofertaActual: (float) $row->oferta_actual,
+  //       fraccionMin: (float) $row->fraccion_min,
 
-        signoMoneda: $row->signo_moneda,
+  //       signoMoneda: $row->signo_moneda,
 
-        esGanador: (bool) $row->es_ganador,
-      )
-    );
-  }
+  //       esGanador: (bool) $row->es_ganador,
+  //     )
+  //   );
+  // }
 
 
   public function tieneOrdenPendiente(Carrito $carrito): bool

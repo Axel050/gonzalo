@@ -53,8 +53,8 @@ Route::get("/auditoria", function () {
 
 Route::get("/ordenes", function () {
   return view('admin.ordenes');
-})->name("ordenes");
-// ->can("ordenes-ver");
+})->name("ordenes")
+  ->can("ordenes-ver");
 
 
 // AUX

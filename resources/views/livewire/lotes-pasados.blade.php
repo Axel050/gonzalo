@@ -22,7 +22,8 @@
                 <div
                     class=" bg-casa-base-2 bas flex flex-col md:p-6 p-2 gap-y-1 md:border border-casa-black md:w-[394px]  md:min-w-[300px] min-w-[44%] w-full relative max-w-[48%]">
 
-                    <x-clamp :text="$lote['titulo']" bclass="z-20" exp="-bottom-2 -right-2 md:right-0" />
+                    {{-- <x-clamp :text="$lote['titulo']" bclass="z-20" exp="-bottom-2 -right-2 md:right-0" /> --}}
+                    <x-clamp-mix :text="$lote['titulo']" class="md:text-3xl font-bold" variant="italic tracking-[1px]" />
 
                     <div class="flex gap-x-4 justify-center my-2 md:order-2 order-1">
                         <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote['foto']) }}"

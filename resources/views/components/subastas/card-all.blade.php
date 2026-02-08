@@ -87,16 +87,16 @@
 
 
     @if ($lotes->isNotEmpty())
-        <div class="flex justify-center md:mt-8 mt-6 md:max-h-39 max-h-24 w-full overflow-hidden">
+        <div class="flex justify-center md:mt-8 mt-6 md:max-h-39 max-h-24 w-full overflow-hidden z-20">
             <div class="swiper-destacados-img w-full">
                 <div class="swiper-wrapper">
                     @foreach ($lotes as $lote)
-                        <div class="swiper-slide">
+                        <a class="swiper-slide" href="{{ route('lotes.show', $lote['id']) }}">
                             <img src="{{ Storage::url('imagenes/lotes/thumbnail/' . $lote['foto']) }}"
                                 alt="{{ $lote['titulo'] }}" class="w-full max-h-full object-contain" decoding="async"
                                 loading="{{ $config['loading'] }}"
                                 @if ($config['priority']) fetchpriority="{{ $config['priority'] }}" @endif>
-                        </div>
+                        </a>
                     @endforeach
                 </div>
             </div>

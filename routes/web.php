@@ -76,10 +76,10 @@ Route::get('/test-devolucion/{subastaId}/{adquirenteId}/{email}', function (int 
 
     info(["faltantes" => $faltante]);
 
-    return new GarantiaDevolucionEmail($data);
+    // return new GarantiaDevolucionEmail($data);
 
 
-    // Mail::to($email)->send(new GarantiaDevolucionEmail($data));
+    Mail::to($email)->send(new GarantiaDevolucionEmail($data));
 
     return response()->json([
       'success' => true,

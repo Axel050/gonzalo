@@ -18,7 +18,7 @@
 
         <!-- Modal -->
         <div x-show="open" x-transition.scale
-            class="bg-casa-base rounded-xl md:py-6 py-4 md:max-w-3/4 max-w-4/5   mx-4 shadow-xl  text-casa-black md:px-6 px-4">
+            class="bg-casa-base  md:py-6 py-4 md:max-w-3xl  max-w-4/5   mx-4 shadow-xl  text-casa-black md:px-6 px-4">
 
             <h3 class="md:text-2xl text-xl font-semibold mb-3 px-2 text-center">
                 {{ $titulo }}</h3>

@@ -41,6 +41,7 @@ use Illuminate\Support\Facades\Route;
 
 // Route::middleware('auth:sanctum')->post('/carrito', [CarritoController::class, 'store'])->name('carrito.store');
 
+
 // Route::middleware('auth:sanctum')->post('/carrito/pujar', [CarritoController::class, 'pujar'])->name('carrito.pujar');
 
 // Route::middleware('auth:sanctum')->get('/carrito-ordenes', [CarritoController::class, 'getOrdenes']);

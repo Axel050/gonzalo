@@ -57,7 +57,11 @@
 
 
                                 <a href="{{ route('lotes.show', $lote['lote_id']) }}"
-                                    class="font-bold md:text-xl text-sm w-full  my-1 ">{{ $lote['titulo'] }}</a>
+                                    class="font-bold md:text-xl text-sm w-full  my-1 ">
+                                    {{-- {{ $lote['titulo'] }} --}}
+                                    <x-fancy-heading-v-clamp :text="$lote['titulo']" class="md:text-2xl font-bold"
+                                        variant="italic tracking-[1px]" />
+                                </a>
 
 
                                 <p class="md:text-xl text-sm font-bold mb-3">

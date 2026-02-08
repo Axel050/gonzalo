@@ -54,8 +54,9 @@
                 <div
                     class=" bg-casa-base-2 bas flex flex-col md:p-6  p-2 gap-y-1 md:border border-casa-black md:w-[394px]  md:min-w-[300px] min-w-[44%] relative max-w-[48%] w-full">
 
-                    <x-clamp :text="$lote['titulo']" bclass=" ml-1  z-20" mas="absolute -bottom-2 -right-3 md:right-0 "
-                        menos="absolute right-2 md:top-1/2 top-full " />
+                    {{-- <x-clamp :text="$lote['titulo']" bclass=" ml-1  z-20" mas="absolute -bottom-2 -right-3 md:right-0 "
+                        menos="absolute right-2 md:top-1/2 top-full " /> --}}
+                    <x-clamp-mix :text="$lote['titulo']" class="md:text-3xl font-bold" variant="italic tracking-[1px]" />
 
 
                     <div class="flex gap-x-4 justify-center my-2 md:order-2 order-1">

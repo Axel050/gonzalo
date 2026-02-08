@@ -54,7 +54,7 @@ class Modal extends Component
         ),
       ],
       'fecha_firma' => 'required|date',
-      'subasta_id' => 'required',
+      // 'subasta_id' => 'required',
     ];
 
     return $rules;

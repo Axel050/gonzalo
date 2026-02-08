@@ -153,10 +153,17 @@
 
         {{-- SECOND --}}
         <div class="flex flex-col lg:ml-18 pt-4 pl-2  g-red-300 max-w-150  lg:col-start-2   lg:row-end-2 row-start-1">
-            <h2
-                class="font-helvetica font-bold lg:text-[30px] text-lg lg:leading-[1.4] tracking-normal   justify-between pr-2  flex">
-                {{ ucfirst($lote->titulo) }}
-                <span>
+            <div class="flex  justify-between items-center ">
+
+                {{-- <h2
+                    class="font-helvetica font-bold lg:text-[30px] text-lg lg:leading-  [1.4] tracking-normal   justify-between pr-2  flex">
+                    {{ $lote->titulo }}
+                </h2> --}}
+
+                <x-fancy-heading-v text="{{ $lote->titulo }}" variant="italic  font-semibold   tracking-[1px] "
+                    class=" md:text-[30px] text-lg leadin-9 md:text-cnter text-start  md:mb-1 text-wrap font-semibold   " />
+
+                <span class="ml-2">
                     @if ($lote->estado == 'en_subasta')
 
                         @if ($tienePujas)
@@ -168,7 +175,9 @@
                     @endif
                 </span>
 
-            </h2>
+            </div>
+
+
             <ul
                 class="flex space-x-2 [&>li]:rounded-2xl  [&>li]:px-3 [&>li]:lg:py-1.5 [&>li]:py-0.5  [&>li]:tet-sm my-2 lg:text-base text-sm font-semibold overflow-hidden">
                 <li class="text-nowrap !px-0 !pr-3">Lote: {{ $lote->id }}</li>
@@ -281,7 +290,8 @@
 
 
                         @if (auth()->user()?->adquirente?->estado_id == 1 ||
-                                auth()->user()?->adquirente?->garantia($lote->ultimoContrato?->subasta_id))
+                                auth()->user()?->adquirente?->garantia($lote->ultimoContrato?->subasta_id) ||
+                                $subasta->garantia == 0)
                             @if (!$inCart)
                                 <button
                                     class="bg-casa-black hover:bg-casa-base-2 text-casa-base hover:text-casa-black border border-casa-black rounded-full px-4 flex items-center justify-between gap-x-5 py-1 max-w-90 mt-4 font-bold"
@@ -301,7 +311,7 @@
                                     </svg>
                                 </a>
                             @endif
-                            <x-input-error for="puja" class="absolute -bottom-1 text-red-800  text-lg" />
+                            <x-input-error for="puja" class="absolute -bottom-2 text-red-800  text-lg" />
 
 
                             <div x-data="{ message: '', redirect: '', delay: 2000 }"

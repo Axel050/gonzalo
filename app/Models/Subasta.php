@@ -47,6 +47,14 @@ class Subasta extends Model implements Auditable
     return $this->hasMany(Garantia::class);
   }
 
+  public function pujas()
+  {
+    return $this->hasMany(Puja::class, "subasta_id");
+  }
+
+
+
+
   public function contratos()
   {
     return $this->hasMany(Contrato::class, 'subasta_id');
