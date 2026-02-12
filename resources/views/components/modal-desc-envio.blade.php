@@ -6,7 +6,7 @@
 
     <!-- Botón para abrir -->
     <button
-        class="{{ $enlace }} group flex items-center  md:text-sm text-xs font-medium  hover:text-black transition-colors mt-2  z-30 {{ $home ? 'absolute bottom-2' : '' }}"
+        class="{{ $enlace }} group flex items-center  md:text-sm text-xs font-medium  hover:text-black  transition-colors mt-2  z-30 {{ $home ? 'absolute bottom-2' : '' }}"
         @click.prevent="open = true" title="ver info envio">
         <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path d=" M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z" />

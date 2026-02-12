@@ -40,7 +40,7 @@
 
 <article
     {{ $attributes->merge(['class' => 'w-full flex flex-col gap-y-1 relative md:p-8 md:pb-8 p-4 pb-20 ' . $config['container']]) }}>
-    <a href="{{ $route }}" class="inset-0 absolute z-10"></a>
+    <a href="{{ $route }}" class="inset-0 absolute z-10 pointer-events-none"></a>
 
 
     <div class="flex gap-x-12">
@@ -77,12 +77,6 @@
                     <x-modal-desc-extra :titulo="$subasta['titulo']" :desc="$subasta['desc_extra']" :route="$route" :enlace="$config['enlaceModal']" />
                 @endif
 
-                {{-- <button
-                    class="group flex items-center md:gap-2 gap-1 md:text-sm text-xs font-medium text-stone-500 hover:text-black transition-colors mt-2 shadow-sm z-30"
-                    title="ver info envio">
-                    
-                </button> --}}
-                {{-- @dump($subasta['envio']) --}}
 
                 @if ($subasta['envio'])
                     <x-modal-desc-envio :titulo="$subasta['titulo']" :envio="$subasta['envio']" :enlace="$config['enlaceModalEnvio']" />

@@ -2,15 +2,15 @@
 
 
 
-<div x-data="{ open: false }" class="inline-block g-amber-500   relative 2">
+<div x-data="{ open: false }" class="inline-block   relative ">
 
     <!-- Botón para abrir -->
-    <a href="#"
-        class="{{ $enlace }} underline text-sm   g-red-300  fle  w-fit  right-0 absolute md:translate-x-full md:-translate-y-full md:pl-5 whitespace-nowrap z-20 underline-offset-3
-                                  "
-        @click.prevent="open = true">
+    <p class="{{ $enlace }} underline text-sm   w-fit  right-0 absolute md:translate-x-full md:-translate-y-full md:pl-5 whitespace-nowrap z-30 underline-offset-2 bg-ellow-200 md:py-0 py-2  cursor-pointer"
+        @click.prevent="open = true" title="ver descripción extra">
         Descripción extra
-    </a>
+    </p>
+    {{-- @click.prevent="open = true" title="ver info envio"> --}}
+
 
     <!-- Overlay -->
     <div x-show="open" x-transition.opacity @click.self="open = false"
