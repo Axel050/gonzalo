@@ -5,7 +5,7 @@
 <div x-data="{ open: false }" class="inline-block   relative ">
 
     <!-- Botón para abrir -->
-    <p class="{{ $enlace }} underline text-sm   w-fit  right-0 absolute md:translate-x-full md:-translate-y-full md:pl-5 whitespace-nowrap z-30 underline-offset-2 bg-ellow-200 md:py-0 py-2  cursor-pointer"
+    <p class="{{ $enlace }} underline text-sm   w-fit  right-0 absolute md:translate-x-full md:-translate-y-full md:pl-5 whitespace-nowrap z-30 underline-offset-2 bg-ellow-200 md:pt-0 pt-2  cursor-pointer"
         @click.prevent="open = true" title="ver descripción extra">
         Descripción extra
     </p>
