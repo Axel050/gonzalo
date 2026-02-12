@@ -13,6 +13,7 @@
 
         <div class="bg-gray-200  pb-6 text-gray-700  text-start rounded-xl ml-0">
             <div class="flex  flex-col justify-center items-center  ">
+
                 <h2 class="lg:text-2xl text-xl mb-2  w-full text-center py-1  border-b border-gray-300 text-white rounded-t-lg"
                     style="{{ $bg }}">
                     {{ $title }} contrato
@@ -56,7 +57,7 @@
 
 
                         <x-form-item-sel label="Subasta" :method="$method" model="subasta_id">
-                            <option>Elija subasta </option>
+                            <option value="">Elija subasta </option>
                             @foreach ($subastas as $sub)
                                 <option value="{{ $sub->id }}">{{ $sub->id }} - {{ $sub->titulo }}</option>
                             @endforeach

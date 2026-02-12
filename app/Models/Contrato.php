@@ -44,4 +44,28 @@ class Contrato extends Model implements Auditable
   {
     return $this->hasMany(ContratoLote::class);
   }
+
+
+  public function puedeCambiarSubasta(): ?string
+  {
+    $loteIds = $this->contratoLotes()->pluck('lote_id');
+
+    if ($loteIds->isEmpty()) {
+      return null;
+    }
+
+    if (Puja::whereIn('lote_id', $loteIds)->exists()) {
+      return 'PUJAS';
+    }
+
+    if (CarritoLote::whereIn('lote_id', $loteIds)->exists()) {
+      return 'CARRITO';
+    }
+
+    if (OrdenLote::whereIn('lote_id', $loteIds)->exists()) {
+      return 'ORDEN';
+    }
+
+    return null;
+  }
 }

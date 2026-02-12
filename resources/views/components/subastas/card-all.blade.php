@@ -13,6 +13,7 @@
             'cta' => 'bg-casa-black text-casa-base hover:bg-casa-fondo-h hover:text-casa-black',
             'label' => 'Quiero entrar',
             'enlaceModal' => null,
+            'enlaceModalEnvio' => null,
             'loading' => 'eager',
             'priority' => 'high',
         ],
@@ -21,6 +22,7 @@
             'cta' => 'bg-casa-base text-casa-black hover:bg-casa-black hover:text-casa-base hover:border-casa-base ',
             'label' => 'Ver',
             'enlaceModal' => 'text-casa-base hover:text-casa-base-2',
+            'enlaceModalEnvio' => 'text-gray-300 hover:text-casa-base',
             'loading' => 'eager',
             'priority' => null,
         ],
@@ -29,6 +31,7 @@
             'cta' => 'bg-casa-black text-casa-base hover:bg-casa-fondo-h hover:text-casa-black',
             'label' => 'Ver',
             'enlaceModal' => 'text-casa-black hover:text-casa-black-2',
+            'enlaceModalEnvio' => null,
             'loading' => 'lazy',
             'priority' => null,
         ],
@@ -73,6 +76,20 @@
                 @if ($subasta['desc_extra'])
                     <x-modal-desc-extra :titulo="$subasta['titulo']" :desc="$subasta['desc_extra']" :route="$route" :enlace="$config['enlaceModal']" />
                 @endif
+
+                {{-- <button
+                    class="group flex items-center md:gap-2 gap-1 md:text-sm text-xs font-medium text-stone-500 hover:text-black transition-colors mt-2 shadow-sm z-30"
+                    title="ver info envio">
+                    
+                </button> --}}
+                {{-- @dump($subasta['envio']) --}}
+
+                @if ($subasta['envio'])
+                    <x-modal-desc-envio :titulo="$subasta['titulo']" :envio="$subasta['envio']" :enlace="$config['enlaceModalEnvio']" />
+                @endif
+
+
+
             </div>
         </div>
 

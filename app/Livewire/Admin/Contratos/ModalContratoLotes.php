@@ -171,13 +171,20 @@ class ModalContratoLotes extends Component
 
     $this->validate();
 
+    $estado = LotesEstados::DISPONIBLE;
+
+    if ($this->contrato->subasta_id) {
+      $estado = LotesEstados::ASIGNADO;
+    }
+
+
     $newLote = Lote::create([
       'titulo' => $this->titulo,
       'descripcion' => $this->descripcion,
       'valuacion' => $this->valuacion,
       'comitente_id' => $this->contrato?->comitente_id,
       'ultimo_contrato' => $this->contrato?->id,
-      'estado' => LotesEstados::ASIGNADO,
+      'estado' => $estado,
     ]);
 
     ContratoLote::create([

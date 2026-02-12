@@ -17,6 +17,7 @@ class SubastasHomeResource extends JsonResource
         'fecha_fin'   => $this->subasta->fecha_fin_humana,
         'estado'      => $this->subasta->estado,
         'desc_extra'      => $this->subasta->desc_extra,
+        'envio'      => $this->subasta->envio,
       ],
 
       'lotes' => $this->lotes->map(fn($lote) => [

@@ -48,6 +48,7 @@ class Modal extends Component
         Rule::unique('contratos')->where(function ($query) {
           return $query->where('comitente_id', $this->comitente_id)
             ->where('subasta_id', $this->subasta_id)
+            ->whereNotNull('subasta_id')
             ->whereNull('deleted_at');
         })->ignore(
           $this->contrato->id ?? 0
@@ -151,7 +152,19 @@ class Modal extends Component
     } else {
       $this->validate();
 
-      $this->contrato->subasta_id = $this->subasta_id;
+
+      $bloqueo = $this->contrato->puedeCambiarSubasta();
+
+      if ($bloqueo) {
+        $this->addError(
+          'subasta_id',
+          "No se puede cambiar la subasta: hay lotes con $bloqueo."
+        );
+        return;
+      }
+
+      $this->contrato->subasta_id = $this->subasta_id ?: null;
+
       $this->contrato->descripcion = $this->descripcion;
       $this->contrato->comitente_id = $this->comitente_id;
       $this->contrato->fecha_firma = $this->fecha_firma;
