@@ -6,7 +6,7 @@
 
     <!-- Botón para abrir -->
     <a href="#"
-        class="{{ $enlace }} underline text-sm   g-red-300  fle  w-fit  right-0 absolute md:translate-x-full md:-translate-y-full md:pl-5 whitespace-nowrap z-30
+        class="{{ $enlace }} underline text-sm   g-red-300  fle  w-fit  right-0 absolute md:translate-x-full md:-translate-y-full md:pl-5 whitespace-nowrap z-20
                                   "
         @click.prevent="open = true">
         Ver descripción extra

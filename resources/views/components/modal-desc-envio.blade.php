@@ -2,7 +2,7 @@
 
 
 
-<div x-data="{ open: false }" class="inline-block g-amber-500   relative 2 z-30">
+<div x-data="{ open: false }" class="inline-block g-amber-500   relative 2 z-40">
 
     <!-- Botón para abrir -->
     <button
