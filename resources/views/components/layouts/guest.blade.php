@@ -63,7 +63,7 @@
             class=" sticky top-0 z-50  flex  w-full -200  py-4    text-gray-800  -gray-700 shadw-lg lg:h-20 lg:h30  h16 h-11 items-center hover   bg-casa-base   transition-all duration-1000 ease-in-out hover:opacity-100   mx-auto md:px-16 xl:px-24 px-4  border-b border-casa-black ">
 
 
-            <div class="max-w-8xl  md:grid md:grid-cols-5 flex   w-full justify-between items-center  mx-auto">
+            <div class="max-w-8xl  lg:grid lg:grid-cols-5 flex   w-full justify-between items-center  mx-auto ">
 
 
 

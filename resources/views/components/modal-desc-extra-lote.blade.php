@@ -5,7 +5,8 @@
 <div x-data="{ open: false }" class="inline-bock relative ">
 
     <!-- Botón para abrir -->
-    <button class="text-blue-600 underline text-sm hover:text-blue-800 w-fit  " @click.prevent="open=true">
+    <button class="text-blue-600 underline text-sm hover:text-blue-800 w-fit underline-offset-2 "
+        @click.prevent="open=true">
         Ver descripción extra
     </button>
 

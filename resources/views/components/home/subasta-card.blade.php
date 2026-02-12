@@ -45,4 +45,9 @@
     @if ($item->desc_extra)
         <x-modal-desc-extra-home :titulo="$item->titulo" :desc="$item->desc_extra" :route="$route" :enlace="$enlaceExtra" />
     @endif
+
+    @if ($item->envio)
+        <x-modal-desc-envio :titulo="$item->titulo" :envio="$item->envio" home="true" :enlace="$enlaceExtra" />
+    @endif
+
 </a>

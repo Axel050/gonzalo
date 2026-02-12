@@ -106,7 +106,7 @@
 
             <a href="https://wa.me/+541130220449" target="_blank"
                 class="bg-casa-base-2 hover:bg-casa-black-h text-casa-black  hover:text-casa-base rounded-full px-4 flex items-center justify-between gap-x-5 py-1 lg:w-fit w-full font-bold border  border-casa-black">
-                Contactanos a whatsApp
+                Contactanos a WhatsApp
                 <svg class="size-8 sm:ml-6 ">
                     <use xlink:href="#arrow-right"></use>
                 </svg>

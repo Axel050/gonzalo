@@ -160,7 +160,7 @@
                     {{ $lote->titulo }}
                 </h2> --}}
 
-                <x-fancy-heading-v text="{{ $lote->titulo }}" variant="italic  font-semibold   tracking-[1px] "
+                <x-fancy-heading-v :text="$lote->titulo" variant="italic  font-semibold   tracking-[1px] "
                     class=" md:text-[30px] text-lg leadin-9 md:text-cnter text-start  md:mb-1 text-wrap font-semibold   " />
 
                 <span class="ml-2">

@@ -5,9 +5,10 @@
 
     {{-- x --}}
     <!-- Botón para abrir -->
-    <button class="{{ $enlace }} underline text-sm   fle  w-fit  right-3 bottom-2 absolute  "
+    <button
+        class="{{ $enlace }} underline text-sm   fle  w-fit  right-3 xl:bottom-2 bottom-7 absolute underline-offset-3 "
         @click.prevent="open = true">
-        Ver descripción extra
+        Descripción extra
     </button>
 
 

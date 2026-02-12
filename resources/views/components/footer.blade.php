@@ -70,9 +70,9 @@
         <div class="  md:px-0 px-4  w-full text-center ">
 
             <div
-                class="grid md:grid-cols-4 grid-cols-2   md:py-15  py-8 md:pb-10 md:pt-20  d:px-24 px4 items-center max-w-8xl  mx-auto">
+                class="grid lg:grid-cols-4 grid-cols-2   md:py-15  py-8 md:pb-10 md:pt-20  d:px-24 px4 items-center max-w-8xl  mx-auto ">
 
-                <div class="col-span-1 order-1">
+                <div class="col-span-1 order-1 ">
 
                     <a href="{{ route('home') }}" class=" over:scale-105">
                         <svg fill="#fff" class="w-59  h-7  md:flex hidden">
@@ -87,18 +87,19 @@
                 </div>
 
                 <ul
-                    class=" md:mx-auto space-x-4 flex md:flex-row  flex-col  md:order-2  order-3 gap-y-2 space-y-2  text-sm col-span-2 items-start md:mt-0 mt-3">
+                    class=" md:mx-auto space-x-4 flex md:flex-row  flex-col  lg:order-2  order-3 gap-y-2 space-y-2  text-sm col-span-2 items-start  md:mt-4 lg:mt-0 mt-3">
                     <li><a href="{{ route('subastas') }}"
-                            class="border border-casa-fondo-h rounded-full px-3 py-1 hover:bg-casa-black hover:text-casa-fondo-h">Subastas</a>
+                            class="border border-casa-fondo-h rounded-full px-3 py-1 hover:bg-casa-black hover:text-casa-fondo-h ">Subastas</a>
                     </li>
-                    @guest
 
+                    @guest
                         <li>
                             <a href="{{ route('adquirentes.create') }}"
                                 class="border border-casa-fondo-h rounded-full px-3 py-1 hover:bg-casa-black hover:text-casa-fondo-h">¿Primera
                                 vez?</a>
                         </li>
                     @endguest
+
                     <li><a href="{{ route('terminos-comitentes') }}"
                             class="border border-casa-fondo-h rounded-full px-3 py-1 hover:bg-casa-black hover:text-casa-fondo-h">¿Tenés
                             algo para vender?</a>
@@ -110,7 +111,7 @@
                 </ul>
 
 
-                <ul class="flex  gap-3 col-span-1   justify-end md:order-3  order-2">
+                <ul class="flex  gap-3 col-span-1   justify-end lg:order-3  order-2">
                     <li>
                         <a href="https://www.instagram.com/casablanca.ar.subastasonline/" target="_blank">
                             <svg class="size-8  ">
