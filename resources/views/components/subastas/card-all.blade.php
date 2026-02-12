@@ -73,15 +73,19 @@
                     {{ $subasta['descripcion'] }}
                 </p>
 
-                @if ($subasta['desc_extra'])
-                    <x-modal-desc-extra :titulo="$subasta['titulo']" :desc="$subasta['desc_extra']" :route="$route" :enlace="$config['enlaceModal']" />
-                @endif
+
+                <div class="flex md:gap-x-15 b-amber-300 items-center md:justify-start   justify-between ">
 
 
-                @if ($subasta['envio'])
-                    <x-modal-desc-envio :titulo="$subasta['titulo']" :envio="$subasta['envio']" :enlace="$config['enlaceModalEnvio']" />
-                @endif
 
+                    @if ($subasta['envio'])
+                        <x-modal-desc-envio :titulo="$subasta['titulo']" :envio="$subasta['envio']" :enlace="$config['enlaceModalEnvio']" />
+                    @endif
+
+                    @if ($subasta['desc_extra'])
+                        <x-modal-desc-extra :titulo="$subasta['titulo']" :desc="$subasta['desc_extra']" :route="$route" :enlace="$config['enlaceModal']" />
+                    @endif
+                </div>
 
 
             </div>

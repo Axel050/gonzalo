@@ -44,9 +44,9 @@
                             <x-modal-desc-extra-home :titulo="$subA->titulo" :desc="$subA->desc_extra" :route="route('subasta.lotes', $subA->id)" />
                         @endif
 
-                        @if ($subA->envio)
+                        {{-- @if ($subA->envio)
                             <x-modal-desc-envio :titulo="$subA->titulo" :envio="$subA->envio" home="true" />
-                        @endif
+                        @endif --}}
 
 
 
