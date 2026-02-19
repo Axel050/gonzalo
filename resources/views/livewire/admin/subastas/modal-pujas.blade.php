@@ -48,13 +48,18 @@
                             @foreach ($lotes as $lote)
                                 @if ($lote->ultimaPuja)
                                     <tr
-                                        class="bg-gray-100 relative font-bold divide-x-2 divide-gray-300 text-center [&>td]:lg:px-8 [&>td]:px-2 ">
+                                        class="bg-gray-100 relative  divide-x-2 divide-gray-300 text-center [&>td]:lg:px-8 [&>td]:px-2 ">
                                         <td>{{ $lote->ultimaPuja->id }} </td>
                                         <td class="py-1">{{ $lote->id }} </td>
                                         <td>{{ $lote->titulo }} </td>
                                         <td>{{ $lote->descripcion }} </td>
                                         <td>${{ $lote->ultimaPuja->monto }}</td>
-                                        <td>{{ $lote->ultimaPuja->adquirente->nombre ?? '—' }}</td>
+                                        <td>
+                                            <a href="{{ route('admin.adquirentes', ['ids' => $lote->ultimaPuja?->adquirente?->id]) }}"
+                                                class="hover:font-bold">
+                                                {{ $lote->ultimaPuja->adquirente->nombre ?? '—' }}
+                                                {{ $lote->ultimaPuja->adquirente?->apellido }}</a>
+                                        </td>
                                         <td>{{ $lote->pujas?->count() }} </td>
                                         {{-- <td>{{ $this->monedas[$lote['moneda_id']]->titulo ?? 'Sin moneda' }}</td> --}}
                                         <td class="py-1 ">

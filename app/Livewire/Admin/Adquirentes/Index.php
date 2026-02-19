@@ -104,7 +104,7 @@ class Index extends Component
     if ($this->query) {
       switch ($this->searchType) {
         case 'id':
-          $adquirentes = Adquirente::where("id", "like", '%' . $this->query . '%');
+          $adquirentes = Adquirente::where("id", $this->query);
           break;
         case 'nombre':
           $adquirentes = Adquirente::where("nombre", "like", '%' . $this->query . '%');
