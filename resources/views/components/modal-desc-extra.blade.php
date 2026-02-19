@@ -2,10 +2,10 @@
 
 
 
-<div x-data="{ open: false }" class="inline-block   relative  ">
+<div x-data="{ open: false }" class="inline-block   relative  z-40">
 
     <!-- Botón para abrir -->
-    <button class="{{ $enlace }} underline text-sm  w-fit   underline-offset-3 " @click.prevent="open = true"
+    <button class="{{ $enlace }} underline text-sm  w-fit   underline-offset-3  z-30" @click.prevent="open = true"
         title="ver descripción extra">
         Descripción extra
     </button>

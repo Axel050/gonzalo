@@ -20,8 +20,6 @@
         ? 'decoration-gray-400 group-hover:decoration-gray-300'
         : 'decoration-gray-500 group-hover:decoration-black' }}">
 
-
-
             Cómo funciona el envío?
         </span>
     </button>

@@ -40,7 +40,7 @@
 
 <article
     {{ $attributes->merge(['class' => 'w-full flex flex-col gap-y-1 relative md:p-8 md:pb-8 p-4 pb-20 ' . $config['container']]) }}>
-    <a href="{{ $route }}" class="inset-0 absolute z-10 pointer-events-none"></a>
+    <a href="{{ $route }}" class="inset-0 absolute z-10 pointer-evets-none"></a>
 
 
     <div class="flex gap-x-12">
