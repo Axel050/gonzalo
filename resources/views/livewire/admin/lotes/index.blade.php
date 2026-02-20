@@ -11,30 +11,85 @@
             class="w-full flex item-center justify-between order-4  lg:flex-row lg:items-center  mx-auto bg-gray-300 lg:py-4  py-2 lg:px-6 px-3 rounded-md  shadow-md">
             <div class="flex flex-col lg:flex-row lg:gap-4  text-gray-700  ">
 
-                <div class="flex bred-200 py-1 lg:px-4 px-2 bg-whit shadow-md shadow-gray-400 rounded-lg items-center">
+                <div
+                    class="flex flex-col gap-y-1.5 bred-200 py-1 lg:px-4 px-2 bg-whit shadow-md shadow-gray-400 rounded-lg items-center">
 
-                    <div class="flex items-center">
-                        <label for="query" class="text-sm lg:text-base text-gray-600 mr-1">Buscar</label>
-                        <input type="search" nombre="query" wire:model.live="query"
-                            class=" h-6 rounded-md boder border-gray-400 w-40 lg:w-48 bg-gray-100   focus:outline-2 focus:outline-cyan-900">
+
+                    <div class="flex ">
+
+                        <div class="flex items-center">
+                            <label for="query" class="text-sm lg:text-base text-gray-600 mr-1">Buscar</label>
+                            {{-- <input type="search" nombre="query" wire:model.live="query" --}}
+                            <input type="search"
+                                placeholder="{{ $searchType === 'tipo' && $caracteristicaSeleccionada
+                                    ? 'Buscar en ' . optional($caracteristicasDisponibles->firstWhere('id', $caracteristicaSeleccionada))->nombre
+                                    : 'Buscar' }}"
+                                wire:model.live="query"
+                                class=" h-6 rounded-md boder border-gray-400 w-40 lg:w-48 bg-gray-100   focus:outline-2 focus:outline-cyan-900">
+                        </div>
+
+                        <div class="text-xs ">
+                            <select wire:model.live="searchType"
+                                class=" h-6 rounded-md border border-gray-400 lg:w-full w-fit -auto lg:mt-0 text-gray-600 text-sm py-0 cursor-pointer bg-gray-200 ml-1">
+                                <option value="todos">Todos</option>
+                                <option value="id">ID</option>
+                                <option value="titulo">Titulo</option>
+                                <option value="comitente">Comitente</option>
+                                <option value="alias">Alias</option>
+                                <option value="tipo">Tipo</option>
+                                <option value="subasta">Subasta</option>
+                                <option value="contrato">Contrato</option>
+                                {{-- <option value="estado">Estado</option> --}}
+                                <option value="encargado">Encargado</option>
+                            </select>
+                        </div>
+
+
                     </div>
 
-                    <div class="text-xs ">
-                        <select wire:model.live="searchType"
-                            class=" h-6 rounded-md border border-gray-400 lg:w-full w-fit -auto lg:mt-0 text-gray-600 text-sm py-0 cursor-pointer bg-gray-200 ml-1">
-                            <option value="todos">Todos</option>
-                            <option value="id">ID</option>
-                            <option value="titulo">Titulo</option>
-                            <option value="comitente">Comitente</option>
-                            <option value="alias">Alias</option>
-                            <option value="tipo">Tipo</option>
-                            <option value="subasta">Subasta</option>
-                            <option value="contrato">Contrato</option>
-                            {{-- <option value="estado">Estado</option> --}}
-                            <option value="encargado">Encargado</option>
-                        </select>
-                    </div>
+
+                    @if ($searchType === 'tipo')
+
+                        <div class="flex gap-2 ml-2 max-w-full flex-wrap">
+
+                            {{-- Tipo de bien --}}
+                            <select wire:model.live="tipoSeleccionado" class="h-6 rounded-md border bg-gray-200">
+                                <option value="">Tipo de bien</option>
+
+
+                                @foreach ($tipos as $tipo)
+                                    <option value="{{ $tipo->id }}">
+                                        {{ $tipo->nombre }}
+                                    </option>
+                                @endforeach
+
+                            </select>
+
+                            {{-- Característica --}}
+                            @if ($caracteristicasDisponibles)
+                                <select wire:model.live="caracteristicaSeleccionada"
+                                    class="h-6 rounded-md border bg-gray-200">
+                                    <option value="">Característica</option>
+
+                                    @foreach ($caracteristicasDisponibles as $car)
+                                        <option value="{{ $car->id }}">
+                                            {{ $car->nombre }}
+
+                                        </option>
+                                    @endforeach
+                                </select>
+                            @endif
+
+                        </div>
+
+                    @endif
+
+
                 </div>
+
+
+
+
 
                 <div class="flex  justify-between">
 
@@ -65,7 +120,10 @@
                             <input type="checkbox" class=" size-5 ml-1.5" wire:model.live="destacados">
                         </div>
                     </div>
+
                 </div>
+
+
 
             </div>
 
@@ -107,6 +165,11 @@
                                     <th scope="col">Alias</th>
                                     <th scope="col">Foto</th>
                                     <th scope="col">Tipo</th>
+                                    @if ($searchType === 'tipo' && $caracteristicaSeleccionada)
+                                        <th scope="col" class="bg-gray-500 text-gray-800">
+                                            {{ optional($caracteristicasDisponibles->firstWhere('id', $caracteristicaSeleccionada))->nombre }}
+                                        </th>
+                                    @endif
                                     <th scope="col">Encargado</th>
                                     <th scope="col">Base</th>
                                     <th scope="col">Valuacion</th>
@@ -155,6 +218,15 @@
                                                 {{ $lot->tipo?->nombre }}
                                             </a>
                                         </td>
+
+                                        @if ($searchType === 'tipo' && $caracteristicaSeleccionada)
+                                            <td>
+                                                {{ optional($lot->valoresCaracteristicas->firstWhere('caracteristica_id', $caracteristicaSeleccionada))->valor ?? '—' }}
+                                            </td>
+                                        @endif
+
+
+
                                         <td>
                                             <a href="{{ route('admin.usuarios', ['ids' => $lot->tipo?->encargado?->id]) }}"
                                                 class="cursor-pointer hover:font-bold">

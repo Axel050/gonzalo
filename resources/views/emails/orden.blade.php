@@ -25,7 +25,9 @@
                         <td style="padding:25px; text-align:center;">
                             <h1 style="margin:0 0 10px 0;font-size:26px;font-weight:700;letter-spacing:1px;">
                                 <a href="https://casablanca.ar" style="text-decoration:none;color:#262626;">
-                                    CASABLANCA.AR
+                                    {{-- CASABLANCA.AR --}}
+                                    <img src="https://casablanca.ar/img/mail.png" alt="Casablanca.ar"
+                                        style="height:30px;">
                                 </a>
                             </h1>
                             <p style="margin:0;font-size:13px;color:#777;">
@@ -171,6 +173,7 @@
                                                     Cuenta: <b>014-025920/4</b><br>
                                                     CBU: <b>0720014488000002592040</b><br>
                                                     Alias: <b>casablanca.ar</b>
+                                                    Banco: <b>Santander</b>
                                                 </td>
                                             </tr>
                                         </table>

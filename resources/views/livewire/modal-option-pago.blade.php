@@ -29,6 +29,7 @@
                     <p class="text-pretty text-start ">Cuenta: <b class="font-semibold">014-025920/4</b></p>
                     <p class="text-pretty text-start ">CBU: <b class="font-semibold">0720014488000002592040</b></p>
                     <p class="text-pretty text-start ">Alias: <b class="font-semibold">casablanca.ar</b>
+                    <p class="text-pretty text-start ">Banco: <b class="font-semibold">Santander</b>
                     <p class="text-pretty text-start ">Monto: <b
                             class="font-semibold">${{ number_format($monto, 0, ',', '.') }}</b></p>
                 </div>
