@@ -99,18 +99,18 @@
 
 
 
-                @foreach ($carrito['ordenes'] as $orden)
+                @foreach ($carrito['ordenes'] as $orden => $data)
                     <div class="shadow-md md:p-4 p-2 mb-6 relative ">
-                        <h3 class="md;text-2xl text-md font-bold mb-2">
-                            Subasta: {{ $orden['subasta'] }}
+                        <h3 class="md:text-2xl text-md font-bold mb-2">
+                            Subasta: {{ $data['subasta'] }}
                         </h3>
-                        <p class="text-sm mb-3">Orden #{{ $orden['orden_id'] }} - Estado:
-                            {{ ucfirst($orden['estado']) }}
+                        <p class="text-sm mb-3">Orden #{{ $data['orden_id'] }} - Estado:
+                            {{ ucfirst($data['estado']) }}
                         </p>
 
                         <ul class="mb-4">
                             @foreach ($carrito['lotes'] as $lote)
-                                @if ($lote['orden_id'] === $orden['orden_id'])
+                                @if ($lote['orden_id'] === $data['orden_id'])
                                     <li class="flex justify-between">
                                         <span>
                                             Lote #{{ $lote['lote_id'] }} - {{ $lote['titulo'] }}
@@ -128,23 +128,30 @@
 
                         <p class="flex justify-between border-t border-gray-400 pt-2 font-bold">
                             Subtotal
-                            <span>${{ number_format($orden['subtotal'], 0, ',', '.') }}</span>
+                            <span>${{ number_format($data['subtotal'], 0, ',', '.') }}</span>
                         </p>
 
-
-                        @if ($orden['garantia'])
-                            <p class="flex justify-between text-sm">
-                                Devolución de garantia:
-                                <span>-${{ number_format($orden['garantia']['monto'], 0, ',', '.') }}</span>
+                        @if ($data['monto_comision'] > 0)
+                            <p class="flex justify-between  pt-0.5 ">
+                                Comision ({{ number_format($data['porcentaje_comision'], 0) }}%)
+                                <span>${{ number_format($data['monto_comision'], 0, ',', '.') }}</span>
                             </p>
                         @endif
 
 
-                        @if ($orden['envio'])
+                        @if ($data['garantia'])
+                            <p class="flex justify-between text-sm">
+                                Devolución de garantia:
+                                <span>-${{ number_format($data['garantia']['monto'], 0, ',', '.') }}</span>
+                            </p>
+                        @endif
+
+
+                        @if ($data['envio'])
                             <div class="flex justify-between items-center mb-1 text-sm">
                                 <p class="flex items-center">Envio </p>
 
-                                ${{ $orden['envio'] }}
+                                ${{ $data['envio'] }}
                             </div>
                         @endif
 
@@ -152,11 +159,11 @@
                         <p class="flex justify-between border-t border-black pt-2 text-xl font-bold">
                             Total
                             <span>
-                                ${{ number_format($orden['total'], 0, ',', '.') }}
+                                ${{ number_format($data['total'], 0, ',', '.') }}
                             </span>
                         </p>
 
-                        <button wire:click="mp({{ $orden['orden_id'] }})"
+                        <button wire:click="mp({{ $data['orden_id'] }})"
                             class="bg-casa-black text-casa-base font-bold rounded-full px-4 py-2 mt-4 inline-flex items-center justify-center hover:bg-casa-base-2 hover:text-casa-black m:w-fit w-full border border-casa-black text-nowrap">
                             Pagar esta subasta
                             <svg class="size-[26px] md:ml-8 ml-auto ">

@@ -140,7 +140,7 @@
                                         <td>
                                             <a href="{{ route('admin.subastas', ['ids' => $dep->subasta?->id]) }}"
                                                 class="cursor-pointer hover:font-extrabold">
-                                                {{ $dep->subasta?->id }}
+                                                {{ $dep->subasta?->id }} - {{ $dep->subasta?->titulo }}
                                             </a>
                                         </td>
 

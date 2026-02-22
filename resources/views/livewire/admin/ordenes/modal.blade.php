@@ -17,7 +17,7 @@
                     <x-form-item-sel label="Subasta" :method="$method" model="subasta_id" live="true">
                         <option value="">Seleccione subasta</option>
                         @foreach ($subastas as $subasta)
-                            <option value="{{ $subasta->id }}">{{ $subasta->titulo }}</option>
+                            <option value="{{ $subasta->id }}">{{ $subasta->id }} - {{ $subasta->titulo }}</option>
                         @endforeach
                     </x-form-item-sel>
 
@@ -95,7 +95,7 @@
                     <div class="relative flex justify-center mx-auto items-center col-span-4"
                         wire:click.outside="$set('si',false)">
 
-                        <input type="search" wire:model.live="search" @disabled($subasta_id <= 0)
+                        <input type="search" wire:model.live="search" @disabled($subasta_id <= 0 || $adquirente_id <= 0)
                             class="lg:w-80 p-2 border rounded bg-white h-7 ml-0.5 mx-auto disabled:cursor-not-allowed"
                             placeholder="Buscar lotes disponibles en subasta ..." />
 
@@ -205,6 +205,16 @@
                                             Subtotal: ${{ number_format($subtotal, 0, ',', '.') }}
                                         </td>
                                     </tr>
+
+                                    @if ($monto_comision > 0)
+                                        <tr class="bg-gray-100">
+                                            <td colspan="6" class="text-base font-semibold py-1 text-center">
+                                                Comision ({{ number_format($porcentaje_comision, 0) }}%):
+                                                ${{ number_format($monto_comision, 0, ',', '.') }}
+                                            </td>
+                                        </tr>
+                                    @endif
+
                                     @if ($deposito > 0)
                                         <tr class="bg-gray-100">
                                             <td colspan="6" class="text-base font-semibold py-1 text-center">

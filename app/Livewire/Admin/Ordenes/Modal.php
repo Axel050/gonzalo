@@ -6,18 +6,13 @@ use App\Enums\CarritoLoteEstados;
 use App\Enums\LotesEstados;
 use App\Enums\MotivosCancelaciones;
 use App\Enums\OrdenesEstados;
-use App\Mail\ContratoEmail;
 use App\Models\Adquirente;
 use App\Models\CarritoLote;
-use App\Models\Contrato;
-use App\Models\ContratoLote;
 use App\Models\Garantia;
 use App\Models\Lote;
 use App\Models\Moneda;
 use App\Models\Orden;
 use App\Models\Subasta;
-use App\Models\User;
-use Illuminate\Support\Facades\Mail;
 use Livewire\Component;
 
 class Modal extends Component
@@ -45,6 +40,9 @@ class Modal extends Component
 
   public $id;
   public $method;
+
+  public $porcentaje_comision = 0;
+  public $monto_comision = 0;
 
 
   public $envio;
@@ -147,6 +145,8 @@ class Modal extends Component
     $this->payment = $this->ordenSeleccionada->payment_id;
     $this->fecha = $this->ordenSeleccionada->fecha_pago;
     $this->envio = $this->ordenSeleccionada->monto_envio;
+    $this->porcentaje_comision = $this->ordenSeleccionada->porcentaje_comision;
+    $this->monto_comision = $this->ordenSeleccionada->monto_comision;
 
     // Calcular subtotal
     $this->subtotal = $this->ordenSeleccionada->lotes->sum('precio_final');
@@ -160,11 +160,7 @@ class Modal extends Component
     // $this->deposito = $garantia?->monto ?? 0;
     $this->deposito = $this->ordenSeleccionada->descuento;
 
-    // Calcular total final
-    $this->total = max(0, $this->subtotal - $this->deposito);
-    if ($this->envio) {
-      $this->total += $this->envio;
-    }
+    $this->total = $this->ordenSeleccionada->total_final;
 
     $this->lotesOriginales = $this->ordenSeleccionada->lotes->pluck('lote_id')->toArray();
     $this->tempLotes = $this->ordenSeleccionada->lotes->map(function ($ordenLote) {
@@ -211,9 +207,7 @@ class Modal extends Component
 
   public function loteSelected($loteId)
   {
-    // $lote = Lote::with('moneda')->find($loteId);
 
-    // $lote = Lote::with('ultimoConLote.moneda', 'ultimoConLote.precio_base')->find($loteId);
     $lote = Lote::find($loteId);
     if (!$lote) {
       return;
@@ -224,7 +218,6 @@ class Modal extends Component
 
     if (!$existe) {
       $monedaId = $lote->ultimoConLote->moneda_id ?? 1; // Default a 1 si no tiene
-      $precioFinal = $lote->getPrecioFinalAttribute(); // O el precio que corresponda
 
       $this->tempLotes[] = [
         'lote' => $lote->toArray(),
@@ -270,6 +263,8 @@ class Modal extends Component
     $this->dispatch('lote-quitado', ['mensaje' => 'Lote quitado temporalmente. Guarda para confirmar.']);
   }
 
+
+  // ver tema comison en new ordesrs 
   protected function recalcularTotales()
   {
     if ($this->method == 'add') {
@@ -278,14 +273,53 @@ class Modal extends Component
       if ($this->envio) {
         $this->total += $this->envio;
       }
+
+      $subasta_comision = Subasta::find($this->subasta_id)?->comision ?? 0;
+      $adquirente_comision = Adquirente::find($this->adquirente_id)?->comision ?? 0;
+
+
+      if ($adquirente_comision < $subasta_comision) {
+        $this->porcentaje_comision = $adquirente_comision;
+      } else {
+        $this->porcentaje_comision = $subasta_comision;
+      }
+
+
+
+
+      if ($this->porcentaje_comision > 0) {
+        $this->monto_comision = ($this->subtotal * $this->porcentaje_comision) / 100;
+        $this->total += $this->monto_comision;
+      }
     } else {
       $this->subtotal = $this->ordenSeleccionada->lotes->sum('precio_final');
       $this->total = max(0, $this->subtotal - $this->deposito);
       if ($this->envio) {
         $this->total += $this->envio;
       }
+      if ($this->porcentaje_comision > 0) {
+        $this->monto_comision = ($this->subtotal * $this->porcentaje_comision) / 100;
+        $this->total += $this->monto_comision;
+      }
     }
   }
+
+  public function updatedSubastaId()
+  {
+    if ($this->method == 'add') {
+      $this->tempLotes = [];
+      $subasta = Subasta::find($this->subasta_id);
+      $this->envio = $subasta?->envio ?? 0;
+    }
+  }
+
+  public function updatedAdquirenteId()
+  {
+    if ($this->method == 'add') {
+      $this->recalcularTotales();
+    }
+  }
+
 
   public function updatedEnvio()
   {
@@ -312,9 +346,9 @@ class Modal extends Component
 
   public function create()
   {
-    // Validaciones para creación
+
     $this->validate([
-      'adquirente_id' => 'required|exists:users,id',
+      'adquirente_id' => 'required|exists:adquirentes,id',
       'subasta_id' => 'required|exists:subastas,id',
       'tempLotes' => 'required|array|min:1',
     ], [
@@ -323,7 +357,7 @@ class Modal extends Component
       'tempLotes.required' => 'Agregue al menos un lote a la orden',
     ]);
 
-    // Crear la orden
+
     $orden = Orden::create([
       'adquirente_id' => $this->adquirente_id,
       'subasta_id' => $this->subasta_id,
@@ -332,6 +366,11 @@ class Modal extends Component
       'fecha_pago' => $this->fecha,
       'payment_id' => $this->payment,
       'total' => $this->total ?? null,
+      'porcentaje_comision' => $this->porcentaje_comision,
+      'monto_comision' => $this->monto_comision,
+      'monto_envio' => $this->envio ?? 0,
+      'descuento' => $this->deposito ?? 0,
+
     ]);
 
     // Agregar los lotes a la orden

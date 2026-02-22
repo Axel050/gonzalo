@@ -133,6 +133,17 @@
                                                 </td>
                                             </tr>
 
+                                            @if ($data['monto_comision'] > 0)
+                                                <tr>
+                                                    <td style="padding:6px 0;">
+                                                        Comision ({{ number_format($data['porcentaje_comision'], 0) }}%)
+                                                    </td>
+                                                    <td style="padding:6px 0;text-align:right;">
+                                                        $ {{ number_format($data['monto_comision'], 0, ',', '.') }}
+                                                    </td>
+                                                </tr>
+                                            @endif
+
                                             @if ($data['envio'] > 0)
                                                 <tr>
                                                     <td style="padding:6px 0;">Envío</td>
@@ -172,7 +183,7 @@
                                                     Titular: <b>Gonzalo San Martín Vivares</b><br>
                                                     Cuenta: <b>014-025920/4</b><br>
                                                     CBU: <b>0720014488000002592040</b><br>
-                                                    Alias: <b>casablanca.ar</b>
+                                                    Alias: <b>casablanca.ar</b><br>
                                                     Banco: <b>Santander</b>
                                                 </td>
                                             </tr>

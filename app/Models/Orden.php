@@ -15,7 +15,9 @@ class Orden extends Model implements Auditable
   use \OwenIt\Auditing\Auditable;
 
 
-  protected $fillable = ['adquirente_id', 'total', 'descuento', 'estado', 'payment_id', 'fecha_pago', 'subasta_id', 'monto_envio', 'envio_check', 'motivo', 'otro'];
+  protected $fillable = ['adquirente_id', 'total', 'descuento', 'estado', 'payment_id', 'fecha_pago', 'subasta_id', 'monto_envio', 'envio_check', 'motivo', 'otro', 'porcentaje_comision', 'monto_comision'];
+
+
 
   public function adquirente()
   {
@@ -54,8 +56,16 @@ class Orden extends Model implements Auditable
     return $this->lotes()->sum('precio_final');
   }
 
-  public function getTotalFinalAttribute()
+  public function getTotalFinalAttributeOld()
   {
     return $this->subtotal + ($this->monto_envio ?? 0) - ($this->descuento ?? 0);
+  }
+
+  public function getTotalFinalAttribute()
+  {
+    return $this->subtotal
+      + ($this->monto_envio ?? 0)
+      + ($this->monto_comision ?? 0)
+      - ($this->descuento ?? 0);
   }
 }

@@ -58,6 +58,8 @@ class Carrito extends Component
     $dto = $service->obtenerResumen($adquirente);
 
     $this->carrito = $dto->toArray();
+
+    info(["carruti" => $this->carrito]);
   }
 
 

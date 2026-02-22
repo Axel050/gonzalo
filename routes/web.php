@@ -175,6 +175,8 @@ Route::get('/test-mail-orden/{ordenId}/{adquirenteId}', function ($ordenId, $adq
     "subasta_id" => $orden->subasta?->id,
     "subasta_titulo" => $orden->subasta?->titulo,
     "faltantes" => $faltantes,
+    'porcentaje_comision' => $orden->porcentaje_comision,
+    'monto_comision' => $orden->monto_comision,
   ];
 
 
@@ -211,8 +213,11 @@ Route::get('/comitentes/crear', [ComitenteController::class, "create"])->name('c
 Route::get('/adquirentes/crear', [AdquirenteController::class, "create"])->name('adquirentes.create');
 
 
-Route::get('/adquirentes/perfil', [AdquirenteController::class, "perfil"])->name('adquirentes.perfil');
-// Route::get('/adquirentes/perfil', [AdquirenteController::class, "perfil"])->name('adquirentes.perfil')->middleware('auth');
+// Route::get('/adquirentes/perfil', [AdquirenteController::class, "perfil"])->name('adquirentes.perfil');
+
+
+Route::get('/adquirentes/perfil', [AdquirenteController::class, "perfil"])->name('adquirentes.perfil')->middleware('auth');
+
 
 // Route::get('/lotes', function () {
 

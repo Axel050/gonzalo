@@ -248,6 +248,11 @@ class DesactivarLotesExpirados implements ShouldQueue
         $montoDescuento = $adquirente->garantiaMonto($subasta->id); // Retorna int del monto pagado, o 0
         // Opcional: Limitar descuento al total: $montoDescuento = min($montoDescuento, $total);
 
+        $porcentajeComision = $subasta->comision; // Porcentaje de comisión definido en la subasta
+        if ($subasta->comision  > $adquirente->comision) {
+          $porcentajeComision = $adquirente->comision;
+        }
+
         // Crear Orden con descuento como monto fijo
         $orden = Orden::create([
           'adquirente_id' => $adquirenteId,
@@ -256,6 +261,8 @@ class DesactivarLotesExpirados implements ShouldQueue
           'descuento' => $montoDescuento, // Monto directo de la garantía (ej. 1000)
           'estado' => 'pendiente',
           'monto_envio' => $subasta->envio,
+          'porcentaje_comision' => $porcentajeComision,
+          'monto_comision' => round($total * ($porcentajeComision / 100), 2),
         ]);
 
         // Asignar orden_id a los datos y crear OrdenLotes
@@ -279,6 +286,8 @@ class DesactivarLotesExpirados implements ShouldQueue
           "subtotal" => $orden->subtotal,
           "total" => $orden->total_final,
           "faltantes" => $faltantes,
+          'porcentaje_comision' => $orden->porcentaje_comision,
+          'monto_comision' => $orden->monto_comision,
 
         ];
 

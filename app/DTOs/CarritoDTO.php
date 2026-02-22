@@ -13,7 +13,7 @@ class CarritoDTO implements Arrayable, JsonSerializable
     public array $garantias,
     public float $totalLotes,
     public float $descuentoGarantias,
-    public float $totalCarrito
+    public float $totalCarrito,
   ) {}
 
   public function toArray(): array

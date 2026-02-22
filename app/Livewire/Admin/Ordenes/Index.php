@@ -103,7 +103,7 @@ class Index extends Component
     if ($this->query) {
       switch ($this->searchType) {
         case 'id':
-          $ordenes->where('ordenes.id', 'like', '%' . $this->query . '%');
+          $ordenes->where('id',  $this->query);
           break;
 
         case 'adquirente':

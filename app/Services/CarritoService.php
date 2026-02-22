@@ -313,7 +313,7 @@ class CarritoService
       ->get();
 
     if ($ordenes->isEmpty()) {
-      return new CarritoDTO([], [], [], 0, 0, 0);
+      return new CarritoDTO([], [], [], 0, 0, 0, 0, 0);
     }
 
     // 🔹 Garantías pagadas indexadas por subasta
@@ -382,8 +382,13 @@ class CarritoService
           : null,
 
         'total'      => $totalOrden,
+
+        'porcentaje_comision' => $orden->porcentaje_comision,
+        'monto_comision' => $orden->monto_comision,
+
       ];
     }
+
 
     return new CarritoDTO(
       ordenes: $ordenesDTO,
@@ -391,7 +396,8 @@ class CarritoService
       garantias: [], // ya no se usan directamente
       totalLotes: $totalLotes,
       descuentoGarantias: $descuentoGarantias,
-      totalCarrito: max(0, $totalLotes - $descuentoGarantias)
+      totalCarrito: max(0, $totalLotes - $descuentoGarantias),
+
     );
   }
 }

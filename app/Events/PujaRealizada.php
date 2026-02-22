@@ -48,7 +48,7 @@ class PujaRealizada implements ShouldBroadcast
 
   public function broadcastOn(): array
   {
-    // info("ENVENTO  PUJA");
+
     return [
       new Channel('my-channel'),
       // new Channel('subasta.' . $this->subasta->id),
