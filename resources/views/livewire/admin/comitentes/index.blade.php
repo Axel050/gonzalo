@@ -11,11 +11,24 @@
     <x-action-message on="autorizadoCreated" class=" absolute  top-0 right-0 z-50  yellow-action">Autorizado agregado con
         exitó.</x-action-message>
 
+    <x-action-message on="contactCreated" class="  absolute    top-0 right-0 z-50 shadow-lg green-action">
+        Contacto de Brevo creado con exitó.</x-action-message>
+    <x-action-message on="contactDeleted" class="  absolute    top-0 right-0 z-50 shadow-lg red-action">Contacto
+        eliminado con exitó.</x-action-message>
+    <x-action-message on="contactErrorCreated" class="  absolute    top-0 right-0 z-50 shadow-lg red-action">Error al
+        crear contacto de Brevo.</x-action-message>
+
+    <x-action-message on="contactErrorDeleted" class="  absolute    top-0 right-0 z-50 shadow-lg red-action">Error al
+        eliminar contacto de Brevo.</x-action-message>
+
 
     <div class="">
         <div
-            class="w-full flex item-center justify-between order-4  lg:flex-row lg:items-center  mx-auto bg-gray-300 lg:py-4  py-2 lg:px-6 px-3 rounded-md  shadow-md">
-            <div class="flex flex-col lg:flex-row lg:gap-4  text-gray-700">
+            class="w-full  md:flex grid grid-cols-2 item-center   justify-between order-4  lg:flex-row lg:items-center  mx-auto bg-gray-300 lg:py-4  py-2 lg:px-6 px-3 rounded-md  shadow-md">
+
+            <div class="flex  lg:gap-4  text-gray-700 col-span-2">
+
+
                 <div>
                     <label for="query" class="text-sm lg:text-base text-gray-600 ">Buscar</label>
                     <input type="{{ $inputType }}" nombre="query" wire:model.live="query"
@@ -24,7 +37,7 @@
 
                 <div class="text-xs flex gap-2 lg:gap-3 ">
                     <select wire:model.live="searchType"
-                        class="lg:h-7 h-6 rounded-md border border-gray-400 lg:w-full w-fit ml-auto mt-1 lg:mt-0 text-gray-600 text-sm py-0.5 cursor-pointer bg-gray-200">
+                        class="lg:h-7 h-6 rounded-md border border-gray-400 lg:w-full w-fit ml-auto  text-gray-600 text-sm py-0.5 cursor-pointer bg-gray-200">
                         <option value="todos">Todos</option>
                         <option value="id">ID</option>
                         <option value="nombre">Nombre</option>
@@ -38,9 +51,20 @@
 
             </div>
 
+            <div
+                class="flex bred-200 py-1 lg:px-4 px-2 bg-whit shadow-md shadow-gray-400 rounded-lg lg:ml-12  items-center  w-fit  col-span-1">
+                <span class=" mr-1">
+                    Sin agendar
+                </span>
+                <div class="text-xs flex gap-2 lg:gap-3 ">
+                    <input type="checkbox" class=" size-5 ml-1.5" wire:model.live="sinAgendar">
+                </div>
+            </div>
+
+
 
             <button
-                class="border border-white hover:text-gray-200 hover:bg-green-700 bg-green-500 px-2 py-0.5 rounded-lg text-white text-sm h-7 place-self-center flex items-center gap-x-2 cursor-pointer"
+                class="border border-white hover:text-gray-200 hover:bg-green-700 bg-green-500 px-2 py-0.5 rounded-lg text-white text-sm h-7 place-self-center flex items-center gap-x-2 cursor-pointer ml-auto mt-1.5"
                 wire:click="option('save')" title="Agregar comitente">
                 <svg class="size-5 mr-0.5">
                     <use xlink:href="#agregar"></use>
@@ -146,6 +170,35 @@
                                                     </svg>
                                                     <span class="hidden lg:block">Autorizados</span>
                                                 </button>
+
+                                                @if (!$comitente->agendado)
+                                                    <button
+                                                        class=" hover:text-gray-200  hover:bg-blue-900 flex items-center py-0.5 bg-blue-800 rounded-lg px-1 cursor-pointer"
+                                                        wire:click="syncToBrevo({{ $comitente->id }})"
+                                                        title="Sincronizar con Brevo">
+                                                        <svg class="size-5 mr-0.5" fill="none" viewBox="0 0 24 24"
+                                                            stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                                        </svg>
+                                                        <span class="hidden lg:block">Brevo</span>
+                                                    </button>
+                                                @else
+                                                    <button wire:click="deleteToBrevo({{ $comitente->id }})"
+                                                        class=" hover:text-gray-200  hover:bg-red-900 flex items-center py-0.5 bg-red-800 rounded-lg px-1 cursor-pointer"
+                                                        title="Eliminar de Brevo">
+                                                        <svg class="size-5 mr-0.5" fill="none" viewBox="0 0 24 24"
+                                                            stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                                        </svg>
+                                                        <span class="hidden lg:block">Brevo</span>
+                                                    </button>
+                                                @endif
+
+
 
                                                 <button
                                                     class=" hover:text-gray-200  hover:bg-green-900 flex items-center py-0.5 bg-green-800 rounded-lg px-1 cursor-pointer"

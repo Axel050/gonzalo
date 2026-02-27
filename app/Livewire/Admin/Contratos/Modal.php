@@ -75,7 +75,7 @@ class Modal extends Component
   public function mount()
   {
 
-    $this->subastas = Subasta::orderBy("id")->get();
+    $this->subastas = Subasta::orderBy("id", "desc")->get();
     $this->comitentes = Comitente::with("alias")->orderBy("nombre")->get();
 
 

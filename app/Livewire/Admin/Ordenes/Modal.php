@@ -13,7 +13,9 @@ use App\Models\Lote;
 use App\Models\Moneda;
 use App\Models\Orden;
 use App\Models\Subasta;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Livewire\Component;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Modal extends Component
 {
@@ -69,6 +71,47 @@ class Modal extends Component
   {
     $this->dispatch('close-modal');
     $this->modal_foto = null;
+  }
+
+  public function downloadShippingLabel()
+  {
+    if (!$this->id) {
+      return;
+    }
+
+    $orden = Orden::with(['adquirente', 'subasta', 'lotes.lote'])->find($this->id);
+
+    if (!$orden) {
+      return;
+    }
+
+    $adminOrderUrl = route('admin.ordenes', ['orden' => $orden->id]);
+    $svg = QrCode::size(260)->margin(1)->generate($adminOrderUrl);
+    $qrBase64 = 'data:image/svg+xml;base64,' . base64_encode($svg);
+
+    // 👉 Convertir imagen a base64
+    $logoPath = public_path('img/mail.png'); // si está en /public/img/mail.png
+
+    if (file_exists($logoPath)) {
+      $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
+    } else {
+      $logoBase64 = null;
+    }
+
+
+
+    $pdf = Pdf::loadView('livewire.admin.ordenes.shipping-label-pdf', [
+      'orden' => $orden,
+      'adquirente' => $orden->adquirente,
+      'subasta' => $orden->subasta,
+      'url' => $adminOrderUrl,
+      'qr' => $qrBase64,
+      'logo' => $logoBase64,
+    ])->setPaper('a4');
+
+    return response()->streamDownload(function () use ($pdf) {
+      echo $pdf->output();
+    }, 'etiqueta-envio-orden-' . $orden->id . '.pdf');
   }
 
   public function mount()

@@ -3,7 +3,7 @@
 namespace App\Livewire\Admin\Comitentes;
 
 use App\Models\Comitente;
-use App\Models\Subasta;
+use App\Services\BrevoService;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -17,7 +17,7 @@ class Index extends Component
 
 
   public $query, $nombre, $id;
-
+  public $sinAgendar = false;
   public $method = "";
   public $searchType = "todos";
   public $inputType = "search";
@@ -97,38 +97,97 @@ class Index extends Component
     $this->resetPage();
   }
 
+  public function syncToBrevo($id)
+  {
+
+    $comitente = Comitente::find($id);
+
+    if (!$comitente || !$comitente->mail) {
+      $this->dispatch('error', 'El comitente no tiene un email válido.');
+      return;
+    }
+
+    $brevoService = new BrevoService();
+    $result = $brevoService->createContact(
+      $comitente->mail,
+      [
+        'NOMBRE' => $comitente->nombre,
+        'APELLIDOS' => $comitente->apellido,
+        // 'SMS' => $comitente->telefono ?  "54" . preg_replace('/\D/', '', $comitente->telefono) : null,
+      ],
+      [config('services.brevo.comitentes_list_id')]
+      // [5]
+
+
+    );
+
+    // info(["service all" => config('services.brevo')]);
+    // info(["service" => config('services.brevo.comitentes_list_id')]);
+    // info(["service" => $result['success']]);
+
+    if ($result['success']) {
+      $comitente->update(['agendado' => true]);
+      $this->dispatch('contactCreated');
+      $this->dispatch('success', 'Contacto sincronizado con Brevo.');
+    } else {
+      info("No resulta", ["result" => $result]);
+      $this->dispatch('contactErrorCreated', 'Error al sincronizar con Brevo.');
+    }
+  }
+
+  public function deleteToBrevo($id)
+  {
+
+    $comitente = Comitente::find($id);
+    if ($comitente->agendado && $comitente->mail) {
+      $brevoService = new BrevoService();
+      $result = $brevoService->deleteContact($comitente->mail);
+      // $result = $brevoService->deleteContact("ww@adad.com");
+
+      if ($result['success']) {
+        $this->dispatch('contactDeleted');
+        $comitente->update(['agendado' => false]);
+      } else {
+        info("Error al eliminar contacto de Brevo: " . $result['message']);
+        $this->dispatch('contactErrorDeleted');
+      }
+    }
+  }
+
+
 
   public function render()
   {
 
+    $comitentes = Comitente::query();
 
     if ($this->query) {
       switch ($this->searchType) {
         case 'id':
-          $comitentes = Comitente::where("id", "like", '%' . $this->query . '%');
+          $comitentes->where("id",  $this->query);
           break;
         case 'nombre':
-          $comitentes = Comitente::where("nombre", "like", '%' . $this->query . '%');
+          $comitentes->where("nombre", "like", '%' . $this->query . '%');
           break;
         case 'apellido':
-          $comitentes = Comitente::where("apellido", "like", '%' . $this->query . '%');
+          $comitentes->where("apellido", "like", '%' . $this->query . '%');
           break;
         case 'telefono':
-          $comitentes = Comitente::where("telefono", "like", '%' . $this->query . '%');
+          $comitentes->where("telefono", "like", '%' . $this->query . '%');
           break;
         case 'CUIT':
-          $comitentes = Comitente::where("CUIT", "like", '%' . $this->query . '%');
+          $comitentes->where("CUIT", "like", '%' . $this->query . '%');
           break;
         case 'mail':
-          $comitentes = Comitente::where("mail", "like", '%' . $this->query . '%');
+          $comitentes->where("mail", "like", '%' . $this->query . '%');
           break;
         case 'alias':
-          $comitentes = Comitente::whereHas('alias', function ($query) {
+          $comitentes->whereHas('alias', function ($query) {
             $query->where('nombre', 'like', '%' . $this->query . '%');
           });
           break;
         case 'todos':
-          $comitentes = Comitente::where(function ($q) {
+          $comitentes->where(function ($q) {
             $search = trim($this->query);
             $words = array_filter(explode(' ', $search)); // Separa palabras y elimina vacías
 
@@ -159,10 +218,13 @@ class Index extends Component
 
           // 
       }
-      $comitentes = $comitentes->orderBy("id", "desc")->paginate(15);
-    } else {
-      $comitentes = Comitente::orderBy("id", "desc")->paginate(15);
     }
+
+    if ($this->sinAgendar) {
+      $comitentes->where("agendado", false);
+    }
+
+    $comitentes = $comitentes->orderBy("id", "desc")->paginate(15);
 
 
 

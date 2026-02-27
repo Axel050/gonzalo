@@ -9,6 +9,7 @@ use App\Events\SubastaEstado;
 use App\Models\Subasta;
 use App\Events\SubastaEstadoActualizado;
 use App\Mail\OrdenEmail;
+use App\Mail\ResultadosSubastaComitenteEmail;
 use App\Models\Adquirente;
 use App\Models\CarritoLote;
 use App\Models\Orden;
@@ -330,6 +331,8 @@ class DesactivarLotesExpirados implements ShouldQueue
     // info("anntntes");
 
     $this->notificarPerdedoresConGarantia($subasta);
+
+    $this->notificarComitentesResultadoSubasta($subasta);
     // info("anntntesxxxxxxxxxxx");
   }
 
@@ -409,5 +412,85 @@ class DesactivarLotesExpirados implements ShouldQueue
     $subasta->update([
       'garantias_notificadas_at' => now(),
     ]);
+  }
+
+
+
+  private function notificarComitentesResultadoSubasta(Subasta $subasta)
+  {
+    // Traer contratos con comitente y lotes
+    $contratos = $subasta->contratos()
+      ->with(['comitente', 'lotes.pujas'])
+      ->get();
+
+    if ($contratos->isEmpty()) {
+      return;
+    }
+
+    // Agrupar contratos por comitente
+    $contratosPorComitente = $contratos->groupBy('comitente_id');
+
+    foreach ($contratosPorComitente as $comitenteId => $contratosDelComitente) {
+
+      $comitente = $contratosDelComitente->first()->comitente;
+
+      if (!$comitente || !$comitente->mail) {
+        continue;
+      }
+
+      // Unificar todos los lotes del comitente en esta subasta
+      $todosLosLotes = collect();
+      foreach ($contratosDelComitente as $contrato) {
+        $todosLosLotes = $todosLosLotes->merge($contrato->lotes);
+      }
+
+      $lotesVendidos = $todosLosLotes->where('estado', \App\Enums\LotesEstados::VENDIDO);
+      $lotesNoVendidos = $todosLosLotes->where('estado', '!=', \App\Enums\LotesEstados::VENDIDO);
+
+      // Calcular total vendido
+      $totalVendido = 0;
+
+      foreach ($lotesVendidos as $lote) {
+        $pujaFinal = $lote->getPujaFinal();
+        if ($pujaFinal) {
+          $totalVendido += $pujaFinal->monto;
+        }
+      }
+
+      // Determinar comisión (la menor entre subasta y comitente si aplica)
+      $porcentajeComision = $subasta->comision;
+
+      if ($comitente->comision && $comitente->comision < $subasta->comision) {
+        $porcentajeComision = $comitente->comision;
+      }
+
+      $montoComision = round($totalVendido * ($porcentajeComision / 100), 2);
+      $totalNeto = $totalVendido - $montoComision;
+
+      $dataMail = [
+        'comitente' => $comitente,
+        'subasta' => $subasta,
+        'lotes_vendidos' => $lotesVendidos,
+        'lotes_no_vendidos' => $lotesNoVendidos,
+        'total_vendido' => $totalVendido,
+        'porcentaje_comision' => $porcentajeComision,
+        'monto_comision' => $montoComision,
+        'total_neto' => $totalNeto,
+      ];
+
+      try {
+        Mail::to($comitente->mail)
+          ->send(new ResultadosSubastaComitenteEmail($dataMail));
+
+        info("Mail resultado enviado a comitente {$comitente->id} | Subasta {$subasta->id}");
+      } catch (\Exception $e) {
+
+        info("Error enviando mail resultado comitente", [
+          'comitente_id' => $comitente->id,
+          'subasta_id' => $subasta->id,
+          'error' => $e->getMessage(),
+        ]);
+      }
+    }
   }
 }

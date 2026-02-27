@@ -27,6 +27,9 @@ class Index extends Component
   #[Url]
   public $ids;
 
+  #[Url]
+  public $orden;
+
 
 
 
@@ -51,6 +54,15 @@ class Index extends Component
   #[On(['ordenCreated', 'ordenUpdated', 'depositoDeleted'])]
   public function mount()
   {
+    if ($this->orden) {
+      $exists = Orden::where('id', $this->orden)->exists();
+
+      if ($exists) {
+        $this->id = $this->orden;
+        $this->method = 'view';
+      }
+    }
+
     if ($this->ids) {
       $exists = Subasta::where('id', $this->ids)->exists();
       if ($exists) {
@@ -70,7 +82,9 @@ class Index extends Component
     }, OrdenesEstados::all());
 
 
-    $this->method = "";
+    if (!$this->method) {
+      $this->method = "";
+    }
     $this->resetPage();
   }
 

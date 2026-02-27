@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\LotesEstados;
 use App\Http\Controllers\AdquirenteController;
 use App\Http\Controllers\ComitenteController;
 use App\Http\Controllers\HomeController;
@@ -11,8 +12,10 @@ use App\Mail\ContratoEmail;
 use App\Mail\GarantiaDevolucionEmail;
 use App\Mail\OrdenEmail;
 use App\Mail\PujaSuperadaEmail;
+use App\Mail\ResultadosSubastaComitenteEmail;
 use Illuminate\Support\Facades\Route;
 use App\Models\Adquirente;
+use App\Models\Comitente;
 use App\Models\Contrato;
 use App\Models\ContratoLote;
 use App\Models\Lote;
@@ -205,6 +208,75 @@ Route::get('/test-puja-superada/{loteId}/{adquirenteId}', function ($loteId, $ad
   return new PujaSuperadaEmail($dataMail);
   // mail::to($adquirente->user?->email)->send(new PujaSuperadaEmail($dataMail));
 });
+
+
+
+
+Route::get('/test-mail-resultado-comitente/{subastaId}/{comitenteId}', function ($subastaId, $comitenteId) {
+
+  $subasta = Subasta::with(['contratos.lotes.pujas', 'contratos.comitente'])
+    ->findOrFail($subastaId);
+
+  $comitente = Comitente::findOrFail($comitenteId);
+
+  // Obtener contratos del comitente en esa subasta
+  $contratos = $subasta->contratos->where('comitente_id', $comitente->id);
+
+  if ($contratos->isEmpty()) {
+    abort(404, 'El comitente no tiene contratos en esta subasta');
+  }
+
+  // Unificar todos los lotes
+  $todosLosLotes = collect();
+  foreach ($contratos as $contrato) {
+    $todosLosLotes = $todosLosLotes->merge($contrato->lotes);
+  }
+
+  $lotesVendidos = $todosLosLotes->where('estado', LotesEstados::VENDIDO);
+  $lotesNoVendidos = $todosLosLotes->where('estado', '!=', LotesEstados::VENDIDO);
+
+  // Calcular total vendido
+  $totalVendido = 0;
+  foreach ($lotesVendidos as $lote) {
+    $pujaFinal = $lote->getPujaFinal();
+    if ($pujaFinal) {
+      $totalVendido += $pujaFinal->monto;
+    }
+  }
+
+  // Comisión
+
+  $porcentajeComision = $comitente->comision;
+
+
+  $montoComision = round($totalVendido * ($porcentajeComision / 100), 2);
+  $totalNeto = $totalVendido - $montoComision;
+
+  $fakeData = [
+    'comitente' => $comitente,
+    'subasta' => $subasta,
+    'lotes_vendidos' => $lotesVendidos,
+    'lotes_no_vendidos' => $lotesNoVendidos,
+    'total_vendido' => $totalVendido,
+    'porcentaje_comision' => $porcentajeComision,
+    'monto_comision' => $montoComision,
+    'total_neto' => $totalNeto,
+  ];
+
+  return new ResultadosSubastaComitenteEmail($fakeData);
+});
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

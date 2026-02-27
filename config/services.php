@@ -46,6 +46,8 @@ return [
   ],
   'brevo' => [
     'key' => env('BREVO_API_KEY'),
+    'adquirentes_list_id' => env('BREVO_ADQUIRENTES', 5), // ID de la lista para adquirentes
+    'comitentes_list_id' => env('BREVO_COMITENTES', 5), // ID de la lista para comitentes
   ],
 
 ];

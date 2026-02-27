@@ -268,6 +268,14 @@
                             Guardar
                         </button>
                     @endif
+
+                    @if ($method !== 'add' && $id)
+                        <button
+                            class="bg-blue-700 hover:bg-blue-800 mt-4 rounded-lg px-2 lg:py-1 py-0.5 flex text-center items-center"
+                            wire:click="downloadShippingLabel">
+                            Descargar etiqueta PDF
+                        </button>
+                    @endif
                 </div>
             </div>
         </div>

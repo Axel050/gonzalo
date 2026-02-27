@@ -27,7 +27,8 @@ class Comitente extends Model implements Auditable
     'CBU',
     'alias_bancario',
     'observaciones',
-    'foto'
+    'foto',
+    'agendado',
   ];
 
 

@@ -5,10 +5,12 @@ namespace App\Livewire\Admin\Adquirentes;
 use App\Models\Adquirente;
 use App\Models\Comitente;
 use App\Models\Subasta;
+use App\Services\BrevoService;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
+use Symfony\Polyfill\Intl\Idn\Info;
 
 class Index extends Component
 {
@@ -20,6 +22,7 @@ class Index extends Component
   public $ids, $alias;
 
   public $query, $nombre, $id;
+  public $sinAgendar = false;
 
   public $method = "";
   public $searchType = "todos";
@@ -97,33 +100,96 @@ class Index extends Component
   }
 
 
+  public function deleteToBrevo($id)
+  {
+
+    $adquirente = Adquirente::find($id);
+    if ($adquirente->agendado && $adquirente->user?->email) {
+      $brevoService = new BrevoService();
+      $result = $brevoService->deleteContact($adquirente->user->email);
+      // $result = $brevoService->deleteContact("ww@adad.com");
+
+      if ($result['success']) {
+        $this->dispatch('contactDeleted');
+        $adquirente->update(['agendado' => false]);
+      } else {
+        info("Error al eliminar contacto de Brevo: " . $result['message']);
+        $this->dispatch('contactErrorDeleted');
+      }
+    }
+  }
+
+
+
+
+  public function syncToBrevo($id)
+  {
+
+    $adquirente = Adquirente::find($id);
+
+    if (!$adquirente || !$adquirente->user?->email) {
+      $this->dispatch('error', 'El adquirente no tiene un email válido.');
+      return;
+    }
+
+    $brevoService = new BrevoService();
+    $result = $brevoService->createContact(
+      $adquirente->user->email,
+      [
+        'NOMBRE' => $adquirente->nombre,
+        'APELLIDOS' => $adquirente->apellido,
+        // 'SMS' => $adquirente->telefono ?  "54" . preg_replace('/\D/', '', $adquirente->telefono) : null,
+      ],
+      [config('services.brevo.adquirentes_list_id')] // ID de la lista en Brevo
+      // [7] 
+      // [5]
+    );
+
+    // info(["id" => config('services.brevo.adquirentes_list_id')]);
+
+    if ($result['success']) {
+      $adquirente->update(['agendado' => true]);
+      $this->dispatch('contactCreated');
+      $this->dispatch('success', 'Contacto sincronizado con Brevo.');
+    } else {
+      info("No resulta", ["result" => $result]);
+      $this->dispatch('contactErrorCreated', 'Error al sincronizar con Brevo.');
+    }
+  }
+
+
+
+
   public function render()
   {
 
-    // AHORA MAIL ESTA EN USERS   
+
+    $adquirentes = Adquirente::query();
+
+
     if ($this->query) {
       switch ($this->searchType) {
         case 'id':
-          $adquirentes = Adquirente::where("id", $this->query);
+          $adquirentes->where("id", $this->query);
           break;
         case 'nombre':
-          $adquirentes = Adquirente::where("nombre", "like", '%' . $this->query . '%');
+          $adquirentes->where("nombre", "like", '%' . $this->query . '%');
           break;
         case 'apellido':
-          $adquirentes = Adquirente::where("apellido", "like", '%' . $this->query . '%');
+          $adquirentes->where("apellido", "like", '%' . $this->query . '%');
           break;
         case 'telefono':
-          $adquirentes = Adquirente::where("telefono", "like", '%' . $this->query . '%');
+          $adquirentes->where("telefono", "like", '%' . $this->query . '%');
           break;
         case 'CUIT':
-          $adquirentes = Adquirente::where("CUIT", "like", '%' . $this->query . '%');
+          $adquirentes->where("CUIT", "like", '%' . $this->query . '%');
           break;
         case 'mail':
-          $adquirentes = Adquirente::join('users', 'adquirentes.user_id', '=', 'users.id')
+          $adquirentes->join('users', 'adquirentes.user_id', '=', 'users.id')
             ->where("users.email", "like", '%' . $this->query . '%');
           break;
         case 'alias':
-          $adquirentes = Adquirente::whereHas('alias', function ($query) {
+          $adquirentes->whereHas('alias', function ($query) {
             $query->where('nombre', 'like', '%' . $this->query . '%');
           });
           break;
@@ -132,7 +198,7 @@ class Index extends Component
 
           $terms = preg_split('/\s+/', trim($this->query));
 
-          $adquirentes = Adquirente::join('users', 'adquirentes.user_id', '=', 'users.id')
+          $adquirentes->join('users', 'adquirentes.user_id', '=', 'users.id')
             ->select('adquirentes.*')
             ->where(function ($query) use ($terms) {
 
@@ -161,15 +227,19 @@ class Index extends Component
             });
           break;
       }
-
-      $adquirentes = $adquirentes->orderBy("adquirentes.id", "desc")->paginate(15);
-      // $adquirentes = $adquirentes->paginate(7);
-    } else {
-      $adquirentes = Adquirente::orderBy("adquirentes.id", "desc")->paginate(15);
     }
 
 
 
+    if ($this->sinAgendar) {
+      $adquirentes->where("agendado", false);
+    }
+
+    $adquirentes->orderBy("adquirentes.id", "desc")->paginate(15);
+
+
+
+    $adquirentes = $adquirentes->orderBy("adquirentes.id", "desc")->paginate(15);
 
     return view('livewire.admin.adquirentes.index', compact("adquirentes"));
   }

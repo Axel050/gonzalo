@@ -331,6 +331,7 @@ class Index extends Component
       }
     }
 
+
     // Filtro por estado
     if ($this->estadoFilter) {
       $lotes->where('estado', $this->estadoFilter);
