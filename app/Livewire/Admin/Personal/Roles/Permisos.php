@@ -95,7 +95,21 @@ class Permisos extends Component
       'crear' => false,
       'actualizar' => false,
       'eliminar' => false,
-    ]
+    ],
+    [
+      'name' => 'Facturas',
+      'ver' => false,
+      'crear' => false,
+      'actualizar' => false,
+      'eliminar' => false,
+    ],
+    [
+      'name' => 'Liquidaciones',
+      'ver' => false,
+      'crear' => false,
+      'actualizar' => false,
+      'eliminar' => false,
+    ],
 
   ];
 

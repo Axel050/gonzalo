@@ -176,15 +176,35 @@
         @endcan
 
 
-        {{-- @can('ordenes-ver') --}}
-        <x-li-single :active="Request::is('admin/ordenes')" route="admin.ordenes">
+        @can('ordenes-ver')
+            <x-li-single :active="Request::is('admin/ordenes')" route="admin.ordenes">
 
-            <svg class="size-6">
-                <use xlink:href="#order"></use>
-            </svg>
-            <span class="ml-1 ">Ordenes</span>
-        </x-li-single>
-        {{-- @endcan --}}
+                <svg class="size-6">
+                    <use xlink:href="#order"></use>
+                </svg>
+                <span class="ml-1 ">Ordenes</span>
+            </x-li-single>
+        @endcan
+
+
+        @can('facturas-ver')
+            {{-- <x-li-single :active="Request::is('admin/facturas')" route="admin.facturas">
+                <svg class="size-6">
+                    <use xlink:href="#factura"></use>
+                </svg>
+                <span class="ml-1 ">Facturas</span>
+            </x-li-single> --}}
+        @endcan
+
+
+        @can('liquidaciones-ver')
+            {{-- <x-li-single :active="Request::is('admin/liquidaciones')" route="admin.liquidaciones">
+                <svg class="size-6">
+                    <use xlink:href="#liquidacion"></use>
+                </svg>
+                <span class="ml-1 ">Liquidaciones</span>
+            </x-li-single> --}}
+        @endcan
 
 
 

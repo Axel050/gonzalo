@@ -126,11 +126,13 @@ class Modal extends Component
   public function save()
   {
 
+
+    // dd($this->subasta_id ?: null);
     $this->validate();
     $contrato  = Contrato::create([
       "comitente_id" => $this->comitente_id,
       "descripcion" => $this->descripcion,
-      "subasta_id" => $this->subasta_id,
+      "subasta_id" => $this->subasta_id ?: null,
       "fecha_firma" => $this->fecha_firma,
     ]);
 
@@ -147,11 +149,30 @@ class Modal extends Component
   {
 
 
+    // $ls = $this->contrato->lotes()->where('ultimo_contrato', $this->contrato->id)estado ->get()->toArray();
+    // $ls = $this->contrato->lotes()
+    //   ->where('lotes.ultimo_contrato', $this->id)
+    //   ->where('lotes.estado', 'disponible')
+    //   ->get();
+
+    // $this->contrato->lotes()
+    //   ->where('lotes.ultimo_contrato', $this->id)
+    //   ->where('lotes.estado', 'disponible')
+    // ->update(['lotes.estado' => 'asignado']);
+
+    // info(["liotes" => $ls->toArray()]);
+
+    // foreach ($ls as $l) {
+    //   if ($l->estado == "disponible") {
+    //     $l->estado = "asignado";
+    //   }
+    // }
+
+
     if (!$this->contrato) {
       $this->dispatch('contratoNotExits');
     } else {
       $this->validate();
-
 
       $bloqueo = $this->contrato->puedeCambiarSubasta();
 

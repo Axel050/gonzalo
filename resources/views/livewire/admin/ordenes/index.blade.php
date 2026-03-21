@@ -174,6 +174,17 @@
                                                     <span class="hidden lg:block ml-1">Editar</span>
                                                 </button>
 
+                                                <button
+                                                    class=" hover:text-gray-200  hover:bg-cyan-800 flex items-center py-0.5 bg-cyan-700 rounded-lg px-1 cursor-pointer"
+                                                    wire:click="generarFacturaPapel({{ $dep->id }})"
+                                                    title="Generar factura papel (lotes y martillo)">
+                                                    <svg class="size-5 ">
+                                                        <use xlink:href="#factura"></use>
+                                                    </svg>
+
+                                                    <span class="hidden lg:block ml-1">Facturar</span>
+                                                </button>
+
 
                                             </div>
                                         </td>

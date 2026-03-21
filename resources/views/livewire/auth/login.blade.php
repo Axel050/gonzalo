@@ -23,9 +23,13 @@
                 autocomplete="current-password" :placeholder="__('Password')" viewable />
 
             @if (Route::has('password.request'))
-                <flux:link class="absolute right-0 top-0 text-sm" :href="route('password.request')" wire:navigate>
+                {{-- <flux:link class="absolute right-0 top-0 text-sm" :href="route('password.request')" wire:navigate>
                     {{ __('Olvidaste tu password?') }}
-                </flux:link>
+                </flux:link> --}}
+                <a class="absolute right-0 top-0 text-sm text-gray-200 hover:text-gray-100 hover:underline underline-offset-2"
+                    href="{{ route('password.request') }}" wire:navigate>
+                    Olvidaste tu password?
+                </a>
             @endif
         </div>
 

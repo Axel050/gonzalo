@@ -7,5 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Liquidacion extends Model
 {
-    use HasFactory;
+  use HasFactory;
+  protected $fillable = [
+    'numero',
+    'fecha_emision',
+    'estado',
+    'comitente_id',
+  ];
 }

@@ -348,7 +348,7 @@
 
                             </button>
                         @endif
-                    @elseif ($lote->estado != 'en_subasta' && $subasta->estado == 'finalizada')
+                    @elseif ($lote->estado != 'en_subasta' && $subasta?->estado == 'finalizada')
                         <a href="https://wa.me/541130220449?text={{ urlencode('Hola, queria consulta por el lote Nº ' . $lote->id . ' - ' . $lote->titulo) }}"
                             target="_blank"
                             class="bg-casa-black hover:bg-casa-black-h text-gray-50 rounded-full px-4 flex items-center justify-between gap-x-5 py-1 max-w-90 mt-4">

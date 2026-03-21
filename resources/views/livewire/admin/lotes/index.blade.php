@@ -39,7 +39,7 @@
                                 <option value="tipo">Tipo</option>
                                 <option value="subasta">Subasta</option>
                                 <option value="contrato">Contrato</option>
-                                {{-- <option value="estado">Estado</option> --}}
+                                <option value="descripcion">Descripcion</option>
                                 <option value="encargado">Encargado</option>
                             </select>
                         </div>
@@ -173,7 +173,7 @@
                                     <th scope="col">Encargado</th>
                                     <th scope="col">Base</th>
                                     <th scope="col">Valuacion</th>
-                                    <th scope="col">Moneda</th>
+                                    <th scope="col">Descripcion</th>
                                     <th scope="col">Subasta</th>
                                     <th scope="col">Contrato</th>
                                     <th scope="col">Estado</th>
@@ -236,7 +236,9 @@
                                         </td>
                                         <td>{{ (int) $lot->ultimoConLote?->precio_base }}</td>
                                         <td>{{ (int) $lot->valuacion }}</td>
-                                        <td>{{ $lot->ultimoConLote?->moneda?->titulo }}</td>
+                                        <td>
+                                            {{ \Illuminate\Support\Str::limit($lot->descripcion, 20) }}
+                                        </td>
                                         <td>
                                             <a href="{{ route('admin.subastas', ['ids' => $lot->ultimoContrato?->subasta_id]) }}"
                                                 class="cursor-pointer hover:font-extrabold"

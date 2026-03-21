@@ -5,6 +5,7 @@
             <h2 class="lg:text-2xl text-lg mb-1  w-full text-center py-1  border-b border-gray-300 text-white rounded-t-lg "
                 style="{{ $bg }}">
                 {{ $title }} Orden
+                {{ $ordenSeleccionada?->id ? ' - ' . $ordenSeleccionada->id : '' }}
             </h2>
 
             <div

@@ -55,87 +55,94 @@
 
                         @if (!empty($caracteristicas) && (is_array($caracteristicas) || is_object($caracteristicas)))
                             @foreach ($caracteristicas as $item)
-                                @if ($item->tipo == 'file')
-                                    {{-- <x-form-item-file label="{{ $item->nombre }} {{ $item->id }}" :method="$method"
+                                <div wire:key="caracteristica-{{ $item->id }}"
+                                    class="[&>div]:flex
+                      [&>div]:flex-col ">
+                                    @if ($item->tipo == 'file')
+                                        {{-- <x-form-item-file label="{{ $item->nombre }} {{ $item->id }}" :method="$method"
                                     model="formData.{{ $item->id }}" class="bg-red-300" /> --}}
-                                    <div class = 'items-start  lg:w-60 w-[85%] mx-auto  mb-[-5px] '>
+                                        <div class = 'items-start  lg:w-60 w-[85%] mx-auto  mb-[-5px] '>
 
-                                        <div class=" leading-[16px]">
-                                            <label class="w-full text-start text-gray-500 leading-[16px] text-base ">
-                                                {{ $item->nombre }}
-                                            </label>
+                                            <div class=" leading-[16px]">
+                                                <label
+                                                    class="w-full text-start text-gray-500 leading-[16px] text-base ">
+                                                    {{ $item->nombre }}
+                                                </label>
 
 
-                                            @php
-                                                $url = '';
-                                                $exists = false;
-                                                if ($formData[$item->id] ?? null) {
-                                                    if (method_exists($formData[$item->id], 'temporaryUrl')) {
-                                                        // $url = $formData[$item->id]->temporaryUrl();
-                                                        $url = true;
-                                                    } elseif (
-                                                        is_string($formData[$item->id]) &&
-                                                        Storage::disk('public')->exists($formData[$item->id])
-                                                    ) {
-                                                        $url = Storage::url($formData[$item->id]);
-                                                        $exists = true;
+                                                @php
+                                                    $url = '';
+                                                    $exists = false;
+                                                    if ($formData[$item->id] ?? null) {
+                                                        if (method_exists($formData[$item->id], 'temporaryUrl')) {
+                                                            // $url = $formData[$item->id]->temporaryUrl();
+                                                            $url = true;
+                                                        } elseif (
+                                                            is_string($formData[$item->id]) &&
+                                                            Storage::disk('public')->exists($formData[$item->id])
+                                                        ) {
+                                                            $url = Storage::url($formData[$item->id]);
+                                                            $exists = true;
+                                                        }
                                                     }
-                                                }
-                                            @endphp
+                                                @endphp
 
-                                            @if ($url && $method != 'view')
-                                                <button
-                                                    class="rounded-full px-2  bg-red-600 ml-4 text-xs hover:bg-red-800 mb-[2px] leading-[14px] h-[15px]"
-                                                    title="quitar audio" wire:click="deleteAudio({{ $item->id }})">
-                                                    <span class="font-bold mr-2 text-xs">X</span>Quitar
-                                                </button>
-                                            @endif
-
-                                        </div>
-
-                                        <div class="relative w-full  text-center ">
-                                            {{-- @if ($url) --}}
-                                            <audio controls
-                                                class="h-6 text-xs my-0 w-full border border-gray-400 rounded-lg"
-                                                wire:key="audio-{{ $item->id }}-{{ md5($url) }}">
-                                                @if ($exists)
-                                                    <source src="{{ $url }}?t={{ time() }}"
-                                                        {{-- type="{{ pathinfo($formData[$item->id], PATHINFO_EXTENSION) === 'mp3' ? 'audio/mpeg' : 'audio/wav' }}"> --}}>
+                                                @if ($url && $method != 'view')
+                                                    <button
+                                                        class="rounded-full px-2  bg-red-600 ml-4 text-xs hover:bg-red-800 mb-[2px] leading-[14px] h-[15px]"
+                                                        title="quitar audio"
+                                                        wire:click="deleteAudio({{ $item->id }})">
+                                                        <span class="font-bold mr-2 text-xs">X</span>Quitar
+                                                    </button>
                                                 @endif
-                                                Tu
-                                            </audio>
 
-                                            {{-- @endif --}}
+                                            </div>
+
+                                            <div class="relative w-full  text-center ">
+                                                {{-- @if ($url) --}}
+                                                <audio controls
+                                                    class="h-6 text-xs my-0 w-full border border-gray-400 rounded-lg"
+                                                    wire:key="audio-{{ $item->id }}-{{ md5($url) }}">
+                                                    @if ($exists)
+                                                        <source src="{{ $url }}?t={{ time() }}"
+                                                            {{-- type="{{ pathinfo($formData[$item->id], PATHINFO_EXTENSION) === 'mp3' ? 'audio/mpeg' : 'audio/wav' }}"> --}}>
+                                                    @endif
+                                                    Tu
+                                                </audio>
+
+                                                {{-- @endif --}}
 
 
 
-                                            <input type ="file" wire:model="formData.{{ $item->id }}"
-                                                id="sound" accept=".mp3"
-                                                class="hidden lg:w-60 h-6 rounded-md border border-gray-400 w-full text-gray-500 pl-2 text-sm bg-gray-100 disabled:bg-gray-300 disabled:text-gray-600      "
-                                                @disabled($method === 'view') />
-                                            @if ($method == 'update')
-                                                <button @click="document.getElementById('sound').click()"
-                                                    class="text-gray-100 rounded-xl text-xs px-8 py-0.5 bg-cyan-900 hover:bg-cyan-950 mx-auto">
-                                                    Seleccionar audio</button>
-                                            @endif
+                                                <input type ="file" wire:model="formData.{{ $item->id }}"
+                                                    id="sound" accept=".mp3"
+                                                    class="hidden lg:w-60 h-6 rounded-md border border-gray-400 w-full text-gray-500 pl-2 text-sm bg-gray-100 disabled:bg-gray-300 disabled:text-gray-600      "
+                                                    @disabled($method === 'view') />
+                                                @if ($method == 'update')
+                                                    <button @click="document.getElementById('sound').click()"
+                                                        class="text-gray-100 rounded-xl text-xs px-8 py-0.5 bg-cyan-900 hover:bg-cyan-950 mx-auto">
+                                                        Seleccionar audio</button>
+                                                @endif
 
-                                            {{-- @dump($formData) --}}
-                                            <x-input-error for="formData.{{ $item->id }}"
-                                                class="top-full py-0 leading-[12px] text-red-500" />
+                                                {{-- @dump($formData) --}}
+                                                <x-input-error for="formData.{{ $item->id }}"
+                                                    class="top-full py-0 leading-[12px] text-red-500" />
+                                            </div>
                                         </div>
-                                    </div>
-                                @elseif($item->tipo == 'select')
-                                    <x-form-item-sel label="{{ $item->nombre }}" :method="$method"
-                                        model="formData.{{ $item->id }}">
-                                        <option value="">Elija opción</option>
-                                        @foreach ($item->opciones as $opt)
-                                            <option value="{{ $opt->valor }}">{{ $opt->valor }}</option>
-                                        @endforeach
-                                    </x-form-item-sel>
-                                @else
-                                    <x-form-item label="{{ $item->nombre }}" :method="$method"
-                                        model="formData.{{ $item->id }}" type="{{ $item->tipo }}" />
-                                @endif
+                                    @elseif($item->tipo == 'select')
+                                        <x-form-item-sel label="{{ $item->nombre }}" :method="$method"
+                                            model="formData.{{ $item->id }}">
+                                            <option value="">Elija opción</option>
+                                            {{-- @foreach ($item->opciones as $opt) --}}
+                                            @foreach (collect($item->opciones)->sortBy('valor') as $opt)
+                                                <option value="{{ $opt->valor }}">{{ $opt->valor }}</option>
+                                            @endforeach
+                                        </x-form-item-sel>
+                                    @else
+                                        <x-form-item label="{{ $item->nombre }}" :method="$method"
+                                            model="formData.{{ $item->id }}" type="{{ $item->tipo }}" />
+                                    @endif
+                                </div>
                             @endforeach
                         @endif
 

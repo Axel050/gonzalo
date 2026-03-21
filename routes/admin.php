@@ -49,12 +49,20 @@ Route::get("/auditoria", function () {
   return view('admin.auditorias');
 })->name("auditoria")->can("auditoria-ver");
 
-
-
 Route::get("/ordenes", function () {
   return view('admin.ordenes');
 })->name("ordenes")
   ->can("ordenes-ver");
+
+Route::get("/facturas", function () {
+  return view('admin.facturas');
+})->name("facturas")
+  ->can("facturas-ver");
+
+Route::get("/liquidaciones", function () {
+  return view('admin.liquidaciones');
+})->name("liquidaciones")
+  ->can("liquidaciones-ver");
 
 
 // AUX

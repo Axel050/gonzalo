@@ -248,6 +248,10 @@ class Index extends Component
           });
           break;
 
+        case 'descripcion':
+          $lotes->where('descripcion', 'like', '%' . $this->query . '%');
+          break;
+
         case 'tipo':
 
           // Solo tipo seleccionado → filtra por tipo_bien
@@ -324,6 +328,7 @@ class Index extends Component
               })
               // ->orWhere('estado', 'like', $searchTerm) // Comentado como en tu original
               ->orWhere('ultimo_contrato', 'like', $searchTerm)
+              ->orWhere('descripcion', 'like', $searchTerm)
               ->orWhere('titulo', 'like', $searchTerm);
           });
           break;
