@@ -308,12 +308,17 @@ class Modal extends Component
   public function mount()
   {
 
-    $this->estados = array_map(function ($estado) {
-      return [
-        'value' => $estado,
-        'label' => LotesEstados::getLabel($estado),
-      ];
-    }, LotesEstados::all());
+    $this->estados = collect(LotesEstados::all())
+      ->map(function ($estado) {
+        return [
+          'value' => $estado,
+          'label' => LotesEstados::getLabel($estado),
+        ];
+      })
+      ->sortBy('label')
+      ->values()
+      ->toArray();
+
 
 
     $this->tipos = TiposBien::orderBy("nombre")->get();

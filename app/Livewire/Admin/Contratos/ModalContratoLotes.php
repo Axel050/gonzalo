@@ -11,6 +11,7 @@ use App\Models\Lote;
 use App\Models\Moneda;
 use App\Models\OrdenLote;
 use App\Models\Puja;
+use App\Models\Subasta;
 use Illuminate\Support\Facades\Mail;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -25,6 +26,9 @@ class ModalContratoLotes extends Component
   public $lotes = [];
   public $monedas = [];
   public string $si;
+  public $subastas = [];
+  public $target_subasta_id;
+  public $selectedToMove = [];
 
   public $te = 1;
 
@@ -37,10 +41,13 @@ class ModalContratoLotes extends Component
   public $lote_id_modal = false;
   public $titulo, $descripcion, $precio_base;
   public $autorizados = [];
+  public $lote_estado;
+  public $lote_ultimo_contrato;
 
   public $tempLotes = [];
   public $method;
   public $valuacion;
+  public $filter_estado = 'todos';
 
 
   public function closeModal()
@@ -76,6 +83,8 @@ class ModalContratoLotes extends Component
       $this->descripcion = $lote->descripcion;
       $this->valuacion = $lote->valuacion;
       $this->foto1 = $lote->foto1;
+      $this->lote_estado = $lote->estado;
+      $this->lote_ultimo_contrato = $lote->ultimo_contrato;
 
       $this->precio_base = (int)($lote->ultimoConLote?->precio_base !== null && $lote->ultimoConLote?->precio_base !== 0
         ? $lote->ultimoConLote?->precio_base
@@ -122,9 +131,13 @@ class ModalContratoLotes extends Component
 
     // $this->monedas = Moneda::all();
     $this->monedas = Moneda::all()->keyBy('id');
+    $this->contrato = Contrato::find($this->id);
+
+    $this->subastas = Subasta::whereIn("estado", ["activa", "inactiva"])
+      ->where("id", "!=", $this->contrato?->subasta_id)
+      ->orderBy('id', 'desc')->get();
 
     // info(["oprevio mont contrato " => $this->id]);
-    $this->contrato = Contrato::find($this->id);
     // $this->tempLotes = $this->contrato->lotes->toArray();
     $this->tempLotes = $this->contrato->lotes->map(function ($lote) {
       $array = $lote->toArray();
@@ -220,9 +233,11 @@ class ModalContratoLotes extends Component
       'id' => $this->lote_id,
       'foto1' => $this->foto1,
       'moneda_id' => $this->moneda_id,
+      'estado' => $this->lote_estado,
+      'ultimo_contrato' => $this->lote_ultimo_contrato,
     ]);
 
-    $this->reset(['titulo', 'descripcion', 'precio_base', 'lote_id', 'foto1', 'moneda_id', 'valuacion']);
+    $this->reset(['titulo', 'descripcion', 'precio_base', 'lote_id', 'foto1', 'moneda_id', 'valuacion', 'lote_estado', 'lote_ultimo_contrato']);
   }
 
   public function quitar($index)
@@ -243,6 +258,8 @@ class ModalContratoLotes extends Component
       $this->lote_id = $this->tempLotes[$index]['id'];
       $this->moneda_id = $this->tempLotes[$index]['moneda_id'];
       $this->valuacion = $this->tempLotes[$index]['valuacion'];
+      $this->lote_estado = $this->tempLotes[$index]['estado'] ?? null;
+      $this->lote_ultimo_contrato = $this->tempLotes[$index]['ultimo_contrato'] ?? null;
 
       if ($this->tempLotes[$index]['foto1']) {
         $this->foto1 = $this->tempLotes[$index]['foto1'];
@@ -401,11 +418,139 @@ class ModalContratoLotes extends Component
     $this->dispatch('loteCreated');
   }
 
+  public function moverSeleccionados()
+  {
+    $this->resetErrorBag('mover');
+
+    $loteIds = collect($this->selectedToMove)
+      ->filter()
+      ->map(fn($id) => (int) $id)
+      ->unique()
+      ->values()
+      ->all();
+
+    if (empty($loteIds)) {
+      $this->addError('mover', 'Seleccione al menos un lote.');
+      return;
+    }
+
+    if (!$this->target_subasta_id) {
+      $this->addError('mover', 'Elija subasta destino.');
+      return;
+    }
+
+    if ($this->contrato?->subasta_id && (int) $this->contrato->subasta_id === (int) $this->target_subasta_id) {
+      $this->addError('mover', 'La subasta destino debe ser distinta a la actual.');
+      return;
+    }
+
+    $contratoDestino = Contrato::where('comitente_id', $this->contrato->comitente_id)
+      ->where('subasta_id', $this->target_subasta_id)
+      ->first();
+
+    if (!$contratoDestino) {
+      $contratoDestino = Contrato::create([
+        'comitente_id' => $this->contrato->comitente_id,
+        'subasta_id' => $this->target_subasta_id,
+        'fecha_firma' => now()->toDateString(),
+        'descripcion' => $this->contrato->descripcion,
+      ]);
+    }
+
+    $lotes = Lote::whereIn('id', $loteIds)
+      ->where('comitente_id', $this->contrato->comitente_id)
+      ->where('ultimo_contrato', $this->contrato->id)
+      ->whereIn('estado', [LotesEstados::DISPONIBLE, LotesEstados::STANDBY])
+      ->get();
+
+    $validIds = $lotes->pluck('id')->all();
+    $invalidIds = array_diff($loteIds, $validIds);
+    if (!empty($invalidIds)) {
+      $this->addError('mover', 'Algunos lotes no cumplen las condiciones y no se movieron.');
+    }
+
+    foreach ($lotes as $lote) {
+      $contratoLoteActual = ContratoLote::withTrashed()
+        ->where('contrato_id', $this->contrato->id)
+        ->where('lote_id', $lote->id)
+        ->first();
+
+      $precioBase = $contratoLoteActual?->precio_base ?? $lote->valuacion;
+      $monedaId = $contratoLoteActual?->moneda_id ?? 1;
+
+
+      $contratoLoteDestino = ContratoLote::withTrashed()
+        ->where('contrato_id', $contratoDestino->id)
+        ->where('lote_id', $lote->id)
+        ->first();
+
+      if ($contratoLoteDestino) {
+        if ($contratoLoteDestino->trashed()) {
+          $contratoLoteDestino->restore();
+        }
+        $contratoLoteDestino->update([
+          'precio_base' => $precioBase,
+          'moneda_id' => $monedaId,
+        ]);
+      } else {
+        ContratoLote::create([
+          'contrato_id' => $contratoDestino->id,
+          'lote_id' => $lote->id,
+          'precio_base' => $precioBase,
+          'moneda_id' => $monedaId,
+        ]);
+      }
+
+
+
+      if ($contratoDestino?->subasta && $contratoDestino?->subasta?->estado === "activa") {
+        $estado = LotesEstados::EN_SUBASTA;
+      } else {
+        $estado = LotesEstados::ASIGNADO;
+      }
+
+      $lote->update([
+        'ultimo_contrato' => $contratoDestino->id,
+        'estado' => $estado,
+      ]);
+    }
+
+    if (!empty($validIds)) {
+
+      $this->tempLotes = $this->contrato->lotes->map(function ($lote) {
+        $array = $lote->toArray();
+        $array['precio_base'] = $lote->pivot?->precio_base;
+        $array['moneda_id'] = $lote->ultimoConLote?->moneda_id;
+        return $array;
+      })->toArray();
+    }
+
+    $this->selectedToMove = [];
+  }
+
 
 
 
   public function render()
   {
     return view('livewire.admin.contratos.modal-contrato-lotes');
+  }
+
+  public function getTempLotesFilteredProperty()
+  {
+    $collection = collect($this->tempLotes);
+
+    if ($this->filter_estado === 'movibles') {
+      $collection = $collection->filter(
+        fn($item) => in_array($item['estado'] ?? null, [LotesEstados::DISPONIBLE, LotesEstados::STANDBY], true)
+      );
+    }
+
+    return $collection
+      ->sortBy([
+        ['id', 'desc'],
+      ])
+      ->values()
+      ->all();
   }
 }

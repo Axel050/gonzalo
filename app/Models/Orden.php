@@ -15,7 +15,7 @@ class Orden extends Model implements Auditable
   use \OwenIt\Auditing\Auditable;
 
 
-  protected $fillable = ['adquirente_id', 'total', 'descuento', 'estado', 'payment_id', 'fecha_pago', 'subasta_id', 'monto_envio', 'envio_check', 'motivo', 'otro', 'porcentaje_comision', 'monto_comision'];
+  protected $fillable = ['adquirente_id', 'total', 'descuento', 'estado', 'payment_id', 'fecha_pago', 'subasta_id', 'monto_envio', 'envio_check', 'motivo', 'otro', 'porcentaje_comision', 'monto_comision', 'facturas_generadas_at', 'liquidaciones_generadas_at'];
 
 
 
@@ -67,5 +67,11 @@ class Orden extends Model implements Auditable
       + ($this->monto_envio ?? 0)
       + ($this->monto_comision ?? 0)
       - ($this->descuento ?? 0);
+  }
+
+
+  public function facturas()
+  {
+    return $this->belongsToMany(Factura::class, 'factura_orden');
   }
 }

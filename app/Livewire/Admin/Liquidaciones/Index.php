@@ -2,69 +2,117 @@
 
 namespace App\Livewire\Admin\Liquidaciones;
 
+use App\Enums\LotesEstados;
+use App\Models\Comitente;
 use App\Models\Liquidacion;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Livewire\Attributes\On;
 
 class Index extends Component
 {
-  use WithPagination;
+    use WithPagination;
 
-  public $query;
-  public $searchType = 'todos';
-  public $method = '';
-  public $id;
+    public $query;
 
-  public function updatingQuery()
-  {
-    $this->resetPage();
-  }
+    public $searchType = 'todos';
 
-  public function option($method, $id = false)
-  {
-    $this->method = $method;
-    $this->id = $id;
-  }
+    public $method = '';
 
-  #[On(['facturaCreated', 'facturasGenerated'])]
-  public function close()
-  {
-    $this->method = '';
-    $this->resetPage();
-  }
+    public $id;
 
-  public function render()
-  {
-    $liquidaciones = Liquidacion::query();
+    public $tab = 'liquidaciones';
 
-    if ($this->query) {
-      switch ($this->searchType) {
-        case 'id':
-          $liquidaciones->where('id', 'like', '%' . $this->query . '%');
-          break;
-        case 'adquirente':
-          $liquidaciones->whereHas('adquirente', function ($q) {
-            $q->where('nombre', 'like', '%' . $this->query . '%')
-              ->orWhere('apellido', 'like', '%' . $this->query . '%');
-          });
-          break;
-        case 'orden':
-          $liquidaciones->where('orden_id', 'like', '%' . $this->query . '%');
-          break;
-        case 'todos':
-          $liquidaciones->where(function ($q) {
-            $q->where('id', 'like', '%' . $this->query . '%')
-              ->orWhere('orden_id', 'like', '%' . $this->query . '%')
-              ->orWhere('nombre', 'like', '%' . $this->query . '%')
-              ->orWhere('apellido', 'like', '%' . $this->query . '%');
-          });
-          break;
-      }
+    public $comitente_id_selected = null;
+
+    public function updatingQuery()
+    {
+        $this->resetPage();
     }
 
-    $liquidaciones = $liquidaciones->orderBy('id', 'desc')->paginate(15);
+    public function setTab($tabName)
+    {
+        $this->tab = $tabName;
+        $this->query = '';
+        $this->resetPage();
+    }
 
-    return view('livewire.admin.liquidaciones.index', compact('liquidaciones'));
-  }
+    public function option($method, $id = false, $comitente_id = null)
+    {
+        $this->method = $method;
+        $this->id = $id;
+        $this->comitente_id_selected = $comitente_id;
+    }
+
+    #[On(['liquidacionCreated', 'liquidacionesGenerated'])]
+    public function close()
+    {
+        $this->method = '';
+        $this->comitente_id_selected = null;
+        $this->resetPage();
+    }
+
+    public function render()
+    {
+        $pendientesCount = Comitente::whereHas('Clotes', function ($q) {
+            $q->where('estado', LotesEstados::FACTURADO);
+        })->count();
+
+        if ($this->tab === 'liquidaciones') {
+            $liquidaciones = Liquidacion::with('comitente');
+
+            if ($this->query) {
+                switch ($this->searchType) {
+                    case 'id':
+                        $liquidaciones->where('id', 'like', '%'.$this->query.'%');
+                        break;
+                    case 'comitente':
+                        $liquidaciones->whereHas('comitente', function ($q) {
+                            $q->where('nombre', 'like', '%'.$this->query.'%')
+                                ->orWhere('apellido', 'like', '%'.$this->query.'%');
+                        });
+                        break;
+                    case 'todos':
+                        $liquidaciones->where(function ($q) {
+                            $q->where('id', 'like', '%'.$this->query.'%')
+                                ->orWhereHas('comitente', function ($query) {
+                                    $query->where('nombre', 'like', '%'.$this->query.'%')
+                                        ->orWhere('apellido', 'like', '%'.$this->query.'%');
+                                });
+                        });
+                        break;
+                }
+            }
+
+            $liquidaciones = $liquidaciones->orderBy('id', 'desc')->paginate(15);
+
+            return view('livewire.admin.liquidaciones.index', [
+                'liquidaciones' => $liquidaciones,
+                'comitentes_pendientes' => null,
+                'pendientesCount' => $pendientesCount,
+            ]);
+        } else {
+            $query = Comitente::query();
+
+            if ($this->query) {
+                $query->where(function ($q) {
+                    $q->where('nombre', 'like', '%'.$this->query.'%')
+                        ->orWhere('apellido', 'like', '%'.$this->query.'%')
+                        ->orWhere('alias', 'like', '%'.$this->query.'%');
+                });
+            }
+
+            $comitentes_pendientes = $query->whereHas('Clotes', function ($q) {
+                $q->where('estado', LotesEstados::FACTURADO);
+            })->with(['Clotes' => function ($q) {
+                $q->where('estado', LotesEstados::FACTURADO);
+            }])->paginate(15);
+
+            return view('livewire.admin.liquidaciones.index', [
+                'liquidaciones' => null,
+                'comitentes_pendientes' => $comitentes_pendientes,
+                'pendientesCount' => $pendientesCount,
+            ]);
+        }
+    }
 }

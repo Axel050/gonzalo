@@ -7,8 +7,17 @@
 
     <div
         {{ $attributes->merge([
-            'class' => ' border  border-gray-500   md:max-w-xl  lg:w-[40%] w-[90%] x-auto  z-50  shadow-gray-400 shadow-md max-h-[95%] 
-                                                        transition delay-150 duration-300 ease-in-out  rounded-2xl ',
+            // 'class' => ' border  border-gray-500   md:max-w-xl  lg:w-[40%] w-[90%]   z-50  shadow-gray-400 shadow-md max-h-[95%]
+            //                                             transition delay-150 duration-300 ease-in-out  rounded-2xl ',
+            'class' => '
+            border border-gray-500
+            md:max-w-xl lg:w-[40%] w-[90%]
+            z-50 shadow-gray-400 shadow-md
+            max-h-[90vh]
+            flex flex-col
+            bg-white
+            rounded-2xl
+        ',
         ]) }}>
 
         {{ $slot }}

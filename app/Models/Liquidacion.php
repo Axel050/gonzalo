@@ -10,8 +10,24 @@ class Liquidacion extends Model
   use HasFactory;
   protected $fillable = [
     'numero',
-    'fecha_emision',
+    'fecha',
     'estado',
     'comitente_id',
+    'observaciones',
+    'monto_total',
+    'subtotal_lotes',
+    'subtotal_comisiones',
+    'subtotal_gastos',
+    'comision_porcentaje',
   ];
+
+  public function comitente()
+  {
+    return $this->belongsTo(Comitente::class);
+  }
+
+  public function items()
+  {
+    return $this->hasMany(LiquidacionLote::class);
+  }
 }

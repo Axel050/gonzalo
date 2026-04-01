@@ -27,7 +27,6 @@ class Factura extends Model
     'fecha_pago',
     'estado_pago',
     'adquirente_id',
-    'orden_id',
     // Nuevos campos
     'tipo_comprobante',
     'tipo_concepto',
@@ -39,10 +38,11 @@ class Factura extends Model
   ];
 
 
-  public function orden()
+  public function ordenes()
   {
-    return $this->belongsTo(Orden::class);
+    return $this->belongsToMany(Orden::class, 'factura_orden');
   }
+
 
   public function adquirente()
   {

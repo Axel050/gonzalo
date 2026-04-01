@@ -2,37 +2,53 @@
 
 namespace App\Livewire\Admin\Facturas;
 
-use App\Models\Orden;
-use App\Models\Factura;
-use App\Services\FacturaService;
-use Barryvdh\DomPDF\Facade\Pdf;
 use Livewire\Component;
+use App\Models\Orden;
+use App\Services\FacturaService;
 
 class Modal extends Component
 {
-  public $id;
-  public $method;
-  public $searchType = 'orden';
-  public $query;
+  public $query = '';
   public $ordenes = [];
-  public $ordenSeleccionada;
-  public $factura;
 
-  public function mount()
+  public $ordenesSeleccionadas = [];
+  public $selectAll = false;
+
+  public $step = 1;
+
+  public function mount($id = null, $method = null, $adquirente_id = null)
   {
-    if ($this->method == 'view' && $this->id) {
-      $this->factura = Factura::with('items.lote', 'adquirente')->find($this->id);
-    }
+      if ($adquirente_id) {
+          $adq = \App\Models\Adquirente::find($adquirente_id);
+          if ($adq) {
+              $this->query = $adq->apellido;
+              $this->updatedQuery();
+              // Auto select all if we pre-filled
+              if (count($this->ordenes) > 0) {
+                  $this->selectAll = true;
+                  $this->updatedSelectAll(true);
+              }
+          }
+      }
   }
 
+  /*
+    |--------------------------------------------------------------------------
+    | BUSQUEDA
+    |--------------------------------------------------------------------------
+    */
   public function updatedQuery()
   {
     if (strlen($this->query) > 1) {
       $this->ordenes = Orden::with('adquirente')
-        ->where('id', 'like', '%' . $this->query . '%')
-        ->orWhereHas('adquirente', function ($q) {
-          $q->where('nombre', 'like', '%' . $this->query . '%')
-            ->orWhere('apellido', 'like', '%' . $this->query . '%');
+        ->where("estado",  "=", "pagada")
+        ->whereNull('facturas_generadas_at')
+        ->where(function ($q) {
+          $q->where('id', 'like', "%{$this->query}%")
+            ->orWhereHas('adquirente', function ($q2) {
+              $q2->where('nombre', 'like', "%{$this->query}%")
+                ->orWhere('apellido', 'like', "%{$this->query}%");
+            });
         })
         ->take(10)
         ->get();
@@ -41,73 +57,133 @@ class Modal extends Component
     }
   }
 
-  public function seleccionarOrden($ordenId)
+  /*
+    |--------------------------------------------------------------------------
+    | SELECT ALL
+    |--------------------------------------------------------------------------
+    */
+  public function updatedSelectAll($value)
   {
-    $this->ordenSeleccionada = Orden::with('lotes.lote', 'adquirente', 'subasta')->find($ordenId);
-    $this->ordenes = [];
-    $this->query = '';
-  }
-
-  public function generarFacturas(FacturaService $service)
-  {
-    if (!$this->ordenSeleccionada) return;
-
-    try {
-      $facturas = $service->generarFacturasDesdeOrden($this->ordenSeleccionada);
-      info("antes dispartch");
-      $this->dispatch('success', ['mensaje' => count($facturas) . ' facturas generadas correctamente.']);
-      $this->dispatch('facturasGenerated');
-    } catch (\Exception $e) {
-      $this->dispatch('error', ['mensaje' => 'Error: ' . $e->getMessage()]);
+    if ($value) {
+      $this->ordenesSeleccionadas = collect($this->ordenes)->pluck('id')->toArray();
+    } else {
+      $this->ordenesSeleccionadas = [];
     }
   }
 
-  public function closeModal()
+  public function updatedOrdenesSeleccionadas()
   {
-    $this->dispatch('facturaCreated'); // Para cerrar en el index
+    $this->selectAll = count($this->ordenesSeleccionadas) === count($this->ordenes);
   }
 
-
-
-
-
-  public function downloadFactura($facturaId)
+  /*
+    |--------------------------------------------------------------------------
+    | RELACION MODELOS
+    |--------------------------------------------------------------------------
+    */
+  public function getOrdenesSeleccionadasModelProperty()
   {
-    $factura = \App\Models\Factura::with([
-      'items.lote',
-      'adquirente'
-    ])->find($facturaId);
+    return Orden::with('adquirente', 'lotes')
+      ->whereIn('id', $this->ordenesSeleccionadas)
+      ->get();
+  }
 
-    if (!$factura) {
+  /*
+    |--------------------------------------------------------------------------
+    | PASOS
+    |--------------------------------------------------------------------------
+    */
+  public function nextStep()
+  {
+    if (empty($this->ordenesSeleccionadas)) {
+      $this->dispatch('error', ['mensaje' => 'Seleccioná al menos una orden']);
       return;
     }
 
-    $logoPath = public_path('img/mail.png'); // si está en /public/img/mail.png
-
-    if (file_exists($logoPath)) {
-      $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
-    } else {
-      $logoBase64 = null;
-    }
-
-
-
-
-
-    $pdf = Pdf::loadView('admin.facturas.pdf', [
-      'factura' => $factura,
-      'items' => $factura->items,
-      'adquirente' => $factura->adquirente,
-      'logo' => $logoBase64
-
-    ])->setPaper('a4');
-
-    return response()->streamDownload(function () use ($pdf) {
-      echo $pdf->output();
-    }, 'factura-' . $factura->id . '.pdf');
+    $this->step = 2;
   }
 
+  public function prevStep()
+  {
+    $this->step = 1;
+  }
 
+  /*
+    |--------------------------------------------------------------------------
+    | RESUMEN
+    |--------------------------------------------------------------------------
+    */
+  public function getResumenProperty()
+  {
+    return $this->ordenesSeleccionadasModel->map(function ($orden) {
+
+      $total = $orden->lotes->sum('precio_final');
+      $comision = $total * ($orden->porcentaje_comision ?? 20) / 100;
+      $envio = $orden->monto_envio ?? 0;
+
+      return [
+        'orden_id' => $orden->id,
+        'total' => $total,
+        'comision' => $comision,
+        'envio' => $envio,
+        'final' => $total + $comision + $envio
+      ];
+    });
+  }
+
+  /*
+    |--------------------------------------------------------------------------
+    | GENERAR
+    |--------------------------------------------------------------------------
+    */
+  public function generarFacturas(FacturaService $service)
+  {
+    try {
+
+      $result = $service->generarFacturasAgrupadas($this->ordenesSeleccionadas);
+
+      $msg = "Facturas generadas: ";
+
+      if ($result['martillo']) {
+        $msg .= "Martillo #{$result['martillo']->id} ";
+      }
+
+      if ($result['servicios']) {
+        $msg .= "Servicios #{$result['servicios']->id}";
+      }
+
+      $this->dispatch('success', ['mensaje' => $msg]);
+
+      $this->dispatch('facturasGenerated');
+
+      $this->reset(['ordenesSeleccionadas', 'selectAll', 'query', 'ordenes', 'step']);
+    } catch (\Exception $e) {
+      $this->dispatch('error', ['mensaje' => $e->getMessage()]);
+    }
+  }
+
+  public function generarFacturasa(FacturaService $service)
+  {
+    try {
+      $total = 0;
+
+      foreach ($this->ordenesSeleccionadas as $ordenId) {
+        $orden = Orden::with('lotes.lote', 'adquirente', 'subasta')->find($ordenId);
+        if (!$orden) continue;
+
+        $facturas = $service->generarFacturasDesdeOrden($orden);
+        $total += count($facturas);
+      }
+
+      $this->dispatch('success', ['mensaje' => "$total facturas generadas"]);
+      $this->dispatch('facturasGenerated');
+
+      // resetf
+      $this->reset(['ordenesSeleccionadas', 'selectAll', 'query', 'ordenes', 'step']);
+    } catch (\Exception $e) {
+      $this->dispatch('error', ['mensaje' => $e->getMessage()]);
+    }
+  }
 
   public function render()
   {

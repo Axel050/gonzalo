@@ -59,7 +59,13 @@
                         <x-form-item-sel label="Subasta" :method="$method" model="subasta_id">
                             <option value="">Elija subasta </option>
                             @foreach ($subastas as $sub)
-                                <option value="{{ $sub->id }}">{{ $sub->id }} - {{ $sub->titulo }}</option>
+                                <option value="{{ $sub->id }}"
+                                    @disabled($sub->estado === \App\Enums\SubastaEstados::FINALIZADA)>
+                                    {{ $sub->id }} - {{ $sub->titulo }}
+                                    @if ($sub->estado === \App\Enums\SubastaEstados::FINALIZADA)
+                                        (Finalizada)
+                                    @endif
+                                </option>
                             @endforeach
                         </x-form-item-sel>
 

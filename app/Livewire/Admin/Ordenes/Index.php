@@ -5,201 +5,192 @@ namespace App\Livewire\Admin\Ordenes;
 use App\Enums\FacturaTipo;
 use App\Enums\OrdenesEstados;
 use App\Models\Factura;
-use App\Models\Garantia;
 use App\Models\Orden;
 use App\Models\Subasta;
-use App\Services\FacturacionService;
 use App\Services\FacturaService;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithPagination;
-use Livewire\Attributes\Url;
 
 class Index extends Component
 {
-  use WithPagination;
+    use WithPagination;
 
-  public $estadoFilter;
+    public $estadoFilter;
 
+    public $query;
 
-  public $query, $nombre, $id;
-  public $method = "";
-  public $searchType = "todos";
-  public $inputType = "search";
-  public $estados = [];
+    public $nombre;
 
-  #[Url]
-  public $ids;
+    public $id;
 
-  #[Url]
-  public $orden;
+    public $method = '';
 
+    public $searchType = 'todos';
 
+    public $inputType = 'search';
 
+    public $estados = [];
 
-  public function option($method, $id = false)
-  {
-    if ($method == "delete" || $method == "update" || $method == "view") {
-      $cond = Orden::find($id);
-      if (!$cond) {
-        $this->dispatch('depositoNotExits');
-      } else {
-        $this->method = $method;
-        $this->id = $id;
-      }
+    #[Url]
+    public $ids;
+
+    #[Url]
+    public $orden;
+
+    public function option($method, $id = false)
+    {
+        if ($method == 'delete' || $method == 'update' || $method == 'view') {
+            $cond = Orden::find($id);
+            if (! $cond) {
+                $this->dispatch('depositoNotExits');
+            } else {
+                $this->method = $method;
+                $this->id = $id;
+            }
+        }
+
+        if ($method == 'add') {
+            $this->method = $method;
+        }
     }
 
-    if ($method == "add") {
-      $this->method = $method;
-    }
-  }
+    #[On(['ordenCreated', 'ordenUpdated', 'depositoDeleted'])]
+    public function mount()
+    {
+        if ($this->orden) {
+            $exists = Orden::where('id', $this->orden)->exists();
 
-  #[On(['ordenCreated', 'ordenUpdated', 'depositoDeleted'])]
-  public function mount()
-  {
-    if ($this->orden) {
-      $exists = Orden::where('id', $this->orden)->exists();
+            if ($exists) {
+                $this->id = $this->orden;
+                $this->method = 'view';
+            }
+        }
 
-      if ($exists) {
-        $this->id = $this->orden;
-        $this->method = 'view';
-      }
-    }
+        if ($this->ids) {
+            $exists = Subasta::where('id', $this->ids)->exists();
+            if ($exists) {
+                $this->searchType = 'subasta';
+                $this->query = $this->ids;
+            } else {
+                $this->searchType = 'todos';
+                $this->query = '';
+            }
+        }
 
-    if ($this->ids) {
-      $exists = Subasta::where('id', $this->ids)->exists();
-      if ($exists) {
-        $this->searchType = "subasta";
-        $this->query = $this->ids;
-      } else {
-        $this->searchType = "todos";
-        $this->query = "";
-      }
-    }
+        $this->estados = array_map(function ($estado) {
+            return [
+                'value' => $estado,
+                'label' => OrdenesEstados::getLabel($estado),
+            ];
+        }, OrdenesEstados::all());
 
-    $this->estados = array_map(function ($estado) {
-      return [
-        'value' => $estado,
-        'label' => OrdenesEstados::getLabel($estado),
-      ];
-    }, OrdenesEstados::all());
-
-
-    // if (!$this->method) {
-    $this->method = "";
-    // }
-    $this->resetPage();
-  }
-
-
-  public function updatingQuery()
-  {
-    $this->resetPage();
-  }
-
-  public function updatingSearchType()
-  {
-    $this->resetPage();
-  }
-
-
-
-  /**
-   * Genera la factura papel (lotes y martillo) para esta orden.
-   * Si ya existe, redirige al PDF; si no, la crea y redirige.
-   */
-  public function generarFacturaPapel(int $ordenId)
-  {
-    $orden = Orden::with(['lotes', 'adquirente', 'subasta'])->find($ordenId);
-    if (! $orden) {
-      $this->dispatch('ordenNoExiste');
-      return;
-    }
-    if ($orden->lotes->isEmpty()) {
-      $this->dispatch('ordenSinLotes');
-      return;
+        if (! $this->method) {
+            $this->method = '';
+        }
+        $this->resetPage();
     }
 
-    $existente = Factura::where('orden_id', $ordenId)
-      ->where('tipo_factura', FacturaTipo::PAPEL_LOTES)
-      ->first();
-
-    if ($existente) {
-      return $this->redirect(route('admin.facturas.pdf', $existente), navigate: true);
+    public function updatingQuery()
+    {
+        $this->resetPage();
     }
 
-    $facturacion = app(FacturaService::class);
-    // $factura = $facturacion->crearFacturaPapelDesdeOrden($orden);
-    // return $this->redirect(route('admin.facturas.pdf', $factura), navigate: true);
-  }
-
-
-
-  public function render()
-  {
-
-
-
-
-    $ordenes = Orden::query();
-
-
-    $terms = $this->query
-      ? preg_split('/\s+/', trim($this->query))
-      : [];
-
-    if ($this->query) {
-      switch ($this->searchType) {
-        case 'id':
-          $ordenes->where('id',  $this->query);
-          break;
-
-        case 'adquirente':
-          $ordenes->whereHas('adquirente', function ($query) use ($terms) {
-            $fullSearch = '%' . implode('%', $terms) . '%'; // Ej: '%Juan%Pérez%'
-
-            $query->whereRaw("CONCAT(nombre, ' ', apellido) LIKE ?", [$fullSearch])
-              ->orWhereRaw("CONCAT(apellido, ' ', nombre) LIKE ?", [$fullSearch]);
-          });
-          break;
-
-        case 'estado':
-          $ordenes->where('estado', 'like', '%' . $this->query . '%');
-          break;
-
-        case 'fecha_pago':
-          $ordenes->where('fecha_pago', 'like', '%' . $this->query . '%');
-          break;
-
-        case 'subasta':
-          $ordenes->where('subasta_id', 'like', '%' . $this->query . '%');
-          break;
-
-        case 'todos':
-          $ordenes->where(function ($query) use ($terms) {
-            $query->where('ordens.id', 'like', '%' . $this->query . '%')
-              ->orWhere('fecha_pago', 'like', '%' . $this->query . '%')
-              ->orWhere('subasta_id', 'like', '%' . $this->query . '%')
-
-              ->orWhereHas('adquirente', function ($q) use ($terms) {
-                $fullSearch = '%' . implode('%', $terms) . '%';
-                $q->whereRaw("CONCAT(nombre, ' ', apellido) LIKE ?", [$fullSearch])
-                  ->orWhereRaw("CONCAT(apellido, ' ', nombre) LIKE ?", [$fullSearch]);
-              })
-            ;
-          });
-          break;
-      }
+    public function updatingSearchType()
+    {
+        $this->resetPage();
     }
 
+    /**
+     * Genera la factura papel (lotes y martillo) para esta orden.
+     * Si ya existe, redirige al PDF; si no, la crea y redirige.
+     */
+    public function generarFacturaPapel(int $ordenId)
+    {
+        $orden = Orden::with(['lotes', 'adquirente', 'subasta'])->find($ordenId);
+        if (! $orden) {
+            $this->dispatch('ordenNoExiste');
 
-    if (!empty($this->estadoFilter)) {
-      $ordenes->where('estado', $this->estadoFilter);
+            return;
+        }
+        if ($orden->lotes->isEmpty()) {
+            $this->dispatch('ordenSinLotes');
+
+            return;
+        }
+
+        $existente = Factura::where('orden_id', $ordenId)
+            ->where('tipo_factura', FacturaTipo::PAPEL_LOTES)
+            ->first();
+
+        if ($existente) {
+            return $this->redirect(route('admin.facturas.pdf', $existente), navigate: true);
+        }
+
+        $facturacion = app(FacturaService::class);
+        // $factura = $facturacion->crearFacturaPapelDesdeOrden($orden);
+        // return $this->redirect(route('admin.facturas.pdf', $factura), navigate: true);
     }
 
-    // 🔽 Ordenamiento (agrega tu lógica si quieres sortField/sortDirection)
-    $ordenes = $ordenes->orderBy('id', 'desc')->paginate(15);
+    public function render()
+    {
 
-    return view('livewire.admin.ordenes.index', compact('ordenes'));
-  }
+        $ordenes = Orden::query();
+
+        $terms = $this->query
+          ? preg_split('/\s+/', trim($this->query))
+          : [];
+
+        if ($this->query) {
+            switch ($this->searchType) {
+                case 'id':
+                    $ordenes->where('id', $this->query);
+                    break;
+
+                case 'adquirente':
+                    $ordenes->whereHas('adquirente', function ($query) use ($terms) {
+                        $fullSearch = '%'.implode('%', $terms).'%'; // Ej: '%Juan%Pérez%'
+
+                        $query->whereRaw("CONCAT(nombre, ' ', apellido) LIKE ?", [$fullSearch])
+                            ->orWhereRaw("CONCAT(apellido, ' ', nombre) LIKE ?", [$fullSearch]);
+                    });
+                    break;
+
+                case 'estado':
+                    $ordenes->where('estado', 'like', '%'.$this->query.'%');
+                    break;
+
+                case 'fecha_pago':
+                    $ordenes->where('fecha_pago', 'like', '%'.$this->query.'%');
+                    break;
+
+                case 'subasta':
+                    $ordenes->where('subasta_id', 'like', '%'.$this->query.'%');
+                    break;
+
+                case 'todos':
+                    $ordenes->where(function ($query) use ($terms) {
+                        $query->where('ordens.id', 'like', '%'.$this->query.'%')
+                            ->orWhere('fecha_pago', 'like', '%'.$this->query.'%')
+                            ->orWhere('subasta_id', 'like', '%'.$this->query.'%')
+                            ->orWhereHas('adquirente', function ($q) use ($terms) {
+                                $fullSearch = '%'.implode('%', $terms).'%';
+                                $q->whereRaw("CONCAT(nombre, ' ', apellido) LIKE ?", [$fullSearch])
+                                    ->orWhereRaw("CONCAT(apellido, ' ', nombre) LIKE ?", [$fullSearch]);
+                            });
+                    });
+                    break;
+            }
+        }
+
+        if (! empty($this->estadoFilter)) {
+            $ordenes->where('estado', $this->estadoFilter);
+        }
+
+        // 🔽 Ordenamiento (agrega tu lógica si quieres sortField/sortDirection)
+        $ordenes = $ordenes->orderBy('id', 'desc')->paginate(15);
+
+        return view('livewire.admin.ordenes.index', compact('ordenes'));
+    }
 }
