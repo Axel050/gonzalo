@@ -5,6 +5,7 @@ namespace App\Livewire\Admin\Facturas;
 use Livewire\Component;
 use App\Models\Orden;
 use App\Services\FacturaService;
+use App\Models\Adquirente;
 
 class Modal extends Component
 {
@@ -19,7 +20,7 @@ class Modal extends Component
   public function mount($id = null, $method = null, $adquirente_id = null)
   {
       if ($adquirente_id) {
-          $adq = \App\Models\Adquirente::find($adquirente_id);
+          $adq = Adquirente::find($adquirente_id);
           if ($adq) {
               $this->query = $adq->apellido;
               $this->updatedQuery();
@@ -162,29 +163,7 @@ class Modal extends Component
     }
   }
 
-  public function generarFacturasa(FacturaService $service)
-  {
-    try {
-      $total = 0;
-
-      foreach ($this->ordenesSeleccionadas as $ordenId) {
-        $orden = Orden::with('lotes.lote', 'adquirente', 'subasta')->find($ordenId);
-        if (!$orden) continue;
-
-        $facturas = $service->generarFacturasDesdeOrden($orden);
-        $total += count($facturas);
-      }
-
-      $this->dispatch('success', ['mensaje' => "$total facturas generadas"]);
-      $this->dispatch('facturasGenerated');
-
-      // resetf
-      $this->reset(['ordenesSeleccionadas', 'selectAll', 'query', 'ordenes', 'step']);
-    } catch (\Exception $e) {
-      $this->dispatch('error', ['mensaje' => $e->getMessage()]);
-    }
-  }
-
+ 
   public function render()
   {
     return view('livewire.admin.facturas.modal');

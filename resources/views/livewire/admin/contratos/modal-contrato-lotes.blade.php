@@ -197,7 +197,7 @@
                     <tbody class="divide-y divide-gray-300 text-gray-600  text-sm rounded-full">
 
                         @foreach ($this->tempLotesFiltered as $index => $item)
-                            <tr
+                            <tr wire:key="temp-lote-{{ $item['temp_uid'] ?? $index }}"
                                 class="bg-gray-100 relative font-bold divide-x-2 divide-gray-300 text-center [&>td]:lg:px-8 [&>td]:px-2 ">
                                 <td>{{ $item['id'] }} </td>
                                 <td class="py-1">{{ $item['titulo'] }} </td>
@@ -232,7 +232,7 @@
 
                                         <button
                                             class=" hover:text-gray-200  hover:bg-red-700 flex items-center py-0.5 bg-red-600 rounded-lg px-1 "
-                                            wire:click="quitar({{ $index }})">
+                                            wire:click="quitar('{{ $item['temp_uid'] ?? $index }}')">
                                             <svg class="size-5 mr-0.5">
                                                 <use xlink:href="#eliminar"></use>
                                             </svg>
@@ -241,7 +241,7 @@
 
                                         <button
                                             class=" hover:text-gray-200 hover:bg-orange-700 flex items-center py-0.5 bg-orange-600 rounded-lg px-1 "
-                                            wire:click="editar({{ $index }})">
+                                            wire:click="editar('{{ $item['temp_uid'] ?? $index }}')">
                                             <svg class="size-5 mr-0.5">
                                                 <use xlink:href="#editar"></use>
                                             </svg>

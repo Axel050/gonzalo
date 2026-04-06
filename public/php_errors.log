@@ -2255,3 +2255,6 @@ Stack trace:
 #10 C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Foundation\resources\server.php(23): require_once('...')
 #11 {main}
   thrown in C:\xampp\htdocs\casablanca12\vendor\laravel\framework\src\Illuminate\Support\Facades\Facade.php on line 360
+[06-Apr-2026 11:18:24 America/Argentina/Buenos_Aires] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in C:\xampp\htdocs\casablanca12\app\Livewire\Admin\Contratos\ModalContratoLotes.php on line 3
+[06-Apr-2026 11:18:31 America/Argentina/Buenos_Aires] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in C:\xampp\htdocs\casablanca12\app\Livewire\Admin\Contratos\ModalContratoLotes.php on line 3
+[06-Apr-2026 11:24:54 America/Argentina/Buenos_Aires] PHP Fatal error:  Namespace declaration statement has to be the very first statement or after any declare call in the script in C:\xampp\htdocs\casablanca12\app\Livewire\Admin\Contratos\ModalContratoLotes.php on line 3
