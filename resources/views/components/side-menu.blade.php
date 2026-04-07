@@ -211,9 +211,6 @@
 
 
 
-
-
-
         {{--  -----------AUXILIARES --}}
         @can('auxiliares-ver')
             <div class="flex flex-col mt-16 border-t-2 border-cyan-800 pt-2" x-data="{ openAux: false }">

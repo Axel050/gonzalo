@@ -41,7 +41,7 @@
 
 
 
-                    @if ($lote['estado'] == 'vendido')
+                    @if (in_array($lote['estado'], ['vendido', 'facturado', 'pagado', 'liquidado']))
                         <p
                             class=" bg-red-800 text-casa-base  border border-black rounded-full px-4 flex  justify-center  md:py-2 pt-0.5  w-full  md:text-xl text-sm font-bold mb-2 order-6">
                             VENDIDO

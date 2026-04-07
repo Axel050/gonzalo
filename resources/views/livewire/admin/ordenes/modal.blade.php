@@ -57,7 +57,8 @@
                 @endif
 
                 <x-form-item label="Pago id" :method="$method" model="payment" />
-                <x-form-item label="Fecha pago" :method="$method" model="fecha" />
+
+                <x-form-item label="Fecha pago" :method="$method" model="fecha" type="date" />
 
 
                 <div class = 'items-start  lg:w-60 w-[85%] mx-auto  b-[-6px] '>

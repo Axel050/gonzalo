@@ -86,9 +86,9 @@ class Index extends Component
             ];
         }, OrdenesEstados::all());
 
-        if (! $this->method) {
-            $this->method = '';
-        }
+        // if (! $this->method) {
+        $this->method = '';
+        // }
         $this->resetPage();
     }
 

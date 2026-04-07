@@ -19,524 +19,558 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class Modal extends Component
 {
-  public $title;
-  public $bg;
-  public $new;
-  public $estados = [];
-  public $motivos = [];
-  public $motivo = [];
-  public $otroMotivo;
-  public $modal_foto = false;
-  public $search;
-  public $lotes = [];
-  public $monedas = [];
-  public string $si;
-  public $te = 1;
-  public $foto1;
-  public $moneda_id = 1;
-  public $contrato;
-  public $lote_id = false;
-  public $titulo, $descripcion, $precio_base;
-  public $autorizados = [];
-  public $tempLotes = [];
+    public $title;
 
-  public $id;
-  public $method;
+    public $bg;
 
-  public $porcentaje_comision = 0;
-  public $monto_comision = 0;
+    public $new;
 
+    public $estados = [];
 
-  public $envio;
-  public $envido;
-  public $payment;
-  public $fecha;
-  public $estado;
-  public $adquirente;
-  public $subasta;
-  public $ordenSeleccionada;
-  public $subtotal = 0;
-  public $deposito = 0;
-  public $total = 0;
-  public $lotesEliminadosTemporales = [];
-  public $lotesOriginales = [];
+    public $motivos = [];
 
-  // Nuevas propiedades para crear órdenes
-  public $adquirente_id;
-  public $subasta_id;
-  public $adquirentes = [];
-  public $subastas = [];
+    public $motivo = [];
 
-  public function closeModal()
-  {
-    $this->dispatch('close-modal');
-    $this->modal_foto = null;
-  }
+    public $otroMotivo;
 
-  public function downloadShippingLabel()
-  {
-    if (!$this->id) {
-      return;
+    public $modal_foto = false;
+
+    public $search;
+
+    public $lotes = [];
+
+    public $monedas = [];
+
+    public string $si;
+
+    public $te = 1;
+
+    public $foto1;
+
+    public $moneda_id = 1;
+
+    public $contrato;
+
+    public $lote_id = false;
+
+    public $titulo;
+
+    public $descripcion;
+
+    public $precio_base;
+
+    public $autorizados = [];
+
+    public $tempLotes = [];
+
+    public $id;
+
+    public $method;
+
+    public $porcentaje_comision = 0;
+
+    public $monto_comision = 0;
+
+    public $envio;
+
+    public $envido;
+
+    public $payment;
+
+    public $fecha;
+
+    public $estado;
+
+    public $adquirente;
+
+    public $subasta;
+
+    public $ordenSeleccionada;
+
+    public $subtotal = 0;
+
+    public $deposito = 0;
+
+    public $total = 0;
+
+    public $lotesEliminadosTemporales = [];
+
+    public $lotesOriginales = [];
+
+    // Nuevas propiedades para crear órdenes
+    public $adquirente_id;
+
+    public $subasta_id;
+
+    public $adquirentes = [];
+
+    public $subastas = [];
+
+    public function closeModal()
+    {
+        $this->dispatch('close-modal');
+        $this->modal_foto = null;
     }
 
-    $orden = Orden::with(['adquirente', 'subasta', 'lotes.lote'])->find($this->id);
+    public function downloadShippingLabel()
+    {
+        if (! $this->id) {
+            return;
+        }
 
-    if (!$orden) {
-      return;
+        $orden = Orden::with(['adquirente', 'subasta', 'lotes.lote'])->find($this->id);
+
+        if (! $orden) {
+            return;
+        }
+
+        $adminOrderUrl = route('admin.ordenes', ['orden' => $orden->id]);
+        $svg = QrCode::size(260)->margin(1)->generate($adminOrderUrl);
+        $qrBase64 = 'data:image/svg+xml;base64,'.base64_encode($svg);
+
+        // 👉 Convertir imagen a base64
+        $logoPath = public_path('img/mail.png'); // si está en /public/img/mail.png
+
+        if (file_exists($logoPath)) {
+            $logoBase64 = 'data:image/png;base64,'.base64_encode(file_get_contents($logoPath));
+        } else {
+            $logoBase64 = null;
+        }
+
+        $pdf = Pdf::loadView('livewire.admin.ordenes.shipping-label-pdf', [
+            'orden' => $orden,
+            'adquirente' => $orden->adquirente,
+            'subasta' => $orden->subasta,
+            'url' => $adminOrderUrl,
+            'qr' => $qrBase64,
+            'logo' => $logoBase64,
+        ])->setPaper('a4');
+
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->output();
+        }, 'etiqueta-envio-orden-'.$orden->id.'.pdf');
     }
 
-    $adminOrderUrl = route('admin.ordenes', ['orden' => $orden->id]);
-    $svg = QrCode::size(260)->margin(1)->generate($adminOrderUrl);
-    $qrBase64 = 'data:image/svg+xml;base64,' . base64_encode($svg);
+    public function mount()
+    {
+        $this->estados = array_map(function ($estado) {
+            return [
+                'value' => $estado,
+                'label' => OrdenesEstados::getLabel($estado),
+            ];
+        }, OrdenesEstados::all());
 
-    // 👉 Convertir imagen a base64
-    $logoPath = public_path('img/mail.png'); // si está en /public/img/mail.png
+        $this->motivos = array_map(function ($estado) {
+            return [
+                'value' => $estado,
+                'label' => MotivosCancelaciones::getLabel($estado),
+            ];
+        }, MotivosCancelaciones::all());
 
-    if (file_exists($logoPath)) {
-      $logoBase64 = 'data:image/png;base64,' . base64_encode(file_get_contents($logoPath));
-    } else {
-      $logoBase64 = null;
+        $this->adquirentes = Adquirente::orderBy('nombre')->get();
+
+        if ($this->method == 'update') {
+            $this->bg = 'background-color: rgb(234 88 12)';
+            $this->title = 'Editar';
+        } else {
+            $this->bg = 'background-color: rgb(31, 83, 44)';
+            $this->title = 'Ver';
+        }
+
+        // Si es creación nueva
+        if ($this->method == 'add') {
+            $this->title = 'Crear';
+            $this->initializeNewOrder();
+        }
+
+        // Si es edición
+        elseif ($this->method == 'update' && $this->id || $this->method == 'view') {
+            $this->initializeExistingOrder();
+        }
+
+        $this->monedas = Moneda::all()->keyBy('id');
     }
 
+    protected function initializeNewOrder()
+    {
+        $this->ordenSeleccionada = new Orden;
+        $this->estado = 'pendiente';
+        $this->tempLotes = [];
+        // Cargar listas para selects
+        // $this->adquirentes = User::where('rol', 'adquirente')
+        //   ->orWhere('rol', 'usuario')
+        //   ->get();
 
+        $this->subastas = Subasta::whereIn('estado', ['inactiva', 'finalizada'])->get();
 
-    $pdf = Pdf::loadView('livewire.admin.ordenes.shipping-label-pdf', [
-      'orden' => $orden,
-      'adquirente' => $orden->adquirente,
-      'subasta' => $orden->subasta,
-      'url' => $adminOrderUrl,
-      'qr' => $qrBase64,
-      'logo' => $logoBase64,
-    ])->setPaper('a4');
-
-    return response()->streamDownload(function () use ($pdf) {
-      echo $pdf->output();
-    }, 'etiqueta-envio-orden-' . $orden->id . '.pdf');
-  }
-
-  public function mount()
-  {
-    $this->estados = array_map(function ($estado) {
-      return [
-        'value' => $estado,
-        'label' => OrdenesEstados::getLabel($estado),
-      ];
-    }, OrdenesEstados::all());
-
-    $this->motivos = array_map(function ($estado) {
-      return [
-        'value' => $estado,
-        'label' => MotivosCancelaciones::getLabel($estado),
-      ];
-    }, MotivosCancelaciones::all());
-
-    $this->adquirentes = Adquirente::orderBy("nombre")->get();
-
-    if ($this->method == "update") {
-      $this->bg = "background-color: rgb(234 88 12)";
-      $this->title = "Editar";
-    } else {
-      $this->bg =  "background-color: rgb(31, 83, 44)";
-      $this->title = "Ver";
+        // Valores por defecto
+        $this->subtotal = 0;
+        $this->deposito = 0;
+        $this->total = 0;
+        $this->envio = 0;
     }
 
-    // Si es creación nueva
-    if ($this->method == 'add') {
-      $this->title = "Crear";
-      $this->initializeNewOrder();
+    protected function initializeExistingOrder()
+    {
+        $this->ordenSeleccionada = Orden::with('lotes.lote.ultimoConLote.moneda')->find($this->id);
+
+        if (! $this->ordenSeleccionada) {
+            $this->subtotal = $this->deposito = $this->total = 0;
+
+            return;
+        }
+
+        $this->subasta = $this->ordenSeleccionada->subasta->titulo;
+        $this->adquirente = $this->ordenSeleccionada->adquirente->nombre.' '.$this->ordenSeleccionada->adquirente->apellido;
+        $this->estado = $this->ordenSeleccionada->estado;
+        $this->payment = $this->ordenSeleccionada->payment_id;
+        $this->fecha = $this->ordenSeleccionada->fecha_pago;
+        $this->envio = $this->ordenSeleccionada->monto_envio;
+        $this->porcentaje_comision = $this->ordenSeleccionada->porcentaje_comision;
+        $this->monto_comision = $this->ordenSeleccionada->monto_comision;
+
+        // Calcular subtotal
+        $this->subtotal = $this->ordenSeleccionada->lotes->sum('precio_final');
+
+        // Buscar garantía aplicada (depósito)
+        $garantia = Garantia::where('adquirente_id', $this->ordenSeleccionada->adquirente_id)
+            ->where('subasta_id', $this->ordenSeleccionada->subasta_id)
+            ->where('estado', 'pagado')
+            ->first();
+
+        // $this->deposito = $garantia?->monto ?? 0;
+        $this->deposito = $this->ordenSeleccionada->descuento;
+
+        $this->total = $this->ordenSeleccionada->total_final;
+
+        $this->lotesOriginales = $this->ordenSeleccionada->lotes->pluck('lote_id')->toArray();
+        $this->tempLotes = $this->ordenSeleccionada->lotes->map(function ($ordenLote) {
+            $lote = $ordenLote->lote;
+            $moneda = $lote->ultimoConLote->moneda ?? null;
+
+            return [
+                'lote' => $lote->toArray(),
+                'precio_final' => $ordenLote->precio_final,
+                'moneda_id' => $ordenLote->moneda_id,
+                'moneda_signo' => $moneda->signo ?? '$',
+                'moneda_titulo' => $moneda->titulo ?? 'Pesos',
+            ];
+        })->toArray();
     }
 
-    // Si es edición
-    else if ($this->method == 'update' && $this->id || $this->method == "view") {
-      $this->initializeExistingOrder();
+    public function updatedSearch($value)
+    {
+
+        if (strlen($value) > 1) {
+            $query = Lote::where('titulo', 'like', '%'.$value.'%');
+
+            // En creación nueva, solo mostrar lotes disponibles
+            if ($this->method == 'add') {
+                // $query->where('estado', LotesEstados::DISPONIBLE);
+
+                $query = Lote::where('titulo', 'like', '%'.$value.'%')
+                    ->whereHas('ultimoContrato', function ($q) {
+                        $q->where('subasta_id', $this->subasta_id);
+                    })
+                    ->byEstado(LotesEstados::DISPONIBLE);
+            }
+            // En edición, mostrar también los lotes que ya están en la orden
+
+            $this->lotes = $query->take(10)->get();
+            $this->si = true;
+        } else {
+            $this->si = false;
+            $this->lotes = [];
+        }
     }
 
-    $this->monedas = Moneda::all()->keyBy('id');
-  }
+    public function loteSelected($loteId)
+    {
 
-  protected function initializeNewOrder()
-  {
-    $this->ordenSeleccionada = new Orden();
-    $this->estado = 'pendiente';
-    $this->tempLotes = [];
-    // Cargar listas para selects
-    // $this->adquirentes = User::where('rol', 'adquirente')
-    //   ->orWhere('rol', 'usuario')
-    //   ->get();
+        $lote = Lote::find($loteId);
+        if (! $lote) {
+            return;
+        }
 
-    $this->subastas = Subasta::whereIn('estado', ['inactiva', 'finalizada'])->get();
+        // Verificar si el lote ya está en la lista temporal
+        $existe = collect($this->tempLotes)->contains('lote.id', $loteId);
 
-    // Valores por defecto
-    $this->subtotal = 0;
-    $this->deposito = 0;
-    $this->total = 0;
-    $this->envio = 0;
-  }
+        if (! $existe) {
+            $monedaId = $lote->ultimoConLote->moneda_id ?? 1; // Default a 1 si no tiene
 
-  protected function initializeExistingOrder()
-  {
-    $this->ordenSeleccionada = Orden::with('lotes.lote.ultimoConLote.moneda')->find($this->id);
+            $this->tempLotes[] = [
+                'lote' => $lote->toArray(),
+                'precio_final' => $lote->ultimoConLote?->precio_base,
+                'moneda_id' => $monedaId,
+                'moneda_signo' => $lote->ultimoConLote->moneda->signo ?? '$', // Guardar el signo también
+                'moneda_titulo' => $lote->ultimoConLote->moneda->titulo ?? 'Pesos', // Guardar el título
+            ];
+            $this->recalcularTotales();
+        }
 
-    if (!$this->ordenSeleccionada) {
-      $this->subtotal = $this->deposito = $this->total = 0;
-      return;
+        $this->search = '';
+        $this->lotes = [];
+        $this->si = false;
     }
 
-    $this->subasta = $this->ordenSeleccionada->subasta->titulo;
-    $this->adquirente = $this->ordenSeleccionada->adquirente->nombre . " " . $this->ordenSeleccionada->adquirente->apellido;
-    $this->estado = $this->ordenSeleccionada->estado;
-    $this->payment = $this->ordenSeleccionada->payment_id;
-    $this->fecha = $this->ordenSeleccionada->fecha_pago;
-    $this->envio = $this->ordenSeleccionada->monto_envio;
-    $this->porcentaje_comision = $this->ordenSeleccionada->porcentaje_comision;
-    $this->monto_comision = $this->ordenSeleccionada->monto_comision;
+    public function quitar($loteId)
+    {
+        if ($this->method == 'add') {
+            // En creación nueva, simplemente quitamos de tempLotes
+            $this->tempLotes = array_filter($this->tempLotes, function ($item) use ($loteId) {
+                return $item['lote']['id'] != $loteId;
+            });
+        } else {
+            // En edición, usar la lógica existente
+            if (! in_array($loteId, $this->lotesEliminadosTemporales)) {
+                $this->lotesEliminadosTemporales[] = $loteId;
+            }
 
-    // Calcular subtotal
-    $this->subtotal = $this->ordenSeleccionada->lotes->sum('precio_final');
+            $this->tempLotes = array_filter($this->tempLotes, function ($item) use ($loteId) {
+                return $item['lote']['id'] != $loteId;
+            });
 
-    // Buscar garantía aplicada (depósito)
-    $garantia = Garantia::where('adquirente_id', $this->ordenSeleccionada->adquirente_id)
-      ->where('subasta_id', $this->ordenSeleccionada->subasta_id)
-      ->where('estado', 'pagado')
-      ->first();
+            $this->ordenSeleccionada = Orden::with([
+                'lotes' => function ($query) {
+                    $query->whereNotIn('lote_id', $this->lotesEliminadosTemporales);
+                },
+                'lotes.lote',
+            ])->find($this->id);
+        }
 
-    // $this->deposito = $garantia?->monto ?? 0;
-    $this->deposito = $this->ordenSeleccionada->descuento;
-
-    $this->total = $this->ordenSeleccionada->total_final;
-
-    $this->lotesOriginales = $this->ordenSeleccionada->lotes->pluck('lote_id')->toArray();
-    $this->tempLotes = $this->ordenSeleccionada->lotes->map(function ($ordenLote) {
-      $lote = $ordenLote->lote;
-      $moneda = $lote->ultimoConLote->moneda ?? null;
-
-      return [
-        'lote' => $lote->toArray(),
-        'precio_final' => $ordenLote->precio_final,
-        'moneda_id' => $ordenLote->moneda_id,
-        'moneda_signo' => $moneda->signo ?? '$',
-        'moneda_titulo' => $moneda->titulo ?? 'Pesos'
-      ];
-    })->toArray();
-  }
-
-  public function updatedSearch($value)
-  {
-
-
-    if (strlen($value) > 1) {
-      $query = Lote::where('titulo', 'like', '%' . $value . '%');
-
-      // En creación nueva, solo mostrar lotes disponibles
-      if ($this->method == 'add') {
-        // $query->where('estado', LotesEstados::DISPONIBLE);
-
-        $query = Lote::where('titulo', 'like', '%' . $value . '%')
-          ->whereHas('ultimoContrato', function ($q) {
-            $q->where('subasta_id', $this->subasta_id);
-          })
-          ->byEstado(LotesEstados::DISPONIBLE);
-      }
-      // En edición, mostrar también los lotes que ya están en la orden
-
-
-      $this->lotes = $query->take(10)->get();
-      $this->si = true;
-    } else {
-      $this->si = false;
-      $this->lotes = [];
-    }
-  }
-
-  public function loteSelected($loteId)
-  {
-
-    $lote = Lote::find($loteId);
-    if (!$lote) {
-      return;
+        $this->recalcularTotales();
+        $this->dispatch('lote-quitado', ['mensaje' => 'Lote quitado temporalmente. Guarda para confirmar.']);
     }
 
-    // Verificar si el lote ya está en la lista temporal
-    $existe = collect($this->tempLotes)->contains('lote.id', $loteId);
+    // ver tema comison en new ordesrs
+    protected function recalcularTotales()
+    {
+        if ($this->method == 'add') {
+            $this->subtotal = array_sum(array_column($this->tempLotes, 'precio_final'));
+            $this->total = max(0, $this->subtotal - $this->deposito);
+            if ($this->envio) {
+                $this->total += $this->envio;
+            }
 
-    if (!$existe) {
-      $monedaId = $lote->ultimoConLote->moneda_id ?? 1; // Default a 1 si no tiene
+            $subasta_comision = Subasta::find($this->subasta_id)?->comision ?? 0;
+            $adquirente_comision = Adquirente::find($this->adquirente_id)?->comision ?? 0;
 
-      $this->tempLotes[] = [
-        'lote' => $lote->toArray(),
-        'precio_final' => $lote->ultimoConLote?->precio_base,
-        'moneda_id' => $monedaId,
-        'moneda_signo' => $lote->ultimoConLote->moneda->signo ?? '$', // Guardar el signo también
-        'moneda_titulo' => $lote->ultimoConLote->moneda->titulo ?? 'Pesos' // Guardar el título
-      ];
-      $this->recalcularTotales();
+            if ($adquirente_comision < $subasta_comision) {
+                $this->porcentaje_comision = $adquirente_comision;
+            } else {
+                $this->porcentaje_comision = $subasta_comision;
+            }
+
+            if ($this->porcentaje_comision > 0) {
+                $this->monto_comision = ($this->subtotal * $this->porcentaje_comision) / 100;
+                $this->total += $this->monto_comision;
+            }
+        } else {
+            $this->subtotal = $this->ordenSeleccionada->lotes->sum('precio_final');
+            $this->total = max(0, $this->subtotal - $this->deposito);
+            if ($this->envio) {
+                $this->total += $this->envio;
+            }
+            if ($this->porcentaje_comision > 0) {
+                $this->monto_comision = ($this->subtotal * $this->porcentaje_comision) / 100;
+                $this->total += $this->monto_comision;
+            }
+        }
     }
 
-    $this->search = '';
-    $this->lotes = [];
-    $this->si = false;
-  }
-
-  public function quitar($loteId)
-  {
-    if ($this->method == 'add') {
-      // En creación nueva, simplemente quitamos de tempLotes
-      $this->tempLotes = array_filter($this->tempLotes, function ($item) use ($loteId) {
-        return $item['lote']['id'] != $loteId;
-      });
-    } else {
-      // En edición, usar la lógica existente
-      if (!in_array($loteId, $this->lotesEliminadosTemporales)) {
-        $this->lotesEliminadosTemporales[] = $loteId;
-      }
-
-      $this->tempLotes = array_filter($this->tempLotes, function ($item) use ($loteId) {
-        return $item['lote']['id'] != $loteId;
-      });
-
-      $this->ordenSeleccionada = Orden::with([
-        'lotes' => function ($query) {
-          $query->whereNotIn('lote_id', $this->lotesEliminadosTemporales);
-        },
-        'lotes.lote'
-      ])->find($this->id);
+    public function updatedSubastaId()
+    {
+        if ($this->method == 'add') {
+            $this->tempLotes = [];
+            $subasta = Subasta::find($this->subasta_id);
+            $this->envio = $subasta?->envio ?? 0;
+        }
     }
 
-    $this->recalcularTotales();
-    $this->dispatch('lote-quitado', ['mensaje' => 'Lote quitado temporalmente. Guarda para confirmar.']);
-  }
-
-
-  // ver tema comison en new ordesrs 
-  protected function recalcularTotales()
-  {
-    if ($this->method == 'add') {
-      $this->subtotal = array_sum(array_column($this->tempLotes, 'precio_final'));
-      $this->total = max(0, $this->subtotal - $this->deposito);
-      if ($this->envio) {
-        $this->total += $this->envio;
-      }
-
-      $subasta_comision = Subasta::find($this->subasta_id)?->comision ?? 0;
-      $adquirente_comision = Adquirente::find($this->adquirente_id)?->comision ?? 0;
-
-
-      if ($adquirente_comision < $subasta_comision) {
-        $this->porcentaje_comision = $adquirente_comision;
-      } else {
-        $this->porcentaje_comision = $subasta_comision;
-      }
-
-
-
-
-      if ($this->porcentaje_comision > 0) {
-        $this->monto_comision = ($this->subtotal * $this->porcentaje_comision) / 100;
-        $this->total += $this->monto_comision;
-      }
-    } else {
-      $this->subtotal = $this->ordenSeleccionada->lotes->sum('precio_final');
-      $this->total = max(0, $this->subtotal - $this->deposito);
-      if ($this->envio) {
-        $this->total += $this->envio;
-      }
-      if ($this->porcentaje_comision > 0) {
-        $this->monto_comision = ($this->subtotal * $this->porcentaje_comision) / 100;
-        $this->total += $this->monto_comision;
-      }
-    }
-  }
-
-  public function updatedSubastaId()
-  {
-    if ($this->method == 'add') {
-      $this->tempLotes = [];
-      $subasta = Subasta::find($this->subasta_id);
-      $this->envio = $subasta?->envio ?? 0;
-    }
-  }
-
-  public function updatedAdquirenteId()
-  {
-    if ($this->method == 'add') {
-      $this->recalcularTotales();
-    }
-  }
-
-
-  public function updatedEnvio()
-  {
-    if (!is_numeric($this->envio) || $this->envio < 0 || floor($this->envio) != $this->envio) {
-      $this->envio = 0;
+    public function updatedAdquirenteId()
+    {
+        if ($this->method == 'add') {
+            $this->recalcularTotales();
+        }
     }
 
-    $this->envio = (int)$this->envio;
-    $this->recalcularTotales();
-  }
+    public function updatedEnvio()
+    {
+        if (! is_numeric($this->envio) || $this->envio < 0 || floor($this->envio) != $this->envio) {
+            $this->envio = 0;
+        }
 
-  public function updatedDeposito()
-  {
-    if (!is_numeric($this->deposito) || $this->deposito < 0 || floor($this->deposito) != $this->deposito) {
-      $this->deposito = 0;
+        $this->envio = (int) $this->envio;
+        $this->recalcularTotales();
     }
 
-    $this->deposito = (int)$this->deposito;
-    $this->recalcularTotales();
-  }
+    public function updatedDeposito()
+    {
+        if (! is_numeric($this->deposito) || $this->deposito < 0 || floor($this->deposito) != $this->deposito) {
+            $this->deposito = 0;
+        }
 
-
-
-
-  public function create()
-  {
-
-    $this->validate([
-      'adquirente_id' => 'required|exists:adquirentes,id',
-      'subasta_id' => 'required|exists:subastas,id',
-      'tempLotes' => 'required|array|min:1',
-    ], [
-      'adquirente_id.required' => 'Seleccione un adquirente',
-      'subasta_id.required' => 'Seleccione una subasta',
-      'tempLotes.required' => 'Agregue al menos un lote a la orden',
-    ]);
-
-
-    $orden = Orden::create([
-      'adquirente_id' => $this->adquirente_id,
-      'subasta_id' => $this->subasta_id,
-      'estado' => $this->estado ?? 'pendiente',
-      'envio' => $this->envio ?? 0,
-      'fecha_pago' => $this->fecha,
-      'payment_id' => $this->payment,
-      'total' => $this->total ?? null,
-      'porcentaje_comision' => $this->porcentaje_comision,
-      'monto_comision' => $this->monto_comision,
-      'monto_envio' => $this->envio ?? 0,
-      'descuento' => $this->deposito ?? 0,
-
-    ]);
-
-    // Agregar los lotes a la orden
-    foreach ($this->tempLotes as $item) {
-      $orden->lotes()->create([
-        'lote_id' => $item['lote']['id'],
-        'precio_final' => $item['precio_final'],
-        'moneda_id' => $item['moneda_id'] ?? 1,
-      ]);
-
-      // Actualizar estado del lote
-      Lote::where('id', $item['lote']['id'])->update([
-        'estado' => LotesEstados::VENDIDO
-      ]);
+        $this->deposito = (int) $this->deposito;
+        $this->recalcularTotales();
     }
 
-    $this->dispatch("ordenCreated");
-  }
+    public function create()
+    {
 
+        $this->fecha = $this->fecha ?: null;
 
+        $this->validate([
+            'adquirente_id' => 'required|exists:adquirentes,id',
+            'subasta_id' => 'required|exists:subastas,id',
+            'tempLotes' => 'required|array|min:1',
+            'fecha' => 'date|nullable',
+        ], [
+            'adquirente_id.required' => 'Seleccione un adquirente',
+            'subasta_id.required' => 'Seleccione una subasta',
+            'tempLotes.required' => 'Agregue al menos un lote a la orden',
+            'fecha.date' => 'La fecha no es válida',
 
-  public function update()
-  {
-    // Validar que al menos quede un lote si no está cancelada
-    if ($this->estado !== 'cancelada' && count($this->tempLotes) === 0) {
-      $this->addError('tempLotes', 'La orden debe tener al menos un lote');
-      return;
-    }
-
-    // Eliminar pivots para lotes removidos
-    foreach ($this->lotesEliminadosTemporales as $loteId) {
-      $this->ordenSeleccionada->lotes()->where('lote_id', $loteId)->delete();
-
-      $lote = Lote::find($loteId);
-      if ($lote) {
-        $lote->update(['estado' => LotesEstados::STANDBY]);
-      }
-    }
-
-    $this->ordenSeleccionada->update([
-      'estado' => $this->estado,
-      'motivo' => $this->motivo ?? null,
-      'otro' => $this->otroMotivo ?? null,
-      'monto_envio' => $this->envio ?? 2,
-      'descuento' => $this->deposito ?? 0,
-      'fecha_pago' => $this->fecha ?? null,
-      'payment_id' => $this->payment ?? null,
-      'total' => $this->total ?? null,
-    ]);
-
-    // Limpiar temporales y recargar
-    $this->lotesEliminadosTemporales = [];
-    $this->ordenSeleccionada->refresh();
-    // $this->tempLotes = $this->ordenSeleccionada->lotes->toArray();
-
-
-
-
-    $this->actualizarEstadosPorOrden();
-
-
-    $this->dispatch("ordenUpdated");
-  }
-
-
-  public function actualizarEstadosPorOrden()
-  {
-    $estadoOrden = $this->ordenSeleccionada->estado;
-
-    $mapaEstados = [
-      'pagada' => [
-        'lote' => LotesEstados::PAGADO,
-        'carrito_lote' => CarritoLoteEstados::PAGADO,
-      ],
-      'cancelada' => [
-        'lote' => LotesEstados::STANDBY,
-        'carrito_lote' => CarritoLoteEstados::CANCELADO,
-      ],
-      'pendiente' => [
-        'lote' => LotesEstados::VENDIDO,
-        'carrito_lote' => CarritoLoteEstados::EN_ORDEN,
-      ],
-    ];
-
-    if (!isset($mapaEstados[$estadoOrden])) {
-      return;
-    }
-
-    foreach ($this->ordenSeleccionada->lotes as $ordenLote) {
-      $lote = $ordenLote->lote;
-
-      if (!$lote) {
-        continue;
-      }
-
-      // Actualizar lote
-      if ($lote->estado !== $mapaEstados[$estadoOrden]['lote']) {
-        $lote->update([
-          'estado' => $mapaEstados[$estadoOrden]['lote'],
         ]);
-      }
 
-      // Actualizar carrito lote
-      $carritoLote = CarritoLote::where('lote_id', $lote->id)
-        ->whereHas(
-          'carrito',
-          fn($q) =>
-          $q->where('adquirente_id', $this->ordenSeleccionada->adquirente_id)
-        )
-        ->first();
+        $orden = Orden::create([
+            'adquirente_id' => $this->adquirente_id,
+            'subasta_id' => $this->subasta_id,
+            'estado' => $this->estado ?? 'pendiente',
+            'envio' => $this->envio ?? 0,
+            'fecha_pago' => $this->fecha,
+            'payment_id' => $this->payment,
+            'total' => $this->total ?? null,
+            'porcentaje_comision' => $this->porcentaje_comision,
+            'monto_comision' => $this->monto_comision,
+            'monto_envio' => $this->envio ?? 0,
+            'descuento' => $this->deposito ?? 0,
 
-      if ($carritoLote && $carritoLote->estado !== $mapaEstados[$estadoOrden]['carrito_lote']) {
-        $carritoLote->update([
-          'estado' => $mapaEstados[$estadoOrden]['carrito_lote'],
         ]);
-      }
+
+        // Agregar los lotes a la orden
+        foreach ($this->tempLotes as $item) {
+            $orden->lotes()->create([
+                'lote_id' => $item['lote']['id'],
+                'precio_final' => $item['precio_final'],
+                'moneda_id' => $item['moneda_id'] ?? 1,
+            ]);
+
+            // Actualizar estado del lote
+            Lote::where('id', $item['lote']['id'])->update([
+                'estado' => LotesEstados::VENDIDO,
+            ]);
+        }
+
+        $this->dispatch('ordenCreated');
     }
-  }
 
+    public function update()
+    {
 
+        $this->fecha = $this->fecha ?: null;
 
-  public function render()
-  {
-    return view('livewire.admin.ordenes.modal');
-  }
+        $this->validate([
+            'fecha' => 'nullable|date',
+        ], [
+            'fecha.date' => 'La fecha no es válida',
+
+        ]);
+
+        info('aaaA');
+        // Validar que al menos quede un lote si no está cancelada
+        if ($this->estado !== 'cancelada' && count($this->tempLotes) === 0) {
+            $this->addError('tempLotes', 'La orden debe tener al menos un lote');
+
+            return;
+        }
+        info('bbbbb');
+
+        // Eliminar pivots para lotes removidos
+        foreach ($this->lotesEliminadosTemporales as $loteId) {
+            $this->ordenSeleccionada->lotes()->where('lote_id', $loteId)->delete();
+
+            $lote = Lote::find($loteId);
+            if ($lote) {
+                $lote->update(['estado' => LotesEstados::STANDBY]);
+            }
+        }
+
+        $this->ordenSeleccionada->update([
+            'estado' => $this->estado,
+            'motivo' => $this->motivo ?? null,
+            'otro' => $this->otroMotivo ?? null,
+            'monto_envio' => $this->envio ?? 2,
+            'descuento' => $this->deposito ?? 0,
+            'fecha_pago' => $this->fecha ?? null,
+            'payment_id' => $this->payment ?? null,
+            'total' => $this->total ?? null,
+        ]);
+
+        // Limpiar temporales y recargar
+        $this->lotesEliminadosTemporales = [];
+        $this->ordenSeleccionada->refresh();
+        // $this->tempLotes = $this->ordenSeleccionada->lotes->toArray();
+
+        $this->actualizarEstadosPorOrden();
+
+        $this->dispatch('ordenUpdated');
+    }
+
+    public function actualizarEstadosPorOrden()
+    {
+        $estadoOrden = $this->ordenSeleccionada->estado;
+
+        $mapaEstados = [
+            'pagada' => [
+                'lote' => LotesEstados::PAGADO,
+                'carrito_lote' => CarritoLoteEstados::PAGADO,
+            ],
+            'cancelada' => [
+                'lote' => LotesEstados::STANDBY,
+                'carrito_lote' => CarritoLoteEstados::CANCELADO,
+            ],
+            'pendiente' => [
+                'lote' => LotesEstados::VENDIDO,
+                'carrito_lote' => CarritoLoteEstados::EN_ORDEN,
+            ],
+        ];
+
+        if (! isset($mapaEstados[$estadoOrden])) {
+            return;
+        }
+
+        foreach ($this->ordenSeleccionada->lotes as $ordenLote) {
+            $lote = $ordenLote->lote;
+
+            if (! $lote) {
+                continue;
+            }
+
+            // Actualizar lote
+            if ($lote->estado !== $mapaEstados[$estadoOrden]['lote']) {
+                $lote->update([
+                    'estado' => $mapaEstados[$estadoOrden]['lote'],
+                ]);
+            }
+
+            // Actualizar carrito lote
+            $carritoLote = CarritoLote::where('lote_id', $lote->id)
+                ->whereHas(
+                    'carrito',
+                    fn ($q) => $q->where('adquirente_id', $this->ordenSeleccionada->adquirente_id)
+                )
+                ->first();
+
+            if ($carritoLote && $carritoLote->estado !== $mapaEstados[$estadoOrden]['carrito_lote']) {
+                $carritoLote->update([
+                    'estado' => $mapaEstados[$estadoOrden]['carrito_lote'],
+                ]);
+            }
+        }
+    }
+
+    public function render()
+    {
+        return view('livewire.admin.ordenes.modal');
+    }
 }

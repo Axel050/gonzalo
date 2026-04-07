@@ -333,8 +333,7 @@ class Subasta extends Model implements Auditable
 
     public function lotesPasados()
     {
-        info('AGREGAR ESTADO FINALIZADO A ESTADO LOTE ');
-        info('llllllllllllll');
+
         $query = Lote::query()
             ->join('contrato_lotes', 'lotes.id', '=', 'contrato_lotes.lote_id')
             ->join('contratos', 'contrato_lotes.contrato_id', '=', 'contratos.id')
@@ -346,6 +345,9 @@ class Subasta extends Model implements Auditable
                 LotesEstados::DEVUELTO,
                 LotesEstados::STANDBY,
                 LotesEstados::DISPONIBLE,
+                LotesEstados::FACTURADO,
+                LotesEstados::PAGADO,
+                LotesEstados::LIQUIDADO,
             ])
             ->whereColumn('lotes.ultimo_contrato', 'contratos.id')
           // ->where('contrato_lotes.estado', 'activo')
