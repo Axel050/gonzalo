@@ -14,7 +14,9 @@ class Index extends Component
 
     public $query;
 
-    public $searchType = 'todos';
+    public $dateFrom;
+
+    public $dateTo;    public $searchType = 'todos';
 
     public $method = '';
 
@@ -25,6 +27,16 @@ class Index extends Component
     public $adquirente_id_selected = null;
 
     public function updatingQuery()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingDateFrom()
+    {
+        $this->resetPage();
+    }
+
+    public function updatingDateTo()
     {
         $this->resetPage();
     }
@@ -51,6 +63,13 @@ class Index extends Component
         $this->resetPage();
     }
 
+    public function anular($id, \App\Services\FacturaService $facturaService)
+    {
+        $facturaService->anularFactura($id);
+        $this->method = '';
+        $this->dispatch('facturaUpdated');
+    }
+
     public function render()
     {
         $pendientesCount = Adquirente::whereHas('ordenes', function ($q) {
@@ -58,38 +77,40 @@ class Index extends Component
         })->count();
 
         if ($this->tab === 'facturas') {
-            $facturas = Factura::query();
+            $facturasQuery = Factura::query();
 
             if ($this->query) {
                 switch ($this->searchType) {
                     case 'id':
-                        $facturas->where('id', 'like', '%'.$this->query.'%');
+                        $facturasQuery->where('id', 'like', '%'.$this->query.'%');
                         break;
                     case 'fecha':
-                        $facturas->where('fecha', 'like', '%'.$this->query.'%');
+                        $facturasQuery->where('fecha', 'like', '%'.$this->query.'%');
                         break;
                     case 'adquirente':
-                        $facturas->whereHas('adquirente', function ($q) {
+                        $facturasQuery->whereHas('adquirente', function ($q) {
                             $q->where('nombre', 'like', '%'.$this->query.'%')
-                                ->orWhere('apellido', 'like', '%'.$this->query.'%');
+                                ->orWhere('apellido', 'like', '%'.$this->query.'%')
+                                ->orWhereRaw("CONCAT(nombre, ' ', apellido) LIKE ?", ['%'.$this->query.'%']);
                         });
                         break;
                     case 'orden':
-                        $facturas->whereHas('ordenes', function ($q) {
+                        $facturasQuery->whereHas('ordenes', function ($q) {
                             $q->where('ordens.id', 'like', '%'.$this->query.'%');
                         });
                         break;
                     case 'cae':
-                        $facturas->where('cae', 'like', '%'.$this->query.'%');
+                        $facturasQuery->where('cae', 'like', '%'.$this->query.'%');
                         break;
                     case 'todos':
-                        $facturas->where(function ($q) {
+                        $facturasQuery->where(function ($q) {
                             $q->where('id', 'like', '%'.$this->query.'%')
                                 ->orWhereHas('ordenes', function ($q) {
                                     $q->where('ordens.id', 'like', '%'.$this->query.'%');
                                 })
                                 ->orWhere('nombre', 'like', '%'.$this->query.'%')
                                 ->orWhere('apellido', 'like', '%'.$this->query.'%')
+                                ->orWhereRaw("CONCAT(nombre, ' ', apellido) LIKE ?", ['%'.$this->query.'%'])
                                 ->orWhere('cae', 'like', '%'.$this->query.'%')
                                 ->orWhere('fecha', 'like', '%'.$this->query.'%');
                         });
@@ -97,12 +118,27 @@ class Index extends Component
                 }
             }
 
-            $facturas = $facturas->orderBy('id', 'desc')->paginate(15);
+            if ($this->dateFrom) {
+                $facturasQuery->whereDate('fecha', '>=', $this->dateFrom);
+            }
+
+            if ($this->dateTo) {
+                $facturasQuery->whereDate('fecha', '<=', $this->dateTo);
+            }
+
+            $global_martillo = (clone $facturasQuery)->where('estado', '!=', 'anulada')->where('tipo_concepto', 'martillo')->sum('monto_total');
+            $global_servicios = (clone $facturasQuery)->where('estado', '!=', 'anulada')->where('tipo_concepto', '!=', 'martillo')->sum('monto_total');
+            $global_total = (clone $facturasQuery)->where('estado', '!=', 'anulada')->sum('monto_total');
+
+            $facturas = $facturasQuery->orderBy('id', 'desc')->paginate(15);
 
             return view('livewire.admin.facturas.index', [
                 'facturas' => $facturas,
                 'adquirentes_pendientes' => null,
                 'pendientesCount' => $pendientesCount,
+                'global_total' => $global_total,
+                'global_martillo' => $global_martillo,
+                'global_servicios' => $global_servicios,
             ]);
         } else {
             $query = Adquirente::query();
@@ -110,7 +146,8 @@ class Index extends Component
             if ($this->query) {
                 $query->where(function ($q) {
                     $q->where('nombre', 'like', '%'.$this->query.'%')
-                        ->orWhere('apellido', 'like', '%'.$this->query.'%');
+                        ->orWhere('apellido', 'like', '%'.$this->query.'%')
+                        ->orWhereRaw("CONCAT(nombre, ' ', apellido) LIKE ?", ['%'.$this->query.'%']);
                 });
             }
 

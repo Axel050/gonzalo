@@ -13,7 +13,7 @@
     </div>
 
     {{-- BODY --}}
-    <div class="md:p-6 p-4 overflow-y-auto flex-1 min-h-0">
+    <div class="md:p-6 p-3 overflow-y-auto flex-1 min-h-0">
 
         {{-- ========================= --}}
         {{-- PASO 1 --}}
@@ -65,9 +65,9 @@
 
             {{-- SELECCIONADAS --}}
             @if ($ordenesSeleccionadas)
-                <div class="bg-white border rounded md:p-4 p-3">
+                <div class="bg-white border rounded md:p-4 p-2">
 
-                    <p class="font-bold mb-2">
+                    <p class="font-bold md:text-lg text-sm md:mb-2 mb-1 ">
                         Seleccionadas {{ count($ordenesSeleccionadas) }}
                     </p>
 
@@ -75,12 +75,12 @@
 
                     <div class="flex  justify-center gap-5 md:gap-8">
                         <button wire:click="$parent.$set('method',false)"
-                            class="mt-4 w-fit bg-orange-600 hover:bg-orange-700 text-white md:py-2 py-1.5 rounded md:px-4 px-2">
+                            class="md:mt-4 mt-2 w-fit bg-orange-600 hover:bg-orange-700 text-white md:py-2 py-1 rounded md:px-4 px-2">
                             Cancelar
                         </button>
 
                         <button wire:click="nextStep"
-                            class="mt-4 w-fit bg-green-600 hover:bg-green-700 text-white md:py-2 py-1.5 rounded px-4">
+                            class="md:mt-4 mt-2 w-fit bg-green-600 hover:bg-green-700 text-white md:py-2 py-1 rounded md:px-4 px-2">
                             Continuar
                         </button>
 
@@ -103,32 +103,33 @@
         {{-- ========================= --}}
         @if ($step == 2)
 
-            <h3 class="font-bold mb-4">Resumen de Facturación</h3>
+            <h3 class="font-bold md:text-lg text-base md:mb-4 mb-2">Resumen de Facturación</h3>
 
             @foreach ($this->resumen as $item)
-                <div class="bg-white border rounded p-4 mb-2">
+                <div class="bg-white border rounded md:p-4 p-2 md:mb-2 mb-1">
 
                     <p class="font-bold text-cyan-800">
                         Orden #{{ $item['orden_id'] }}
                     </p>
 
-                    <p class="text-sm">Martillo: ${{ number_format($item['total'], 2, ',', '.') }}</p>
-                    <p class="text-sm">Comisión: ${{ number_format($item['comision'], 2, ',', '.') }}</p>
-                    <p class="text-sm">Envío: ${{ number_format($item['envio'], 2, ',', '.') }}</p>
+                    <p class="text-sm">Martillo: ${{ number_format($item['total'], 0, ',', '.') }}</p>
+                    <p class="text-sm">Comisión: ${{ number_format($item['comision'], 0, ',', '.') }}</p>
+                    <p class="text-sm">Envío: ${{ number_format($item['envio'], 0, ',', '.') }}</p>
 
-                    <p class="font-bold mt-2">
-                        Total: ${{ number_format($item['final'], 2, ',', '.') }}
+                    <p class="font-bold md:mt-2 mt-1">
+                        Total: ${{ number_format($item['final'], 0, ',', '.') }}
                     </p>
                 </div>
             @endforeach
 
-            <div class="flex gap-2 mt-4">
-                <button wire:click="prevStep" class="w-1/2 bg-gray-400 hover:bg-gray-500 text-white py-2 rounded">
+            <div class="flex gap-4 md:mt-4 mt-2">
+                <button wire:click="prevStep"
+                    class="w-1/2 bg-gray-400 hover:bg-gray-500 text-white md:py-2 py-1 rounded">
                     ← Volver
                 </button>
 
                 <button wire:click="generarFacturas"
-                    class="w-1/2 bg-green-600 hover:bg-green-700 text-white py-2 rounded">
+                    class="w-1/2 bg-green-600 hover:bg-green-700 text-white md:py-2 py-1 rounded">
                     CONFIRMAR
                 </button>
             </div>

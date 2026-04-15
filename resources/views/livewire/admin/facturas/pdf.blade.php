@@ -1,48 +1,120 @@
-<div style="text-align: center; margin-bottom: 20px;">
-    <img src="{{ $logo }}" alt="Logo" style="width: 300px; height: auto; margin-bottom: 12px;">
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+    <meta charset="UTF-8">
+    <title>Factura #{{ $factura->id }}</title>
 
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
 
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
 
-    <table width="100%"
-        style="margin-bottom:12px;background:#f9fafb;padding:5px;border-radius:6px;border:1px solid #e5e7eb;">
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 4px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .font-bold {
+            font-weight: bold;
+        }
+
+        .header-table td {
+            border: none;
+            padding: 2px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="text-center" style="margin-bottom: 10px;">
+        @if ($logo)
+            <img src="{{ $logo }}" alt="Logo" style="width: 200px; height: auto;">
+        @endif
+    </div>
+
+    <!-- HEADER -->
+    <table class="header-table" style="background:#f9fafb; padding:5px; border:1px solid #e5e7eb;">
         <tr>
-
-            <td style="width:50%; vertical-align:top; text-align:left;">
+            <td style="width:50%; vertical-align:top;">
                 <strong>Adquirente:</strong><br>
                 {{ $adquirente->nombre }} {{ $adquirente->apellido }}<br>
-                {{ $adquirente->domicilio }}<br>
-                CUIT: {{ $adquirente->CUIT }}
+                CUIT: {{ $adquirente->CUIT ?? '-' }}<br>
+                {{ $adquirente->domicilio ?? '' }}
             </td>
 
             <td style="width:50%; vertical-align:top; text-align:right;">
-                <strong>Factura #{{ $factura->id }}</strong><br>
+                <strong style="font-size: 14px;">FACTURA #{{ $factura->id }}</strong><br><br>
                 Fecha: {{ $factura->fecha }}<br>
 
-                <span style="font-weight:bold; color:orange; text-transform:uppercase;">
+                <span style="text-transform:uppercase;">
                     {{ str_replace('_', ' ', $factura->tipo_concepto) }}
                 </span>
-
             </td>
-
         </tr>
     </table>
 
-    <table width="100%" border="1" cellpadding="5">
-        <tr>
-            <th>Concepto</th>
-            <th>Monto</th>
-        </tr>
-
-        @foreach ($items as $item)
+    <!-- ITEMS -->
+    <table>
+        <thead>
             <tr>
-                <td>{{ $item->concepto }}</td>
-                <td>${{ number_format($item->precio, 2) }}</td>
+                <th>Concepto</th>
+                <th class="text-right">Monto</th>
             </tr>
-        @endforeach
-
+        </thead>
+        <tbody>
+            @foreach ($items as $item)
+                <tr>
+                    <td>{{ $item->concepto }}</td>
+                    <td class="text-right">
+                        ${{ number_format($item->precio, 0, ',', '.') }}
+                    </td>
+                </tr>
+            @endforeach
+        </tbody>
     </table>
 
-    <h3>Total: ${{ number_format($factura->monto_total, 2) }}</h3>
+    <!-- TOTAL -->
+    <div style="float: right; width: 250px; margin-top: 10px;">
+        <table style="border: none;">
+            <tr>
+                <td style="border: none; padding-top: 10px;">
+                    <h3>TOTAL:</h3>
+                </td>
+                <td style="border: none; padding-top: 10px;" class="text-right">
+                    <h3>${{ number_format($factura->monto_total, 0, ',', '.') }}</h3>
+                </td>
+            </tr>
+        </table>
+    </div>
 
-</div>
+    <div style="clear: both;"></div>
+
+</body>
+
+</html>

@@ -2,12 +2,9 @@
 
 namespace App\Livewire\Admin\Ordenes;
 
-use App\Enums\FacturaTipo;
 use App\Enums\OrdenesEstados;
-use App\Models\Factura;
 use App\Models\Orden;
 use App\Models\Subasta;
-use App\Services\FacturaService;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -41,6 +38,8 @@ class Index extends Component
 
     public function option($method, $id = false)
     {
+        $this->orden = null;
+
         if ($method == 'delete' || $method == 'update' || $method == 'view') {
             $cond = Orden::find($id);
             if (! $cond) {
@@ -60,12 +59,15 @@ class Index extends Component
     public function mount()
     {
         if ($this->orden) {
+
             $exists = Orden::where('id', $this->orden)->exists();
 
             if ($exists) {
+
                 $this->id = $this->orden;
                 $this->method = 'view';
             }
+
         }
 
         if ($this->ids) {
@@ -86,9 +88,10 @@ class Index extends Component
             ];
         }, OrdenesEstados::all());
 
-        // if (! $this->method) {
-        $this->method = '';
-        // }
+        if ($this->orden == '' && $this->method != 'view') {
+            $this->method = '';
+        }
+
         $this->resetPage();
     }
 
@@ -100,37 +103,6 @@ class Index extends Component
     public function updatingSearchType()
     {
         $this->resetPage();
-    }
-
-    /**
-     * Genera la factura papel (lotes y martillo) para esta orden.
-     * Si ya existe, redirige al PDF; si no, la crea y redirige.
-     */
-    public function generarFacturaPapel(int $ordenId)
-    {
-        $orden = Orden::with(['lotes', 'adquirente', 'subasta'])->find($ordenId);
-        if (! $orden) {
-            $this->dispatch('ordenNoExiste');
-
-            return;
-        }
-        if ($orden->lotes->isEmpty()) {
-            $this->dispatch('ordenSinLotes');
-
-            return;
-        }
-
-        $existente = Factura::where('orden_id', $ordenId)
-            ->where('tipo_factura', FacturaTipo::PAPEL_LOTES)
-            ->first();
-
-        if ($existente) {
-            return $this->redirect(route('admin.facturas.pdf', $existente), navigate: true);
-        }
-
-        $facturacion = app(FacturaService::class);
-        // $factura = $facturacion->crearFacturaPapelDesdeOrden($orden);
-        // return $this->redirect(route('admin.facturas.pdf', $factura), navigate: true);
     }
 
     public function render()

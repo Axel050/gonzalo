@@ -200,7 +200,7 @@ class DetalleLote extends Component
     // ])->find($this->id);
 
     $this->lote = Lote::with([
-      'tipo.caracteristicas',
+      'tipo.tbcaracteristicas',
       'valoresCaracteristicas',
       'pujas' => fn($q) => $q->latest('id')->limit(1),
       'ultimoContrato.subasta',
@@ -354,7 +354,7 @@ class DetalleLote extends Component
       ->toArray();
 
 
-    $this->caracteristicas =  $this->lote->tipo?->caracteristicas;
+    $this->caracteristicas =  $this->lote->tipo?->tbcaracteristicas;
     $valores = $this->lote->valoresCaracteristicas
       ->keyBy('caracteristica_id');
 

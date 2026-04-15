@@ -510,7 +510,7 @@ class Subasta extends Model implements Auditable
 
     public function scopeProximas($q)
     {
-        return $q->where('fecha_inicio', '>=', now())->where('estado', 'inactiva');
+        return $q->where('fecha_inicio', '>=', now())->where('estado', SubastaEstados::INACTIVA);
     }
 
     public function scopeFinalizadas($q)

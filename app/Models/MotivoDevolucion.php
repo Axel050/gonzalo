@@ -7,5 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class MotivoDevolucion extends Model
 {
-    use HasFactory;
+  use HasFactory;
+
+  protected $fillable = [
+    'nombre',
+    'descripcion',
+  ];
+
+
+  public function devoluciones()
+  {
+    return $this->hasMany(Devolucion::class, "motivo_id");
+  }
 }

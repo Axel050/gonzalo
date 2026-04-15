@@ -7,6 +7,7 @@ import 'swiper/css'; // Importa los estilos básicos de Swiper
 import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import Sortable from 'sortablejs';
 
 
 
@@ -489,6 +490,55 @@ window.addEventListener('modalOpenedTipoBienCampo', () => {
     });
   }
 
+  initSortableTipoBienCampos();
+
+});
+
+let sortableTipoBienCampos = null;
+
+function initSortableTipoBienCampos() {
+  const el = document.getElementById('sortable-campos');
+  if (!el) return;
+
+  if (sortableTipoBienCampos && sortableTipoBienCampos.el === el) return;
+
+  if (sortableTipoBienCampos) {
+    sortableTipoBienCampos.destroy();
+    sortableTipoBienCampos = null;
+  }
+
+  sortableTipoBienCampos = Sortable.create(el, {
+    animation: 150,
+    handle: '.cursor-move',
+    ghostClass: 'sortable-ghost',
+    onEnd: () => {
+      const items = [];
+      el.querySelectorAll('tr').forEach((row, index) => {
+        items.push({
+          value: row.getAttribute('data-id'),
+          order: index
+        });
+      });
+
+      const componentEl = el.closest('[wire\\:id]');
+      const componentId = componentEl?.getAttribute('wire:id');
+      const component = componentId ? window.Livewire?.find(componentId) : null;
+
+      if (component) {
+        component.call('updateOrder', items);
+      }
+    }
+  });
+}
+
+document.addEventListener('livewire:load', () => {
+  if (!window.Livewire?.hook) return;
+
+  window.Livewire.hook('message.processed', () => {
+    if (document.getElementById('sortable-campos')) {
+      initSortableTipoBienCampos();
+    }
+  });
 });
 
 window.addEventListener('reset-tom-select-campo', event => {

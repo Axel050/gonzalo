@@ -14,7 +14,7 @@
                 stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
         </svg>
 
-        <span class="ml-2 lg:mr-10 mr-2    truncate text-sm lg:text-base">
+        <span class="ml-2 lg:mr-10 mr-1    truncate text-sm lg:text-base">
             {{ Auth::user()->name }}
         </span>
 

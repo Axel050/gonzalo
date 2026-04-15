@@ -64,6 +64,11 @@ Route::get("/liquidaciones", function () {
 })->name("liquidaciones")
   ->can("liquidaciones-ver");
 
+Route::get("/devoluciones", function () {
+  return view('admin.devoluciones');
+})->name("devoluciones");
+// ->can("devoluciones-ver");
+
 
 // AUX
 Route::get("/aux/condicion-iva", function () {
@@ -86,6 +91,10 @@ Route::get("/aux/caracteristicas", function () {
 Route::get("/aux/monedas", function () {
   return view('admin.auxiliares.monedas');
 })->name("monedas")->can("auxiliares-ver");
+
+Route::get("/aux/motivos", function () {
+  return view('admin.auxiliares.motivos');
+})->name("motivos")->can("auxiliares-ver");
 
 // Route::get("/aux/estado-lotes", function () {
 //   return view('admin.auxiliares.estado-lotes');

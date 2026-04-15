@@ -1,20 +1,31 @@
 <div class="w-full py-5">
 
+    <x-action-message on="facturaCreated" class="absolute  top-0 right-0 z-50 green-action ">Factura creada con
+        exitó.</x-action-message>
+    <x-action-message on="facturaUpdated" class="absolute  top-0 right-0 z-50 orange-action">Factura actualizada
+        con exitó.
+    </x-action-message>
+    <x-action-message on="facturaDeleted" class="absolute  top-0 right-0 z-50 red-action">Factura eliminada con
+        exitó.</x-action-message>
+
 
 
 
     <div
-        class="w-full flex item-center justify-between order-4  lg:flex-row lg:items-center  mx-auto bg-gray-300 lg:py-4  py-2 lg:px-6 px-3 rounded-md  shadow-md">
-        <div class="flex flex-col lg:flex-row lg:gap-4  text-gray-700 ">
+        class="w-full flex flex-col md:flex-row md:gap-4  text-gray-700 md:items-center item-center justify-between order-4  lg:flex-row lg:items-center  mx-auto bg-gray-300 lg:py-4  py-2 lg:px-6 px-2 rounded-md  shadow-md">
+
+
+
+        <div class="flex md:flex gap-2 ">
             <div>
                 <label for="query" class="text-sm lg:text-base text-gray-600 ">Buscar</label>
                 <input type="search" nombre="query" wire:model.live="query"
-                    class="lg:h-7 h-6 rounded-md boder border-gray-400 w-40 lg:w-48 bg-gray-100 px-1  focus:outline-2 focus:outline-cyan-900">
+                    class="lg:h-7 h-6 rounded-md border border-gray-400 w-30 md:w-48 bg-gray-100 px-1  focus:outline-2 focus:outline-cyan-900">
             </div>
 
             <div class="text-xs flex gap-2 lg:gap-3 ">
                 <select wire:model.live="searchType"
-                    class="lg:h-7 h-6 rounded-md border border-gray-400 lg:w-full w-fit ml-auto mt-1 lg:mt-0 text-gray-600 text-sm py-0.5 cursor-pointer bg-gray-200">
+                    class="lg:h-7 h-6 rounded-md border border-gray-400 lg:w-full w-fit ml-auto  text-gray-600 text-sm py-0.5 cursor-pointer bg-gray-200">
                     <option value="todos">Todos</option>
                     <option value="id">ID</option>
                     <option value="fecha">Fecha</option>
@@ -23,14 +34,27 @@
                     <option value="cae">Cae</option>
                 </select>
             </div>
-
-
-
-
         </div>
 
-
         @if ($tab === 'facturas')
+            <div class="flex gap-2 md:gap-5 items-end ml-0 md:ml-2 mt-2 md:mt-0  justify-center">
+                <div class="flex items-center md:gap-1 gap-0.5">
+                    <label for="dateFrom" class="text-[10px] lg:text-sm text-gray-600 block">Desde</label>
+                    <input type="date" wire:model.live="dateFrom"
+                        class="lg:h-7 h-6 rounded-md border border-gray-400 w-25 lg:w-32 bg-gray-100 px-1 focus:outline-2 focus:outline-cyan-900 md:text-sm text-xs text-gray-700">
+                </div>
+                <div class="flex items-center md:gap-1 gap-0.5">
+                    <label for="dateTo" class="text-[10px] lg:text-sm text-gray-600 block">Hasta</label>
+                    <input type="date" wire:model.live="dateTo"
+                        class="lg:h-7 h-6 rounded-md border border-gray-400 w-25 lg:w-32 bg-gray-100 px-1 focus:outline-2 focus:outline-cyan-900 md:text-sm text-xs text-gray-700">
+                </div>
+            </div>
+        @endif
+
+
+
+
+        {{-- @if ($tab === 'facturas')
             <button
                 class="border border-green-800 hover:text-gray-200 hover:bg-green-700 bg-green-600 px-2 py-0.5 rounded-lg text-white text-sm h-7 place-self-center flex items-center gap-x-2 cursor-pointer"
                 wire:click="option('add')">
@@ -41,33 +65,56 @@
                     Nueva Factura
                 </span>
             </button>
-        @endif
+        @endif --}}
 
     </div>
 
     <!-- TABS -->
-    <div class="flex border-b border-gray-400 mt-6 mx-4">
+    <div class="flex border-b border-gray-400 md:mt-4 mt-3 mx-4 md:w-fit md:gap-8 gap-4">
         <button wire:click="setTab('facturas')"
-            class="py-2 px-6 font-bold focus:outline-none transition-colors duration-200 {{ $tab === 'facturas' ? 'border-b-4 border-cyan-600 text-cyan-600' : 'text-gray-600 hover:text-cyan-600' }}">Historial
-            Facturas</button>
+            class="md:w-fit w-1/2  py-0.5 md:py-2 px-3 md:px-6 md:text-base text-sm font-bold focus:outline-none transition-colors duration-200 {{ $tab === 'facturas' ? 'md:border-b-4 border-b-3 border-cyan-600 text-cyan-600' : 'text-gray-600 hover:text-cyan-600' }}">
+            Historial
+        </button>
         <button wire:click="setTab('por_facturar')"
-            class="relative py-2 px-6 font-bold focus:outline-none transition-colors duration-200 {{ $tab === 'por_facturar' ? 'border-b-4 border-cyan-600 text-cyan-600' : 'text-gray-600 hover:text-cyan-600' }}">
-            Adquirentes por Facturar
+            class="md:w-fit w-1/2  relative py-0.5 md:py-2 px-3 md:px-6 md:text-base text-sm font-bold focus:outline-none transition-colors duration-200 {{ $tab === 'por_facturar' ? 'md:border-b-4 border-b-3 border-cyan-600 text-cyan-600' : 'text-gray-600 hover:text-cyan-600' }}">
+            Por Facturar
             @if (isset($pendientesCount) && $pendientesCount > 0)
                 <span
-                    class="absolute top-1 right-2 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white shadow-sm border border-white">{{ $pendientesCount }}</span>
+                    class="absolute md:top-1 md:right-2 -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-[10px] font-bold text-white shadow-sm border border-white">{{ $pendientesCount }}</span>
             @endif
         </button>
     </div>
 
+    @if ($tab === 'facturas' && ($dateFrom || $dateTo))
+        <div
+            class="md:mx-4 mt-6 mb-2 md:py-3 py-1.5 md:px-6 px-2 bg-blue-50 border border-blue-300 rounded-md shadow-sm">
+            <div class="md:flex  grid  grid-cols-2 md:gap-8 gap-1  items-center md:justify-center">
 
+                <div class="flex flex-col text-green-700 items-center">
+                    <span class="text-[11px] md:text-sm font-semibold uppercase">Martillos</span>
+                    <span class="md:text-lg text-base font-bold ">
+                        ${{ number_format($global_martillo ?? 0, 0, ',', '.') }}
+                    </span>
+                </div>
 
+                <div class="flex flex-col text-red-700 items-center">
+                    <span class="text-[11px] md:text-sm font-semibold uppercase">Servicios</span>
+                    <span class="md:text-lg text-base font-bold">
+                        ${{ number_format($global_servicios ?? 0, 0, ',', '.') }}
+                    </span>
+                </div>
 
+                <div
+                    class="flex flex-col md:border-l-2 border-blue-200 md:pl-8 md:mx-2 mx-auto col-span-2 items-center">
+                    <span class="text-[11px] md:text-sm font-bold text-blue-800 uppercase">Total Facturado</span>
+                    <span class="md:text-xl text-md font-bold text-blue-900">
+                        ${{ number_format($global_total, 0, ',', '.') }}
+                    </span>
+                </div>
 
-
-
-
-
+            </div>
+        </div>
+    @endif
 
     <div class="overflow-x-auto bg-gray-200 m-4 border-2 border-gray-600 mx-auto rounded-md shadow-md relative">
         <div class="min-w-full inline-block align-middle ">
@@ -85,6 +132,7 @@
                                 <th>Total</th>
                                 <th>Orden(es)</th>
                                 <th>CAE</th>
+                                <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
@@ -135,14 +183,38 @@
                                                 <span class="text-gray-400 italic text-xs">Sin CAE</span>
                                             @endif
                                         </td>
+                                        <td>
+                                            @if (($factura->estado ?? 'generada') === 'anulada')
+                                                <span
+                                                    class="px-2 py-0.5 rounded bg-red-100 text-red-700 font-bold text-xs">ANULADA</span>
+                                            @else
+                                                <span
+                                                    class="px-2 py-0.5 rounded bg-green-100 text-green-700 font-bold text-xs">{{ strtoupper($factura->estado ?? 'generada') }}</span>
+                                            @endif
+                                        </td>
+
                                         <td class="px-6 py-1">
-                                            <div class="flex items-center justify-center gap-1">
+                                            <div class="flex items-center justify-center md:gap-3 gap-2">
                                                 <button wire:click="option('view', {{ $factura->id }})"
                                                     class="p-0.5 bg-green-500 rounded-full">
                                                     <svg class="size-5">
                                                         <use xlink:href="#ver"></use>
                                                     </svg>
                                                 </button>
+
+                                                @if (($factura->estado ?? 'generada') !== 'anulada')
+                                                    <button wire:click="option('confirm-anular', {{ $factura->id }})"
+                                                        class="p-0.5 bg-red-500 rounded-full hover:bg-red-600 transition-colors"
+                                                        title="Anular Factura">
+                                                        <svg class="size-5 text-white" fill="none"
+                                                            stroke="currentColor" viewBox="0 0 24 24">
+                                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                                stroke-width="2"
+                                                                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z">
+                                                            </path>
+                                                        </svg>
+                                                    </button>
+                                                @endif
                                             </div>
                                         </td>
                                     </tr>
@@ -153,14 +225,19 @@
                                     <td></td>
                                     <td></td>
                                     <td></td>
-                                    <td class="py-1.5"><span
-                                            class="md:px-2 px-0.5 py-1 rounded-full text-xs font-bold bg-blue-200 text-blue-800">TOTAL
-                                            GRUPO</span></td>
+                                    <td class="py-1.5">
+                                        <span
+                                            class="md:px-5 px-3 py-1 rounded-full text-xs font-bold bg-blue-200 text-blue-800">
+                                            TOTAL
+                                        </span>
+                                    </td>
                                     <td class="text-cyan-800 text-left font-black">
                                         ${{ number_format($totalGrupo, 0, ',', '.') }}</td>
                                     <td></td>
                                     <td></td>
                                     <td></td>
+                                    <td></td>
+
                                 </tr>
                                 @empty
                                     <tr>
@@ -178,8 +255,8 @@
                                 <tr
                                     class="bg-gray-400 relative text-gray-700 font-bold divide-x-2 divide-gray-600 [&>th]:pl-2 [&>th]:pr-1 [&>th]:lg:pl-4 [&>th]:text-start text-sm ">
                                     <th>Adquirente</th>
-                                    <th>Órdenes Pagadas (Sin Factura)</th>
-                                    <th>Monto Total Estimado</th>
+                                    <th>Órdenes</th>
+                                    <th>Monto Estimado</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -195,13 +272,13 @@
                                                 Órdenes Pendientes</span>
                                         </td>
                                         <td class="px-6 py-4 font-semibold text-green-700">
-                                            ${{ number_format($adquirente->ordenes->sum('total'), 2, ',', '.') }}
+                                            ${{ number_format($adquirente->ordenes->sum('total'), 0, ',', '.') }}
                                         </td>
                                         <td class="px-6 py-4 flex justify-center gap-2">
                                             <button wire:click="option('add', null, {{ $adquirente->id }})"
                                                 class="px-3 py-1 bg-cyan-600 text-white hover:bg-cyan-700 rounded-md shadow flex items-center gap-1 font-bold text-xs"
                                                 title="Generar Facturas">
-                                                Facturar a Adquirente
+                                                Facturar
                                             </button>
                                         </td>
                                     </tr>
@@ -223,5 +300,9 @@
             @livewire('admin.facturas.modal', ['id' => $id, 'method' => $method, 'adquirente_id' => $adquirente_id_selected], key('modal-factura-' . $id . '-' . $method))
         @elseif ($method == 'view')
             @livewire('admin.facturas.modal-ver', ['id' => $id, 'method' => $method], key('modal-factura-' . $id . '-' . $method))
+        @endif
+
+        @if ($method === 'confirm-anular')
+            <x-admin.confirm-anular-modal :id="$id" :method="$method" type="la factura" revertidoA="PAGADO" />
         @endif
     </div>

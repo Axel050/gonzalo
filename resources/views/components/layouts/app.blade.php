@@ -117,7 +117,7 @@
 
                     </button>
                     @if (isset($headerT))
-                        <h1 class="lg:text-2xl text-lg lg:ml-8 ml-4  font-semibold text-gray-100">{{ $headerT }}
+                        <h1 class="lg:text-2xl text-base lg:ml-8 ml-1  font-semibold text-gray-100">{{ $headerT }}
                         </h1>
                     @endif
 
@@ -144,6 +144,9 @@
     </div>
     </div>
 
+
+
+
     @stack('modals')
 
     @livewireScripts
@@ -152,6 +155,7 @@
     @stack('sc')
 
     @stack('contra')
+
 
 
 </body>

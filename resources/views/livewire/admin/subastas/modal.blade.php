@@ -95,7 +95,7 @@
                         @endforeach
                     </x-form-item-sel> --}}
 
-
+                    {{-- Pausar o activar subasta --}}
                     @if ($method == 'update' && in_array($subasta->estado, ['activa', 'pausada', 'enpuja']))
                         <div class="items-start  lg:w-60 w-[85%] mx-auto  mb-[-5px] mt-1.5">
 
@@ -119,6 +119,33 @@
                             </div>
                         </div>
                     @endif
+
+
+                    {{-- Pausar o activar subastas inactiva pausa_prox  --}}
+                    @if ($method == 'update' && in_array($subasta->estado, ['inactiva', 'pausada_prox']))
+                        <div class="items-start  lg:w-60 w-[85%] mx-auto  mb-[-5px] mt-1.5">
+
+                            <label class="w-full text-start text-gray-500  leading-[16px] text-base">
+                                {{ $subasta->estado == 'inactiva' ? 'Pausar' : 'Despausar' }}
+                            </label>
+                            <div class="relative w-full   text-gray-600 flex pl-14 gap-x-10 lg:gap-x-14  text-base">
+
+                                <div class="flex  items-center">
+
+                                    <input type="radio" wire:model="pausar" value="0" name="pausa"
+                                        class ="h-6 rounded-md border border-gray-400 w-4 text-gray-500 p-1 text-sm bg-gray-100 mr-0.5" />
+                                    No
+                                </div>
+
+                                <div class="flex   items-center">
+                                    <input type="radio" wire:model="pausar" value="1" name="pausa"
+                                        class ="h-6 rounded-md border border-gray-400 w-4 text-gray-500 pl-1 text-sm bg-gray-100 mr-0.5" />Si
+                                </div>
+                                <x-input-error for="finD" class="relative top-full py-0 leading-[12px]" />
+                            </div>
+                        </div>
+                    @endif
+
 
 
                 @endif

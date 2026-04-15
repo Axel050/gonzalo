@@ -188,23 +188,32 @@
 
 
         @can('facturas-ver')
-            {{-- <x-li-single :active="Request::is('admin/facturas')" route="admin.facturas">
+            <x-li-single :active="Request::is('admin/facturas')" route="admin.facturas">
                 <svg class="size-6">
                     <use xlink:href="#factura"></use>
                 </svg>
                 <span class="ml-1 ">Facturas</span>
-            </x-li-single> --}}
+            </x-li-single>
         @endcan
 
 
         @can('liquidaciones-ver')
-            {{-- <x-li-single :active="Request::is('admin/liquidaciones')" route="admin.liquidaciones">
+            <x-li-single :active="Request::is('admin/liquidaciones')" route="admin.liquidaciones">
                 <svg class="size-6">
                     <use xlink:href="#liquidacion"></use>
                 </svg>
                 <span class="ml-1 ">Liquidaciones</span>
-            </x-li-single> --}}
+            </x-li-single>
         @endcan
+
+        {{-- @can('liquidaciones-ver') --}}
+        <x-li-single :active="Request::is('admin/devoluciones')" route="admin.devoluciones">
+            <svg class="size-6">
+                <use xlink:href="#devolucion"></use>
+            </svg>
+            <span class="ml-1 ">Devoluciones</span>
+        </x-li-single>
+        {{-- @endcan --}}
 
 
 
@@ -234,7 +243,8 @@
                     x-transition:enter="transition ease-out duration-300"
                     x-transition:enter-start="opacity-0 -translate-y-4" x-transition:enter-end="opacity-100 translate-y-0"
                     x-transition:leave="transition ease-in duration-200"
-                    x-transition:leave-start="opacity-100 translate-y-0" x-transition:leave-end="opacity-0 -translate-y-4">
+                    x-transition:leave-start="opacity-100 translate-y-0"
+                    x-transition:leave-end="opacity-0 -translate-y-4">
 
                     <x-li-single-aux :active="Request::is('admin/aux/condicion-iva')" route="admin.condicon-iva">
                         - Condicion iva
@@ -254,6 +264,10 @@
 
                     <x-li-single-aux :active="Request::is('admin/aux/monedas')" route="admin.monedas">
                         - Monedas
+                    </x-li-single-aux>
+
+                    <x-li-single-aux :active="Request::is('admin/aux/motivos')" route="admin.motivos">
+                        - Motivos
                     </x-li-single-aux>
 
                     {{-- <x-li-single-aux :active="Request::is('admin/aux/estado-lotes')" route="admin.estado-lotes">

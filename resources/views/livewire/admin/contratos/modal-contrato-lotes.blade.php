@@ -56,7 +56,7 @@
 
                         <input type="search" wire:model.live="search"
                             class="lg:w-80  p-2 border rounded bg-white h-7 ml-0.5 mx-auto"
-                            placeholder="Buscar lotes..." />
+                            placeholder="Buscar lotes por titulo o id" />
                         @if (!empty($lotes))
                             <ul class="absolute top-full z-10 w-full bg-white border border-gray-300 rounded-b  max-h-60 overflow-y-auto shadow-lg "
                                 wire:show="si">

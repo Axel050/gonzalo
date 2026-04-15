@@ -72,7 +72,8 @@ class ModalCampos extends Component
       'tipo' => $tipo,
       "id" => $id,
       "pivot" => [
-        "requerido" => $this->requerido
+        "requerido" => $this->requerido,
+        "order" => count($this->tempCampos)
       ]
     ];
 
@@ -88,7 +89,41 @@ class ModalCampos extends Component
     if (isset($this->tempCampos[$index])) {
       unset($this->tempCampos[$index]);
       $this->tempCampos = array_values($this->tempCampos);
+      $this->normalizeOrder();
     }
+  }
+
+
+  public function updateOrder($items)
+  {
+    if (!is_array($items) || empty($items)) {
+      return;
+    }
+
+    $orderMap = collect($items)
+      ->filter(fn($item) => isset($item['value'], $item['order']))
+      ->mapWithKeys(fn($item) => [(int) $item['value'] => (int) $item['order']])
+      ->toArray();
+
+    if (empty($orderMap)) {
+      return;
+    }
+
+    usort($this->tempCampos, function ($a, $b) use ($orderMap) {
+      $orderA = $orderMap[(int) ($a['id'] ?? 0)] ?? PHP_INT_MAX;
+      $orderB = $orderMap[(int) ($b['id'] ?? 0)] ?? PHP_INT_MAX;
+      return $orderA <=> $orderB;
+    });
+
+    $this->normalizeOrder();
+  }
+
+  private function normalizeOrder()
+  {
+    foreach ($this->tempCampos as $index => &$campo) {
+      $campo['pivot']['order'] = $index;
+    }
+    unset($campo);
   }
 
 
@@ -138,9 +173,10 @@ class ModalCampos extends Component
      */
     $syncData = [];
 
-    foreach ($this->tempCampos as $campo) {
+    foreach ($this->tempCampos as $index =>  $campo) {
       $syncData[$campo['id']] = [
         'requerido' => $campo['pivot']['requerido'] ?? false,
+        'order' => $campo['pivot']['order'] ?? $index
       ];
     }
 

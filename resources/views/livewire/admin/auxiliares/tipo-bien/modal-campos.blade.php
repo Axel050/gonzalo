@@ -1,4 +1,5 @@
-<x-modal>
+<x-modal class=" lg:w-full lg:max-w-[800px]">
+
 
     <div class="bg-gray-200  pb-6 text-gray-700  text-start rounded-xl ml-0">
         <div class="flex  flex-col justify-center items-center  ">
@@ -11,22 +12,6 @@
                 class="bg-red-80  w-full  flex flex-col lg:grid lg:grid-cols-2 gap-2 lg:gap-x-8 llg:text-lg  text-base lg:px-10 px-2 text-gray-200  [&>div]:flex
                       [&>div]:flex-col  [&>div]:justify-center pt-4 max-h-[85vh] overflow-y-auto">
 
-
-
-                {{-- <div class="items-start  lg:w-auto w-[90%] mx-auto col-span-2">
-                    <label class="w-full text-start text-gray-500 leading-[16px] text-base">Campo</label>
-                    <div class="relative w-full">
-                        <select wire:model="camp"
-                            class =" h-6 py-0 rounded-md border border-gray-400 lg:w-60 w-full text-gray-500 bg-gray-100 pl-2 text-sm px-2">
-                            <option>Elija campos</option>
-                            @foreach ($caracteristicas as $car)
-                                <option value="{{ $car->nombre }}-/{{ $car->tipo }}-/{{ $car->id }}">
-                                    {{ $car->nombre }} | tipo={{ $car->tipo }}</option>
-                            @endforeach
-                        </select>
-                        <x-input-error for="camp" class="absotule top-full py-0 leading-[12px] text-red-500" />
-                    </div>
-                </div> --}}
 
                 <div class="lg:w-auto w-[90%] mx-auto  col-span-2 campos">
                     <div id="wrapper-select-tom2" wire:ignore>
@@ -63,17 +48,30 @@
                     <thead>
                         <tr
                             class="bg-gray-400 relative font-bold divide-x-2 divide-gray-600  text-sm text-gray-900 text-center">
+                            <th class="py-1 w-10">Orden</th>
                             <th class="py-1">Nombre</th>
                             <th>Tipo</th>
                             <th>Requerido</th>
                             <th>Accion</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-gray-300 text-gray-600  text-sm rounded-full">
+                    <tbody id="sortable-campos" class="divide-y divide-gray-300 text-gray-600  text-sm rounded-full">
 
                         @foreach ($tempCampos as $index => $item)
-                            <tr
+                            <tr wire:key="campo-{{ $item['id'] }}" data-id="{{ $item['id'] }}"
                                 class="bg-gray-100 relative font-bold divide-x-2 divide-gray-300 text-center [&>td]:lg:px-8 [&>td]:px-2 ">
+                                <td class="cursor-move align-middle">
+                                    <span class="inline-flex items-center justify-center text-gray-500"
+                                        title="Arrastrar para ordenar">
+
+                                        <svg width="16px" height="16px" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M7 4V20M7 20L3 16M7 20L11 16M17 4V20M17 4L21 8M17 4L13 8"
+                                                stroke="#000000" stroke-width="2" stroke-linecap="round"
+                                                stroke-linejoin="round" />
+                                        </svg>
+                                    </span>
+                                </td>
                                 <td class="py-1">{{ $item['nombre'] }}</td>
                                 <td>
                                     @if ($item['tipo'] == 'file')
@@ -149,5 +147,21 @@
             </div>
 
         </div>
+
+        {{-- <style>
+            #sortable-campos tr.sortable-ghost {
+                opacity: 0.5;
+            }
+
+            #sortable-campos .cursor-move {
+                cursor: grab;
+            }
+
+            #sortable-campos .cursor-move:active {
+                cursor: grabbing;
+            }
+        </style> --}}
     </div>
+
+
 </x-modal>

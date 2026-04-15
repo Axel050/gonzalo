@@ -142,6 +142,10 @@
                                                     $color = 'text-purple-700';
                                                     $text = 'Pausada';
                                                     break;
+                                                case 'pausada_prox':
+                                                    $color = 'text-purple-700';
+                                                    $text = 'Pausada prox';
+                                                    break;
                                                 default:
                                                     $color = '';
                                                     $text = '';

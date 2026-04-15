@@ -12,553 +12,557 @@ use App\Models\Moneda;
 use App\Models\OrdenLote;
 use App\Models\Puja;
 use App\Models\Subasta;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
 class ModalContratoLotes extends Component
 {
-  public $new;
+    public $new;
 
-  public $modal_foto = false;
+    public $modal_foto = false;
 
-  public $search;
+    public $search;
 
-  public $lotes = [];
+    public $lotes = [];
 
-  public $monedas = [];
+    public $monedas = [];
 
-  public string $si;
+    public string $si;
 
-  public $subastas = [];
+    public $subastas = [];
 
-  public $target_subasta_id;
+    public $target_subasta_id;
 
-  public $selectedToMove = [];
+    public $selectedToMove = [];
 
-  public $te = 1;
+    public $te = 1;
 
-  public $id;
+    public $id;
 
-  public $foto1;
+    public $foto1;
 
-  public $moneda_id = 1; // peso
+    public $moneda_id = 1; // peso
 
-  public $contrato;
+    public $contrato;
 
-  public $lote_id = false;
+    public $lote_id = false;
 
-  public $lote_id_modal = false;
+    public $lote_id_modal = false;
 
-  public $titulo;
+    public $titulo;
 
-  public $descripcion;
+    public $descripcion;
 
-  public $precio_base;
+    public $precio_base;
 
-  public $autorizados = [];
+    public $autorizados = [];
 
-  public $lote_estado;
+    public $lote_estado;
 
-  public $lote_ultimo_contrato;
+    public $lote_ultimo_contrato;
 
-  public $tempLotes = [];
+    public $tempLotes = [];
 
-  public $method;
+    public $method;
 
-  public $valuacion;
+    public $valuacion;
 
-  public $filter_estado = 'todos';
+    public $filter_estado = 'todos';
 
-  public function closeModal()
-  {
-    // Dispara el evento para cerrar el modal en Alpine.js
-    $this->dispatch('close-modal');
-    // Limpia la propiedad despuÃ©s de la animaciÃ³n
-    $this->modal_foto = null;
-  }
-
-  public function limpiar()
-  {
-    $this->lote_id = false;
-    $this->titulo = '';
-    $this->descripcion = '';
-    $this->moneda_id = '';
-    $this->precio_base = 0;
-    $this->foto1 = '';
-    $this->resetErrorBag('titulo');
-  }
-
-  public function loteSelected($loteId)
-  {
-
-    $this->search = '';
-    $this->si = false;
-    $lote = Lote::find($loteId);
-    if ($lote) {
-      $this->titulo = $lote->titulo;
-      $this->descripcion = $lote->descripcion;
-      $this->valuacion = $lote->valuacion;
-      $this->foto1 = $lote->foto1;
-      $this->lote_estado = $lote->estado;
-      $this->lote_ultimo_contrato = $lote->ultimo_contrato;
-
-      $this->precio_base = (int) ($lote->ultimoConLote?->precio_base !== null && $lote->ultimoConLote?->precio_base !== 0
-        ? $lote->ultimoConLote?->precio_base
-        : $this->valuacion);
-
-      $this->moneda_id = $lote->ultimoConLote?->moneda_id ?? 1;
-      // $ultimoContratoLote = $lote->contratosLotes()
-      //   ->orderBy('id', 'desc')
-      //   ->first();
-      // if ($ultimoContratoLote) {
-      //   $this->precio_base = (int)$ultimoContratoLote->precio_base;
-      // }
-
-      $this->lote_id = $loteId;
-    }
-  }
-
-  public function updatedValuacion($value)
-  {
-    $this->precio_base = $value;
-    // info(["precio base vaue" => $value]);
-    // info(["precio base" => $this->precio_base]);
-  }
-
-  public function updatedSearch($value)
-  {
-
-    if (strlen($value) > 1) {
-      $this->lotes = Lote::where('comitente_id', $this->contrato->comitente_id)
-        ->where('estado', LotesEstados::DISPONIBLE)
-        ->where('titulo', 'like', '%' . $value . '%')
-        ->take(10)
-        ->get();
-      $this->si = true;
-    } else {
-      $this->si = false;
-      $this->lotes = [];
-    }
-  }
-
-  #[On(['loteUpdated', 'loteContrato'])]
-  public function mount()
-  {
-
-    // $this->monedas = Moneda::all();
-    $this->monedas = Moneda::all()->keyBy('id');
-    $this->contrato = Contrato::find($this->id);
-
-    $this->subastas = Subasta::whereIn('estado', ['activa', 'inactiva', 'pausada'])
-      ->where('id', '!=', $this->contrato?->subasta_id)
-      ->orderBy('id', 'desc')->get();
-
-    // info(["oprevio mont contrato " => $this->id]);
-    // $this->tempLotes = $this->contrato->lotes->toArray();
-    $this->tempLotes = $this->contrato->lotes->map(function ($lote) {
-      $array = $lote->toArray();
-      $array['precio_base'] = $lote->pivot?->precio_base;
-      $array['moneda_id'] = $lote->ultimoConLote?->moneda_id;
-      $array['temp_uid'] = 'id-' . $lote->id;
-
-      return $array;
-    })->toArray();
-    // info("tempLotes");
-    // info($this->tempLotes);
-    // info("EMND");
-
-    $this->method = '';
-  }
-
-  protected function rules()
-  {
-    $rules = [
-      'titulo' => 'required',
-      'precio_base' => 'required|numeric|min:1',
-      'moneda_id' => 'required',
-      'valuacion' => 'required',
-    ];
-
-    return $rules;
-  }
-
-  protected function messages()
-  {
-    return [
-      'titulo.required' => 'Ingrese titulo.',
-      'precio_base.required' => 'Ingrese base.',
-      'precio_base.numeric' => 'Ingrese numero.',
-      'precio_base.min' => 'Ingrese base.',
-      'moneda_id.required' => 'Elija moneda.',
-      'valuacion.required' => 'Ingrese valuaciÃ³n.',
-    ];
-  }
-
-  public function addComplete()
-  {
-
-    $this->validate();
-
-    $estado = LotesEstados::DISPONIBLE;
-
-    if ($this->contrato->subasta_id) {
-      $estado = LotesEstados::ASIGNADO;
+    public function closeModal()
+    {
+        // Dispara el evento para cerrar el modal en Alpine.js
+        $this->dispatch('close-modal');
+        // Limpia la propiedad despuÃ©s de la animaciÃ³n
+        $this->modal_foto = null;
     }
 
-    $newLote = Lote::create([
-      'titulo' => $this->titulo,
-      'descripcion' => $this->descripcion,
-      'valuacion' => $this->valuacion,
-      'comitente_id' => $this->contrato?->comitente_id,
-      'ultimo_contrato' => $this->contrato?->id,
-      'estado' => $estado,
-    ]);
-
-    ContratoLote::create([
-      'contrato_id' => $this->contrato->id,
-      'lote_id' => $newLote->id,
-      'precio_base' => $this->precio_base,
-      'moneda_id' => $this->moneda_id,
-    ]);
-
-    $this->reset(['titulo', 'descripcion', 'precio_base', 'lote_id', 'foto1', 'moneda_id', 'valuacion']);
-    $this->lote_id_modal = $newLote->id;
-    $this->method = 'update';
-  }
-
-  public function add()
-  {
-    $this->validate();
-
-    // $tituloExistsInTemp = array_search($this->titulo, array_column($this->tempLotes, 'titulo')) !== false;
-    // if ($tituloExistsInTemp) {
-    //   $this->addError('titulo', 'El titulo ya estÃ¡ en la lista.');
-    //   return;
-    // }
-    // $this->resetErrorBag('titulo');
-
-    // $this->tempLotes[] = [
-    array_unshift($this->tempLotes, [
-      'titulo' => $this->titulo,
-      'descripcion' => $this->descripcion,
-      'precio_base' => $this->precio_base,
-      'valuacion' => $this->valuacion,
-      'id' => $this->lote_id,
-      'foto1' => $this->foto1,
-      'moneda_id' => $this->moneda_id,
-      'estado' => $this->lote_estado,
-      'ultimo_contrato' => $this->lote_ultimo_contrato,
-      'temp_uid' => 'tmp-' . Str::uuid()->toString(),
-    ]);
-
-    $this->reset(['titulo', 'descripcion', 'precio_base', 'lote_id', 'foto1', 'moneda_id', 'valuacion', 'lote_estado', 'lote_ultimo_contrato']);
-  }
-
-  public function quitar($uid)
-  {
-    $index = collect($this->tempLotes)->search(fn($item) => ($item['temp_uid'] ?? null) === $uid);
-    if ($index === false && is_numeric($uid) && isset($this->tempLotes[(int) $uid])) {
-      $index = (int) $uid;
+    public function limpiar()
+    {
+        $this->lote_id = false;
+        $this->titulo = '';
+        $this->descripcion = '';
+        $this->moneda_id = '';
+        $this->precio_base = 0;
+        $this->foto1 = '';
+        $this->resetErrorBag('titulo');
     }
 
-    if ($index !== false && isset($this->tempLotes[$index])) {
-      unset($this->tempLotes[$index]);
-      // Reindexar el array para evitar índices vacíos
-      $this->tempLotes = array_values($this->tempLotes);
-    }
-  }
+    public function loteSelected($loteId)
+    {
 
-  public function editar($uid)
-  {
-    $index = collect($this->tempLotes)->search(fn($item) => ($item['temp_uid'] ?? null) === $uid);
-    if ($index === false && is_numeric($uid) && isset($this->tempLotes[(int) $uid])) {
-      $index = (int) $uid;
-    }
+        $this->search = '';
+        $this->si = false;
+        $lote = Lote::find($loteId);
+        if ($lote) {
+            $this->titulo = $lote->titulo;
+            $this->descripcion = $lote->descripcion;
+            $this->valuacion = $lote->valuacion;
+            $this->foto1 = $lote->foto1;
+            $this->lote_estado = $lote->estado;
+            $this->lote_ultimo_contrato = $lote->ultimo_contrato;
 
-    if ($index !== false && isset($this->tempLotes[$index])) {
-      $this->titulo = $this->tempLotes[$index]['titulo'];
-      $this->descripcion = $this->tempLotes[$index]['descripcion'];
-      $this->precio_base = (int) $this->tempLotes[$index]['precio_base'];
-      $this->lote_id = $this->tempLotes[$index]['id'];
-      $this->moneda_id = $this->tempLotes[$index]['moneda_id'];
-      $this->valuacion = $this->tempLotes[$index]['valuacion'];
-      $this->lote_estado = $this->tempLotes[$index]['estado'] ?? null;
-      $this->lote_ultimo_contrato = $this->tempLotes[$index]['ultimo_contrato'] ?? null;
+            $this->precio_base = (int) ($lote->ultimoConLote?->precio_base !== null && $lote->ultimoConLote?->precio_base !== 0
+              ? $lote->ultimoConLote?->precio_base
+              : $this->valuacion);
 
-      if ($this->tempLotes[$index]['foto1']) {
-        $this->foto1 = $this->tempLotes[$index]['foto1'];
-      }
+            $this->moneda_id = $lote->ultimoConLote?->moneda_id ?? 1;
+            // $ultimoContratoLote = $lote->contratosLotes()
+            //   ->orderBy('id', 'desc')
+            //   ->first();
+            // if ($ultimoContratoLote) {
+            //   $this->precio_base = (int)$ultimoContratoLote->precio_base;
+            // }
 
-      // Eliminar el elemento de la lista temporal
-      unset($this->tempLotes[$index]);
-      $this->tempLotes = array_values($this->tempLotes);
-    }
-  }
-  public function save($send = false)
-  {
-
-    $this->validate([
-      // 'tempLotes' => 'required|array|min:1',
-      'tempLotes.required' => 'Debe agregar al menos un lote.',
-      'tempLotes.min' => 'Debe agregar al menos un lote.',
-    ]);
-
-    $existingIds = $this->contrato->lotes->pluck('id')->toArray();
-
-    // Obtener los IDs de los lotes en $tempLotes
-    $tempIds = collect($this->tempLotes)->pluck('id')->filter()->toArray(); // Filtra IDs vÃ¡lidos (excluye false/null)
-
-    $lotesToDelete = array_diff($existingIds, $tempIds);
-
-    foreach ($lotesToDelete as $loteId) {
-
-      if (
-        Puja::where('lote_id', $loteId)->exists()
-        || CarritoLote::where('lote_id', $loteId)->exists()
-        || OrdenLote::where('lote_id', $loteId)->exists()
-      ) {
-        $this->addError(
-          'tieneDatos',
-          "El lote ID {$loteId} no puede quitarse del contrato porque ya tuvo actividad."
-        );
-
-        return;
-      }
-    }
-
-    if (! empty($lotesToDelete)) {
-
-      ContratoLote::where('contrato_id', $this->contrato->id)
-        ->whereIn('lote_id', $lotesToDelete)
-        ->delete();
-
-      Lote::whereIn('id', $lotesToDelete)
-        ->update([
-          'estado' => LotesEstados::DISPONIBLE,
-          'ultimo_contrato' => null,
-        ]);
-    }
-
-    foreach ($this->tempLotes as $tempLote) {
-
-      if ($tempLote['id']) {
-
-        $contratoLote = ContratoLote::withTrashed()->where('contrato_id', $this->contrato->id)
-          ->where('lote_id', $tempLote['id'])
-          ->first();
-
-        if ($contratoLote) {
-
-          if ($contratoLote->trashed()) {
-            $contratoLote->restore();
-            Lote::find($tempLote['id'])->update(['ultimo_contrato' => $this->contrato->id, 'estado' => LotesEstados::ASIGNADO]);
-          }
-
-          // info(["INTOOOO" => $tempLote['precio_base']]);
-          $contratoLote->update([
-            'precio_base' => $tempLote['precio_base'],
-            'moneda_id' => $tempLote['moneda_id'],
-          ]);
-        } else {
-          // info("INTOOOO eeeslllllllseeee");
-          ContratoLote::create([
-            'contrato_id' => $this->contrato->id,
-            'lote_id' => $tempLote['id'],
-            'precio_base' => $tempLote['precio_base'],
-            'moneda_id' => $tempLote['moneda_id'],
-          ]);
-
-          Lote::find($tempLote['id'])->update(['ultimo_contrato' => $this->contrato->id, 'estado' => LotesEstados::ASIGNADO]);
+            $this->lote_id = $loteId;
         }
-      } else {
+    }
+
+    public function updatedValuacion($value)
+    {
+        $this->precio_base = $value;
+        // info(["precio base vaue" => $value]);
+        // info(["precio base" => $this->precio_base]);
+    }
+
+    public function updatedSearch($value)
+    {
+
+        if (strlen($value) > 0) {
+            $this->lotes = Lote::where('comitente_id', $this->contrato->comitente_id)
+                ->where('estado', LotesEstados::DISPONIBLE)
+                ->where(function ($query) use ($value) {   // ← agrupamos aquí
+                    $query->where('titulo', 'like', '%'.$value.'%')
+                        ->orWhere('id', $value);
+                })
+                ->take(10)
+                ->get();
+            $this->si = true;
+        } else {
+            $this->si = false;
+            $this->lotes = [];
+        }
+    }
+
+    #[On(['loteUpdated', 'loteContrato'])]
+    public function mount()
+    {
+
+        // $this->monedas = Moneda::all();
+        $this->monedas = Moneda::all()->keyBy('id');
+        $this->contrato = Contrato::find($this->id);
+
+        $this->subastas = Subasta::whereIn('estado', ['activa', 'inactiva', 'pausada'])
+            ->where('id', '!=', $this->contrato?->subasta_id)
+            ->orderBy('id', 'desc')->get();
+
+        // info(["oprevio mont contrato " => $this->id]);
+        // $this->tempLotes = $this->contrato->lotes->toArray();
+        $this->tempLotes = $this->contrato->lotes->map(function ($lote) {
+            $array = $lote->toArray();
+            $array['precio_base'] = $lote->pivot?->precio_base;
+            $array['moneda_id'] = $lote->ultimoConLote?->moneda_id;
+            $array['temp_uid'] = 'id-'.$lote->id;
+
+            return $array;
+        })->toArray();
+        // info("tempLotes");
+        // info($this->tempLotes);
+        // info("EMND");
+
+        $this->method = '';
+    }
+
+    protected function rules()
+    {
+        $rules = [
+            'titulo' => 'required',
+            'precio_base' => 'required|numeric|min:1',
+            'moneda_id' => 'required',
+            'valuacion' => 'required',
+        ];
+
+        return $rules;
+    }
+
+    protected function messages()
+    {
+        return [
+            'titulo.required' => 'Ingrese titulo.',
+            'precio_base.required' => 'Ingrese base.',
+            'precio_base.numeric' => 'Ingrese numero.',
+            'precio_base.min' => 'Ingrese base.',
+            'moneda_id.required' => 'Elija moneda.',
+            'valuacion.required' => 'Ingrese valuaciÃ³n.',
+        ];
+    }
+
+    public function addComplete()
+    {
+
+        $this->validate();
+
+        $estado = LotesEstados::DISPONIBLE;
+
+        if ($this->contrato->subasta_id) {
+            $estado = LotesEstados::ASIGNADO;
+        }
 
         $newLote = Lote::create([
-          'titulo' => $tempLote['titulo'],
-          'descripcion' => $tempLote['descripcion'],
-          'valuacion' => $tempLote['valuacion'],
-          'comitente_id' => $this->contrato?->comitente_id,
-          'ultimo_contrato' => $this->contrato?->id,
-          'estado' => LotesEstados::INCOMPLETO,
+            'titulo' => $this->titulo,
+            'descripcion' => $this->descripcion,
+            'valuacion' => $this->valuacion,
+            'comitente_id' => $this->contrato?->comitente_id,
+            'ultimo_contrato' => $this->contrato?->id,
+            'estado' => $estado,
         ]);
 
         ContratoLote::create([
-          'contrato_id' => $this->contrato->id,
-          'lote_id' => $newLote->id,
-          'precio_base' => $tempLote['precio_base'],
-          'moneda_id' => $tempLote['moneda_id'],
+            'contrato_id' => $this->contrato->id,
+            'lote_id' => $newLote->id,
+            'precio_base' => $this->precio_base,
+            'moneda_id' => $this->moneda_id,
         ]);
-      }
+
+        $this->reset(['titulo', 'descripcion', 'precio_base', 'lote_id', 'foto1', 'moneda_id', 'valuacion']);
+        $this->lote_id_modal = $newLote->id;
+        $this->method = 'update';
     }
 
-    if ($send) {
-      $message = '';
-      if ($this->new) {
-        $message = 'CreaciÃ³n';
-      } else {
-        $message = 'ActualizaciÃ³n';
-      }
+    public function add()
+    {
+        $this->validate();
 
-      $contratoLotes = ContratoLote::where('contrato_id', $this->contrato->id)->get();
-      $data = [
-        'message' => $message,
-        'lotes' => $contratoLotes,
-        'comitente' => $this->contrato->comitente?->nombre . ' ' . $this->contrato->comitente?->apellido,
-        'cuit' => $this->contrato->comitente?->CUIT,
-        'domicilio' => $this->contrato->comitente?->domicilio,
-        'id' => $this->contrato->id,
-        'subasta' => $this->contrato->subasta_id,
-        'fecha' => $this->contrato->fecha_firma,
-        'comision' => $this->contrato->comitente?->comision_formateada,
-      ];
+        // $tituloExistsInTemp = array_search($this->titulo, array_column($this->tempLotes, 'titulo')) !== false;
+        // if ($tituloExistsInTemp) {
+        //   $this->addError('titulo', 'El titulo ya estÃ¡ en la lista.');
+        //   return;
+        // }
+        // $this->resetErrorBag('titulo');
 
-      if ($this->contrato->comitente?->alias) {
-        $mail = $this->contrato->comitente?->alias?->comitente?->mail;
-      } else {
-        $mail = $this->contrato->comitente?->mail;
-      }
+        // $this->tempLotes[] = [
+        array_unshift($this->tempLotes, [
+            'titulo' => $this->titulo,
+            'descripcion' => $this->descripcion,
+            'precio_base' => $this->precio_base,
+            'valuacion' => $this->valuacion,
+            'id' => $this->lote_id,
+            'foto1' => $this->foto1,
+            'moneda_id' => $this->moneda_id,
+            'estado' => $this->lote_estado,
+            'ultimo_contrato' => $this->lote_ultimo_contrato,
+            'temp_uid' => 'tmp-'.Str::uuid()->toString(),
+        ]);
 
-      // dd($mail);
-      Mail::to($mail)->send(new ContratoEmail($data));
-      // Mail::to('axeldavidpaz@gmail.com')->send(new TestEmail($data));
+        $this->reset(['titulo', 'descripcion', 'precio_base', 'lote_id', 'foto1', 'moneda_id', 'valuacion', 'lote_estado', 'lote_ultimo_contrato']);
     }
 
-    $this->dispatch('loteCreated');
-  }
-
-  public function moverSeleccionados()
-  {
-    $this->resetErrorBag('mover');
-
-    $loteIds = collect($this->selectedToMove)
-      ->filter()
-      ->map(fn($id) => (int) $id)
-      ->unique()
-      ->values()
-      ->all();
-
-    if (empty($loteIds)) {
-      $this->addError('mover', 'Seleccione al menos un lote.');
-
-      return;
-    }
-
-    if (! $this->target_subasta_id) {
-      $this->addError('mover', 'Elija subasta destino.');
-
-      return;
-    }
-
-    if ($this->contrato?->subasta_id && (int) $this->contrato->subasta_id === (int) $this->target_subasta_id) {
-      $this->addError('mover', 'La subasta destino debe ser distinta a la actual.');
-
-      return;
-    }
-
-    $contratoDestino = Contrato::where('comitente_id', $this->contrato->comitente_id)
-      ->where('subasta_id', $this->target_subasta_id)
-      ->first();
-
-    if (! $contratoDestino) {
-      $contratoDestino = Contrato::create([
-        'comitente_id' => $this->contrato->comitente_id,
-        'subasta_id' => $this->target_subasta_id,
-        'fecha_firma' => now()->toDateString(),
-        'descripcion' => $this->contrato->descripcion,
-      ]);
-    }
-
-    $lotes = Lote::whereIn('id', $loteIds)
-      ->where('comitente_id', $this->contrato->comitente_id)
-      ->where('ultimo_contrato', $this->contrato->id)
-      ->whereIn('estado', [LotesEstados::DISPONIBLE, LotesEstados::STANDBY])
-      ->get();
-
-    $validIds = $lotes->pluck('id')->all();
-    $invalidIds = array_diff($loteIds, $validIds);
-    if (! empty($invalidIds)) {
-      $this->addError('mover', 'Algunos lotes no cumplen las condiciones y no se movieron.');
-    }
-
-    foreach ($lotes as $lote) {
-      $contratoLoteActual = ContratoLote::withTrashed()
-        ->where('contrato_id', $this->contrato->id)
-        ->where('lote_id', $lote->id)
-        ->first();
-
-      $precioBase = $contratoLoteActual?->precio_base ?? $lote->valuacion;
-      $monedaId = $contratoLoteActual?->moneda_id ?? 1;
-
-      $contratoLoteDestino = ContratoLote::withTrashed()
-        ->where('contrato_id', $contratoDestino->id)
-        ->where('lote_id', $lote->id)
-        ->first();
-
-      if ($contratoLoteDestino) {
-        if ($contratoLoteDestino->trashed()) {
-          $contratoLoteDestino->restore();
+    public function quitar($uid)
+    {
+        $index = collect($this->tempLotes)->search(fn ($item) => ($item['temp_uid'] ?? null) === $uid);
+        if ($index === false && is_numeric($uid) && isset($this->tempLotes[(int) $uid])) {
+            $index = (int) $uid;
         }
-        $contratoLoteDestino->update([
-          'precio_base' => $precioBase,
-          'moneda_id' => $monedaId,
+
+        if ($index !== false && isset($this->tempLotes[$index])) {
+            unset($this->tempLotes[$index]);
+            // Reindexar el array para evitar índices vacíos
+            $this->tempLotes = array_values($this->tempLotes);
+        }
+    }
+
+    public function editar($uid)
+    {
+        $index = collect($this->tempLotes)->search(fn ($item) => ($item['temp_uid'] ?? null) === $uid);
+        if ($index === false && is_numeric($uid) && isset($this->tempLotes[(int) $uid])) {
+            $index = (int) $uid;
+        }
+
+        if ($index !== false && isset($this->tempLotes[$index])) {
+            $this->titulo = $this->tempLotes[$index]['titulo'];
+            $this->descripcion = $this->tempLotes[$index]['descripcion'];
+            $this->precio_base = (int) $this->tempLotes[$index]['precio_base'];
+            $this->lote_id = $this->tempLotes[$index]['id'];
+            $this->moneda_id = $this->tempLotes[$index]['moneda_id'];
+            $this->valuacion = $this->tempLotes[$index]['valuacion'];
+            $this->lote_estado = $this->tempLotes[$index]['estado'] ?? null;
+            $this->lote_ultimo_contrato = $this->tempLotes[$index]['ultimo_contrato'] ?? null;
+
+            if ($this->tempLotes[$index]['foto1']) {
+                $this->foto1 = $this->tempLotes[$index]['foto1'];
+            }
+
+            // Eliminar el elemento de la lista temporal
+            unset($this->tempLotes[$index]);
+            $this->tempLotes = array_values($this->tempLotes);
+        }
+    }
+
+    public function save($send = false)
+    {
+
+        $this->validate([
+            // 'tempLotes' => 'required|array|min:1',
+            'tempLotes.required' => 'Debe agregar al menos un lote.',
+            'tempLotes.min' => 'Debe agregar al menos un lote.',
         ]);
-      } else {
-        ContratoLote::create([
-          'contrato_id' => $contratoDestino->id,
-          'lote_id' => $lote->id,
-          'precio_base' => $precioBase,
-          'moneda_id' => $monedaId,
-        ]);
-      }
 
-      if ($contratoDestino?->subasta && $contratoDestino?->subasta?->estado === 'activa') {
-        $estado = LotesEstados::EN_SUBASTA;
-      } else {
-        $estado = LotesEstados::ASIGNADO;
-      }
+        $existingIds = $this->contrato->lotes->pluck('id')->toArray();
 
-      $lote->update([
-        'ultimo_contrato' => $contratoDestino->id,
-        'estado' => $estado,
-      ]);
+        // Obtener los IDs de los lotes en $tempLotes
+        $tempIds = collect($this->tempLotes)->pluck('id')->filter()->toArray(); // Filtra IDs vÃ¡lidos (excluye false/null)
+
+        $lotesToDelete = array_diff($existingIds, $tempIds);
+
+        foreach ($lotesToDelete as $loteId) {
+
+            if (
+                Puja::where('lote_id', $loteId)->exists()
+                || CarritoLote::where('lote_id', $loteId)->exists()
+                || OrdenLote::where('lote_id', $loteId)->exists()
+            ) {
+                $this->addError(
+                    'tieneDatos',
+                    "El lote ID {$loteId} no puede quitarse del contrato porque ya tuvo actividad."
+                );
+
+                return;
+            }
+        }
+
+        if (! empty($lotesToDelete)) {
+
+            ContratoLote::where('contrato_id', $this->contrato->id)
+                ->whereIn('lote_id', $lotesToDelete)
+                ->delete();
+
+            Lote::whereIn('id', $lotesToDelete)
+                ->update([
+                    'estado' => LotesEstados::DISPONIBLE,
+                    'ultimo_contrato' => null,
+                ]);
+        }
+
+        foreach ($this->tempLotes as $tempLote) {
+
+            if ($tempLote['id']) {
+
+                $contratoLote = ContratoLote::withTrashed()->where('contrato_id', $this->contrato->id)
+                    ->where('lote_id', $tempLote['id'])
+                    ->first();
+
+                if ($contratoLote) {
+
+                    if ($contratoLote->trashed()) {
+                        $contratoLote->restore();
+                        Lote::find($tempLote['id'])->update(['ultimo_contrato' => $this->contrato->id, 'estado' => LotesEstados::ASIGNADO]);
+                    }
+
+                    // info(["INTOOOO" => $tempLote['precio_base']]);
+                    $contratoLote->update([
+                        'precio_base' => $tempLote['precio_base'],
+                        'moneda_id' => $tempLote['moneda_id'],
+                    ]);
+                } else {
+                    // info("INTOOOO eeeslllllllseeee");
+                    ContratoLote::create([
+                        'contrato_id' => $this->contrato->id,
+                        'lote_id' => $tempLote['id'],
+                        'precio_base' => $tempLote['precio_base'],
+                        'moneda_id' => $tempLote['moneda_id'],
+                    ]);
+
+                    Lote::find($tempLote['id'])->update(['ultimo_contrato' => $this->contrato->id, 'estado' => LotesEstados::ASIGNADO]);
+                }
+            } else {
+
+                $newLote = Lote::create([
+                    'titulo' => $tempLote['titulo'],
+                    'descripcion' => $tempLote['descripcion'],
+                    'valuacion' => $tempLote['valuacion'],
+                    'comitente_id' => $this->contrato?->comitente_id,
+                    'ultimo_contrato' => $this->contrato?->id,
+                    'estado' => LotesEstados::INCOMPLETO,
+                ]);
+
+                ContratoLote::create([
+                    'contrato_id' => $this->contrato->id,
+                    'lote_id' => $newLote->id,
+                    'precio_base' => $tempLote['precio_base'],
+                    'moneda_id' => $tempLote['moneda_id'],
+                ]);
+            }
+        }
+
+        if ($send) {
+            $message = '';
+            if ($this->new) {
+                $message = 'CreaciÃ³n';
+            } else {
+                $message = 'ActualizaciÃ³n';
+            }
+
+            $contratoLotes = ContratoLote::where('contrato_id', $this->contrato->id)->get();
+            $data = [
+                'message' => $message,
+                'lotes' => $contratoLotes,
+                'comitente' => $this->contrato->comitente?->nombre.' '.$this->contrato->comitente?->apellido,
+                'cuit' => $this->contrato->comitente?->CUIT,
+                'domicilio' => $this->contrato->comitente?->domicilio,
+                'id' => $this->contrato->id,
+                'subasta' => $this->contrato->subasta_id,
+                'fecha' => $this->contrato->fecha_firma,
+                'comision' => $this->contrato->comitente?->comision_formateada,
+            ];
+
+            if ($this->contrato->comitente?->alias) {
+                $mail = $this->contrato->comitente?->alias?->comitente?->mail;
+            } else {
+                $mail = $this->contrato->comitente?->mail;
+            }
+
+            // dd($mail);
+            Mail::to($mail)->send(new ContratoEmail($data));
+            // Mail::to('axeldavidpaz@gmail.com')->send(new TestEmail($data));
+        }
+
+        $this->dispatch('loteCreated');
     }
 
-    if (! empty($validIds)) {
+    public function moverSeleccionados()
+    {
+        $this->resetErrorBag('mover');
 
-      $this->tempLotes = $this->contrato->lotes->map(function ($lote) {
-        $array = $lote->toArray();
-        $array['precio_base'] = $lote->pivot?->precio_base;
-        $array['moneda_id'] = $lote->ultimoConLote?->moneda_id;
-        $array['temp_uid'] = 'id-' . $lote->id;
+        $loteIds = collect($this->selectedToMove)
+            ->filter()
+            ->map(fn ($id) => (int) $id)
+            ->unique()
+            ->values()
+            ->all();
 
-        return $array;
-      })->toArray();
+        if (empty($loteIds)) {
+            $this->addError('mover', 'Seleccione al menos un lote.');
+
+            return;
+        }
+
+        if (! $this->target_subasta_id) {
+            $this->addError('mover', 'Elija subasta destino.');
+
+            return;
+        }
+
+        if ($this->contrato?->subasta_id && (int) $this->contrato->subasta_id === (int) $this->target_subasta_id) {
+            $this->addError('mover', 'La subasta destino debe ser distinta a la actual.');
+
+            return;
+        }
+
+        $contratoDestino = Contrato::where('comitente_id', $this->contrato->comitente_id)
+            ->where('subasta_id', $this->target_subasta_id)
+            ->first();
+
+        if (! $contratoDestino) {
+            $contratoDestino = Contrato::create([
+                'comitente_id' => $this->contrato->comitente_id,
+                'subasta_id' => $this->target_subasta_id,
+                'fecha_firma' => now()->toDateString(),
+                'descripcion' => $this->contrato->descripcion,
+            ]);
+        }
+
+        $lotes = Lote::whereIn('id', $loteIds)
+            ->where('comitente_id', $this->contrato->comitente_id)
+            ->where('ultimo_contrato', $this->contrato->id)
+            ->whereIn('estado', [LotesEstados::DISPONIBLE, LotesEstados::STANDBY])
+            ->get();
+
+        $validIds = $lotes->pluck('id')->all();
+        $invalidIds = array_diff($loteIds, $validIds);
+        if (! empty($invalidIds)) {
+            $this->addError('mover', 'Algunos lotes no cumplen las condiciones y no se movieron.');
+        }
+
+        foreach ($lotes as $lote) {
+            $contratoLoteActual = ContratoLote::withTrashed()
+                ->where('contrato_id', $this->contrato->id)
+                ->where('lote_id', $lote->id)
+                ->first();
+
+            $precioBase = $contratoLoteActual?->precio_base ?? $lote->valuacion;
+            $monedaId = $contratoLoteActual?->moneda_id ?? 1;
+
+            $contratoLoteDestino = ContratoLote::withTrashed()
+                ->where('contrato_id', $contratoDestino->id)
+                ->where('lote_id', $lote->id)
+                ->first();
+
+            if ($contratoLoteDestino) {
+                if ($contratoLoteDestino->trashed()) {
+                    $contratoLoteDestino->restore();
+                }
+                $contratoLoteDestino->update([
+                    'precio_base' => $precioBase,
+                    'moneda_id' => $monedaId,
+                ]);
+            } else {
+                ContratoLote::create([
+                    'contrato_id' => $contratoDestino->id,
+                    'lote_id' => $lote->id,
+                    'precio_base' => $precioBase,
+                    'moneda_id' => $monedaId,
+                ]);
+            }
+
+            if ($contratoDestino?->subasta && $contratoDestino?->subasta?->estado === 'activa') {
+                $estado = LotesEstados::EN_SUBASTA;
+            } else {
+                $estado = LotesEstados::ASIGNADO;
+            }
+
+            $lote->update([
+                'ultimo_contrato' => $contratoDestino->id,
+                'estado' => $estado,
+            ]);
+        }
+
+        if (! empty($validIds)) {
+
+            $this->tempLotes = $this->contrato->lotes->map(function ($lote) {
+                $array = $lote->toArray();
+                $array['precio_base'] = $lote->pivot?->precio_base;
+                $array['moneda_id'] = $lote->ultimoConLote?->moneda_id;
+                $array['temp_uid'] = 'id-'.$lote->id;
+
+                return $array;
+            })->toArray();
+        }
+
+        $this->selectedToMove = [];
     }
 
-    $this->selectedToMove = [];
-  }
-
-  public function render()
-  {
-    return view('livewire.admin.contratos.modal-contrato-lotes');
-  }
-
-  public function getTempLotesFilteredProperty()
-  {
-    $collection = collect($this->tempLotes);
-
-    if ($this->filter_estado === 'movibles') {
-      $collection = $collection->filter(
-        fn($item) => in_array($item['estado'] ?? null, [LotesEstados::DISPONIBLE, LotesEstados::STANDBY], true)
-      );
+    public function render()
+    {
+        return view('livewire.admin.contratos.modal-contrato-lotes');
     }
 
-    return $collection
-      ->sortBy([
-        ['id', 'desc'],
-      ])
-      ->values()
-      ->all();
-  }
+    public function getTempLotesFilteredProperty()
+    {
+        $collection = collect($this->tempLotes);
+
+        if ($this->filter_estado === 'movibles') {
+            $collection = $collection->filter(
+                fn ($item) => in_array($item['estado'] ?? null, [LotesEstados::DISPONIBLE, LotesEstados::STANDBY], true)
+            );
+        }
+
+        return $collection
+            ->sortBy([
+                ['id', 'desc'],
+            ])
+            ->values()
+            ->all();
+    }
 }
