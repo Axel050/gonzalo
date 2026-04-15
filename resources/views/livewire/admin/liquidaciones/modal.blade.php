@@ -184,7 +184,7 @@
         </form>
 
         <div class="flex w-full justify-center">
-            <button wire:click="close"
+            <button {{-- wire:click="close" --}} wire:click="$parent.$set('method',false)"
                 class=" hover:text-white hover:bg-red-600 rounded-xl p-1 bg-red-500 text-gray-100 w-fit px-6 mt-5 mb-2 mx-auto">
                 Cancelar
             </button>

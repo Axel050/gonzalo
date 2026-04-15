@@ -73,7 +73,7 @@
         </div>
 
         <div class="p-4 border-t bg-gray-100 flex justify-center gap-3 rounded-b-xl">
-            <button wire:click="close"
+            <button wire:click="$parent.$set('method',false)"
                 class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-1 rounded">Cancelar</button>
             <button wire:click="save" class="bg-green-600 hover:bg-green-700 text-white px-4 py-1 rounded">Guardar
                 devolución</button>

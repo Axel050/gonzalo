@@ -12,13 +12,21 @@ use Livewire\Component;
 class Modal extends Component
 {
     public $method;
+
     public $comitente_id;
+
     public $comitentes = [];
+
     public $motivos = [];
+
     public $motivo_id;
+
     public $lotes_standby = [];
+
     public $lotes_seleccionados = [];
+
     public $descripcion = '';
+
     public $fecha;
 
     public function mount($method, $comitente_id = null)
@@ -39,7 +47,7 @@ class Modal extends Component
         $this->lotes_standby = [];
         $this->lotes_seleccionados = [];
 
-        if (!$val) {
+        if (! $val) {
             return;
         }
 
@@ -60,6 +68,10 @@ class Modal extends Component
         ], [
             'lotes_seleccionados.required' => 'Seleccione al menos un lote a devolver.',
             'lotes_seleccionados.min' => 'Seleccione al menos un lote a devolver.',
+            'motivo_id.required' => 'Seleccione un motivo de devolución.',
+            'comitente_id.required' => 'Seleccione un comitente.',
+            'fecha.required' => 'Seleccione una fecha.',
+            'fecha.date' => 'La fecha debe ser una fecha válida.',
         ]);
 
         $devolucionService->crearDevoluciones(

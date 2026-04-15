@@ -206,14 +206,14 @@
             </x-li-single>
         @endcan
 
-        {{-- @can('liquidaciones-ver') --}}
-        <x-li-single :active="Request::is('admin/devoluciones')" route="admin.devoluciones">
-            <svg class="size-6">
-                <use xlink:href="#devolucion"></use>
-            </svg>
-            <span class="ml-1 ">Devoluciones</span>
-        </x-li-single>
-        {{-- @endcan --}}
+        @can('devoluciones-ver')
+            <x-li-single :active="Request::is('admin/devoluciones')" route="admin.devoluciones">
+                <svg class="size-6">
+                    <use xlink:href="#devolucion"></use>
+                </svg>
+                <span class="ml-1 ">Devoluciones</span>
+            </x-li-single>
+        @endcan
 
 
 
