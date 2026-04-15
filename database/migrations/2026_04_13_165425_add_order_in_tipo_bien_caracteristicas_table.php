@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tipo_bien_caracteristicas', function (Blueprint $table) {
-            $table->integer('order')->default(0);ñ
+            $table->integer('order')->default(0);
         });
     }
 
