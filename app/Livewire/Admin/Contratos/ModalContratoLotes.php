@@ -414,7 +414,7 @@ class ModalContratoLotes extends Component
                 'domicilio' => $this->contrato->comitente?->domicilio,
                 'id' => $this->contrato->id,
                 'subasta' => $this->contrato->subasta_id,
-                'fecha' => $this->contrato->fecha_firma,
+                'fecha' => now()->format('d/m/Y'),
                 'comision' => $this->contrato->comitente?->comision_formateada,
             ];
 
