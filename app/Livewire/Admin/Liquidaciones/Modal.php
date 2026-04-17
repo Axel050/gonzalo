@@ -121,9 +121,11 @@ class Modal extends Component
         }
 
         // Comision
+
         $comision = floatval($this->comision_porcentaje);
+
         if ($comision > 0) {
-            $this->subtotal_comisiones = ($this->subtotal_lotes * $comision) / 100;
+            $this->subtotal_comisiones = round(($this->subtotal_lotes * $comision) / 100, 0);
         }
 
         // Gastos

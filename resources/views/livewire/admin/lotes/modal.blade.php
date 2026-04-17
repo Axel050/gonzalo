@@ -279,6 +279,19 @@
 
                     @endif
 
+                    @error('imagen')
+                        <div class ='flex !flex-row items-center  justify-center text-base text-red-600  lg:col-span-4'>
+
+                            <svg class="w-4 h-3.5 mr-1">
+                                <use xlink:href="#error-icon"></use>
+                            </svg>
+                            <p class="lg:max-w-80 leading-[12px]">
+                                {{ $message }}
+                            </p>
+                        </div>
+                    @enderror
+
+
                     @error('tieneDatos')
                         <div class ='flex !flex-row items-center  justify-center text-base text-red-600  lg:col-span-4'>
 

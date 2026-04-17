@@ -71,11 +71,7 @@
                                 </td>
                                 <td class="p-2">{{ $item->concepto }}</td>
                                 <td class="p-2 text-right font-semibold">
-                                    @if ($item->tipo == 'ingreso')
-                                        ${{ number_format($item->monto, 0, ',', '.') }}
-                                    @else
-                                        - ${{ number_format($item->monto, 0, ',', '.') }}
-                                    @endif
+                                    ${{ number_format($item->monto, 0, ',', '.') }}
                                 </td>
                             </tr>
                         @endforeach

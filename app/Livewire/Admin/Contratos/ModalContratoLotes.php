@@ -12,6 +12,7 @@ use App\Models\Moneda;
 use App\Models\OrdenLote;
 use App\Models\Puja;
 use App\Models\Subasta;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
@@ -546,6 +547,27 @@ class ModalContratoLotes extends Component
     public function render()
     {
         return view('livewire.admin.contratos.modal-contrato-lotes');
+    }
+
+    public function descargarPDF()
+    {
+        $contratoLotes = ContratoLote::where('contrato_id', $this->contrato->id)->get();
+        $data = [
+            'lotes' => $contratoLotes,
+            'comitente' => $this->contrato->comitente?->nombre.' '.$this->contrato->comitente?->apellido,
+            'cuit' => $this->contrato->comitente?->CUIT,
+            'domicilio' => $this->contrato->comitente?->domicilio,
+            'id' => $this->contrato->id,
+            'subasta' => $this->contrato->subasta_id,
+            'fecha' => now()->format('d/m/Y'),
+            'comision' => $this->contrato->comitente?->comision_formateada,
+        ];
+
+        $pdf = Pdf::loadView('livewire.admin.contratos.pdf', ['data' => $data]);
+
+        return response()->streamDownload(function () use ($pdf) {
+            echo $pdf->output();
+        }, 'contrato-'.$this->contrato->id.'.pdf');
     }
 
     public function getTempLotesFilteredProperty()

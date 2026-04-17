@@ -90,7 +90,7 @@ class LiquidacionService
                     'estado' => 'generada',
                     'comitente_id' => $comitente->id,
                     'observaciones' => $observaciones,
-                    'monto_total' => -($subtotal_comisiones + $subtotal_gastos),
+                    'monto_total' => $subtotal_comisiones + $subtotal_gastos,
                     'subtotal_lotes' => 0,
                     'subtotal_comisiones' => $subtotal_comisiones,
                     'subtotal_gastos' => $subtotal_gastos,
@@ -141,13 +141,13 @@ class LiquidacionService
 
             // Revertir estado de los lotes
             $lotesIds = $liquidacion->items->pluck('lote_id')->filter()->unique();
-            
+
             foreach ($liquidacion->asociadas as $asociada) {
                 $lotesIds = $lotesIds->merge($asociada->items->pluck('lote_id')->filter());
             }
 
             $lotesIds = $lotesIds->unique();
-            
+
             if ($lotesIds->isNotEmpty()) {
                 Lote::whereIn('id', $lotesIds)->update(['estado' => LotesEstados::FACTURADO]);
             }

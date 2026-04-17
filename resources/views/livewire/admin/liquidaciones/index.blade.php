@@ -255,7 +255,7 @@
                                                 TOTAL</span>
                                         </td>
                                         <td class="text-blue-900 py-2 pl-2">
-                                            ${{ number_format($liquidacion->monto_total + $liquidacion->asociadas->sum('monto_total'), 0, ',', '.') }}
+                                            ${{ number_format($liquidacion->monto_total - $liquidacion->asociadas->sum('monto_total'), 0, ',', '.') }}
                                         </td>
 
                                         <td></td>
